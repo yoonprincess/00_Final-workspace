@@ -1,2 +1,7 @@
 /.metadata/
 /Servers/
+/BLB_Project/target/
+/BLB_Project/.settings/
+/BLB_Project/.classpath
+/BLB_Project/.project
+/BLB_Project/.springBeans
