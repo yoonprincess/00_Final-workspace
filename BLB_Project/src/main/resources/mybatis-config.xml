@@ -21,14 +21,4 @@
 		<mapper resource="/mappers/helpdesk-mapper.xml" />
 	</mappers>
 	 -->
-	 
-	 <typeAliases>
-	 	<typeAlias type="com.mig.blb.helpdesk.model.vo.Notice" alias="notice"/>
-	 	
-	 </typeAliases>
-	 
-	 
-	 <mappers>
-	 	<mapper resource="/mappers/helpdesk-mapper.xml"/>
-	 </mappers>
 </configuration>

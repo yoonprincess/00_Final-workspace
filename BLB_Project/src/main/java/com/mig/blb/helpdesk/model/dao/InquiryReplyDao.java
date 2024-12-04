@@ -1,5 +1,5 @@
 package com.mig.blb.helpdesk.model.dao;
 
-public class InquiryReplyDao {
+public class InquiryReply {
 
 }
