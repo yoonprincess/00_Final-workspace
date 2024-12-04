@@ -1,4 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete resource &apos;Servers&apos;" deleteContents="true" description="Delete resource &apos;Servers&apos;" element1="/Servers" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1733296883662"/>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;Servers&apos;" deleteContents="true" description="Delete resource &apos;Servers&apos;" element1="/Servers" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1733296883662"/>&#x0A;<refactoring comment="Delete resource &apos;BLB_Project/src/main/java/com/mig/blb/helpdesk/model/dao/NotificationDao.java&apos;" deleteContents="false" description="Delete resource &apos;BLB_Project/src/main/java/com/mig/blb/helpdesk/model/dao/NotificationDao.java&apos;" element1="/BLB_Project/src/main/java/com/mig/blb/helpdesk/model/dao/NotificationDao.java" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1733318849517"/>
 </session>
