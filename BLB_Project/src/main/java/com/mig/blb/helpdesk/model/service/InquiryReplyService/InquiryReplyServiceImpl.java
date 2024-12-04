@@ -1,5 +1,5 @@
 package com.mig.blb.helpdesk.model.service.InquiryReplyService;
 
-public class InquiryReplyServiceImpl {
+public class InquiryReplyServiceImpl implements InquiryReplyService {
 
 }
