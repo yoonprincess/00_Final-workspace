@@ -1,0 +1,110 @@
+package com.kh.spring.common.interceptor;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+/*
+ * * Interceptor (인터셉터)
+ * - 스프링에서 파생 된 개념으로,
+ *   요청이 "Controller 클래스 및 메소드" 로 들어가기 전에 또는
+ *   응답이 DispatcherServlet 으로 넘어가기 전에 가로채는 역할을 해줌
+ * 
+ * * Interceptor 의 간섭 시점
+ * View ---> DispatcherServlet ---> Controller -> Service -> Dao -> DB
+ * 	   Filter				Interceptor
+ * 						요청 또는 응답 가로채기
+ * 
+ * * Interceptor 구현 방법
+ * - 일반 클래스로 정의하되, 스프링 프레임워크에서 제공하는
+ * 1. HandlerInterceptorAdapter 라는 클래스를 상속받는 방법
+ * : 내가 원하는 메소드만 골라서 오버라이딩이 가능!!
+ * 2. HandlerInterceptor 라는 인터페이스를 상속받아서 구현하는 방법
+ * : 모든 메소드를 무조건 다 오버라이딩 해야하기 때문에
+ *   내가 필요 없는 메소드도 다 만들어야 한다라는 단점이 있음!!
+ * - 최종적으로 구현한 이 인터셉터를 servlet-context.xml 파일에
+ *   빈으로 등록해야 사용할 수 있게 된다!!
+ *   
+ * * Interceptor 구문 작성 방법
+ * - HandlerInterceptorAdapter 방식이든 HandlerInterceptor 방식이든 간에
+ * 1. preHandle 메소드 : Controller 에 요청이 도달하기 전 선처리할 구문을 정의
+ * 					   주로 로그인 유무 판단, 
+ * 					   로그인한 회원의 권한 및 직급 체크 시 사용
+ * 
+ * 2. postHandle 메소드 : Controller 에서 요청 처리 후 응답페이지로 도달하기 전에
+ * 						 후처리할 구문을 정의
+ * 						 주로 로깅을 남기는 용도로 쓰임 (기록)
+ */
+public class LoginInterceptor extends HandlerInterceptorAdapter {
+
+	// 1. preHandle 메소드 - 선처리용
+	@Override
+	public boolean preHandle(HttpServletRequest request, 
+							 HttpServletResponse response, 
+							 Object handler) throws Exception {
+		
+		// 매개변수
+		// - request : 요청에 대한 정보를 담고있는 객체
+		// - response : 응답과 관련된 기능 (메소드들) 을 제공하는 객체
+		// - handler : 이 요청은 누가 처리하기로 했는가? 에 대한 정보가 담김!!
+		// System.out.println("preHandle 이 잘 동작 하나..?");
+		// System.out.println(handler /* .toString() */);
+		// > com.kh.spring.member.controller.MemberController#myPage()
+		//   (MemberController 클래스의 myPage 메소드를 지칭하고 있음)
+		
+		// 리턴값 : boolean 타입
+		// - true : Controller 로 요청 통과
+		// - false : Controller 로 요청을 통과시키지 않고 끊어버림
+		
+		// 로그인이 된 상태인지 검사하는 구문 추가
+		// > HttpSession 에 loginUser 가 있는지 검사 (null 인지 아닌지)
+		HttpSession session = request.getSession();
+		
+		if(session.getAttribute("loginUser") != null) {
+			// 로그인이 된 상태
+			
+			return true;
+			
+		} else { 
+			// 로그인이 안된 상태
+			
+			// 세션에 일회성 알람 문구를 담고,
+			// 메인페이지로 url 재요청하기!!
+			session.setAttribute("alertMsg", "로그인 후 이용 가능한 서비스입니다.");
+			
+			response.sendRedirect(request.getContextPath());
+			
+			// 마이페이지로 진입을 막기 위해
+			return false;
+		}
+	}
+
+	/*
+	@Override
+	public void postHandle(HttpServletRequest request, 
+						   HttpServletResponse response, 
+						   Object handler,
+						   ModelAndView modelAndView) throws Exception {
+		
+		// 매개변수
+		// - request : 요청에 대한 정보를 담은 객체
+		// - response : 응답 시 필요한 기능들을 갖고있는 객체
+		// - handler : 이 요청은 누가 처리하기로 했었는가? 에 대한 정보
+		// - modelAndView : Model (응답데이터) + View (응답뷰) 정보
+		
+		System.out.println("postHandle 이 잘 작동되나..?");
+		System.out.println(handler);
+		System.out.println(modelAndView);
+		
+		// 반환값 - postHandle 은 반환값이 없음 (void)
+		// > 이미 Controller 에서 요청 처리가 끝나고 돌아오는 길이기 때문에
+		//   못되돌려서 void 임!!
+	}
+	*/
+
+}
+
+
+
