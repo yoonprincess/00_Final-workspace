@@ -4,11 +4,11 @@
 
 	<resultMap id="noitceResultSet" type="notice">
 		<id column="NOTICE_NO" property="noticeNo"/>
-		<result column="NoticeTitle" property="noticeTitle"/>
-		<result column="NoticeContent" property="noticeContent"/>
-		<result column="NoticeRegDate" property="noticeRegDate"/>
-		<result column="NoticePinnedYn" property="noticePinnedYn"/>
-		<result column="NoticeStatus" property="noticeStatus"/>
+		<result column="NOTICE_TITLE" property="noticeTitle"/>
+		<result column="NOTICE_CONTENT" property="noticeContent"/>
+		<result column="NOTICE_REG_DATE" property="noticeRegDate"/>
+		<result column="NOTICE_PINNED_YN" property="noticePinnedYn"/>
+		<result column="NOTICE_STATUS" property="noticeStatus"/>
 	</resultMap>
 
 	<select id="selectListCount" resultType="_int">
@@ -26,5 +26,4 @@
 		 WHERE NOTICE_STATUS = 'Y'
 	  ORDER BY NOTICE_NO DESC
 	</select>
- 
 </mapper>
