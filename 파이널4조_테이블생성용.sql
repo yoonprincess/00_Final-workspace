@@ -606,3 +606,4 @@ INSERT INTO TB_MEMBER (
                                             'BABY'
                                         );
 
+commit;
