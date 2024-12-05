@@ -96,13 +96,13 @@ CREATE TABLE TB_MEMBER (
     MEMBER_PWD VARCHAR2(150) NOT NULL,
     PHONE CHAR(11),
     EMAIL VARCHAR2(30),
-    BIRTHDATE DATE DEFAULT SYSDATE,
+    BIRTHDATE DATE ,
     CREATE_DATE DATE DEFAULT SYSDATE NOT NULL,
     DELETE_DATE DATE,
     STATUS CHAR(1) DEFAULT 'Y' NOT NULL,
     TOTAL_POINTS NUMBER DEFAULT 0,
     CURRENT_POINTS NUMBER DEFAULT 0,
-    GRADE_NAME VARCHAR2(20) NOT NULL,
+    GRADE_NAME VARCHAR2(20) DEFAULT 'BABY' NOT NULL,
     CONSTRAINT PK_MEMBER PRIMARY KEY (MEMBER_ID),
     CONSTRAINT FK_GRADE_TO_MEMBER FOREIGN KEY (GRADE_NAME) REFERENCES TB_GRADE (GRADE_NAME)
 );
@@ -517,4 +517,92 @@ COMMENT ON COLUMN TB_REVIEW_ATTACHMENT.SAVE_PATH IS '저장 경로';
 COMMENT ON COLUMN TB_REVIEW_ATTACHMENT.THUMB_PATH IS '썸네일 경로';
 COMMENT ON COLUMN TB_REVIEW_ATTACHMENT.REV_ATT_STATUS IS '첨부 파일 상태값';
 COMMENT ON COLUMN TB_REVIEW_ATTACHMENT.REV_NO IS '리뷰 번호';
+
+
+--회원등급 (TB_GRADE) 데이터값 --
+INSERT INTO TB_GRADE(GRADE_NAME
+                                        ,MIN_POINT
+                                        ,MAX_POINT)
+                            VALUES('BABY'
+                                        , 0
+                                        ,3000);
+                        
+INSERT INTO TB_GRADE(GRADE_NAME
+                                        ,MIN_POINT
+                                        ,MAX_POINT)
+                            VALUES('MINT'
+                                        , 3000
+                                        ,5000);
+                                        
+INSERT INTO TB_GRADE(GRADE_NAME
+                                        ,MIN_POINT
+                                        ,MAX_POINT)
+                            VALUES('GOLD'
+                                        , 5000
+                                        ,10000);
+                                        
+INSERT INTO TB_GRADE(GRADE_NAME
+                                        ,MIN_POINT
+                                        ,MAX_POINT)
+                            VALUES('VIP'
+                                        , 10000
+                                        ,99999999);
+
+-- 관리자 계정--
+ INSERT INTO TB_MEMBER ( MEMBER_ID,
+                                                MEMBER_NAME,
+                                                MEMBER_PWD,
+                                                PHONE,
+                                                EMAIL,
+                                                BIRTHDATE,
+                                                CREATE_DATE,
+                                                DELETE_DATE,
+                                                STATUS,
+                                                TOTAL_POINTS,
+                                                CURRENT_POINTS,
+                                                GRADE_NAME
+                                            ) 
+                              VALUES ( 'admin',
+                                                '관리자',
+                                                '$2a$10$C80V3tc1Sy0rEjBf/izb9OPjvV5sKzbp0AqAzR6nd395KWgHcUg8S', -- 'admin01!'
+                                                '01011112222',
+                                                'admin@mig.com',
+                                                TO_DATE('2000-01-01', 'YYYY-MM-DD'),
+                                                DEFAULT,
+                                                NULL,
+                                                'y',
+                                                DEFAULT,
+                                                DEFAULT,
+                                                'VIP'
+                                            );
+
+--회원샘플계정--
+INSERT INTO TB_MEMBER (
+                                            MEMBER_ID,
+                                            MEMBER_NAME,
+                                            MEMBER_PWD,
+                                            PHONE,
+                                            EMAIL,
+                                            BIRTHDATE,
+                                            CREATE_DATE,
+                                            DELETE_DATE,
+                                            STATUS,
+                                            TOTAL_POINTS,
+                                            CURRENT_POINTS,
+                                            GRADE_NAME
+                                        ) 
+                                        VALUES (
+                                            'user01',
+                                            '홍길동',
+                                            '$2a$10$10sE..DFkXAKR0br6NBeAu1i3bNswzZq2sA34zdq9244HK1cai2b2', -- 'password01!'
+                                            '01088889999',
+                                            'user01@gmail.com',
+                                            TO_DATE('2000-01-11', 'YYYY-MM-DD'), 
+                                            DEFAULT,
+                                            NULL,
+                                            'y',
+                                            DEFAULT,
+                                            DEFAULT,
+                                            'BABY'
+                                        );
 

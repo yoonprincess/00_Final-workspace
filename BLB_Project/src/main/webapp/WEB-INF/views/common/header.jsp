@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,8 +26,26 @@
 
     <!-- Google Fonts Icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+	
+	<!--  Alertify 라이브러리 연동구문 (CDN) -->
+	<!-- JavaScript -->
+	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+	<!-- CSS -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+	<!-- Default theme -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
+	<!-- Semantic UI theme -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/semantic.min.css"/>
+
 </head>
 <body>
+	<c:if test="${ not empty sessionScope.alertMsg }">
+		<script>
+		alertify.alert('Alert', '${ sessionScope.alertMsg }');
+		</script>	
+		<c:remove var="alertMsg" scope="session"/>
+	</c:if>
+	
     <nav class="navbar navbar-expand-md navbar-dark fixed-top transparent-navbar">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
@@ -45,12 +64,28 @@
                         shopping_bag
                     </span>
                 </a>
-                <a class="menu-btn" href="#">
-                    <span class="material-symbols-outlined last-btn">
-                        person
-                    </span>
-                </a>
-                <!-- <button class="btn btn-danger" id="logoutBtn">로그아웃</button> -->
+                <c:choose>
+	                <c:when test="${ empty sessionScope.loginUser }">
+		                <a class="menu-btn" href="${ pageContext.request.contextPath }/loginForm.me">
+		                    <span class="material-symbols-outlined last-btn">
+		                        person
+		                    </span>
+		                </a>
+	           		</c:when>
+	                <c:otherwise>
+	                	<a class="menu-btn" href="${ pageContext.request.contextPath }/loginForm.me">
+		                    <span class="material-symbols-outlined last-btn">
+		                        person
+		                    </span>
+		                    <label>${sessionScope.loginUser.memberName }님</label> 
+		                </a>	
+	               	 <a class="menu-btn" href="${ pageContext.request.contextPath }/logout.me">
+		                    <span class="material-symbols-outlined last-btn">
+		                        Logout
+		                    </span>
+		              </a>
+	            	</c:otherwise>
+            	</c:choose>
             </div>
 
             <!-- 토글 버튼 -->

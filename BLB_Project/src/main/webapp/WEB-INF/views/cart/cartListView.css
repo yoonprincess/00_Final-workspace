@@ -1,0 +1,122 @@
+table {
+    border : 1px solid gray;
+    width : 1200px;
+}
+
+hr {
+    width: 1200px;
+}
+
+/* 삭제 버튼 */
+#select-detlete {
+    background-color: #7AB2D3;
+    border: none;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+/* 상품 정보 영역 */
+.product-info {
+    padding: 15px;
+    font-size: 14px;
+    line-height: 2; /* 줄 간격을 늘려 위아래 공백 추가 */
+}
+
+#cart-product img {
+    display: flex;
+    justify-content: center; /* 가로 방향 중앙 정렬 */
+    align-items: center;    /* 세로 방향 중앙 정렬 */
+    width: 100%;            /* 부모 컨테이너의 너비 */
+    height: 100%;           /* 부모 컨테이너의 높이 */
+}
+
+tr>img {
+    max-width: 100%; /* 이미지 크기를 부모 컨테이너에 맞춤 */
+    max-height: 100%; /* 이미지 크기를 부모 컨테이너 높이에 맞춤 */
+    object-fit: contain; /* 이미지 비율 유지 */
+}
+
+/* 수량 조절 컨트롤 */
+.item-quantity {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 120px; /* 전체 컨트롤의 너비 */
+    height: 40px; /* 컨트롤 높이 */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.item-quantity span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; /* 버튼 너비 */
+    height: 100%; /* 버튼 높이는 부모 컨테이너와 동일 */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #fff;
+    user-select: none;
+}
+
+.item-quantity span.quantity-decrease {
+    border-right: 1px solid #ddd; /* - 버튼과 수량 필드 사이의 구분선 */
+}
+
+.item-quantity span.quantity-increase {
+    border-left: 1px solid #ddd; /* 수량 필드와 + 버튼 사이의 구분선 */
+}
+
+.item-quantity span:hover {
+    background-color: #f9f9f9;
+}
+
+.item-quantity .quantity-input {
+    width: 40px; /* 입력 필드 너비 */
+    height: 100%;
+    text-align: center;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    pointer-events: none; /* 입력 비활성화 */
+    background-color: #fff;
+}
+
+.item-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    text-align: right;
+}
+
+/* 결제 가격 영역 */
+#cart-price th {
+    padding : 15px 0;
+    border-bottom: 1px solid #F4F4F9;
+    font-weight: lighter;
+}
+
+#cart-price td {
+    padding : 25px 0;
+    text-align: center;
+    font-weight: bolder;
+}
+
+#btn-delete {
+    text-align: center;
+}
+
+.btn-delete {
+    font-size: 14px;
+    color: #7AB2D3;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    color: #4A628A; /* 호버 시 더 어두운 색상 */
+}
