@@ -7,7 +7,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HeplDeskController {
 
 	@GetMapping("Faq.blb")
-	public String helpsdeskMain() {
+	public String faqView() {
 		return "helpdesk/FAQ";
+	}
+	
+	@GetMapping("Inquiry.blb")
+	public String inquiryView() {
+		return "helpdesk/Inquiry";
+	}
+	
+	@GetMapping("Notice.blb")
+	public String noticeView() {
+		return "helpdesk/Notice";
 	}
 }

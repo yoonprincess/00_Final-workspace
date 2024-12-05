@@ -27,11 +27,11 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 	@Controller
 	public class NoticeController {
 	
-		// NoticeService ��ü ���� ������ ����
+		// NoticeService 객체 생성
 		@Autowired
 		private NoticeService noticeService;
 		
-		// �������� �����ȸ ��û
+		// 공지사항 목록 조회 요청
 		@GetMapping("list.no")
 		public String selectList(@RequestParam(value="cpage", defaultValue="1")int currentPage,
 								 Model model) {
@@ -51,7 +51,7 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 			
 		}
 	
-		// �������� �ۼ������� ��û
+		// 공지사항 작성 페이지 요청
 		@GetMapping("enrollForm.no")
 		public ModelAndView enrollForm(ModelAndView mv) {
 		
@@ -60,7 +60,7 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 		
 		}
 		
-		// �������� ��� ��û
+		// 공지사항 등록 요청
 		@PostMapping("insert.no")
 		public ModelAndView insertNotice(Notice n,
 										 RedirectAttributes ar,
@@ -80,13 +80,13 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 			if(result > 0) {
 				mv.setViewName("redirect:/list.no");
 			} else {
-				ar.addFlashAttribute("alertMsg", "�Խñ� ��Ͽ� �����߽��ϴ�. �����ڿ��� �������ּ���.");
+				ar.addFlashAttribute("alertMsg", "공지사항이 성공적으로 등록되었습니다.");
 				mv.setViewName("redirect:/list.no");
 			}
 			return mv;
 		}
 		
-		// �������� �������� ��û
+		// 공지사항 상세조회 요청
 		@GetMapping("notice/{noticeNo}")
 		public ModelAndView selectNotice(@PathVariable(value = "noticeNo") int nno,
 		                                 ModelAndView mv,
@@ -96,13 +96,13 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 		        Notice n = noticeService.selectNotice(nno);
 		        mv.addObject("n", n).setViewName("helpdesk/NoticeDetailView");
 		    } else {
-		        ra.addFlashAttribute("alertMsg", "����ȸ�� �����߽��ϴ�. �����ڿ��� �������ּ���");
-		        mv.setViewName("redirect:/list.no"); // ���� �� �̵��� ������ ����
+		        ra.addFlashAttribute("alertMsg", "공지사항 상세조회에 실패했습니다.");
+		        mv.setViewName("redirect:/list.no"); 
 		    }
 		    return mv;
 		}
 
-		// �������� ���� ��û
+		// 공지사항 삭제 요청
 		@PostMapping("delete.no")
 		public String deleteNotice(int nno,
 								   String filePath,
@@ -116,16 +116,16 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 					
 					new File(realPath).delete();
 				}
-				session.setAttribute("aletMsg", "�Խñ��� �����Ǿ����ϴ�.");
+				session.setAttribute("aletMsg", "공지사항이 성공적으로 삭제되었습니다.");
 				
 				return "redirect:/list.no";
 			} else {
-				ar.addFlashAttribute("alertMsg", "�Խñ� ������ �����߽��ϴ�. �������� �������ּ���");
+				ar.addFlashAttribute("alertMsg", "공지사항 삭제에 실패했습니다.");
 				return "redirect:/list.no";
 			}
 		}
 		
-		// �������� ���� ������ ��û
+		// 공지사항 수정 페이지 요청
 		@PostMapping("updateForm.no")
 		public String updateForm(int nno,
 								 Model model) {
@@ -135,7 +135,7 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 			return "notice/noticeUpdateForm";
 		}
 		
-		// �������� ���� ��û
+		// 공지사항 수정 요청
 		@PostMapping("update.no")
 		public String updateNotice(Notice n,
 								   RedirectAttributes ar,
@@ -157,15 +157,16 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 			int result = noticeService.updateNotice(n);
 			
 			if(result > 0) {
-				session.setAttribute("alertMsg", "���������� ���������� �����Ǿ����ϴ�.");
+				session.setAttribute("alertMsg", "공지사항이 성공적으로 수정되었습니다.");
 				
 				return "redirect:/notice/" + n.getNoticeNo();
 			} else {
-				ar.addFlashAttribute("alertMsg", "�������� ��Ͽ� �����߽��ϴ�. �����ڿ��� �������ּ���.");
+				ar.addFlashAttribute("alertMsg", "공지사항 수정에 실패했습니다.");
 				return "redirect:/list.no";
 			} 
 		}
 		
+		// 첨부파일을 위한 메소드
 		public String saveFile(MultipartFile upfile,
 							   HttpSession session) {
 			
