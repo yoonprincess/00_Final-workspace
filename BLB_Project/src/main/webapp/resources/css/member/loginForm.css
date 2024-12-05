@@ -1,0 +1,186 @@
+#navigator {
+    width: 100%;
+    height: 80px;
+    background-color: #e3fdfd;
+    position: fixed; /* 화면 상단에 고정 */
+    top: 0;
+    left: 0; /* 전체 화면 기준 */
+    z-index: 100;
+    
+}
+#footer {
+    width: 100%;
+    height: 180px;
+    background-color: #e3fdfd;
+    margin-top: 20px;
+    bottom: 0;
+}
+#outer {
+    width: 1280px;
+    margin: 0 auto; /* 중앙 정렬 */
+    position: relative; /* navigator의 위치를 기준으로 할 수 있도록 설정 */
+    margin-top: 70px;
+}
+
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 460px;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.input-field {
+    width: 100%;
+    height: 48px;
+    padding: 0 15px;
+    margin-bottom: 8px;
+    border: 1px solid #dadada;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+}
+
+.input-field:focus {
+    border-color: #A4EBF3;
+    border: 2px solid #A4EBF3;
+}
+
+#loginBtn{
+    width: 492px;
+    height: 50px;
+    background-color: #A4EBF3;
+    border: none;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 20px;
+    
+}
+.keep-login {
+    margin: 15px 0;
+    color: #777;
+    font-size: 14px;
+}
+
+.links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    color: #888;
+    font-size: 14px;
+}
+
+.links a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+.kakao-logo {
+    width: 60px;
+    height: 60px;
+    background-color: #FFCD00;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    margin-right: 0;
+
+}
+
+.kakao-logo span {
+    color: black;
+    font-size: 33px;
+    font-weight: bold;
+    line-height: 30px;
+}
+.naver-logo {
+    width: 60px;
+    height: 60px;
+    background-color: #03c75a;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto ;
+    margin-left: 0;
+    float: right;
+}
+
+.naver-logo span {
+    color: white;
+    font-size: 33px;
+    font-weight: bold;
+    line-height: 30px;
+}
+
+.separator {
+    font-size: 14px;
+    color: #aaa;
+    margin: 0 10px; /* separator의 좌우 여백 */
+}
+.divider {
+    display: inline-block;
+    width: 1px;
+    height: 14px;
+    background-color: #dadada;
+    margin: 0 10px;
+}
+
+#title{
+    text-align: center;
+    margin-bottom: 10px;
+}
+.sub-title{
+    color: #aaa;
+    text-align: center;
+}
+.social-login {
+    display: flex; /* 가로 정렬 */
+    align-items: center; /* 세로 정렬 */
+    justify-content: center ; /* 중앙 정렬 */
+   
+}
+
+hr {
+    border: none;
+    border-top: 1px solid gainsboro;
+    margin : 0px;
+    padding : 0px;
+}
+
+#navigator {
+    width: 100%;
+    height: 80px;
+    background-color: #e3fdfd;
+    position: fixed; /* 화면 상단에 고정 */
+    top: 0;
+    left: 0; /* 전체 화면 기준 */
+    z-index: 100;
+    
+}
+#footer {
+    width: 100%;
+    height: 180px;
+    background-color: #e3fdfd;
+    margin-top: 20px;
+    bottom: 0;
+}
+#outer {
+    width: 1280px;
+    margin: 0 auto; /* 중앙 정렬 */
+    position: relative; /* navigator의 위치를 기준으로 할 수 있도록 설정 */
+    margin-top: 70px;
+}

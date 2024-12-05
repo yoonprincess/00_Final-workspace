@@ -23,12 +23,13 @@
 	 -->
 	 
 	 <typeAliases>
-	 	<typeAlias type="com.mig.blb.helpdesk.model.vo.Notice" alias="notice"/>
 	 	
+	 	<typeAlias type="com.mig.blb.member.model.vo.Member" alias="member" />
 	 </typeAliases>
 	 
 	 
 	 <mappers>
-	 	<mapper resource="/mappers/helpdesk-mapper.xml"/>
+	
+	 	<mapper resource="/mappers/member-mapper.xml" />
 	 </mappers>
 </configuration>
