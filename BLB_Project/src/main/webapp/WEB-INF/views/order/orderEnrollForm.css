@@ -1,0 +1,130 @@
+/* 네비게이터 스타일 */
+.order-form {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #F4F4F9;
+}
+
+.navigator {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex; /* 플렉스 박스를 사용하여 가로 배치 */
+    align-items: center; /* 세로 방향으로 중앙 정렬 */
+    justify-content: space-between; /* 두 요소를 양 끝으로 배치 */
+    gap: 20px; /* 요소 간 간격 추가 (필요 시) */
+}
+
+.breadcrumb {
+    font-size: 14px;
+    color: #888;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.breadcrumb .inactive {
+    color: #bbb; /* 비활성화된 단계를 회색으로 표시 */
+}
+
+.breadcrumb .active {
+    font-weight: bold;
+    font-size: large;
+    color: #4A628A; /* 활성화된 단계를 진한 색으로 표시 */
+}
+
+.breadcrumb .separator {
+    color: #aaa; /* > 기호의 색상 */
+}
+
+
+/* 배송 정보 입력 테이블 스타일 */
+.order-form {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+th {
+    width: 20%;
+    font-weight: bold;
+}
+
+td {
+    width: 80%;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+}
+
+.required {
+    color: #7AB2D3;
+}
+
+input[type="text"], select {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.phone-container>select {
+    width : 52%;
+}
+
+.phone-container[type="text"] {
+    width : 24%;
+}
+
+select {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.email-container {
+    width : 100%;
+}
+
+input[type="text"]:focus, select:focus, button:focus {
+    outline: none;
+    border-color: #7AB2D3;
+}
+
+button.btn-search {
+    background-color: #7AB2D3;
+    font-size: 14px;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.btn-search:hover {
+    background-color: #4A628A;
+}
+
+.address-container, .phone-container, .email-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
