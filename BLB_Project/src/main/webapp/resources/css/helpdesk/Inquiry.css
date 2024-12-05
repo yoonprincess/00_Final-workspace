@@ -1,0 +1,143 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #DFF2EB; /* Light pastel green */
+    color: #333;
+}
+.header {
+    background-color: #B9E5E8; /* Soft pastel blue */
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: black; /* Darker blue for contrast */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.form-container {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #4A628A; /* Darker blue for labels */
+}
+.form-group select,
+.form-group textarea,
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #F0F0F0; /* Light grey for input background */
+    font-size: 14px;
+    color: #333;
+    transition: border-color 0.3s ease;
+}
+.form-group textarea {
+    height: 120px;
+    resize: none;
+}
+.form-group select:focus,
+.form-group textarea:focus,
+.form-group input[type="text"]:focus {
+    border-color: #7AB2D3; /* Light blue for focus */
+    outline: none;
+}
+.file-list {
+    margin-top: 10px;
+}
+.file-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background-color: #F9F9F9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+.file-item:hover {
+    background-color: #E0E0E0; /* Slightly darker on hover */
+}
+.file-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+.file-item span {
+    flex-grow: 1;
+}
+.file-item button {
+    background-color: #D9534F;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.file-item button:hover {
+    background-color: #C9302C;
+}
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.form-buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.form-buttons button.cancel {
+    background-color: #F0F0F0;
+    border: 1px solid #ddd;
+}
+.form-buttons button.cancel:hover {
+    background-color: #E0E0E0;
+}
+.form-buttons button.submit {
+    background-color: #7AB2D3; /* Light blue for submit button */
+    color: white;
+    border: none;
+}
+.form-buttons button.submit:hover {
+    background-color: #4A628A; /* Darker blue on hover */
+}
+.file-upload-btn {
+    background-color: #7AB2D3; /* Light blue for button */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.file-upload-btn:hover {
+    background-color: #4A628A; /* Darker blue on hover */
+}
+
+.form-group input[type="text"]:disabled {
+    background-color: #E9E9E9; /* 연한 회색 배경 */
+    border: 1px solid #CCC; /* 연한 회색 테두리 */
+    color: #999; /* 연한 텍스트 색상 */
+    cursor: not-allowed; /* 커서 변경 */
+}

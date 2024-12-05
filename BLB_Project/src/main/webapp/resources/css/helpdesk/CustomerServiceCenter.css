@@ -1,0 +1,170 @@
+body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f5f1; /* 부드러운 민트색 배경 */
+        }
+    
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 150, 136, 0.1); /* 민트색 음영 */
+        }
+    
+        h1 {
+            text-align: center;
+            color: #4A628A; /* 부드러운 블루 컬러 */
+        }
+    
+        .tabs {
+            display: flex;
+            justify-content: space-between; /* 탭들 간격을 자동으로 조정 */
+            margin-bottom: 10px;
+            border-bottom: 2px solid #DFF2EB; /* 민트색 하단 테두리 */
+        }
+    
+        .tab-button {
+            flex-grow: 1; /* 버튼이 가능한 공간을 모두 차지하도록 */
+            padding: 10px 20px;
+            border: none;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            border-radius: 5px;
+            text-align: center; /* 버튼 텍스트 중앙 정렬 */
+        }
+    
+        .tab-button:hover {
+            background-color: #4A628A;
+            color: #fff;
+        }
+    
+        .tab-button.active {
+            background-color: #4A628A;
+            color: #fff;
+        }
+    
+        .tab-content {
+            display: none;
+        }
+    
+        .tab-content.active {
+            display: block;
+        }
+    
+        .sub-tabs {
+            display: flex;
+            justify-content: space-between; /* 서브탭 버튼들이 가로로 꽉 차게 배치 */
+            margin-bottom: 20px;
+        }
+    
+        .sub-tab-button {
+            flex-grow: 1; /* 서브탭 버튼이 가능한 공간을 모두 차지하도록 */
+            padding: 10px 20px;
+            border: none;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            border-radius: 5px;
+            text-align: center; /* 버튼 텍스트 중앙 정렬 */
+        }
+    
+        .sub-tab-button:hover {
+            background-color: #A4EBF3; /* 밝은 블루 */
+            color: #fff;
+        }
+    
+        .sub-tab-button.active {
+            background-color: #4A628A;
+            color: #fff;
+        }
+    
+        .faq-item {
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #e0f5f1; /* 민트색 배경 */
+        }
+    
+        .faq-question {
+            cursor: pointer;
+            font-weight: bold;
+            color: #4A628A; /* 부드러운 블루 컬러 */
+        }
+    
+        .faq-answer {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e0f2f1; /* 부드러운 민트색 */
+        }
+    
+        table {
+            width: 100%;
+            border-collapse: collapse; /* 경계선 합치기 */
+        }
+    
+        th, td {
+            padding: 10px;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: center; /* 가운데 정렬 */
+        }
+    
+        th {
+            background-color: #b2dfdb; /* 부드러운 민트 그라데이션 */
+        }
+    
+        td {
+            border-top: 1px solid #ddd; /* 가로선만 표시 */
+            border-bottom: 1px solid #ddd; /* 가로선만 표시 */
+        }
+    
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: none;
+            background-color: #4A628A; /* 부드러운 블루 */
+            color: #fff;
+            cursor: pointer;
+        }
+    
+        .pagination button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+            
+            .tabs {
+                flex-direction: row;
+                justify-content: center;
+            }
+    
+            .tab-button {
+                margin-bottom: 5px;
+            }
+    
+            .sub-tabs {
+                flex-direction: column; /* 작은 화면에서는 서브탭을 세로로 배치 */
+            }
+    
+            .sub-tab-button {
+                margin-bottom: 5px;
+            }
+        }
