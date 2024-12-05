@@ -7,9 +7,26 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 
 public interface NoticeService {
 
+	
+	
 	int selectListCount();
 
 	ArrayList<Notice> selectList(PageInfo pi);
 
+    int insertNotice(Notice n);
+	
+	int increaseCount(int nno);	
+
+	Notice selectNotice(int nno);
+
+	int deleteNotice(int nno);
+
+	int updateNotice(Notice n);
+
+	
+
+	
+	
+	
 	
 }

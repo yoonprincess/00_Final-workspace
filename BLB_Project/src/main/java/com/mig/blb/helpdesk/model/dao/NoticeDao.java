@@ -23,4 +23,23 @@ public class NoticeDao {
 		return (ArrayList)sqlSession.selectList("helpDesk.selectList", null, rowBounds);
 	}
 
+	public int insertNotice(SqlSessionTemplate sqlSession, Notice n) {
+		return sqlSession.insert("helpdesk.insertNotice", n);
+	}
+	
+	public int increaseCount(SqlSessionTemplate sqlSession, int nno) {
+		return sqlSession.update("helpdesk.increaseCount", nno);
+	}
+
+	public Notice selectNotice(SqlSessionTemplate sqlSession, int nno) {
+		return sqlSession.selectOne("helpdesk.selectNotice", nno);
+	}
+
+	public int deleteNotice(SqlSessionTemplate sqlSession, int nno) {
+		return sqlSession.update("helpdesk.deleteNotice", nno);
+	}
+
+	public int updateNotice(SqlSessionTemplate sqlSession, Notice n) {
+		return sqlSession.update("helpdesk", n);
+	}
 }

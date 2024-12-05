@@ -1,4 +1,5 @@
-const receiveEmailCheckbox = document.getElementById('receive-email');
+document.addEventListener('DOMContentLoaded', () => {
+    const receiveEmailCheckbox = document.getElementById('receive-email');
         const emailInput = document.getElementById('email');
 
         receiveEmailCheckbox.addEventListener('change', () => {
@@ -190,3 +191,5 @@ const receiveEmailCheckbox = document.getElementById('receive-email');
             const currentFileCount = uploadedFiles.length;
             fileCountSpan.textContent = `${currentFileCount}/${maxFiles}`;
         }
+});
+        

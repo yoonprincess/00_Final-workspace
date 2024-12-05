@@ -21,9 +21,6 @@
                     <button class="tab-button" data-tab="inquiry">1:1문의</button>
                     <button class="tab-button" data-tab="notice">공지사항</button>
                 </div>
-			</div>
-		</div>
-	</div>
+</div>
 </body>
 </html>
- 

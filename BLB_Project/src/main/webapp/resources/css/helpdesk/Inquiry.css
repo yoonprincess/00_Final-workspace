@@ -136,8 +136,8 @@ body {
 }
 
 .form-group input[type="text"]:disabled {
-    background-color: #E9E9E9; /* ì—°í•œ íšŒìƒ‰ ë°°ê²½ */
-    border: 1px solid #CCC; /* ì—°í•œ íšŒìƒ‰ í…Œë‘ë¦¬ */
-    color: #999; /* ì—°í•œ í…ìŠ¤íŠ¸ ìƒ‰ìƒ */
-    cursor: not-allowed; /* ì»¤ì„œ ë³€ê²½ */
+    background-color: #E9E9E9; /* ¿¬ÇÑ È¸»ö ¹è°æ */
+    border: 1px solid #CCC; /* ¿¬ÇÑ È¸»ö Å×µÎ¸® */
+    color: #999; /* ¿¬ÇÑ ÅØ½ºÆ® »ö»ó */
+    cursor: not-allowed; /* Ä¿¼­ º¯°æ */
 }

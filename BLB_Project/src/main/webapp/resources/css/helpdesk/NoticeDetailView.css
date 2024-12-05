@@ -62,20 +62,20 @@
             margin: 10px 0;
         }
 
-        /* ìœ„ìª½ìœ¼ë¡œ í–¥í•˜ëŠ” < ëª¨ì–‘ (ì´ì „ê¸€) */
+        /* À§ÂÊÀ¸·Î ÇâÇÏ´Â < ¸ð¾ç (ÀÌÀü±Û) */
         .prev-btn::before {
-            content: "<";  /* ì™¼ìª½ êº½ì‡  */
+            content: "<";  /* ¿ÞÂÊ ²©¼è */
             font-size: 18px;
             display: inline-block;
             margin-right: 5px;
-            transform: rotate(90deg);  /* ìœ„ë¡œ íšŒì „ */
+            transform: rotate(90deg);  /* À§·Î È¸Àü */
         }
 
-        /* ì•„ëž˜ìª½ìœ¼ë¡œ í–¥í•˜ëŠ” < ëª¨ì–‘ (ë‹¤ìŒê¸€) */
+        /* ¾Æ·¡ÂÊÀ¸·Î ÇâÇÏ´Â < ¸ð¾ç (´ÙÀ½±Û) */
         .next-btn::before {
-            content: "<";  /* ì™¼ìª½ êº½ì‡  */
+            content: "<";  /* ¿ÞÂÊ ²©¼è */
             font-size: 18px;
             display: inline-block;
             margin-right: 5px;
-            transform: rotate(-90deg);  /* ì•„ëž˜ë¡œ íšŒì „ */
+            transform: rotate(-90deg);  /* ¾Æ·¡·Î È¸Àü */
         }

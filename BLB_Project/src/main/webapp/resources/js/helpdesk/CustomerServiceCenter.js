@@ -1,4 +1,3 @@
-
 const receiveEmailCheckbox = document.getElementById('receive-email');
 const emailInput = document.getElementById('email');
 
