@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="reviewMapper">
+
+	<resultMap id="reviewResultSet" type="review">
+		<id column="REV_NO" property="revNo"/>
+		<result column="REV_TITLE" property="revTitle"/>
+		<result column="REV_CONTENT" property="revContent"/>
+		<result column="REV_ENROLL_DATE" property="revEnrollDate"/>
+		<result column="REV_RATING" property="revRating"/>
+		<result column="REV_STATUS" property="revStatus"/>
+		<result column="ORDER_NO" property="orderNo"/>
+		<result column="memberId" property="MEMBER_ID"/>
+	</resultMap>
+	
+	
+</mapper>

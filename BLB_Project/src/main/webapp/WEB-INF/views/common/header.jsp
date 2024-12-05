@@ -61,6 +61,11 @@
                 </a>
                 <a class="menu-btn" href="#">
                     <span class="material-symbols-outlined">
+                        favorite
+                    </span>
+                </a>
+                <a class="menu-btn" href="#">
+                    <span class="material-symbols-outlined">
                         shopping_bag
                     </span>
                 </a>

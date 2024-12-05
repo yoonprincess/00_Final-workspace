@@ -43,7 +43,7 @@ body {
 .menu-btn {
     text-decoration: none; /* 밑줄 제거 */
     color: #4A628A; /* 아이콘 기본 색상 */
-    margin: auto; /* 아이콘 간격 */
+    margin: 5px; /* 아이콘 간격 */
     display: flex; /* 아이콘 정렬 */
     align-items: center;
     transition: color 0.3s ease; /* 색상 변경 시 부드러운 전환 */

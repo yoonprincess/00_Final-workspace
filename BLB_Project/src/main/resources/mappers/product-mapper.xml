@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="productMapper">
+
+	<resultMap id="productResultSet" type="product">
+		<id column="PROD_NO" property="prodNo"/>
+		<result column="CATEGORY_NAME" property="categoryName"/>
+		<result column="PROD_NAME" property="prodName"/>
+		<result column="PROD_CONTENT" property="prodContent"/>
+		<result column="PROD_PRICE" property="prodPrice"/>
+		<result column="PROD_ORIGIN" property="prodOrigin"/>
+		<result column="PROD_CAUTION" property="prodCaution"/>
+		<result column="PROD_COUNT" property="prodCount"/>
+		<result column="PROD_ENROLL_DATE" property="prodEnrollDate"/>
+		<result column="PROD_STATUS" property="prodStatus"/>
+	</resultMap>
+	
+	
+</mapper>
