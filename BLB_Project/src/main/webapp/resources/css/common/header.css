@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Oregano&display=swap');
+
+body {
+    font-family: "Noto Sans KR", sans-serif !important;
+    background: #CBF1F5;
+    color: #4A628A;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    z-index: 10;
+    
+}
+.container-fluid {
+    max-width: 1440px !important;
+    margin: auto;
+}
+/* 기본적으로 navbar 높이만큼 공백 추가 */
+.body-offset {
+    padding-top: 70px; /* navbar 높이와 동일하게 설정 */
+}
+
+/* 초기 투명 헤더 스타일 */
+.transparent-navbar {
+    background-color: rgba(255, 255, 255, 0.5); /* 초기 투명도 */
+    transition: background-color 0.3s ease-in-out;
+    color: #fff;
+    box-shadow: none; /* 그림자 제거 */
+}
+
+/* 스크롤 후 배경색 적용 */
+.scrolled-navbar {
+    background-color: rgba(255, 255, 255, 0.9); /* 불투명 흰색 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
+}
+
+.navbar-brand img {
+    height: 40px;
+}
+
+/* 메뉴버튼 공통 스타일 */
+.menu-btn {
+    text-decoration: none; /* 밑줄 제거 */
+    color: #4A628A; /* 아이콘 기본 색상 */
+    margin: auto; /* 아이콘 간격 */
+    display: flex; /* 아이콘 정렬 */
+    align-items: center;
+    transition: color 0.3s ease; /* 색상 변경 시 부드러운 전환 */
+}
+.menu-btn:hover {
+    color: #4A628A; /* 호버 시 색상 변경 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+.last-btn {
+    margin-right: 10px; /* 마지막 버튼 우측 간격추가 */
+}
+
+
+/* Google Fonts Icon 스타일 */
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48;
+  font-size: 35px !important;
+}
+
+.navbar-nav .nav-link {
+    color: #4A628A !important;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #7AB2D3 !important;
+}
+
+
+/* navbar-toggler 아이콘 스타일 */
+.navbar-toggler {
+    border: none; /* 테두리 제거 */
+    outline: none;
+    padding: 0;
+}
+.toggler-icon {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    background-color: #4A628A; /* 기본 선 색상 */
+    transition: all 0.3s ease;
+}
+/* 토글 상태에서 X 모양 */
+.navbar-toggler.active .toggler-icon:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+    background-color: #4A628A; /* 토글 상태에서의 선 색상 */
+}
+.navbar-toggler.active .toggler-icon:nth-child(2) {
+    opacity: 0; /* 가운데 선 숨김 */
+}
+.navbar-toggler.active .toggler-icon:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+    background-color: #4A628A; /* 토글 상태에서의 선 색상 */
+}
+
+
+/* 위로가기 버튼 */
+#backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #7AB2D3;
+    color: #e0def3;
+    border: none;
+    padding: 15px;
+    width: 50px;  /* 버튼 너비 */
+    height: 50px; /* 버튼 높이 */
+    border-radius: 50%; /* 원형 버튼 */
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px; /* 화살표 크기 */
+    opacity: 0; /* 초기 투명도 0으로 설정 */
+    transition: opacity 0.3s ease; /* 부드러운 전환 */
+}
+#backToTop:hover {
+    background-color: #4A628A;
+}
+
+
+/* Footer 스타일 */
+.footer-info {
+    background-color: #E3FDFD;
+    padding: 20px;
+    color: #4A628A;
+    font-size: 0.9rem;
+    width: 100%;
+}
+/* 로고와 텍스트 컨테이너 */
+.footer-content {
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    text-align: left;
+}
+/* 로고 이미지 스타일 */
+.footer-logo {
+    height: 60px; /* 로고 크기 */
+    width: auto; /* 비율 유지 */
+    margin-right: 15px; /* 텍스트와 간격 */
+}
+
+/* 텍스트 스타일 */
+.footer-text p {
+    margin: 0; /* 텍스트 위아래 여백 제거 */
+}
+.footer-info a {
+    color: #4A628A;
+    font-weight: bold;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+
+
+/* 페이지 네비게이션 스타일 */
+.pagination {
+    justify-content: center;
+}
+
+.page-link {
+    color: #2A253F !important;
+    border-color: #493375 !important;
+}
+
+.page-link:hover {
+    color: #fff !important;
+    background-color: #493375 !important;
+    border-color: #493375 !important;
+}
