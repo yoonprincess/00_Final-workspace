@@ -87,11 +87,11 @@
 		                        person_check
 		                    </span>
 		                </a>	
-	               	 <a class="menu-btn" href="${ pageContext.request.contextPath }/logout.me">
+	               	 	<a class="menu-btn" href="${ pageContext.request.contextPath }/logout.me">
 		                    <span class="material-symbols-outlined last-btn">
 		                        Logout
 		                    </span>
-		              </a>
+		              	</a>
 	            	</c:otherwise>
             	</c:choose>
             </div>

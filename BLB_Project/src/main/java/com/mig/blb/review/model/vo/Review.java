@@ -8,14 +8,14 @@ public class Review {
 	private String revTitle;			//	REV_TITLE	VARCHAR2(300 BYTE)
 	private String revContent;			//	REV_CONTENT	VARCHAR2(1500 BYTE)
 	private Timestamp revEnrollDate;	//	REV_ENROLL_DATE	DATE
-	private float revRating; 			//	REV_RATING	NUMBER
+	private int revRating; 			//	REV_RATING	NUMBER
 	private String revStatus;			//	REV_STATUS	CHAR(1 BYTE)
 	private String orderNo;				//	ORDER_NO	VARCHAR2(50 BYTE)
 	private String memberId;			//	MEMBER_ID	VARCHAR2(20 BYTE)
 	
 	public Review() { }
 
-	public Review(int revNo, String revTitle, String revContent, Timestamp revEnrollDate, float revRating,
+	public Review(int revNo, String revTitle, String revContent, Timestamp revEnrollDate, int revRating,
 			String revStatus, String orderNo, String memberId) {
 		super();
 		this.revNo = revNo;
@@ -60,11 +60,11 @@ public class Review {
 		this.revEnrollDate = revEnrollDate;
 	}
 
-	public float getRevRating() {
+	public int getRevRating() {
 		return revRating;
 	}
 
-	public void setRevRating(float revRating) {
+	public void setRevRating(int revRating) {
 		this.revRating = revRating;
 	}
 
