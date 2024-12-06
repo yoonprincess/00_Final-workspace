@@ -69,6 +69,8 @@
                         shopping_bag
                     </span>
                 </a>
+                
+                <!-- 로그인/마이페이지 -->
                 <c:choose>
 	                <c:when test="${ empty sessionScope.loginUser }">
 		                <a class="menu-btn" href="${ pageContext.request.contextPath }/loginForm.me">
@@ -79,10 +81,9 @@
 	           		</c:when>
 	                <c:otherwise>
 	                	<a class="menu-btn" href="${ pageContext.request.contextPath }/loginForm.me">
-		                    <span class="material-symbols-outlined last-btn">
-		                        person
+		                    <span class="material-symbols-outlined">
+		                        person_check
 		                    </span>
-		                    <label>${sessionScope.loginUser.memberName }님</label> 
 		                </a>	
 	               	 <a class="menu-btn" href="${ pageContext.request.contextPath }/logout.me">
 		                    <span class="material-symbols-outlined last-btn">
