@@ -15,7 +15,6 @@ public interface NoticeService {
 
     int insertNotice(Notice n);
 	
-	int increaseCount(int nno);	
 
 	Notice selectNotice(int nno);
 

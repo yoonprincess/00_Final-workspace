@@ -6,28 +6,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="resources/css/helpdesk/CustomerServiceCenter.css"> <!-- CSS 파일 경로 -->
+    <link rel="stylesheet" href="resources/css/helpdesk/FAQ.css"> <!-- CSS 파일 경로 -->
     <title>FAQ</title>
 </head>
-<body>
-<jsp:include page="../common/header.jsp"/>
+<body class="body-offset">
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 	<div class="container-fluid">
+		<div class="container">
 		<h1>고객센터</h1>
-	        <div class="tabs">
-	            <button class="tab-button active" data-tab="faq" onclick="location.href='Faq.blb';">FAQ
-	            </button>
-	            <button class="tab-button" data-tab="inquiry">
-	            <a href="Inquiry.blb">1:1 문의</a>
-	            </button>
-	            <button class="tab-button" data-tab="notice">
-	            <a href="Notice.blb">공지사항</a>
-	            </button>
-	        </div>
-	
+            <div class="tabs">
+                <a class="tab-button active" href="Faq.blb">FAQ</a>
+                <a class="tab-button" href="Inquiry.blb">1:1문의</a>
+                <a class="tab-button" href="list.no">공지사항</a>
+            </div>
 	    <div id="faq" class="tab-content active">
+	    <h3>TOP 5</h3>
 	        <div class="sub-tabs">
-	            <button class="sub-tab-button active" data-category="all">전체</button>
-	            <button class="sub-tab-button" data-category="product">상품</button>
+	            <button class="sub-tab-button active" data-category="product">상품</button>
 	            <button class="sub-tab-button" data-category="delivery">배송</button>
 	            <button class="sub-tab-button" data-category="order">주문</button>
 	            <button class="sub-tab-button" data-category="payment">결제/환불</button>
@@ -36,7 +31,9 @@
 	            <!-- FAQ 항목들이 여기에 동적으로 추가됩니다 -->
 	        </div>
 	    </div>
-	    <script src="resources/js/helpdesk/CustomerServiceCenter.js"></script> <!-- JS 파일 경로 -->
+	    </div>
+	    <script src="resources/js/helpdesk/FAQ.js"></script> <!-- JS 파일 경로 -->
     </div>
+    <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

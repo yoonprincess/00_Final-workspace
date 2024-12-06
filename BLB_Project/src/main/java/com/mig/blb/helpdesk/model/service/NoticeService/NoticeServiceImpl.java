@@ -33,11 +33,6 @@ public class NoticeServiceImpl implements NoticeService{
 	public int insertNotice(Notice n) {
 		return noticeDao.insertNotice(sqlSession, n);
 	}
-	
-	@Override
-	public int increaseCount(int nno) {
-		return noticeDao.increaseCount(sqlSession, nno);
-	}
 
 	@Override
 	public Notice selectNotice(int nno) {
