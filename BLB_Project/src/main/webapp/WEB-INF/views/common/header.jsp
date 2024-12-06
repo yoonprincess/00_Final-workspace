@@ -64,7 +64,9 @@
                         favorite
                     </span>
                 </a>
-                <a class="menu-btn" href="#">
+                
+                <!-- 장바구니 -->
+                <a class="menu-btn" href="${ pageContext.request.contextPath }/list.ct">
                     <span class="material-symbols-outlined">
                         shopping_bag
                     </span>

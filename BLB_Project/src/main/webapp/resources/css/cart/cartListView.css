@@ -1,10 +1,10 @@
-table {
-    border : 1px solid gray;
-    width : 1200px;
-}
-
 hr {
     width: 1200px;
+}
+
+table {
+    border-bottom : 1px solid #ddd;
+    width : 1200px;
 }
 
 /* 삭제 버튼 */
@@ -22,6 +22,10 @@ hr {
     line-height: 2; /* 줄 간격을 늘려 위아래 공백 추가 */
 }
 
+#cart-product td {
+    border-top: 1px solid #F4F4F9;
+}
+
 #cart-product img {
     display: flex;
     justify-content: center; /* 가로 방향 중앙 정렬 */
@@ -34,6 +38,22 @@ tr>img {
     max-width: 100%; /* 이미지 크기를 부모 컨테이너에 맞춤 */
     max-height: 100%; /* 이미지 크기를 부모 컨테이너 높이에 맞춤 */
     object-fit: contain; /* 이미지 비율 유지 */
+}
+
+/* 옵션 변경 아이콘 */
+button.btn-option {
+    background-color: #7AB2D3;
+    font-size: 14px;
+    color: white;
+    border: none;
+    padding: 2px 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+button.btn-option:hover {
+    background-color: #4A628A;
 }
 
 /* 수량 조절 컨트롤 */
@@ -89,7 +109,7 @@ tr>img {
     font-size: 18px;
     font-weight: bold;
     color: #333;
-    text-align: right;
+    text-align: center;
 }
 
 /* 결제 가격 영역 */
@@ -97,6 +117,7 @@ tr>img {
     padding : 15px 0;
     border-bottom: 1px solid #F4F4F9;
     font-weight: lighter;
+    text-align: center;
 }
 
 #cart-price td {
@@ -105,7 +126,7 @@ tr>img {
     font-weight: bolder;
 }
 
-#btn-delete {
+.delete-btn-td {
     text-align: center;
 }
 
@@ -119,4 +140,8 @@ tr>img {
 
 .btn-delete:hover {
     color: #4A628A; /* 호버 시 더 어두운 색상 */
+}
+
+#total-price {
+    color : red;
 }

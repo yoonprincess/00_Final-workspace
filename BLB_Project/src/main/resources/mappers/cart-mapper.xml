@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="cartMapper">
+
+	<resultMap id="cartResultSet" type="cart">
+		<id column="CART_NO" property="cartNo" />
+		<result column="MEMBER_ID" property="memberId" />
+		<result column="PROD_NO" property="probNo" />
+		<result column="OPT_NO" property="optNo" />
+		<result column="CART_QTY" property="cartQty" />
+	</resultMap>
+	
+	<select id="selectCartList"
+			parameterType="string"
+			resultMap="cartResultSet">
+		SELECT C.CART_NO
+		     , C.MEMBER_ID
+		     , C.PROD_NO
+		     , O.OPT_NAME
+		     , C.CART_QTY
+		  FROM TB_CART C
+		  LEFT JOIN TB_OPTION O USING(OPT_NO)
+		 WHERE MEMBER_ID = #{memberId}
+		 ORDER BY CART_NO DESC
+	</select>
+
+</mapper>

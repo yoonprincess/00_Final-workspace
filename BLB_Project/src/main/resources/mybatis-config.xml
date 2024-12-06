@@ -12,6 +12,7 @@
 	 	<typeAlias type="com.mig.blb.product.model.vo.Product" alias="product"/>
 	 	<typeAlias type="com.mig.blb.review.model.vo.Review" alias="review"/>
 	 	<typeAlias type="com.mig.blb.member.model.vo.Member" alias="member" />
+	 	<typeAlias type="com.mig.blb.cart.model.vo.Cart" alias="cart" />
 	 </typeAliases>
 	 
 	 
@@ -20,5 +21,6 @@
 	 	<mapper resource="/mappers/helpdesk-mapper.xml"/>
 	 	<mapper resource="/mappers/product-mapper.xml"/>
 	 	<mapper resource="/mappers/review-mapper.xml"/>
+	 	<mapper resource="/mappers/cart-mapper.xml"/>
 	 </mappers>
 </configuration>
