@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mig.blb.member.model.dao.MemberDao;
+import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
 
 //@Component
@@ -45,13 +46,18 @@ public class MemberServiceImpl implements MemberService {
 	}
 	@Override
 	public int idCheck(String checkId) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return memberDao.idCheck(sqlSession, checkId);
 	}
 	@Override
 	public ArrayList<Member> selectMemberList() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public int insertDelivery(Delivery d) {
+		
+		return  memberDao.insertDelivery(sqlSession, d);
 	}
 
 	

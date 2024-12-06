@@ -1,19 +1,19 @@
 package com.mig.blb.member.controller;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mig.blb.member.model.service.MemberService;
+import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +52,15 @@ public class MemberController {
 							HttpSession session,
 							HttpServletResponse response) {
 		
+		
 		Member loginUser = memberService.loginMember(m);
+	    // 디버깅: 로그인한 유저 정보 확인
+	    if (loginUser != null) {
+	        System.out.println("로그인 성공, DB에서 찾은 사용자: " + loginUser.getMemberId());
+	        System.out.println("DB에서 찾은 사용자 비밀번호: " + loginUser.getMemberPwd());
+	    } else {
+	        System.out.println("로그인 실패, 사용자를 찾을 수 없음.");
+	    }
 		
 		if(loginUser != null &&
 				(bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd()))) {
@@ -92,19 +100,33 @@ public class MemberController {
 	
 	//회원 등록
 	@PostMapping("insert.me")
+	@Transactional
 	public ModelAndView insertMember(Member m,
 							ModelAndView mv,
-							HttpSession session) {
+							HttpSession session,
+							Delivery d) {
 				
 		String encPwd = bcryptPasswordEncoder.encode(m.getMemberPwd());
 		m.setMemberPwd(encPwd);
 		
+		//System.out.println(m);
 		
-		System.out.println(m);
 		
 		int result = memberService.insertMember(m);
+			
+		int result2 = 0; // Delivery 결과 초기화
 		
-		if(result > 0 ) {
+		if(!d.getPostcode().isEmpty()) {
+				
+			d.setMemberId(m.getMemberId()); // FK 연결
+			d.setDeliPhone(m.getPhone()); // FK 연결
+			d.setDeliName(m.getMemberName()); // FK 연결
+			
+			//System.out.println(d);
+			result2 = memberService.insertDelivery(d);
+		}
+		
+		if(result > 0 && (result2 > 0 || d.getPostcode().isEmpty())) { 
 			
 			session.setAttribute("alerMsg", "환영합니다-*^^*");
 			mv.setViewName("redirect:/");
@@ -114,6 +136,17 @@ public class MemberController {
 			mv.setViewName("common/errorPage");
 		}
 		return mv;
+	}
+	
+	// 아이디 중복체크 요청 
+	@ResponseBody
+	@GetMapping(value="idCheck.me" , produces="text/html; charset=UTF-8")
+	public String idCheck(String checkId) {
+		
+		int count = memberService.idCheck(checkId);
+		
+		return (count>0)? "NNN" : "NNY" ;
+		
 	}
 	
 	

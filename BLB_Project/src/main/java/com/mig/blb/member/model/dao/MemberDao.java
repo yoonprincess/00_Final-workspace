@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
 
 
@@ -41,6 +42,11 @@ public class MemberDao {
 
 	public ArrayList<Member> selectMemberList(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectMemberList");
+	}
+
+	public int insertDelivery(SqlSessionTemplate sqlSession, Delivery d) {
+		
+		return sqlSession.insert("memberMapper.insertDelivery", d);
 	}
 
 }

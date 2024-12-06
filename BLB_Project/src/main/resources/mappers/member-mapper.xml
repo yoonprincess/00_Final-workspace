@@ -24,32 +24,47 @@
 		  WHERE MEMBER_ID = #{memberId}
 		   AND STATUS='y'
 	</select>
+	
 	<insert id="insertMember" parameterType="member">
-  	INSERT INTO TB_MEMBER (MEMBER_ID
-                       ,MEMBER_NAME
-                       ,MEMBER_PWD
-                       ,PHONE
-                       ,EMAIL
-                       ,BIRTHDATE
-                       ,CREATE_DATE
-                       ,DELETE_DATE
-                       ,STATUS
-                       ,TOTAL_POINTS
-                       ,CURRENT_POINTS
-                       ,GRADE_NAME)
-                  VALUES(#{memberId}
-                        ,#{memberName}
-                        ,#{memberPwd}
-                        ,#{phone}
-                        ,#{email}
-                        ,#{birthdate}
-                        ,#{createDate}
-                        ,#{deleteDate}
-                        ,#{status}
-                        ,#{totalPoints}
-                        ,#{currentPoints}
-                        ,#{gradeName})
-  </insert>
+	  	INSERT INTO TB_MEMBER (MEMBER_ID
+	                       ,MEMBER_NAME
+	                       ,MEMBER_PWD
+	                       ,PHONE
+	                       ,EMAIL
+	                       ,BIRTHDATE)                                                                                             
+	                  VALUES(#{memberId}
+	                        ,#{memberName}
+	                        ,#{memberPwd}
+	                        ,#{phone}
+	                        ,#{email}
+	                        ,#{birthdate})            
+  	</insert>
 
+	<select id="idCheck" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		  FROM TB_MEMBER
+		  WHERE MEMBER_ID = #{checkId}
+	</select>
+	
+	<insert id="insertDelivery" parameterType="delivery">
+	  	  INSERT INTO TB_DELIVERY (
+							    DELI_CODE,
+							    DELI_NAME,
+							    DELI_PHONE,
+							    POSTCODE,
+							    DELI_ADDRESS,
+							    DETAIL_ADDRESS,
+							    MEMBER_ID
+							)
+							VALUES (
+							    SEQ_DELI_CODE.NEXTVAL,
+							    #{deliName},
+							    #{deliPhone},
+							    #{postcode},
+							    #{deliAddress},
+							    #{detailAddress},
+							    #{memberId}
+			)       
+  	</insert>
 
 </mapper>

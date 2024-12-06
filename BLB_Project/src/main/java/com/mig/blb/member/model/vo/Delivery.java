@@ -8,11 +8,13 @@ public class Delivery {
 	private String deliDefault;	//	DELI_DEFAULT	CHAR(1 BYTE)
 	private String deliComment;	//	DELI_COMMENT	VARCHAR2(300 BYTE)
 	private String memberId;	//	MEMBER_ID	VARCHAR2(20 BYTE)
+	private String postcode;
+	private String detailAddress;
 	
 	public Delivery() { }
 
 	public Delivery(int deliCode, String deliName, String deliPhone, String deliAddress, String deliDefault,
-			String deliComment, String memberId) {
+			String deliComment, String memberId, String postcode, String detailAddress) {
 		super();
 		this.deliCode = deliCode;
 		this.deliName = deliName;
@@ -21,6 +23,26 @@ public class Delivery {
 		this.deliDefault = deliDefault;
 		this.deliComment = deliComment;
 		this.memberId = memberId;
+		this.postcode = postcode;
+		this.detailAddress = detailAddress;
+	}
+
+
+
+	public String getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+
+	public String getDetailAddress() {
+		return detailAddress;
+	}
+
+	public void setDetailAddress(String detailAddress) {
+		this.detailAddress = detailAddress;
 	}
 
 	public int getDeliCode() {
@@ -83,8 +105,9 @@ public class Delivery {
 	public String toString() {
 		return "Delivery [deliCode=" + deliCode + ", deliName=" + deliName + ", deliPhone=" + deliPhone
 				+ ", deliAddress=" + deliAddress + ", deliDefault=" + deliDefault + ", deliComment=" + deliComment
-				+ ", memberId=" + memberId + "]";
+				+ ", memberId=" + memberId + ", postcode=" + postcode + ", detailAddress=" + detailAddress + "]";
 	}
+
 	
 }
 

@@ -579,6 +579,25 @@ INSERT INTO TB_GRADE(GRADE_NAME
                                                 DEFAULT,
                                                 'VIP'
                                             );
+-- 기본배송지 샘플계정--
+INSERT INTO TB_DELIVERY (DELI_CODE,
+                                              DELI_NAME,
+                                              DELI_PHONE,
+                                              POSTCODE,
+                                              DELI_ADDRESS,
+                                                DETAIL_ADDRESS,
+                                              DELI_COMMENT,
+                                               DELI_DEFAULT,
+                                              MEMBER_ID) 
+                              VALUES ( SEQ_DELI_CODE.NEXTVAL,
+                                                '관리자',
+                                                '01011112222',
+                                                '07212',
+                                               ' 서울 영등포구 선유동2로 57 (양평동4가)',
+                                                '이레빌딩 19층',
+                                                NULL,
+                                                DEFAULT,
+                                                'admin' );
 
 --회원샘플계정--
 INSERT INTO TB_MEMBER (

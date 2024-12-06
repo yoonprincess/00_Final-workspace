@@ -141,45 +141,59 @@ body {
     align-items: center; /* 수직 정렬 */
     gap: 10px; /* 우편번호와 버튼 사이 간격 */
     margin-bottom: 10px; /* 아래 입력창과 간격 */
+    margin-top: 10px;
+    padding: 0 10px;
+    gap: 5px; /* 기본주소와 상세주소 사이 간격 */
+    box-sizing: border-box;
 }
 
 .zipcode-field {
-    width: 200px; /* 우편번호 입력창 너비 */
+    width: 80px; /* 우편번호 입력창 너비 */
+    box-sizing: border-box;
+   
 }
 
 .address-field {
     width: 100%;
     margin-bottom: 5px;
+    resize: none; /* 텍스트 영역 크기 조정 방지 */
+    padding: 0 10px;
+   
 }
-.search-button {
+
+.btn-outline-info {
     padding: 5px 10px; /* 버튼 여백 */
     cursor: pointer;
+    box-sizing: border-box;
+    height: 35px; /* input 요소와 동일한 높이 */
+    font-size: 14px; /* 버튼의 텍스트 크기 */
+ 
 }
 
 .address-row {
     display: flex;
-    gap: 10px; /* 기본주소와 상세주소 사이 간격 */
+    flex-direction: column; /* 세로로 배치 */
+    padding: 0 10px;
+    
 }
 
-.address-field {
-    flex: 1; /* 입력 필드가 균등한 너비로 차지 */
+.address-field { 
     margin-bottom: 5px;
+    width: 100%; /* 입력 필드가 부모 너비에 맞게 확장 */
+}
+
+#sample4_roadAddress{
+    height: 100px !important; /* 도로명주소 텍스트 영역 높이 */
+    flex: none; /* flex로 인한 영향을 제거 */
+    padding: 10px;
+}
+ #sample4_detailAddress {
+    margin-top: -15px; /* 두 요소 간의 간격을 줄여줌 */
+    margin-bottom: 10px;
 }
 .form-input-addr {
     display: flex;
     flex-direction: column; /* 요소들을 세로로 정렬 */
-}
-.radio-group {
-    display: flex;
-    gap: 20px;
-}
-
-.radio-label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-    font-size: 14px;
 }
 
 

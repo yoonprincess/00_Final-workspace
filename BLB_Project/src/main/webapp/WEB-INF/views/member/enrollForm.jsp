@@ -6,7 +6,11 @@
 <meta charset="UTF-8">
 <title>회원가입 | 뷰라밸 (Beauty Life Balance)</title>
 
+ <!-- jQuery 라이브러리 -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 <link rel="stylesheet" href="resources/css/member/enrollForm.css">
+
 <script src="resources/js/member/enrollForm.js" defer></script>   
 
     <!-- Latest compiled and minified CSS -->
@@ -22,7 +26,10 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- daum 지도검색 api -->
+   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -46,23 +53,26 @@
             <div class="form-row">
                 <label class="form-label">아이디 <span class="required-mark" >*</span></label>
                 <div class="form-input">
-                    <input type="text" class="input-field" name="memberId">
-                    <span class="input-notice">(영문소문자/숫자/특수문자 중 2가지 조합, 4-16자)</span>
+                    <input type="text" class="input-field" name="memberId" id="memberId" required>
+                    <span class="input-notice" id="noticeId">(5-20자의 영문소문자/숫자/특수기호(-),(_)만 )</span>
+                   	<span id="checkId" style="display:none;" >아이디체크!</span>
                 </div>
             </div>
-
+		
             <div class="form-row">
                 <label class="form-label">비밀번호 <span class="required-mark" >*</span></label>
                 <div class="form-input">
-                    <input type="password" class="input-field" name="memberPwd">
-                    <span class="input-notice">(영문대/소문자, 숫자, 특수문자 중 2가지 이상 조합, 10-16자)</span>
+                    <input type="password" class="input-field" name="memberPwd" id="memberPwd" required>
+                    <span class="input-notice" id="noticePwd">(영문대/소문자, 숫자, 특수문자 중 2가지 이상 조합, 8-16자)</span>
+					<span id="validatePwd" style="display:none;" >비번체크!</span>
                 </div>
             </div>
 
             <div class="form-row">
                 <label class="form-label">비밀번호 확인 <span class="required-mark" >*</span></label>
                 <div class="form-input">
-                    <input type="password" class="input-field" name="checkPwd">
+                    <input type="password" class="input-field" name="checkPwd" id="ckPwd" required>
+                    <span id="checkPwd" style="display:none;" >비번체크!</span>
                 </div>
             </div>
             <!--
@@ -77,76 +87,62 @@
             <div class="form-row">
                 <label class="form-label">연락처 <span class="required-mark" >*</span></label>
                 <div class="form-input phone-input">
-                    <input type="text" class="input-field" id="phone1" maxlength="3">
+                    <input type="text" class="input-field" id="phone1" maxlength="3" required>
                     <span>-</span>
-                    <input type="text" class="input-field" id="phone2" maxlength="4">
+                    <input type="text" class="input-field" id="phone2" maxlength="4" required>
                     <span>-</span>
-                    <input type="text" class="input-field" id="phone3" maxlength="4">
+                    <input type="text" class="input-field" id="phone3" maxlength="4" required>
                     <input type="hidden" name="phone" id="phone"  maxlength="11"> 
                     <!-- 
                     <button type="button" class="confirm-button">본인인증</button>
                      -->
                 </div>
             </div>
-
             <div class="form-row">
                 <label class="form-label">이름 <span class="required-mark" >*</span></label>
                 <div class="form-input">
-                    <input type="name" class="input-field" name="memberName">
+                    <input type="name" class="input-field" name="memberName" required>
                 </div>
             </div>
-            <div class="form-row">
-                <label class="form-label">생년월일 </label>
-                <div class="form-input birthdate-input">
-                    <input type="text" class="input-field" style="width:280px;"name="birthdate" >
-                </div>
-                
-            </div>
-
             <div class="form-row">
                 <label class="form-label">이메일 <span class="required-mark" >*</span></label>
                 <div class="form-input">
-                    <input type="text" class="input-field" name="email">
+                    <input type="email" class="input-field" name="email" required>
                     <!--  
                     <button type="button" class="confirm-button">중복확인</button>
                     -->
                 </div>
             </div>
-         
             <br>
             <div class="section-header">
                 <h2>추가 정보 <span class="plus-notice">(선택)</span></h2>
             </div>
-          
-        <!--
-            <div class="form-row">
-                <label class="form-label">조건확인</label>
-                <div class="form-input radio-group">
-                    <label class="radio-label">
-                        <input type="radio" name="condition" value="yes">
-                        <span>예</span>
-                    </label>
-                    <label class="radio-label">
-                        <input type="radio" name="condition" value="no">
-                        <span>아니오</span>
-                    </label>
-                </div>
-            </div>   
-        -->
 		<br>
+		<div class="form-row">
+           <label class="form-label">생년월일 </label>
+           <div class="form-input birthdate-input">
+               <input type="date" class="input-field" style="width:280px;"name="birthdate" >
+           </div>
+        </div>
+        
         <div class="form-row">
             <label class="form-label">기본주소 <br> 등록 </label>
             <div class="form-input-addr">
                 <div class="zipcode-row">
-                    <input type="text" class="input-field address-field" placeholder="우편번호" disabled>
-                    <button type="button" class="search-button" disabled>주소검색</button>
+                    <input type="text" class="input-field address-field"  id="sample4_postcode" placeholder="우편번호" name="postcode" >
+                    <input type="button" class="btn-sm btn-outline-info" onclick="sample4_execDaumPostcode()" value="우편번호"><br>
                 </div>
                 <div class="address-row">
-                        <input type="text" class="input-field address-field" placeholder="기본주소" disabled>
-                        <input type="text" class="input-field address-field" placeholder="상세주소" disabled>
+                       <textarea class="input-field address-field" id="sample4_roadAddress" 
+                       		placeholder="도로명주소" name="deliAddress"></textarea><br>
+                       <input type="text"  class="input-field address-field" 
+                       		  id="sample4_detailAddress" placeholder="상세주소"
+                       		  name="detailAddress">
                 </div>
             </div>
-        </div>
+         
+        </div>   
+               
         <div class="submit-row">
             <button type="submit" class="btn-lg btn-outline-primary">회원가입</button>
             <button  class="btn-lg btn-secondary">초기화</button>
