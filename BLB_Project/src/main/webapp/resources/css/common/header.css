@@ -11,7 +11,7 @@ body {
 }
 .container-fluid {
     max-width: 1440px !important;
-    margin: auto;
+    margin: 0 auto;
 }
 /* 기본적으로 navbar 높이만큼 공백 추가 */
 .body-offset {

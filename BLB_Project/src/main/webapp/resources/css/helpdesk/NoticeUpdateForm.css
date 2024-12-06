@@ -1,0 +1,133 @@
+/* 페이지 전체 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fc;
+    margin: 0;
+    padding: 0;
+}
+
+.content {
+    width: 80%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.innerOuter {
+    padding: 20px;
+}
+
+h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    font-size: 16px;
+}
+
+table th {
+    background-color: #f2f2f2;
+    color: #555;
+}
+
+table td {
+    background-color: #f9f9f9;
+}
+
+table input, table textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* 버튼 스타일 */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+button[type="button"] {
+    background-color: #f44336;
+    color: white;
+    border: none;
+}
+
+button[type="button"]:hover {
+    background-color: #e53935;
+}
+
+/* 파일 업로드 스타일 */
+input[type="file"] {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+input[type="file"]:focus {
+    border-color: #4CAF50;
+}
+
+/* 숨겨진 파일 링크 스타일 */
+a {
+    color: #1e88e5;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 버튼 배치 */
+div[align="center"] {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 768px) {
+    .content {
+        width: 95%;
+        padding: 10px;
+    }
+
+    table th, table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

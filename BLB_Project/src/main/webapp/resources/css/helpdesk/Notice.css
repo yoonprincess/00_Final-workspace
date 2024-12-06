@@ -1,0 +1,165 @@
+/* 컨테이너 */
+.container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.container {
+    width: 80%;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 150, 136, 0.1); /* 민트색 그림자 */
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+h1 {
+    margin-top: 20px;
+    text-align: center;
+    color: #4A628A; /* 진한 파랑색 */
+    font-size: 28px;
+}
+
+/* 탭 시스템 */
+.tabs {
+    display: flex;
+    justify-content: space-between; /* 각 버튼을 고르게 배치 */
+    margin-bottom: 10px;
+}
+
+.tab-button {
+    flex-grow: 1;
+    padding: 12px 20px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.tab-button:hover {
+    background-color: #A4EBF3; /* 밝은 파랑색 */
+    color: #fff;
+}
+
+.tab-button.active {
+    background-color: #4A628A; /* 진한 파랑색 */
+    color: #fff;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* 공지사항 목록 테이블 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center; /* 가운데 정렬 */
+    border: 1px solid #ddd;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+th {
+    background-color: #b2dfdb; /* 민트색 강조 */
+    color: #4A628A; /* 진한 파랑색 */
+}
+
+td {
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* 배경색과 그림자에 부드러운 전환 */
+}
+
+table tbody tr {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* 부드러운 배경색과 그림자 전환 */
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1; /* hover 시 배경색 변화 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
+    cursor : pointer;
+}
+
+
+
+
+/* 공지사항 작성 버튼 */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.page-link {
+    padding: 8px 15px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #007bff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.page-link:hover {
+    background-color: #f0f5f5;
+}
+
+.page-link:active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    .tabs {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .tab-button {
+        margin-bottom: 5px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+}

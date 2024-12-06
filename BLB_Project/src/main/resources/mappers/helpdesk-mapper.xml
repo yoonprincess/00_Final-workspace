@@ -13,7 +13,7 @@
 
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
-		  FROM NOTICE
+		  FROM TB_NOTICE
 		 WHERE NOTICE_STATUS = 'Y'
 	</select>
 
@@ -22,8 +22,42 @@
 		     , NOTICE_TITLE
 		     , NOTICE_CONTENT
 		     , TO_CHAR(NOTICE_REG_DATE, 'YYYY-MM-DD') AS "NOTICE_REG_DATE"
-		  FROM NOTICE
+		  FROM TB_NOTICE
 		 WHERE NOTICE_STATUS = 'Y'
 	  ORDER BY NOTICE_NO DESC
 	</select>
+	
+	<insert id="insertNotice" parameterType="notice">
+		INSERT INTO TB_NOTICE(NOTICE_NO
+		                , NOTICE_TITLE
+		                , NOTICE_CONTENT)
+		           VALUES(SEQ_NOTICE_NO.NEXTVAL
+		                , #{noticeTitle}
+		                , #{noticeContent})
+	</insert>
+	
+	<select id="selectNotice" parameterType="_int"
+							 resultMap="noticeResultSet">
+		SELECT NOTICE_NO
+		     , NOTICE_TITLE
+		     , NOTICE_CONTENT
+		     , TO_CHAR(NOTICE_REG_DATE, 'YYYY-MM-DD') AS "NOTICE_REG_DATE"
+		  FROM TB_NOTICE
+		 WHERE NOTICE_NO = #{noticeNo}
+		   AND NOTICE_STATUS = 'Y'
+	</select>
+	
+	<update id="deleteNotice" parameterType="_int">
+		UPDATE NOTICE
+		   SET NOTICE_STATUS = 'N'
+		 WHERE NOTICE_NO = #{noticeNo}
+	</update>
+	
+	<update id="updateNotice" parameterType="notice">
+		UPDATE NOTICE
+		   SET NOTICE_TITLE = #{noticeTitle}
+		     , NOTICE_CONTENT = #{noticeContent}
+		 WHERE NOTICE_NO = #{noticeNo}
+		   AND NOTICE_STATUS = 'Y'
+	</update>
 </mapper>

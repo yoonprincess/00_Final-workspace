@@ -1,10 +1,144 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #DFF2EB; /* Light pastel green */
-    color: #333;
+.container {
+    width: 80%;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 150, 136, 0.1); /* 민트색 그림자 */
 }
+
+.container-fluid > .tabs > a {
+    text-decoration: none;
+    cursor: pointer;
+    color: red;
+}
+
+h1 {
+    margin-top: 20px;
+    text-align: center;
+    color: #4A628A; /* 진한 파랑색 */
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-between; /* 각 버튼을 고르게 배치 */
+    margin-bottom: 10px;
+}
+
+/* 메인 탭 버튼 스타일 */
+.tab-button {
+    flex-grow: 1;
+    padding: 10px 20px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* 메인 탭 버튼 hover 시 색상 변화 */
+.tab-button:hover {
+    background-color: #A4EBF3; /* 밝은 파랑색 */
+    color: #fff;
+}
+
+/* 메인 탭 버튼 active 상태 */
+.tab-button.active {
+    background-color: #4A628A; /* 진한 파랑색 */
+    color: #fff;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* 테두리 중복 제거 */
+}
+
+th, td {
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center; /* 가운데 정렬 */
+}
+
+th {
+    background-color: #b2dfdb; /* 민트색 강조 */
+}
+
+td {
+    border-top: 1px solid #ddd; /* 상단 테두리 */
+    border-bottom: 1px solid #ddd; /* 하단 테두리 */
+}
+
+/* FAQ 섹션 관련 스타일 */
+.sub-tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+/* 서브탭 버튼 스타일 */
+.sub-tab-button {
+    flex-grow: 1;
+    padding: 10px 20px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* 서브탭 버튼 hover 시 색상 변화 */
+.sub-tab-button:hover {
+    background-color: #A4EBF3;
+    color: #fff;
+}
+
+/* 서브탭 버튼 active 상태 */
+.sub-tab-button.active {
+    background-color: #4A628A;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* FAQ 항목 스타일 */
+.faq-item {
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #e0f5f1; /* 민트색 배경 */
+}
+
+.faq-question {
+    cursor: pointer;
+    font-weight: bold;
+    color: #4A628A; /* 배경색 진한 파랑 */
+}
+
+.faq-answer {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #e0f2f1; /* 연한 민트색 */
+}
+
+/* 메인 탭과 서브탭 active 상태 */
+.tab-button.active, .sub-tab-button.active {
+    font-weight: bold;
+    background-color: #4A628A; /* 진한 파랑 */
+    color: #fff;
+}
+
+/* Header 스타일 */
 .header {
     background-color: #B9E5E8; /* Soft pastel blue */
     padding: 20px;
@@ -14,6 +148,8 @@ body {
     color: black; /* Darker blue for contrast */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+/* Form 스타일 */
 .form-container {
     max-width: 600px;
     margin: 20px auto;
@@ -22,15 +158,18 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
 .form-group {
     margin-bottom: 20px;
 }
+
 .form-group label {
     display: block;
     font-weight: bold;
     margin-bottom: 8px;
     color: #4A628A; /* Darker blue for labels */
 }
+
 .form-group select,
 .form-group textarea,
 .form-group input[type="text"] {
@@ -44,19 +183,23 @@ body {
     color: #333;
     transition: border-color 0.3s ease;
 }
+
 .form-group textarea {
     height: 120px;
     resize: none;
 }
+
 .form-group select:focus,
 .form-group textarea:focus,
 .form-group input[type="text"]:focus {
     border-color: #7AB2D3; /* Light blue for focus */
     outline: none;
 }
+
 .file-list {
     margin-top: 10px;
 }
+
 .file-item {
     display: flex;
     align-items: center;
@@ -67,9 +210,11 @@ body {
     margin-bottom: 5px;
     cursor: pointer;
 }
+
 .file-item:hover {
     background-color: #E0E0E0; /* Slightly darker on hover */
 }
+
 .file-item img {
     width: 100px;
     height: 100px;
@@ -78,9 +223,11 @@ body {
     border-radius: 5px;
     margin-right: 10px;
 }
+
 .file-item span {
     flex-grow: 1;
 }
+
 .file-item button {
     background-color: #D9534F;
     color: white;
@@ -90,35 +237,49 @@ body {
     cursor: pointer;
     font-size: 14px;
 }
+
 .file-item button:hover {
     background-color: #C9302C;
 }
+
 .form-buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end; /* Align buttons to the right */
     margin-top: 20px;
 }
+
 .form-buttons button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
+    margin-left: 10px; /* Add space between buttons */
 }
+
 .form-buttons button.cancel {
     background-color: #F0F0F0;
     border: 1px solid #ddd;
 }
+
 .form-buttons button.cancel:hover {
     background-color: #E0E0E0;
 }
+
 .form-buttons button.submit {
     background-color: #7AB2D3; /* Light blue for submit button */
     color: white;
     border: none;
 }
+
 .form-buttons button.submit:hover {
     background-color: #4A628A; /* Darker blue on hover */
 }
+
+
+.form-buttons button.submit:hover {
+    background-color: #4A628A; /* Darker blue on hover */
+}
+
 .file-upload-btn {
     background-color: #7AB2D3; /* Light blue for button */
     color: white;
@@ -136,8 +297,23 @@ body {
 }
 
 .form-group input[type="text"]:disabled {
-    background-color: #E9E9E9; /* ���� ȸ�� ��� */
-    border: 1px solid #CCC; /* ���� ȸ�� �׵θ� */
-    color: #999; /* ���� �ؽ�Ʈ ���� */
-    cursor: not-allowed; /* Ŀ�� ���� */
+    background-color: #E9E9E9; /* Disabled background color */
+    border: 1px solid #CCC; /* Disabled border color */
+    color: #999; /* Disabled text color */
+    cursor: not-allowed; /* Disabled cursor */
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    .tabs {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .tab-button {
+        margin-bottom: 5px;
+    }
 }

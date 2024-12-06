@@ -47,15 +47,16 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 			model.addAttribute("list",list);
 			model.addAttribute("pi",pi);
 			
-			return "helpdesk/CustomerServiceCenter";
+			
+			return "helpdesk/Notice";
 			
 		}
 	
 		// 공지사항 작성 페이지 요청
-		@GetMapping("enrollForm.no")
+		@GetMapping("NoticeEnrollForm.no")
 		public ModelAndView enrollForm(ModelAndView mv) {
 		
-		mv.setViewName("helpdesk/CustomerServiceCenter");
+		mv.setViewName("helpdesk/NoticeEnrollForm");
 		return mv;
 		
 		}
@@ -83,6 +84,8 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 				ar.addFlashAttribute("alertMsg", "공지사항이 성공적으로 등록되었습니다.");
 				mv.setViewName("redirect:/list.no");
 			}
+			
+			
 			return mv;
 		}
 		
@@ -91,14 +94,8 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 		public ModelAndView selectNotice(@PathVariable(value = "noticeNo") int nno,
 		                                 ModelAndView mv,
 		                                 RedirectAttributes ra) {
-		    int result = noticeService.increaseCount(nno);
-		    if (result > 0) {
 		        Notice n = noticeService.selectNotice(nno);
 		        mv.addObject("n", n).setViewName("helpdesk/NoticeDetailView");
-		    } else {
-		        ra.addFlashAttribute("alertMsg", "공지사항 상세조회에 실패했습니다.");
-		        mv.setViewName("redirect:/list.no"); 
-		    }
 		    return mv;
 		}
 

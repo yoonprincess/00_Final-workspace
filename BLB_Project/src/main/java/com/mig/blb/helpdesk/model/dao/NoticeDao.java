@@ -13,33 +13,29 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 public class NoticeDao {
 
 	public int selectListCount(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("helpDesk.selectListCount");
+		return sqlSession.selectOne("helpdeskMapper.selectListCount");
 	}
 
 	public ArrayList<Notice> selectList(SqlSessionTemplate sqlSession, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		return (ArrayList)sqlSession.selectList("helpDesk.selectList", null, rowBounds);
+		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectList", null, rowBounds);
 	}
 
 	public int insertNotice(SqlSessionTemplate sqlSession, Notice n) {
-		return sqlSession.insert("helpdesk.insertNotice", n);
-	}
-	
-	public int increaseCount(SqlSessionTemplate sqlSession, int nno) {
-		return sqlSession.update("helpdesk.increaseCount", nno);
+		return sqlSession.insert("helpdeskMapper.insertNotice", n);
 	}
 
 	public Notice selectNotice(SqlSessionTemplate sqlSession, int nno) {
-		return sqlSession.selectOne("helpdesk.selectNotice", nno);
+		return sqlSession.selectOne("helpdeskMapper.selectNotice", nno);
 	}
 
 	public int deleteNotice(SqlSessionTemplate sqlSession, int nno) {
-		return sqlSession.update("helpdesk.deleteNotice", nno);
+		return sqlSession.update("helpdeskMapper.deleteNotice", nno);
 	}
 
 	public int updateNotice(SqlSessionTemplate sqlSession, Notice n) {
-		return sqlSession.update("helpdesk", n);
+		return sqlSession.update("helpdeskMapper", n);
 	}
 }
