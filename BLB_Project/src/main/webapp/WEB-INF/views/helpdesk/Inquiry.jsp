@@ -59,7 +59,7 @@
 </div>
 
     </div>
+    <script src="resources/js/helpdesk/Inquiry.js"></script> <!-- JS 파일 경로 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
-<script src="resources/js/helpdesk/Inquiry.js"></script> <!-- JS 파일 경로 -->
 </body>
 </html>

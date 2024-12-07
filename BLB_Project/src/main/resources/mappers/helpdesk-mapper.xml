@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
 <mapper namespace="helpdeskMapper">
 
+													<!-- 공지사항 매퍼 -->
 	<resultMap id="noticeResultSet" type="notice">
 		<id column="NOTICE_NO" property="noticeNo"/>
 		<result column="NOTICE_TITLE" property="noticeTitle"/>
@@ -61,4 +62,16 @@
 		 WHERE NOTICE_NO = #{noticeNo}
 		   AND NOTICE_STATUS = 'Y'
 	</update>
+	
+													<!-- 1:1 문의 매퍼 -->
+	<resultMap id="inquiryResultSet" type="inquiry">
+		<id column="INQUIRY_NO" property="inquiryNo"/>
+		<result column="INQUIRY_TITLE" property="inquiryTitle"/>
+		<result column="INQUIRY_CONTENT" property="inquiryContent"/>
+		<result column="INQUIRY_TYPE" property="inquiryType"/>
+		<result column="INQUIRY_CREATE_DATE" property="inquiryCreateDate"/>
+		<result column="INQUIRY_ANSWERED_YN" property="inquiryAnsweredYn"/>
+		<result column="INQUIRY_STATUS" property="inquiryStatus"/>
+	</resultMap>
+	
 </mapper>
