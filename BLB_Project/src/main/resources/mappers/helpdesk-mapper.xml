@@ -48,15 +48,16 @@
 	</select>
 	
 	<update id="deleteNotice" parameterType="_int">
-		UPDATE NOTICE
+		UPDATE TB_NOTICE
 		   SET NOTICE_STATUS = 'N'
 		 WHERE NOTICE_NO = #{noticeNo}
 	</update>
 	
 	<update id="updateNotice" parameterType="notice">
-		UPDATE NOTICE
+		UPDATE TB_NOTICE
 		   SET NOTICE_TITLE = #{noticeTitle}
 		     , NOTICE_CONTENT = #{noticeContent}
+		     , NOTICE_REG_DATE = SYSDATE
 		 WHERE NOTICE_NO = #{noticeNo}
 		   AND NOTICE_STATUS = 'Y'
 	</update>

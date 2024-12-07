@@ -23,6 +23,13 @@
 	
 	<context:component-scan base-package="com.mig.blb" />
 	
-	
+	<!-- 인터셉터 등록 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/NoticeEnrollForm.no" />
+			<beans:bean class="com.mig.blb.common.interceptor.LoginInterceptor" 
+						id="loginInterceptor" />
+		</interceptor>
+	</interceptors>
 	
 </beans:beans>

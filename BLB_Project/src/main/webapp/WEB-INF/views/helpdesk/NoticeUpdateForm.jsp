@@ -5,24 +5,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="resources/css/helpdesk/NoticeUpdateForm.css"></script>
+<title>공지사항 수정</title>
+	<link rel="stylesheet" href="resources/css/helpdesk/NoticeUpdateForm.css"> <!-- 스타일 시트 링크 -->
 </head>
 <body class="body-offset">
-        
-    <%@ include file="/WEB-INF/views/common/footer.jsp" %>
-
+    <%@ include file="/WEB-INF/views/common/header.jsp" %>
+	<div class="container-fluid">
     <div class="content">
         <br><br>
         <div class="innerOuter">
             <h2>게시글 수정하기</h2>
             <br>
-
-			<!-- 
-				게시글 수정 요청 시
-				http://localhost:8006/spring/update.bo
-				로 요청
-			-->
             <form id="NoticeUpdateForm" method="post" 
             					  action="NoticeUpdate.no" enctype="multipart/form-data">
                 
@@ -73,7 +66,7 @@
         <br><br>
 
     </div>
-    
+    </div>
     <script src="resources/js/helpdesk/Notice.js"></script> <!-- JS 파일 경로 -->
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

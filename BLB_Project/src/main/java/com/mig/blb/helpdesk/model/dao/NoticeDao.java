@@ -36,6 +36,6 @@ public class NoticeDao {
 	}
 
 	public int updateNotice(SqlSessionTemplate sqlSession, Notice n) {
-		return sqlSession.update("helpdeskMapper", n);
+		return sqlSession.update("helpdeskMapper.updateNotice", n);
 	}
 }

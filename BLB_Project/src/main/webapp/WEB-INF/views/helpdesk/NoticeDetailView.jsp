@@ -5,20 +5,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항 상세조회</title>
+<title>공지사항 상세조회</title>	
+	<link rel="stylesheet" href="../resources/css/helpdesk/NoticeDetailView.css"> <!-- 스타일 시트 링크 -->
 </head>
-<body>
-        
-   <%@ include file="/WEB-INF/views/common/header.jsp" %>
-
+<body class="body-offset">
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+    <div class="container-fluid">
     <div class="content">
         <br><br>
         <div class="innerOuter">
             <br>
-
             <a class="btn btn-secondary" style="float:right;" href="../list.no">목록으로</a>
             <br><br>
-
             <table id="contentArea" align="center" class="table">
                 <tr>
                     <th width="100">제목</th>
@@ -58,7 +56,7 @@
             </table>
             <br>
 
-			<c:if test="${ sessionScope.loginUser.memberId eq admin }">
+			<c:if test="${ sessionScope.loginUser.memberId eq 'admin' }">
 	            <div align="center">
 	                <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
 	                <a class="btn btn-primary" onclick="postFormSubmit(1);">
@@ -76,8 +74,23 @@
 	            	<input type="hidden"
 	            		   name="filePath"
 	            		   value="${ requestScope.n.changeName }">
+	            		   
 	            </form>
 	            
+	            <script>
+	            function postFormSubmit(num) {
+	                if (num === 1) { // 수정하기를 클릭했을 경우
+	                    $("#postForm").attr("action", "../NoticeUpdateForm.no").submit();
+	                } else { // 삭제하기를 클릭했을 경우
+	                    if (confirm("삭제하시겠습니까?")) { // 사용자 확인
+	                        $("#postForm").attr("action", "../NoticeDelete.no").submit();
+	                        alert("공지사항이 삭제되었습니다.")
+	                    } else {
+	                        return "redirect://../NoticeUpdateForm.no";
+	                    }
+	                }
+	            }
+	            </script>
             </c:if>
             
             <br><br>
@@ -85,7 +98,7 @@
         <br><br>
 
     </div>
-    
+    </div>
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
     
 </body>

@@ -100,7 +100,7 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 		}
 
 		// 공지사항 삭제 요청
-		@PostMapping("delete.no")
+		@PostMapping("NoticeDelete.no")
 		public String deleteNotice(int nno,
 								   String filePath,
 								   Model model,
@@ -123,17 +123,17 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 		}
 		
 		// 공지사항 수정 페이지 요청
-		@PostMapping("updateForm.no")
+		@PostMapping("NoticeUpdateForm.no")
 		public String updateForm(int nno,
 								 Model model) {
 			Notice n = noticeService.selectNotice(nno);
 			
 			model.addAttribute("n",n);
-			return "notice/noticeUpdateForm";
+			return "helpdesk/NoticeUpdateForm";
 		}
 		
 		// 공지사항 수정 요청
-		@PostMapping("update.no")
+		@PostMapping("NoticeUpdate.no")
 		public String updateNotice(Notice n,
 								   RedirectAttributes ar,
 								   MultipartFile reupfile,
