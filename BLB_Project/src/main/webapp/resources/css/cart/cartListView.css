@@ -112,7 +112,7 @@ button.btn-option:hover {
     text-align: center;
 }
 
-/* 결제 가격 영역 */
+/* 장바구니 결제 예정 금액 영역 */
 #cart-price th {
     padding : 15px 0;
     border-bottom: 1px solid #F4F4F9;

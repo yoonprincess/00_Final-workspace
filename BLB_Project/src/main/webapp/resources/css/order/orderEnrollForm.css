@@ -1,6 +1,5 @@
 /* 네비게이터 스타일 */
 .order-form {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
     background-color: #F4F4F9;
@@ -43,28 +42,30 @@
 /* 배송 정보 입력 테이블 스타일 */
 .order-form {
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 10px auto;
     background: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-table {
+#delivery-form {
     width: 100%;
     box-sizing: border-box;
+    margin : 5px;
 }
 
-th {
+#delivery-form>th {
     width: 20%;
     font-weight: bold;
 }
 
-td {
+#delivery-form>td {
     width: 80%;
 }
 
-th, td {
+#delivery-form>th,
+#delivery-form>td {
     padding: 10px;
     text-align: left;
     vertical-align: middle;
@@ -109,6 +110,7 @@ input[type="text"]:focus, select:focus, button:focus {
     border-color: #7AB2D3;
 }
 
+/* 주소 검색 버튼 스타일 */
 button.btn-search {
     background-color: #7AB2D3;
     font-size: 14px;
@@ -128,3 +130,226 @@ button.btn-search:hover {
     align-items: center;
     gap: 10px;
 }
+
+/* 주문 상품 목록 스타일 */
+.order-products {
+    width: 100%;
+}
+
+.order-products>h3 {
+    margin-top: 40px;
+}
+
+.custom-hr {
+    height: 1px;
+    border: none;
+    background: #e1e1e1;
+}
+
+.order-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 0;
+}
+
+.product-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.product-detail {
+    flex: 1;
+}
+
+.product-detail>p {
+    margin: 0 0 5px;
+    padding : 3px;
+}
+
+.product-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.product-option,
+.product-quantity {
+    color: #555;
+    font-size: 14px;
+}
+
+.product-price {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.delete-button {
+    font-size: 20px;
+    color: #7AB2D3;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* 결제 예상 금액 영역 */
+#order-price {
+    width: 100%;
+    margin: 40px auto;
+    border-top: 2px solid #B9E5E8;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+/* 바디 스타일 */
+#order-price tbody td {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #B9E5E8;
+}
+
+#order-price .value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+#order-price tbody .discount {
+    color: #4A628A;
+}
+
+/* 푸터 스타일 */
+#order-price tfoot .footer {
+    padding: 15px;
+    text-align: center;
+    background-color: #F4F4F9;
+    font-size: 14px;
+    color: #555;
+    border-bottom: 2px solid #ddd;
+}
+
+.total-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.final-price {
+    color: #4A628A;
+    font-size: 20px;
+}
+
+/* 결제 수단 영역 */
+.payment-container {
+    width: 100%;
+    margin: 30px auto;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.payment-options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.payment-option {
+    padding: 15px;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.payment-option:hover {
+    background-color: #f9f9f9;
+}
+
+.payment-option.selected {
+    background-color: #F4F4F9;
+    border-left: 4px solid #4A628A;
+    font-weight: bold;
+    color: #4A628A;
+}
+
+.payment-comment {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #777;
+    background-color: #F4F4F9;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+
+/* 결제 동의 약관 영역 */
+.terms-container {
+    width: 100%;
+    margin: 40px auto;
+    font-size: 14px;
+}
+
+.terms-header {
+    display: flex;
+    font-weight: bold;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 10px 0;
+}
+
+.terms-list {
+    padding: 0;
+    margin: 0;
+}
+
+.terms-item {
+    display: flex;
+    justify-content: space-between; /* 아이템 간 간격을 균등하게 */
+    padding: 10px 0;
+    border-bottom: 1px dashed #ddd;
+}
+
+.details-button {
+    background: none;
+    border: none;
+    color: #4A628A;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.details-button:hover {
+    color: #333;
+}
+
+/* 결제하기 버튼 */
+.payment-button {
+    display: block;
+    width: 100%;
+    margin: 30px auto;
+    padding: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    background-color: #4A628A;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+

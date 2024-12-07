@@ -19,6 +19,7 @@
         
         <hr>
 
+        <!-- 장바구니에 담은 상품 목록 -->
         <table id="cart-product">
             <thead>
                 <tr>
@@ -35,7 +36,11 @@
                     <td class="product-info">
                         ${ requestScope.c.cartNo } <br>
                         <small>${requestScope.c.optName }</small><br>
-                        <button class="btn-option">옵션변경</button>
+                        <select>
+                            <option checked>- [필수] 옵션을 선택해 주세요. -</option>
+                            <option>01. 선크림</option>
+                            <option>02. 선스틱</option>
+                        </select>
                     </td>
                     <td>
                         <div class="item-quantity">
@@ -53,7 +58,11 @@
                     <td class="product-info">
                         [현장수령] 기초톤+4라인 1+1SET 특가<br>
                         <small>[옵션: 베스트톤 스크럽세트 (44% 할인) 1개 + 스크럽킷 3+SET (+58,000)]</small><br>
-                        <button class="btn-option">옵션변경</button>
+                        <select>
+                            <option>- [필수] 옵션을 선택해 주세요. -</option>
+                            <option>01. 선크림</option>
+                            <option>02. 선스틱</option>
+                        </select>
                     </td>
                     <td>
                         <div class="item-quantity">
@@ -68,6 +77,7 @@
             </tbody>
         </table>
 
+        <!-- 장바구니에 담은 상품 가격 합계 -->
         <table id="cart-price">
             <thead>
                 <tr>
@@ -88,6 +98,7 @@
                 </tr>
             </tbody>
         </table>
+
         
     </div>
 
