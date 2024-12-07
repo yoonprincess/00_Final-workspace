@@ -82,7 +82,7 @@
 		                </a>
 	           		</c:when>
 	                <c:otherwise>
-	                	<a class="menu-btn" href="${ pageContext.request.contextPath }/loginForm.me">
+	                	<a class="menu-btn" href="${ pageContext.request.contextPath }/myPage.me">
 		                    <span class="material-symbols-outlined">
 		                        person_check
 		                    </span>

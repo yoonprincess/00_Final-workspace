@@ -22,7 +22,7 @@
 		SELECT *
 		  FROM TB_MEMBER
 		  WHERE MEMBER_ID = #{memberId}
-		   AND STATUS='y'
+		   AND UPPER(status)='Y'
 	</select>
 	
 	<insert id="insertMember" parameterType="member">

@@ -22,20 +22,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j 
 public class MemberController {
 	
-	
 	@Autowired
 	private MemberService memberService;
 	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 		
-	// 마이페이지 접속 요청 
-	@GetMapping("myPage.me")
-	public String myPage() {
-				
-			return "member/myPage";
-	
-	}
 	
 	// 로그인 페이지 요청 
 	@GetMapping("loginForm.me")
@@ -54,13 +46,6 @@ public class MemberController {
 		
 		
 		Member loginUser = memberService.loginMember(m);
-	    // 디버깅: 로그인한 유저 정보 확인
-	    if (loginUser != null) {
-	        System.out.println("로그인 성공, DB에서 찾은 사용자: " + loginUser.getMemberId());
-	        System.out.println("DB에서 찾은 사용자 비밀번호: " + loginUser.getMemberPwd());
-	    } else {
-	        System.out.println("로그인 실패, 사용자를 찾을 수 없음.");
-	    }
 		
 		if(loginUser != null &&
 				(bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd()))) {
@@ -126,6 +111,11 @@ public class MemberController {
 			result2 = memberService.insertDelivery(d);
 		}
 		
+		System.out.println("회원가입 요청 데이터: " + m);
+		System.out.println("암호화된 비밀번호: " + m.getMemberPwd());
+		System.out.println("회원가입 결과: " + result);
+		System.out.println("배송지 등록 결과: " + result2);
+		
 		if(result > 0 && (result2 > 0 || d.getPostcode().isEmpty())) { 
 			
 			session.setAttribute("alerMsg", "환영합니다-*^^*");
@@ -147,6 +137,15 @@ public class MemberController {
 		
 		return (count>0)? "NNN" : "NNY" ;
 		
+	}
+	
+	//// 마이페이지 요청 
+	@GetMapping("myPage.me")
+	public ModelAndView myPage(ModelAndView mv) {
+		
+		mv.setViewName("member/myPage");
+		
+		return mv;
 	}
 	
 	
