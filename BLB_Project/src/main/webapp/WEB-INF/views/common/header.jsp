@@ -48,7 +48,7 @@
 	
     <nav class="navbar navbar-expand-md navbar-dark fixed-top transparent-navbar">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="${ pageContext.request.contextPath }/">
                 <img src="resources/images/BLB_logo.png">
             </a>
 
