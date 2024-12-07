@@ -5,13 +5,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="resources/css/cart/cartListView.css">
+<title>장바구니 | 뷰라밸</title>
+<!-- <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/cart/cartListView.css'/>"> -->
+<link rel="stylesheet" type="text/css" href="../../../resources/css/cart/cartListView.css">
+<!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<title>장바구니</title>
 </head>
 <body class="body-offset">
 
-    <jsp:include page="../common/header.jsp"/>
+    <jsp:include page="../common/header.jsp" />
 
     <div class="outer" align="center">
 
@@ -32,10 +34,14 @@
             <tbody>
                 <tr>
                     <td><input type="checkbox" checked></td>
-                    <td><img src="..." class="rounded mx-auto d-block" alt="..."></td>
+                    <td><img src="set_product.jpg" alt="기초 & 선라인 세트" class="product-image"></td>
                     <td class="product-info">
-                        ${ requestScope.c.cartNo } <br>
-                        <small>${requestScope.c.optName }</small><br>
+                        <div class="product-detail">
+                            <p class="product-title">[한정수량] 기초&선라인 1+1SET 특가</p>
+                            <p class="product-option">[옵션: 01. 블랙티 스크럽밤 [44%▼]/[44%▼] 스크럽밤 3+3SET (+58,000)]</p>
+                            <p class="product-quantity">수량: 1개</p>
+                            <p class="product-price">75,800원</p>
+                        </div>
                         <select>
                             <option checked>- [필수] 옵션을 선택해 주세요. -</option>
                             <option>01. 선크림</option>
@@ -49,15 +55,19 @@
                             <span class="quantity-increase">+</span>
                         </div>
                     </td>
-                    <td>21,800원</td>
+                    <td class="product-price">21,800원</td>
                     <td class="delete-btn-td"><button class="btn-delete">X</button></td>
                 </tr>
                 <tr>
                     <td><input type="checkbox" checked></td>
-                    <td><img src="..." class="rounded mx-auto d-block" alt="..."></td>
+                    <td><img src="lipbalm.jpg" alt="립밤 세트" class="product-image"></td>
                     <td class="product-info">
-                        [현장수령] 기초톤+4라인 1+1SET 특가<br>
-                        <small>[옵션: 베스트톤 스크럽세트 (44% 할인) 1개 + 스크럽킷 3+SET (+58,000)]</small><br>
+                        <div class="product-detail">
+                            <p class="product-title">립밤 세트</p>
+                            <p class="product-option">[옵션: 내 맘대로 골라담기 SET (44%▼)/립밤 1+1개 ★27% 할인★/내추럴 레드 2개]</p>
+                            <p class="product-quantity">수량: 1개</p>
+                            <p class="product-price">21,800원</p>
+                        </div>
                         <select>
                             <option>- [필수] 옵션을 선택해 주세요. -</option>
                             <option>01. 선크림</option>
@@ -71,13 +81,13 @@
                             <span class="quantity-increase">+</span>
                         </div>
                     </td>
-                    <td>75,800원</td>
+                    <td class="product-price">75,800원</td>
                     <td class="delete-btn-td"><button class="btn-delete">X</button></td>
                 </tr>
             </tbody>
         </table>
 
-        <!-- 장바구니에 담은 상품 가격 합계 -->
+        <!-- 장바구니 결제 예정 금액 영역 -->
         <table id="cart-price">
             <thead>
                 <tr>
@@ -99,8 +109,9 @@
             </tbody>
         </table>
 
-        
     </div>
+
+    <jsp:include page="../common/footer.jsp" />
 
 </body>
 </html>

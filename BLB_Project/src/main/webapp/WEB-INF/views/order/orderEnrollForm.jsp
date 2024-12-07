@@ -1,17 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="resources/css/order/orderEnrollForm.css">
-<!-- <link rel="stylesheet" href="orderEnrollForm.css"> -->
+<title>주문서 작성/결제 | 뷰라밸</title>
+<!-- <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/order/orderEnrollForm.css'/>"> -->
+<link rel="stylesheet" type="text/css" href="../../../resources/css/order/orderEnrollForm.css">
 <!-- 부트스트랩 -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-<title>주문서 작성/결제</title>
 </head>
 <body class="body-offset">
+
+    <jsp:include page="../common/header.jsp" />
+
     <div class="order-form">
 
         <!-- 네비게이터 영역 -->
@@ -26,8 +30,12 @@
             </div>
         </div>
 
+        <br><br>
+
         <!-- 배송 정보 입력 테이블 영역 -->
         <h3>배송 정보 입력</h3>
+        <hr class="custom-hr">
+
         <table id="delivery-form">
             <tr>
                 <th>받는 사람 <span class="required">*</span></th>
@@ -106,7 +114,7 @@
             <h3>주문 상품</h3>
             <hr class="custom-hr">
             <!-- 첫 번째 상품 -->
-            <div class="order-item">
+            <div class="order-product">
                 <img src="lipbalm.jpg" alt="립밤 세트" class="product-image">
                 <div class="product-detail">
                     <p class="product-title">립밤 세트</p>
@@ -118,7 +126,7 @@
             </div>
             <hr class="custom-hr">
             <!-- 두 번째 상품 -->
-            <div class="order-item">
+            <div class="order-product">
                 <img src="set_product.jpg" alt="기초 & 선라인 세트" class="product-image">
                 <div class="product-detail">
                     <p class="product-title">[한정수량] 기초&선라인 1+1SET 특가</p>
@@ -212,9 +220,9 @@
         <!-- 결제하기 버튼 -->
         <button type="button" class="btn btn-primary payment-button">18,180원 결제하기</button>        
         
-        
-        
-
     </div>
+
+    <jsp:include page="../common/footer.jsp" />
+
 </body>
 </html>
