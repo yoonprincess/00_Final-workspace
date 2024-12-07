@@ -1,9 +1,16 @@
 package com.mig.blb.notification.model.vo;
 
-/**
- * @author douke
- *
- */
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Notification {
 
 	private int NotificationNo;
@@ -12,73 +19,5 @@ public class Notification {
 	private String readYn;
 	private String deleteYn;
 	private String createAt;
-	
-	public Notification() { }
-
-	public Notification(int notificationNo, String notificationContent, String notificationType, String readYn,
-			String deleteYn, String createAt) {
-		super();
-		NotificationNo = notificationNo;
-		NotificationContent = notificationContent;
-		NotificationType = notificationType;
-		this.readYn = readYn;
-		this.deleteYn = deleteYn;
-		this.createAt = createAt;
-	}
-
-	public int getNotificationNo() {
-		return NotificationNo;
-	}
-
-	public void setNotificationNo(int notificationNo) {
-		NotificationNo = notificationNo;
-	}
-
-	public String getNotificationContent() {
-		return NotificationContent;
-	}
-
-	public void setNotificationContent(String notificationContent) {
-		NotificationContent = notificationContent;
-	}
-
-	public String getNotificationType() {
-		return NotificationType;
-	}
-
-	public void setNotificationType(String notificationType) {
-		NotificationType = notificationType;
-	}
-
-	public String getReadYn() {
-		return readYn;
-	}
-
-	public void setReadYn(String readYn) {
-		this.readYn = readYn;
-	}
-
-	public String getDeleteYn() {
-		return deleteYn;
-	}
-
-	public void setDeleteYn(String deleteYn) {
-		this.deleteYn = deleteYn;
-	}
-
-	public String getCreateAt() {
-		return createAt;
-	}
-
-	public void setCreateAt(String createAt) {
-		this.createAt = createAt;
-	}
-
-	@Override
-	public String toString() {
-		return "Notification [NotificationNo=" + NotificationNo + ", NotificationContent=" + NotificationContent
-				+ ", NotificationType=" + NotificationType + ", readYn=" + readYn + ", deleteYn=" + deleteYn
-				+ ", createAt=" + createAt + "]";
-	}
-	
+		
 }
