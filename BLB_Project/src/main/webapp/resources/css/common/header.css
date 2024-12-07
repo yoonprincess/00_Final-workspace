@@ -60,7 +60,9 @@ body {
   'wght' 400,
   'GRAD' 0,
   'opsz' 48;
-  font-size: 35px !important;
+}
+.menu-icon {
+    font-size: 35px !important;
 }
 
 /* navbar 스타일 */

@@ -55,19 +55,19 @@
             <!-- 메뉴 버튼 (토글러 좌측) -->
             <div class="ml-auto d-flex align-items-center order-md-2">
                 <a class="menu-btn" href="#">
-                    <span class="material-symbols-outlined">
+                    <span class="material-symbols-outlined menu-icon">
                         search
                     </span>
                 </a>
                 <a class="menu-btn" href="#">
-                    <span class="material-symbols-outlined">
+                    <span class="material-symbols-outlined menu-icon">
                         favorite
                     </span>
                 </a>
                 
                 <!-- 장바구니 -->
                 <a class="menu-btn" href="${ pageContext.request.contextPath }/list.ct">
-                    <span class="material-symbols-outlined">
+                    <span class="material-symbols-outlined menu-icon">
                         shopping_bag
                     </span>
                 </a>
@@ -76,19 +76,19 @@
                 <c:choose>
 	                <c:when test="${ empty sessionScope.loginUser }">
 		                <a class="menu-btn" href="${ pageContext.request.contextPath }/loginForm.me">
-		                    <span class="material-symbols-outlined last-btn">
+		                    <span class="material-symbols-outlined menu-icon last-btn">
 		                        person
 		                    </span>
 		                </a>
 	           		</c:when>
 	                <c:otherwise>
 	                	<a class="menu-btn" href="${ pageContext.request.contextPath }/myPage.me">
-		                    <span class="material-symbols-outlined">
+		                    <span class="material-symbols-outlined menu-icon">
 		                        person_check
 		                    </span>
 		                </a>	
 	               	 	<a class="menu-btn" href="${ pageContext.request.contextPath }/logout.me">
-		                    <span class="material-symbols-outlined last-btn">
+		                    <span class="material-symbols-outlined menu-icon last-btn">
 		                        Logout
 		                    </span>
 		              	</a>
