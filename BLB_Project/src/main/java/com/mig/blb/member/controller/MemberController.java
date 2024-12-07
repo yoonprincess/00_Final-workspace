@@ -57,6 +57,7 @@ public class MemberController {
 			mv.setViewName("redirect:/");
 			
 		}else { // 로그인 실패 
+			
 			mv.addObject("errorMsg","로그인실패!");
 			mv.setViewName("common/errorPage");
 		}
@@ -110,11 +111,6 @@ public class MemberController {
 			//System.out.println(d);
 			result2 = memberService.insertDelivery(d);
 		}
-		
-		System.out.println("회원가입 요청 데이터: " + m);
-		System.out.println("암호화된 비밀번호: " + m.getMemberPwd());
-		System.out.println("회원가입 결과: " + result);
-		System.out.println("배송지 등록 결과: " + result2);
 		
 		if(result > 0 && (result2 > 0 || d.getPostcode().isEmpty())) { 
 			

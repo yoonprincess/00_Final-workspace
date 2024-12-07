@@ -24,25 +24,27 @@
  	  
       $idInput.blur(function(){
         let checkId=$(this).val();
-    	let validate = /^[a-z0-9-_]{5,20}$/;
+        
+    	let validate = /^(?![0-9])(?![0-9]+$)[a-z0-9]{5,20}$/;
     	 
         if(checkId.length >= 5){
         
 	        if(!validate.test(checkId)){
 		
-		         $("#noticeId").css("display","none");
 		         $("#checkId").show()
 		        					.css({
 						                "color": "orangered", // 색상 수정
 						                "font-size": "12px",
 						                "font-weight": "600"
-						            }).text("5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다."); 
+						            }).text("5~20자의 영문 소문자,숫자만 사용 가능하며, 숫자로 시작 또는 숫자로만 이루어진 아이디는 사용할 없습니다."); 
 		         
 		          $("#memeberId").css("border","1px solid #orangered");
-		         $("#enrollForm button[type=submit]").attr("disabled",true);
-			         
-			     return 
+		          $("#enrollForm button[type=submit]").attr("disabled",true);
+			      $("#noticeId").show();    
+			     
+			     return; 
 			 }
+			 
           $.ajax({
             url: "idCheck.me",
             type : "GET",
@@ -50,34 +52,31 @@
               checkId : checkId
             },
             success : function(result){
-              if(result === "NNN"){
-                
-                $("#noticeId").css("display","none");
-                
-                      $("#checkId").show()
-                              .css("color","orangered")
-                              .text("사용할수 없는 아이디입니다. 다른 아이디를 입력해주세요.")
-                              .css("font-size","12px")
-                              .css("font-weight","600");
-                      
-                      $("#enrollForm button[type=submit]").attr("disabled",true);
-                      
-                      $("#memeberId").css("border","1px solid #orangered");    
-              
-              }else{
-                $("#noticeId").hide();
-                      $("#checkId").show()
-                              .css("color","#71C9CE")
-                              .text("사용가능한 아이디입니다!")
-                              .css("font-size","12px")
-                              .css("font-weight","600");
-                      
-                      $("#enrollForm button[type=submit]").attr("disabled", false);
-                     
-                      $("#memberId").css("border","1px solid #71C9CE");  
-                     
-              }
-              
+	              if(result === "NNN"){
+	              
+	                	  $("#noticeId").show(); 
+	                      $("#checkId").show()
+	                              .css("color","orangered")
+	                              .text("해당 아이디는 이미 등록된 아이디입니다. 다른 아이디를 입력해주세요.")
+	                              .css("font-size","12px")
+	                              .css("font-weight","600");
+	                      
+	                      $("#enrollForm button[type=submit]").attr("disabled",true);
+	                      $("#memeberId").css("border","1px solid #orangered");    
+	              
+	              }else{
+	              
+	             
+	                      $("#checkId").show()
+	                              .css("color","#71C9CE")
+	                              .text("사용가능한 아이디입니다!")
+	                              .css("font-size","12px")
+	                              .css("font-weight","600");
+	                      
+	                      $("#enrollForm button[type=submit]").attr("disabled", false);
+	                      $("#memberId").css("border","2px solid #71C9CE");  
+	                     
+	              }
                
             },
             error : function(result){
@@ -86,6 +85,7 @@
              
             }
           });
+       
         }else{
          
           $("#memberId").css("border", "1px solid #ccc"); // 기본 테두리 색상으로 초기화
@@ -97,98 +97,99 @@
     });
     
      /* 비번 조건체크*/ 
-    $(function(){
-      const $pwdInput = $("#enrollForm input[name=memberPwd]");
- 	
-      $pwdInput.blur(function(){
-        
-        let memberPwd=$(this).val();
-        let validate = /^[A-Za-z0-9!@#$%^&*-_]{8,16}$/;
-        
-        
-        
-	if(memberPwd.length >= 8){		
-        if(validate.test(memberPwd)){
-        
-         $("#noticePwd").css("display","none");
-         
-         $("#validatePwd").show()
-         				  .css({
-						    "color": "#71C9CE",
-						    "font-size": "12px",
-						    "font-weight": "600"
-							}).text("사용가능한 비밀번호입니다!");
-		$("#memberPwd").css("border","1px solid #71C9CE");   					
-          
-        }else{
-       		$("#noticePwd").css("display","none");
-        	$("#validatePwd").show()
-        					.css({
-				                "color": "orangered", // 색상 수정
-				                "font-size": "12px",
-				                "font-weight": "600"
-				            }).text("8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해 주세요.");    
-			$("#memberPwd").css("border","1px solid orangered");     	   				
-        }
-        
-   }else{
-   		  $("#memberPwd").css("border", "1px solid #ccc"); // 기본 테두리 색상으로 초기화
-          $("#enrollForm button[type=submit]").attr("disabled",true);
-          $("#validatePwd").hide();  
-          $("#noticePwd").show();               	   				
-   	
-   }     
-        
-  	 }); 
- 	});  
- 	
- 	/* 비밀번호 확인 체크 */
- 	
- 	 $(function() {
-    const $ckPwdInput = $("#enrollForm input[name=checkPwd]");
-    const $pwdInput = $("#enrollForm input[name=memberPwd]");
-    
-    $ckPwdInput.change(function() {
-        let checkPwd = $(this).val();
-        
-      if(checkPwd.length >= 8){
-      		  
-        // 비밀번호 확인
-        if (checkPwd === $pwdInput.val()) {
-         
-            $("#checkPwd").show()
-                .css({
-                    "color": "#71C9CE",
-                    "font-size": "12px",
-                    "font-weight": "600"
-                }).text("비밀번호 확인!");
-                            
-           $("#ckPwd").css("border","1px solid #71C9CE");   
-        } else {
-           
-            $("#checkPwd").show()
-                .css({
-                    "color": "orangered", 
-                    "font-size": "12px",
-                    "font-weight": "600"
-                }).text("비밀번호가 다릅니다");
-        
-        	$("#ckPwd").css("border","1px solid orangered");
-        	
-        }
+	    $(function(){
+	      const $pwdInput = $("#enrollForm input[name=memberPwd]");
+	 	
+	      $pwdInput.blur(function(){
+	        
+	        let memberPwd=$(this).val();
+	        let validate = /^(?=(.*[A-Za-z].*[0-9]))(?=(.*[0-9].*[!@#$%^&*-_]))(?=(.*[A-Za-z].*[!@#$%^&*-_])).{8,16}$/
+	        
+		if(memberPwd.length >= 8){		
+	     
+	        if(validate.test(memberPwd)){
+	        
+	       
+	         
+	         $("#validatePwd").show()
+	         				  .css({
+							    "color": "#71C9CE",
+							    "font-size": "12px",
+							    "font-weight": "600"
+								}).text("사용가능한 비밀번호입니다!");
+								
+			$("#memberPwd").css("border","2px solid #71C9CE");   
+			$("#enrollForm button[type=submit]").attr("disabled", false);					
+	          
+	        }else{
 
-      }else{
-
-      	$("#ckPwd").css("border", "1px solid #ccc"); // 기본 테두리 색상으로 초기화
-        $("#enrollForm button[type=submit]").attr("disabled",true);
-        $("#checkPwd").hide();  
-      
-      }   
-       
-    });
-});
-
-     /* DAUM 지도검색 API */
+	        	$("#validatePwd").show()
+	        					.css({
+					                "color": "orangered", // 색상 수정
+					                "font-size": "12px",
+					                "font-weight": "600"
+					            }).text("8~16자의 영문 대/소문자, 숫자, 특수문자 중 2가지 이상 조합해서 사용해 주세요.");    
+				$("#memberPwd").css("border","1px solid orangered");  
+				$("#enrollForm button[type=submit]").attr("disabled", true);  
+				$("#noticePwd").show();       	   				
+	        }
+	        
+	   }else{
+	   		  $("#memberPwd").css("border", "1px solid #ccc"); // 기본 테두리 색상으로 초기화
+	          $("#enrollForm button[type=submit]").attr("disabled",true);
+	          $("#validatePwd").hide();  
+	          $("#noticePwd").show();               	   				
+	   	
+	   }     
+	        
+	  	 }); 
+	 	});  
+	 	
+	 	/* 비밀번호 확인 체크 */
+	 	
+	 	 $(function() {
+	 	 
+		    const $ckPwdInput = $("#enrollForm input[name=checkPwd]");
+		    const $pwdInput = $("#enrollForm input[name=memberPwd]");
+	    
+		    $ckPwdInput.change(function() {
+		        let checkPwd = $(this).val();
+	        
+	      		if(checkPwd.length >= 8){
+	      		  
+		        // 비밀번호 확인
+		        if (checkPwd === $pwdInput.val()) {
+		         		                            
+		           $("#ckPwd").css("border","2px solid #71C9CE");   
+		           $("#enrollForm button[type=submit]").attr("disabled", false);
+		           $("#checkPwd").hide();  
+		           
+		        } else {
+		           
+		            $("#checkPwd").show()
+		                .css({
+		                    "color": "orangered", 
+		                    "font-size": "12px",
+		                    "font-weight": "600"
+		                }).text("비밀번호가 다릅니다");
+		        
+		        	$("#ckPwd").css("border","1px solid orangered");
+		        	$("#enrollForm button[type=submit]").attr("disabled", true);
+		        	
+		        }
+		
+	      }else{
+		
+		      	$("#ckPwd").css("border", "1px solid #ccc"); // 기본 테두리 색상으로 초기화
+		        $("#enrollForm button[type=submit]").attr("disabled",true);
+		        
+	      }   
+	       
+	    });
+	});
+	
+	 /* DAUM 지도검색 API */
+	 
 	 function sample4_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -211,31 +212,23 @@
                     extraRoadAddr = ' (' + extraRoadAddr + ')';
                 }
 				
-				var fullAddress = '도로명 : ' + roadAddr + extraRoadAddr+ '\n '+ '지번 : '+ data.jibunAddress ;
+				var fullAddress = '도로명 : ' + roadAddr + extraRoadAddr+ '\n'+ '지번 : '+ data.jibunAddress ;
 				
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('sample4_postcode').value = data.zonecode;
                
                 document.getElementById("sample4_roadAddress").value = fullAddress;
-
-                var guideTextBox = document.getElementById("guide");
-                // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
                 
                 if(data.autoRoadAddress) {
                     var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
-                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
-                    guideTextBox.style.display = 'block';
-
+                  
                 } else if(data.autoJibunAddress) {
                     var expJibunAddr = data.autoJibunAddress;
                     document.getElementById("sample4_roadAddress").value = '도로명 : ' + roadAddr + extraRoadAddr + '\n' + '지번 : ' + expJibunAddr;
-                    guideTextBox.style.display = 'block';
-                } else {
-                    guideTextBox.innerHTML = '';
-                    guideTextBox.style.display = 'none';
-                }
+                    
+                } 
                 
-                window.close(); 
+                document.getElementById("sample4_detailAddress").focus();
             }
         }).open();
     }

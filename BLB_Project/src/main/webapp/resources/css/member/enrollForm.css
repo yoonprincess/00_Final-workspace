@@ -12,11 +12,31 @@ body {
 
 
 .outer {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
 }
 
+#custom-page.container-fluid {
+    margin-top: 80px !important;
+    margin-bottom: 140px !important;
+}
+
+.steps-container {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+    display: flex; 
+    justify-content: center; /* 부모 요소의 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    gap: 10px; /* span 간 간격 */
+}
+
+.steps-container>span {
+    margin: 0 5px;
+   
+}
 .section-header {
     display: flex;
     align-items: center;
@@ -25,7 +45,7 @@ body {
     border-bottom: 2px solid #4A628A;  /* 밑에 줄 추가 */
 }
 
-.section-header h2 {
+.section-header h4 {
     margin: 0;
 }
 
@@ -44,15 +64,7 @@ body {
 .required-mark{
     color:red;
 }
-.breadcrumb {
-    margin-bottom: 30px;
-    font-size: 14px;
-    color: #666;
-}
 
-.breadcrumb span {
-    margin: 0 5px;
-}
 
 .registration-form {
     width: 100%;
@@ -62,6 +74,9 @@ body {
     display: flex;
     border-bottom: 1px solid #eee;
     min-height: 60px;
+    align-items: stretch; 
+    background-color: #f8f8f8;
+    margin-top: 0; 
 }
 
 .form-label {
@@ -71,6 +86,7 @@ body {
     font-size: 14px;
     display: flex;
     align-items: center;
+    height: 100% !important;
 }
 
 .form-input {
@@ -79,6 +95,24 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    background-color: white;
+   
+   
+}
+.input-wrapper {
+    display: flex; /* Flexbox 활성화 */
+    flex-direction: row; /* 가로 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    gap: 10px; /* 간격 추가 (선택 사항) */
+}
+
+.id-input{
+    display: flex; /* Flexbox 활성화 */
+    flex-direction: column; /* 요소들을 세로로 정렬 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+}
+#checkId {
+    margin-top: 5px;  /* input과 checkId 사이의 간격 */
 }
 
 .input-field {
@@ -87,12 +121,20 @@ body {
     border: 1px solid #ddd;
     border-radius: 3px;
     font-size: 14px;
+   
 }
 
 .input-field:focus {
     outline: none;
     border-color: #666;
 }
+
+.input-notice {
+    display: inline-flex; /* span을 가로로 배치 */
+    margin-top: 5px; /* 간격 추가 */
+    margin-left: 10px; /* input과의 간격 조정 */
+}
+
 
 .select-field {
     height: 35px;
@@ -142,7 +184,7 @@ body {
     gap: 10px; /* 우편번호와 버튼 사이 간격 */
     margin-bottom: 10px; /* 아래 입력창과 간격 */
     margin-top: 10px;
-    padding: 0 10px;
+    padding: 0 5px;
     gap: 5px; /* 기본주소와 상세주소 사이 간격 */
     box-sizing: border-box;
 }
@@ -157,7 +199,7 @@ body {
     width: 100%;
     margin-bottom: 5px;
     resize: none; /* 텍스트 영역 크기 조정 방지 */
-    padding: 0 10px;
+    padding: 0 5px;
    
 }
 
@@ -173,7 +215,7 @@ body {
 .address-row {
     display: flex;
     flex-direction: column; /* 세로로 배치 */
-    padding: 0 10px;
+    padding: 0 5px;
     
 }
 
@@ -212,8 +254,9 @@ body {
 }
 
 .submit-row {
-    margin-top: 30px;
+    margin-top: 50px;
     text-align: center;
+  
 }
 
 .submit-button {

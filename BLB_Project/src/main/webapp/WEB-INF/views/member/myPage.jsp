@@ -17,9 +17,9 @@
   
 </head>
 
-<body>
+<body class="body-offset">
     <%@ include file="/WEB-INF/views/common/header.jsp" %>
-  <div id="outer">
+  <div class="container-fluid">
         <div id="main">
             <div id="menubar">
                 <div class="my-page"><h3>마이페이지</h3></div>

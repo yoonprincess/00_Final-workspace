@@ -49,7 +49,7 @@ INSERT INTO TB_GRADE(GRADE_NAME
                                                 TO_DATE('2000-01-01', 'YYYY-MM-DD'),
                                                 DEFAULT,
                                                 NULL,
-                                                'y',
+                                                'Y',
                                                 DEFAULT,
                                                 DEFAULT,
                                                 'VIP'
@@ -98,7 +98,7 @@ INSERT INTO TB_MEMBER (
                                             TO_DATE('2000-01-11', 'YYYY-MM-DD'), 
                                             DEFAULT,
                                             NULL,
-                                            'y',
+                                            'Y',
                                             DEFAULT,
                                             DEFAULT,
                                             'BABY'

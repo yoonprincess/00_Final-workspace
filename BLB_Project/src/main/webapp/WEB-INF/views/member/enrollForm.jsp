@@ -31,48 +31,54 @@
    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     
 </head>
-<body>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
-    <div class="outer" >    
-        <h2 align="center"> 회원가입 </h2>
-        <br>
-        <nav class="breadcrumb" align="center">
+<body class="body-offset">
+<div%@ include file="/WEB-INF/views/common/header.jsp" %>
+    <div class="container-fluid" id="custom-page">    
+        <h3 align="center"> 회원가입 </h3>
+        
+        <nav class="steps-container outer" align="center">
             <span>1. 약관동의 </span>
             <span>></span>
-            <span>2. 정보입력</span>
+            <span><b>2. 정보입력</b></span>
             <span>></span>
             <span>3. 가입완료</span>
         </nav>
 
-        <form class="registration-form" action="insert.me" method="post" id="enrollForm">
+        <form class="registration-form outer" action="insert.me" method="post" id="enrollForm">
             <div class="section-header">
-                <h2>기본정보</h2> 
+                <h4>기본정보</h4> 
                 <span class="required"><span class="required-mark" >*</span> 필수입력사항</span>
             </div>
-            <br>
+            
             <div class="form-row">
                 <label class="form-label">아이디 <span class="required-mark" >*</span></label>
-                <div class="form-input">
-                    <input type="text" class="input-field" name="memberId" id="memberId" required>
-                    <span class="input-notice" id="noticeId">(5-20자의 영문소문자/숫자/특수기호(-),(_)만 )</span>
-                   	<span id="checkId" style="display:none;" >아이디체크!</span>
-                </div>
+                <div class="form-input id-input">
+                    <div class="input-wrapper">
+                        <input type="text" class="input-field" name="memberId" id="memberId" required>
+                        <span class="input-notice" id="noticeId">(5-20자의 영문소문자/숫자만)</span>
+                    </div>
+                    <div id="checkId" style="display:none;"></div>
+                </div>              
             </div>
 		
             <div class="form-row">
                 <label class="form-label">비밀번호 <span class="required-mark" >*</span></label>
-                <div class="form-input">
-                    <input type="password" class="input-field" name="memberPwd" id="memberPwd" required>
-                    <span class="input-notice" id="noticePwd">(영문대/소문자, 숫자, 특수문자 중 2가지 이상 조합, 8-16자)</span>
-					<span id="validatePwd" style="display:none;" >비번체크!</span>
+                <div class="form-input id-input">
+                    <div class="input-wrapper">
+                        <input type="password" class="input-field" name="memberPwd" id="memberPwd" required>
+                        <span class="input-notice" id="noticePwd">(영문대/소문자, 숫자, 특수문자 중 2가지 이상 조합, 8-16자)</span>
+                    </div>
+					<div id="validatePwd" style="display:none;" ></div>
                 </div>
             </div>
 
             <div class="form-row">
                 <label class="form-label">비밀번호 확인 <span class="required-mark" >*</span></label>
-                <div class="form-input">
-                    <input type="password" class="input-field" name="checkPwd" id="ckPwd" required>
-                    <span id="checkPwd" style="display:none;" >비번체크!</span>
+                <div class="form-input id-input">
+                    <div class="input-wrapper">
+                         <input type="password" class="input-field" name="checkPwd" id="ckPwd" required>
+                    </div>
+                    <div id="checkPwd" style="display:none;" ></div>
                 </div>
             </div>
             <!--
@@ -114,10 +120,11 @@
                 </div>
             </div>
             <br>
+            <br>
             <div class="section-header">
-                <h2>추가 정보 <span class="plus-notice">(선택)</span></h2>
+                <h4>추가 정보 <span class="plus-notice">(선택)</span></h4>
             </div>
-		<br>
+		
 		<div class="form-row">
            <label class="form-label">생년월일 </label>
            <div class="form-input birthdate-input">
@@ -125,27 +132,27 @@
            </div>
         </div>
         
-        <div class="form-row">
+        <div class="form-row ">
             <label class="form-label">기본주소 <br> 등록 </label>
-            <div class="form-input-addr">
-                <div class="zipcode-row">
-                    <input type="text" class="input-field address-field"  id="sample4_postcode" placeholder="우편번호" name="postcode" >
-                    <input type="button" class="btn-sm btn-outline-info" onclick="sample4_execDaumPostcode()" value="우편번호"><br>
-                </div>
-                <div class="address-row">
-                       <textarea class="input-field address-field" id="sample4_roadAddress" 
-                       		placeholder="도로명주소" name="deliAddress"></textarea><br>
-                       <input type="text"  class="input-field address-field" 
-                       		  id="sample4_detailAddress" placeholder="상세주소"
-                       		  name="detailAddress">
+            <div  class="form-input ">
+                <div class="form-input-addr" >
+                    <div class="zipcode-row " >
+                        <input type="text" class="input-field address-field"  id="sample4_postcode" placeholder="우편번호" name="postcode" >
+                        <input type="button" class="btn-sm btn-outline-info" onclick="sample4_execDaumPostcode()" value="우편번호"><br>
+                    </div>
+                    <div class="address-row ">
+                        <textarea class="input-field address-field" id="sample4_roadAddress" 
+                                placeholder="도로명주소" name="deliAddress"></textarea><br>
+                        <input type="text"  class="input-field address-field" 
+                                id="sample4_detailAddress" placeholder="상세주소"   name="detailAddress">
+                    </div>
                 </div>
             </div>
-         
         </div>   
                
         <div class="submit-row">
             <button type="submit" class="btn-lg btn-outline-primary">회원가입</button>
-            <button  class="btn-lg btn-secondary">초기화</button>
+            <button type="reset" class="btn-lg btn-outline-warning">초기화</button>
         </div>
         </form>
     </div>
