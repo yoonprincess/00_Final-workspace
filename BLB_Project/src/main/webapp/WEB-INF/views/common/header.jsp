@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>뷰라밸 - 헤더</title>
     <!-- jQuery 3.7.1 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -19,10 +19,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     
     <!-- header CSS -->
-    <link rel="stylesheet" href="resources/css/common/header.css">
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/common/header.css">
 
     <!-- header Javascript -->
-    <script src="resources/js/common/header.js"></script>
+    <script src="${ pageContext.request.contextPath }/resources/js/common/header.js"></script>
 
     <!-- Google Fonts Icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -49,7 +49,7 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top transparent-navbar">
         <div class="container-fluid">
             <a class="navbar-brand" href="${ pageContext.request.contextPath }/">
-                <img src="resources/images/BLB_logo.png">
+                <img src="${ pageContext.request.contextPath }/resources/images/BLB_logo.png">
             </a>
 
             <!-- 메뉴 버튼 (토글러 좌측) -->
@@ -105,9 +105,17 @@
 
             <div class="collapse navbar-collapse order-md-1" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">전체</a>
-                    </li>
+                    <!-- 제품보기 드롭다운 메뉴 -->
+	                <li class="nav-item dropdown custom-dropdown">
+					    <a class="nav-link" href="${ pageContext.request.contextPath }/list.pr">제품보기</a>
+					    <div class="custom-dropdown-menu">
+					        <a class="dropdown-item" href="${ pageContext.request.contextPath }/list.pr">전체제품</a>
+					        <a class="dropdown-item" href="#">스킨케어</a>
+					        <a class="dropdown-item" href="#">메이크업</a>
+					        <a class="dropdown-item" href="#">맨즈</a>
+					        <a class="dropdown-item" href="#">헤어/바디</a>
+					    </div>
+					</li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">베스트</a>
                     </li>
