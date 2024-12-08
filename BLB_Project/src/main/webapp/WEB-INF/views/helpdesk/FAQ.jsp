@@ -16,7 +16,7 @@
 		<h1>고객센터</h1>
             <div class="tabs">
                 <a class="tab-button active" href="Faq.blb">FAQ</a>
-                <a class="tab-button" href="Inquiry.blb">1:1문의</a>
+                <a class="tab-button" href="list.io">1:1문의</a>
                 <a class="tab-button" href="list.no">공지사항</a>
             </div>
 	    <div id="faq" class="tab-content active">

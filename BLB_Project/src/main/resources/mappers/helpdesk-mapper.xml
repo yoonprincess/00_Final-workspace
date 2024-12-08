@@ -74,4 +74,29 @@
 		<result column="INQUIRY_STATUS" property="inquiryStatus"/>
 	</resultMap>
 	
+	<insert id="insertInquiry" parameterType="inquiry">
+		INSERT INTO TB_INQUIRY(INQUIRY_NO
+		                , INQUIRY_CONTENT
+		                , INQUIRY_TYPE)
+		           VALUES(SEQ_INQUIRY_NO.NEXTVAL
+		                , #{inquiryContent}
+		                , #{inquiryType})
+	</insert>
+	
+	<select id="selectInquiryListCount" resultType="_int">
+		SELECT COUNT(*)
+		  FROM TB_INQUIRY
+		 WHERE INQUIRY_STATUS = 'Y'
+	</select>
+
+	<select id="selectInquiryList" resultMap="inquiryResultSet">
+		SELECT INQUIRY_NO
+		     , INQUIRY_CONTENT
+		     , INQUIRY_TYPE
+		     , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD') AS "INQUIRY_CREATE_DATE"
+		  FROM TB_INQUIRY
+		 WHERE INQUIRY_STATUS = 'Y'
+	  ORDER BY INQUIRY_NO DESC
+	</select>
+	
 </mapper>
