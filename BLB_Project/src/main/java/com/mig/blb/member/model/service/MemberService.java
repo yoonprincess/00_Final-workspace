@@ -2,6 +2,7 @@ package com.mig.blb.member.model.service;
 
 import java.util.ArrayList;
 
+import com.mig.blb.member.model.vo.CertEmail;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
 
@@ -27,6 +28,8 @@ public interface MemberService {
 
 	// 회원가입시 기본배송지 등록
 	int insertDelivery(Delivery d);
+
+	int insertCertEmail(ArrayList<CertEmail> certNoList);
 	
 	
 }

@@ -233,5 +233,31 @@
         }).open();
     }
     
-    
+    // 이메일 인증메일보내기 요청 ajax
+    function cert(){
+
+		let email = $("#email").val();
+		
+		$.ajax({
+			url : "cert.do",
+			type : "post",
+			data : {
+			
+				email : email
+			},
+			success : function(result) {
+				
+				alert(result);
+				
+				$("#cert-email").show();
+				
+				$("#email").attr("disabled", true);
+				$("#cert").attr("disabled", true);
+				
+			},
+			error : function() {
+				console.log("인증번호 발급용 ajax 통신 실패!");
+			}
+		});
+	}
         

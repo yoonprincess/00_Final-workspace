@@ -1,5 +1,6 @@
 package com.mig.blb.member.controller;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -42,8 +43,25 @@ public class MemberController {
 	public ModelAndView loginMember(Member m,
 							ModelAndView mv,
 							HttpSession session,
-							HttpServletResponse response) {
+							HttpServletResponse response,
+							String saveId) {
 		
+		if(saveId != null && saveId.equals("y")) {
+			
+			Cookie cookie = new Cookie("saveId", m.getMemberId());
+			
+			cookie.setMaxAge(24 * 60 * 60 * 1); 
+			
+			response.addCookie(cookie);
+			
+		} else { 
+
+			Cookie cookie = new Cookie("saveId", m.getMemberId());
+			
+			cookie.setMaxAge(0);
+			
+			response.addCookie(cookie);
+		}
 		
 		Member loginUser = memberService.loginMember(m);
 		
@@ -75,8 +93,17 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	//  약관동의 페이지 요청
+	@GetMapping("agreement.me")
+	public ModelAndView agreement(ModelAndView mv) {
+		
+		mv.setViewName("member/agreementForm");
+		
+		return mv;
+	}
+	
 	// 회원가입페이지 요청 
-	@GetMapping("enrollForm.me")
+	@PostMapping("enrollForm.me")
 	public ModelAndView enrollForm(ModelAndView mv) {
 		
 		mv.setViewName("member/enrollForm");

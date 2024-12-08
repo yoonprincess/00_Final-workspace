@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,22 +20,29 @@
       
     </style>
 </head>
-<body>
+<body  class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-    <div id="outer">
+    <div id="outer" class="container-fluid">
         <div class="login-container">
-        <h1 id="title" >로그인</h1>
+        <h2 id="title" >로그인</h2>
         <div class="sub-title">로그인을 하시면 다양한 혜택을 누리실 수 있습니다.</div>
         <br><br><br>
 
             <form action="login.me" method="post">
-                <input type="text" class="input-field" placeholder="아이디" required name="memberId">
+                <input type="text" class="input-field" placeholder="아이디" required name="memberId" value="${ cookie.saveId.value }">
                 <input type="password" class="input-field" placeholder="비밀번호" required name="memberPwd">
             
                 <div class="keep-login">
-                    <label>
-                        <input type="checkbox"> 아이디저장
-                    </label>
+                   <c:choose>
+                   		<c:when test="${ not empty cookie.saveId }">
+	                    	<input type="checkbox" id="saveId" name="saveId" value="y" checked>
+	                    	<label for="saveId" class="inline-label">아이디 저장</label>
+	                    </c:when>
+	                    <c:otherwise>
+	                    	<input type="checkbox" id="saveId" name="saveId" value="y">
+	                    	<label for="saveId" class="inline-label">아이디 저장</label>
+                   		</c:otherwise>
+                   	</c:choose>
                 </div>
                 <button type="submit" id="loginBtn"> 로그인 </button>
                 <div class="links">
@@ -42,7 +50,7 @@
                     <span class="divider"></span>
                     <a href="#">비밀번호 찾기</a>
                     <span class="divider"></span>
-                    <a href="${ pageContext.request.contextPath }/enrollForm.me">회원가입</a>
+                    <a href="${ pageContext.request.contextPath }/agreement.me">회원가입</a>
                 </div>
                 <br>
                 <hr>

@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.5;
+    color: #333;
+}
+
+
+.outer {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+#custom label {
+    display: inline-block !important; /* 특정 페이지에서만 block을 변경 */
+}
+#custom-page{
+    margin-bottom: 100px;
+    margin-top: 60px !important;
+}
+.steps-container {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+    display: flex; 
+    justify-content: center; /* 부모 요소의 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    gap: 10px; /* span 간 간격 */
+}
+
+.steps-container>span {
+    margin: 0 5px;
+}
+
+.container {
+    display: flex; /* 가로 배치 */
+    justify-content: space-between; /* 좌우 정렬 */
+    gap: 50px; /* 좌우 간격을 더 줄임 */
+    margin: 0 auto;
+    margin-left: 0px !important;
+    padding-left: 0px !important;
+    
+}
+
+.left {
+    flex: 1; /* 공간 비율 */
+}
+
+.right {
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* 세로 배치 */
+    gap: 10px; /* 위아래 간격 */
+
+}
+
+#agreementForm textarea{
+    width:670px;
+    font-size: 14px !important;
+    border: 1px solid silver;
+    margin-top: 5px; /* 체크박스/텍스트 아래 여백 */
+    resize: none !important;
+    color: gray;
+   
+}
+
+textarea:focus {
+    outline: none;
+}
+
+.terms-row {
+    display: flex;
+    align-items: center;  /* 세로 정렬 */
+    gap: 10px; /* 내부 요소 간격 */
+   
+}
+
+.submit-row {
+    margin: 0 auto;
+    margin-top: 50px;
+    text-align: center;
+  
+}
+
+.submit-row .next {
+    padding: 12px 40px;
+    background-color: #4A628A;
+    color: white;
+    border: none;
+    width: 150px;
+    height: 50px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-row .back {
+    padding: 12px 40px;
+    background-color: white;
+    color: #4A628A;
+    width: 150px;
+    height: 50px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+

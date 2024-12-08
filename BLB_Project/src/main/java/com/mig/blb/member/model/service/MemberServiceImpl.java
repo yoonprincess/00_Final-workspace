@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mig.blb.member.model.dao.MemberDao;
+import com.mig.blb.member.model.vo.CertEmail;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
 
@@ -58,6 +59,11 @@ public class MemberServiceImpl implements MemberService {
 	public int insertDelivery(Delivery d) {
 		
 		return  memberDao.insertDelivery(sqlSession, d);
+	}
+	@Override
+	public int insertCertEmail(ArrayList<CertEmail> certNoList) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	

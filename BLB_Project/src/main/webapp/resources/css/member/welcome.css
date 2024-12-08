@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.5;
+    color: #333;
+}
+
+
+.outer {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+#custom-page{
+    margin-bottom: 100px;
+    margin-top: 60px !important;
+}
+.steps-container {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+    display: flex; 
+    justify-content: center; /* 부모 요소의 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    gap: 20px; /* span 간 간격 */
+}
+
+.steps-container>span {
+    margin: 0 5px;
+}
+
+.rows{
+    width: 80%;
+}
+
+.submit-row {
+    margin: 0 auto;
+    margin-top: 50px;
+    text-align: center;
+  
+}
+
+.submit-row .next {
+    padding: 12px 40px;
+    background-color: #a4ebf3;
+    color: #4A628A;
+    border: none;
+    width: 150px;
+    height: 50px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-row .back {
+    padding: 12px 40px;
+    background-color: white;
+    color: #4A628A;
+    width: 150px;
+    height: 50px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#welcomeIcon{
+    font-size: 80px !important;
+    color:#a4ebf3;
+}
+
+
+.form-row {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    min-height: 60px;
+    align-items: stretch; 
+    background-color: #f8f8f8;
+    margin-top: 0; 
+   
+}
+
+.form-label {
+    width: 180px;
+    padding: 15px;
+    background-color: #f8f8f8;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    height: 100% !important;
+  
+}
+
+.form-input {
+    flex: 1;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: white;   
+}
+
+
+
+

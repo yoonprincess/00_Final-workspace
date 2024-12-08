@@ -24,7 +24,7 @@
             <div id="menubar">
                 <div class="my-page"><h3>마이페이지</h3></div>
                 <div class="menu-section">
-                    <hr><hr>
+                    <hr class="custom-hr"> <hr class="custom-hr">
                     <div class="menu-item">마이 쇼핑</div>
                     <div id="selected" class="sub-menu-item" >주문/배송 조회</div>
                     <div class="sub-menu-item" >취소/반품/교환 내역</div>
@@ -32,7 +32,7 @@
                     <div class="sub-menu-item" >찜한리스트</div>
                 </div>
                 <br>
-                <hr><hr>
+                <hr class="custom-hr"> <hr class="custom-hr">
                 <div class="menu-section">
                     <div class="menu-item">마이활동</div>
                     <div class="sub-menu-item" >1:1 문의내역</div>
@@ -40,7 +40,7 @@
                     <div class="sub-menu-item" >상품 Q&A 내역</div>
                 </div>
                 <br>
-                <hr><hr>
+                <hr class="custom-hr"> <hr class="custom-hr">
                 <div class="menu-section">
                     <div class="menu-item">마이 정보</div>
                     <div class="sub-menu-item" >회원정보 수정</div>
@@ -54,11 +54,11 @@
               <div class="header">
                   <div class="user-info">
                       <span class="text-gray-600">뷰라밸의 소중한 회원</span>
-                      <h1>홍길동님, 반갑습니다.</h1>
+                      <h2> ${ loginUser.memberName }님, 반갑습니다.</h2>
                       <div class="member-grade">
                           <span class="text-gray-600">회원등급</span>
                           <span class="i-icon">i</span>
-                          <span class="bold">BABY</span>
+                          <span class="bold">${ loginUser.gradeName } </span>
                           <span class="info-icon">B</span>
                       </div>
                       <div class="monthly-info">
@@ -71,7 +71,7 @@
                   <div class="points-coupons">
                       <div class="points">
                           <div class="icon">P</div>
-                          <div class="amount">2,000원</div>
+                          <div class="amount">${ loginUser.currentPoints }원</div>
                           <div class="label">적립금</div>
                       </div>
                       <div class="divider"></div>
@@ -87,7 +87,7 @@
               <!-- Delivery Tracking -->
               <div class="section delivery-tracking" style="border : none;">
                   <div class="section-header">
-                      <h2>주문/배송 조회</h2>
+                      <h4>주문/배송 조회</h4>
                       <button class="more-btn">더보기 &gt;</button>
                   </div>
                  
@@ -122,7 +122,7 @@
               <!-- Likes Section -->
               <div class="section likes" style="border : none;">
                   <div class="section-header">
-                      <h2>찜한 상품</h2>
+                      <h4>찜한 상품</h4>
                       <button class="more-btn">더보기 &gt;</button>
                     </div>
                   <div class="product-grid">
@@ -196,28 +196,28 @@
               </div>
       
               <!-- Inquiry Sections -->
-              <div class="inquiry-sections " >
-                  <div class="section inquiry" style="border:none;">
-                      <div class="section-header">
-                          <h2>1:1 문의내역</h2>
-                          <button class="more-btn">더보기 &gt;</button>
-                      </div>
-                      <p class="no-content">최근 1개월간 문의하신 내용이 없습니다.</p>
-                  </div>
-                  <div class="section inquiry" style="border:none;">
-                      <div class="section-header">
-                          <h2>상품 Q&A내역</h2>
-                          <button class="more-btn">더보기 &gt;</button>
-                      </div>
-                      <div class="qna-list">
-                        <div class="qna-item">
-                          <div class="qna-details">
-                            <span class="answer-status">답변대기</span>
-                          </div>
-                            <div class="qna-title">어떤 용도로 사용하는 건가요?</div>
-                            <div class="qna-date">2024-11-18</div>
-                          </div>
-                        </div>
+	              <div class="inquiry-sections " >
+	                  <div class="section inquiry" >
+	                      <div class="section-header">
+	                          <h4>1:1 문의내역</h4>
+	                          <button class="more-btn">더보기 &gt;</button>
+	                      </div>
+	                      <p class="no-content">최근 1개월간 문의하신 내용이 없습니다.</p>
+	                  </div>
+	                  <div class="section inquiry" style="border:none;">
+	                      <div class="section-header">
+	                          <h4>상품 Q&A내역</h4>
+	                          <button class="more-btn">더보기 &gt;</button>
+	                      </div>
+	                      <div class="qna-list">
+	                        <div class="qna-item">
+	                          <div class="qna-details">
+	                            <span class="answer-status">답변대기</span>
+	                          </div>
+	                            <div class="qna-title">어떤 용도로 사용하는 건가요?</div>
+	                            <div class="qna-date">2024-11-18</div>
+	                          </div>
+	                        </div>
 
                         <div class="qna-item">
                           <div class="qna-details">
@@ -225,14 +225,28 @@
                           </div>
                             <div class="qna-title">사용기한이 궁금합니다.</div>
                             <div class="qna-date">2024-11-18</div>
+                        </div>
+                          <div class="qna-item">
+                          <div class="qna-details">
+                            <span class="answer-status">답변대기</span>
                           </div>
+                            <div class="qna-title">사용기한이 궁금합니다.</div>
+                            <div class="qna-date">2024-11-18</div>
+                        </div>
+                          <div class="qna-item">
+                          <div class="qna-details">
+                            <span class="answer-status">답변대기</span>
+                          </div>
+                            <div class="qna-title">사용기한이 궁금합니다.</div>
+                            <div class="qna-date">2024-11-18</div>
+                        </div>
                         </div>
                     </div>
                   </div>
               </div>
           </div>
-      </div>
-   </div>
+     
+
       <%@ include file="/WEB-INF/views/common/footer.jsp" %>
   </body>
 </html>

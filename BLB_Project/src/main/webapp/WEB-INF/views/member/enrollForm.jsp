@@ -32,7 +32,7 @@
     
 </head>
 <body class="body-offset">
-<div%@ include file="/WEB-INF/views/common/header.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
     <div class="container-fluid" id="custom-page">    
         <h3 align="center"> 회원가입 </h3>
         
@@ -113,10 +113,13 @@
             <div class="form-row">
                 <label class="form-label">이메일 <span class="required-mark" >*</span></label>
                 <div class="form-input">
-                    <input type="email" class="input-field" name="email" required>
-                    <!--  
-                    <button type="button" class="confirm-button">중복확인</button>
-                    -->
+                    <input type="email" class="input-field" name="email" required id="email">
+                    <button type="button" class="confirm-button" id="cert" onclick="cert();">인증</button>
+                   
+                   <div class="input-wrapper" style="display:none;" id="cert-email">
+                         <input type="text" class="input-field" name="checkNo" >
+                         <button type="button" class="confirm-button" id="vali_email" onclick="validateEmail();">확인</button>
+                    </div> 
                 </div>
             </div>
             <br>
