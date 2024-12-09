@@ -14,6 +14,12 @@
                         
                         background-repeat:no-repeat; background-position: right bottom;">
                 <div style="width:550px; height:100%; margin:0; padding:60px 70px;">
+                       <div style="width:97px; height:22px; display:inline-block; overflow:hidden; cursor:pointer;">
+                        <img src="http://localhost/blb/resources/images/BLB_logo.png" alt="BLB Logo"
+                             style="clear:none; float:none;" 
+                             alt="KH정보교육원로고" 
+                             loading="lazy">
+                   	  	</div>
                     <p style="font-size:35px; font-weight:bold; line-height:1.2; letter-spacing:-0.075em; 
                               color:#fff; padding:0; margin:33px 0 10px;">
                         뷰라밸<br>이메일 인증 안내메일입니다.

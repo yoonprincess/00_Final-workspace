@@ -53,7 +53,9 @@
             	        <div class="sub-menu-item" >회원정보 수정</div>
 	          	  </a>
                     <div class="sub-menu-item" >배송지 관리</div>
+                   <a  href="${ pageContext.request.contextPath }/deleteForm.me">
                     <div class="sub-menu-item" >회원탈퇴</div>
+                   </a>
                 </div> 
              </div>
 

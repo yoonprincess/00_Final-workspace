@@ -112,13 +112,22 @@ body {
     align-items: flex-start; /* 왼쪽 정렬 */
 }
 #checkId {
-    margin-top: 5px;  /* input과 checkId 사이의 간격 */
+    margin-top: 5px;
 }
 
 #email-form-input{
 	flex-direction:column;
 	 align-items: flex-start; /* 항목을 왼쪽으로 정렬 */
 }
+
+#cert-email .time{
+	color: #7AB2D3; 
+	font-size:13px;
+	text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); 
+	font-weight:bold;
+	
+}
+
 .input-field {
     height: 35px;
     padding: 0 10px;

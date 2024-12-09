@@ -166,7 +166,7 @@ public class MemberController {
 	@GetMapping("myPage.me")
 	public ModelAndView myPage(ModelAndView mv, HttpSession session) {
 		
-		String loginUser =(String)session.getAttribute("loginUser");
+		Member loginUser =(Member)session.getAttribute("loginUser");
 		
 		if( loginUser != null) {
 			mv.setViewName("member/myPage");
@@ -185,7 +185,7 @@ public class MemberController {
 										Delivery d,
 										HttpSession session) {
 		
-		String loginUser =(String)session.getAttribute("loginUser");
+		Member loginUser =(Member)session.getAttribute("loginUser");
 		
 		if( loginUser != null) {
 			mv.setViewName("member/updateMemberForm");
@@ -199,7 +199,21 @@ public class MemberController {
 		return mv;
 	}
 	
-	
+	// 회원탍퇴페이지 요청 
+		@GetMapping("deleteForm.me")
+		public ModelAndView deleteForm(ModelAndView mv, HttpSession session) {
+			
+			Member loginUser =(Member)session.getAttribute("loginUser");
+			
+			if( loginUser != null) {
+				mv.setViewName("member/deleteForm");
+			
+			}else {
+				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+				mv.setViewName("/main");
+			}
+			return mv;
+		}
 }
 
 

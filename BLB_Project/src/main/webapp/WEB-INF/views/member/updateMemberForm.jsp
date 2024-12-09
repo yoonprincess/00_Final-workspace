@@ -30,6 +30,7 @@
     <!-- daum 지도검색 api -->
    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     
+    <script> var phone = "${loginUser.phone}"; </script>
 </head>
 <body class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -107,8 +108,9 @@
                 <label class="form-label">이메일 <span class="required-mark" >*</span></label>
                 <div class="form-input" id="email-form-input" >
                 	<div class="input-wrapper" >
-	                    <input type="email" class="input-field" name="email" required id="email" value="${loginUser.email}">
-	                    <button type="button" class="btn-sm btn-outline-info" id="certbtn" onclick="cert();">인증</button>
+	                    <input type="email" class="input-field" name="email" required id="email" value="${loginUser.email}" disabled>
+	                    <button type="button" class="btn-sm btn-outline-info" id="changebtn" onclick="changeEmail();">변경</button>
+	                    <button type="button" class="btn-sm btn-outline-info" id="certbtn" style="display:none;">인증</button>
                    </div>
                    <div class="input-wrapper" style="display:none;" id="cert-email">
                          <input type="text" class="input-field" name="checkNo" id="certKey" >
@@ -155,8 +157,8 @@
         </div>   
                
         <div class="submit-row">
-            <button type="submit" class="btn-lg btn-outline-primary">회원정보 수정</button>
-            <button type="button" class="btn-lg btn-outline-warning" onclick="goBack();">취소하기</button>
+            <button type="submit" class="btn-lg btn-outline-primary">정보수정</button>
+            <button type="button" class="btn-lg btn-outline-warning" onclick="goBack();">취소</button>
         </div>
         </form>
     </div>

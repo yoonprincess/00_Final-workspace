@@ -115,11 +115,12 @@
                 <div class="form-input" id="email-form-input" >
                 	<div class="input-wrapper" >
 	                    <input type="email" class="input-field" name="email" required id="email">
-	                    <button type="button" class="btn-sm btn-outline-info" id="certbtn" onclick="cert();">인증</button>
+	                    <button type="button" class="btn-sm btn-outline-info" id="certbtn">인증</button>
                    </div>
                    <div class="input-wrapper" style="display:none;" id="cert-email">
-                         <input type="text" class="input-field" name="checkNo" id="certKey">
+                         <input type="text" class="input-field" name="checkNo" id="certKey" >
                          <button type="button" class="btn-sm btn-outline-info" id="vali_email" onclick="validateEmail();">확인</button>
+                    	 <span class="time" >인증시간</span>
                     </div> 
                 </div>
             </div>
