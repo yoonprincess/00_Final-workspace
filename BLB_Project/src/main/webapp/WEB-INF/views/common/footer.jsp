@@ -12,7 +12,7 @@
         <div class="container-fluid">
             <div class="footer-content d-flex align-items-center">
                 <!-- 로고 이미지 -->
-                <img src="resources/images/BLB_logo.png" alt="BLB Logo" class="footer-logo">
+                <img src="${ pageContext.request.contextPath }/resources/images/BLB_logo.png" alt="BLB Logo" class="footer-logo">
                 <!-- 텍스트 정보 -->
                 <div class="footer-text">
                     <p>
