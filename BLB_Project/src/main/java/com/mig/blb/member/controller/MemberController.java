@@ -138,14 +138,14 @@ public class MemberController {
 		
 		if(result > 0 && (result2 > 0 || d.getPostcode().isEmpty())) { 
 			
-			session.setAttribute("alerMsg", "환영합니다-*^^*");
+			session.setAttribute("alertMsg", "환영합니다-*^^*");
 			mv.addObject("memberId", m.getMemberId());
 			mv.addObject("memberName", m.getMemberName());
 			mv.addObject("email", m.getEmail());
 			mv.setViewName("member/welcome");
 			
 		}else {
-			mv.addObject("errorMsg","회원가입실패!");
+			session.setAttribute("alertMsg", "회원가입 실패..");
 			mv.setViewName("common/errorPage");
 		}
 		return mv;
@@ -164,10 +164,17 @@ public class MemberController {
 	
 	// 마이페이지 요청 
 	@GetMapping("myPage.me")
-	public ModelAndView myPage(ModelAndView mv) {
+	public ModelAndView myPage(ModelAndView mv, HttpSession session) {
 		
-		mv.setViewName("member/myPage");
+		String loginUser =(String)session.getAttribute("loginUser");
 		
+		if( loginUser != null) {
+			mv.setViewName("member/myPage");
+		
+		}else {
+			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+			mv.setViewName("/main");
+		}
 		return mv;
 	}
 	
@@ -178,11 +185,17 @@ public class MemberController {
 										Delivery d,
 										HttpSession session) {
 		
-		mv.setViewName("member/updateMemberForm");
+		String loginUser =(String)session.getAttribute("loginUser");
 		
+		if( loginUser != null) {
+			mv.setViewName("member/updateMemberForm");
 		
-		
-		
+		}else {
+			
+			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+			mv.setViewName("/main");
+		}
+				
 		return mv;
 	}
 	
