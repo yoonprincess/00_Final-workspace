@@ -125,8 +125,7 @@ tr>img {
 #cart-price th {
     padding : 15px 0;
     border-bottom: 1px solid #F4F4F9;
-    font-weight: lighter;
-    text-align: center;
+    font-weight:lighter;
 }
 
 #cart-price td {

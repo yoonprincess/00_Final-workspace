@@ -16,8 +16,8 @@
 	 	<typeAlias type="com.mig.blb.cart.model.vo.Cart" alias="cart" />
 	 	<typeAlias type="com.mig.blb.member.model.vo.Delivery" alias="delivery" />
 	 	<typeAlias type="com.mig.blb.member.model.vo.CertEmail" alias="certemail" />
+	 	<typeAlias type="com.mig.blb.order.model.vo.Order" alias="order" />
 	 </typeAliases>
-	 
 	 
 	 <mappers>
 	 	<mapper resource="/mappers/member-mapper.xml" />

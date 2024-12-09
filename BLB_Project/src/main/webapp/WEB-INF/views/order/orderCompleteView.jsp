@@ -11,7 +11,7 @@
 </head>
 <body class="body-offset">
 
-    <jsp:include page="../common/header.jsp" />
+    <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
     <div class="container-fluid">
         <form action="orderComplete.or" method="post">
@@ -90,14 +90,13 @@
                     ・ 주문취소는 [결제완료] 상태까지 가능합니다. [배송준비중], [배송중]에는 상품 수령 후 반품요청 부탁드립니다.
                 </p>
                 <div class="action-buttons">
-                    <button class="btn btn-secondary">쇼핑 계속</button>
-                    <button class="btn btn-primary">주문 내역 조회</button>
+                    <button class="btn btn-secondary" onclick="javascript:histoty.go(-1);">쇼핑 계속</button>
+                    <a href="${ pageContext.request.contextPath }/myOrderList.me" class="btn btn-primary">주문 내역 조회</a>
                 </div>
             </div>
         </form>
     </div>
 
-    <jsp:include page="../common/footer.jsp" />
 
 </body>
 </html>

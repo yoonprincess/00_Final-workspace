@@ -6,8 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>장바구니 | 뷰라밸</title>
-<!-- <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/cart/cartListView.css"> -->
-<link rel="stylesheet" type="text/css" href="../../..//resources/css/cart/cartListView.css">
+<link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/cart/cartListView.css">
+<!-- <link rel="stylesheet" type="text/css" href="../../../resources/css/cart/cartListView.css"> -->
 <!-- 부트스트랩 -->
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
 </head>
@@ -111,7 +111,6 @@
 
     </div>
 
-    <jsp:include page="../common/footer.jsp" />
 
 </body>
 </html>

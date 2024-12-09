@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper nameplace="orderMapper">
+
+	<resultMap id="orderResultSet" type="order">
+    	<id column="ORDER_NO" property="orderNo" />
+		<result column="RCVR_NAME" property="rcvrName" />
+	    <result column="RCVR_PHONE" property="rcvrPhone" />
+	    <result column="RCVR_ADDRESS" property="rcvrAddress" />
+	    <result column="DLVR_REQ_MESSAGE" property="dlvrReqMessage" />
+	    <result column="DLVR_STATUS" property="dlvrStatus" />
+	    <result column="DLVR_FEE" property="dlvrFee" />
+	    <result column="DLVR_COMPANY" property="dlvrCompany" />
+	    <result column="DISPATCH_DATE" property="dispatchDate" />
+	    <result column="COMPLETE_DATE" property="completeDate" />
+	    <result column="ORDER_TOTAL_AMT" property="orderTotalAmt" />
+	    <result column="PAYMENT_CODE" property="paymentCode" />
+	    <result column="PAYMENT_METHOD" property="paymentMethod" />
+	    <result column="ORDER_DATE" property="orderDate" />
+	    <result column="REFUND_DATE" property="refundDate" />
+	    <result column="REFUND_REASON" property="refundReason" />
+	    <result column="MEMBER_ID" property="memberId" />
+	</resultMap>
+	
+	<insert id="insertOrder">
+	
+	</insert>
+
+</mapper>
