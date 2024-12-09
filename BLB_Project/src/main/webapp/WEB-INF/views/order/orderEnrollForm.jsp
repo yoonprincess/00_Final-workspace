@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>주문서 작성/결제 | 뷰라밸</title>
-<!-- <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/order/orderEnrollForm.css'/>"> -->
+<!-- <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/order/orderEnrollForm.css"> -->
 <link rel="stylesheet" type="text/css" href="../../../resources/css/order/orderEnrollForm.css">
 <!-- 부트스트랩 -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -16,7 +16,7 @@
 
     <jsp:include page="../common/header.jsp" />
 
-    <div class="order-form">
+    <div class="container-fluid">
 
         <!-- 네비게이터 영역 -->
         <div class="navigator">
