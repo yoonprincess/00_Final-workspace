@@ -17,6 +17,7 @@ public class Product {
 
 	private int prodNo;					//	PROD_NO	NUMBER
 	private String categoryName;		//	CATEGORY_NAME	VARCHAR2(60 BYTE)
+	private String subcategoryName;		//	SUBCATEGORY_NAME	VARCHAR2(60 BYTE)
 	private String prodName;			//	PROD_NAME	VARCHAR2(300 BYTE)
 	private String prodContent;			//	PROD_CONTENT	VARCHAR2(3900 BYTE)
 	private int prodPrice;				//	PROD_PRICE	NUMBER

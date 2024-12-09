@@ -227,16 +227,36 @@ body {
 
 /* 페이지 네비게이션 스타일 */
 .pagination {
+    display: flex;
     justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 5px 5px;
 }
 
-.page-link {
-    color: #2A253F !important;
-    border-color: #493375 !important;
+.pagination li {
+    margin: 0 2px;
 }
 
-.page-link:hover {
-    color: #fff !important;
-    background-color: #493375 !important;
-    border-color: #493375 !important;
+.pagination a {
+    display: inline-block;
+    padding: 5px 10px 4px 10px;
+    border: 1px solid #DFF2EB;
+    border-radius: 3px;
+    color: #7AB2D3;
+    text-decoration: none !important;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.pagination a:hover {
+    border: 1px solid #7AB2D3;
+}
+
+.pagination .active {
+    border: 1px solid #7AB2D3;
+    font-weight: bold;
+    color: #7AB2D3;
+    pointer-events: none; /* 클릭 이벤트 비활성화 */
+    cursor: default; /* 클릭할 수 없음을 시각적으로 표시 */
 }

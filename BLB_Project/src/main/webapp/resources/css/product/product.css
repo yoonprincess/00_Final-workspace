@@ -16,7 +16,7 @@
 /* 필터 스타일 */
 td label {
     margin-right: 15px; /* 라벨 오른쪽 간격 */
-    margin-bottom: 10px; /* 아래쪽 간격 */
+    margin-bottom: 0px; /* 아래쪽 간격 */
     display: inline-block !important; /* 한 줄에 여러 개 배치되도록 */
 }
 .d-flex button {
@@ -99,36 +99,3 @@ td label {
     font-size: 0.8rem;
 }
 
-/* 페이지 네비게이션 스타일 */
-.pagination {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    padding: 0;
-    margin: 5px 5px;
-}
-
-.pagination li {
-    margin: 0 2px;
-}
-
-.pagination a {
-    display: inline-block;
-    padding: 5px 10px 4px 10px;
-    border: 1px solid #DFF2EB;
-    border-radius: 3px;
-    color: #7AB2D3;
-    text-decoration: none !important;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.pagination a:hover {
-    border: 1px solid #7AB2D3;
-}
-
-.pagination .active {
-    border: 1px solid #7AB2D3;
-    font-weight: bold;
-    color: #7AB2D3;
-}

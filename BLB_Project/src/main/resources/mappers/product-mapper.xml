@@ -5,6 +5,7 @@
 	<resultMap id="productResultSet" type="product">
 		<id column="PROD_NO" property="prodNo"/>
 		<result column="CATEGORY_NAME" property="categoryName"/>
+		<result column="SUBCATEGORY_NAME" property="subcategoryName"/>
 		<result column="PROD_NAME" property="prodName"/>
 		<result column="PROD_CONTENT" property="prodContent"/>
 		<result column="PROD_PRICE" property="prodPrice"/>
@@ -15,5 +16,39 @@
 		<result column="PROD_STATUS" property="prodStatus"/>
 	</resultMap>
 	
+	<select id="selectProductCount" parameterType="map" 
+			resultType="_int">
+		SELECT COUNT(*) AS COUNT
+		  FROM TB_PRODUCT
+		 WHERE PROD_STATUS = 'Y'
+		   AND (#{category} = '전체제품' OR CATEGORY_NAME = #{category})
+		   <if test="subcategories != null and subcategories.size() > 0">
+	           AND SUBCATEGORY_NAME IN
+	           <foreach item="subcategory" collection="subcategories" open="(" separator="," close=")">
+	               #{subcategory}
+	           </foreach>
+	       </if>
+	</select>
 	
+	<select id="selectProductList" parameterType="map" 
+			resultMap="productResultSet">
+		SELECT P.PROD_NO
+		     , P.CATEGORY_NAME
+		     , P.SUBCATEGORY_NAME
+		     , P.PROD_NAME
+		     , P.PROD_CONTENT
+		     , P.PROD_PRICE
+		     , P.PROD_COUNT
+		     , P.PROD_ENROLL_DATE
+		  FROM TB_PRODUCT P
+		 WHERE P.PROD_STATUS = 'Y'
+		   AND (#{category} = '전체제품' OR CATEGORY_NAME = #{category})
+		   <if test="subcategories != null and subcategories.size() > 0">
+	           AND SUBCATEGORY_NAME IN
+	           <foreach item="subcategory" collection="subcategories" open="(" separator="," close=")">
+	               #{subcategory}
+	           </foreach>
+	       </if>
+		 ORDER BY P.PROD_NO DESC
+	</select>
 </mapper>

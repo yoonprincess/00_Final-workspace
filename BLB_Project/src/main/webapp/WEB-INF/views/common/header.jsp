@@ -9,20 +9,12 @@
     <!-- jQuery 3.7.1 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <!-- Popper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
-    <!-- Bootstrap 4.6.2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-
     <!-- Bootstrap 4.6.2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     
     <!-- header CSS -->
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/common/header.css">
 
-    <!-- header Javascript -->
-    <script src="${ pageContext.request.contextPath }/resources/js/common/header.js"></script>
 
     <!-- Google Fonts Icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -110,10 +102,10 @@
 					    <a class="nav-link" href="${ pageContext.request.contextPath }/list.pr">제품보기</a>
 					    <div class="custom-dropdown-menu">
 					        <a class="dropdown-item" href="${ pageContext.request.contextPath }/list.pr">전체제품</a>
-					        <a class="dropdown-item" href="#">스킨케어</a>
-					        <a class="dropdown-item" href="#">메이크업</a>
-					        <a class="dropdown-item" href="#">맨즈</a>
-					        <a class="dropdown-item" href="#">헤어/바디</a>
+					        <a class="dropdown-item" href="${ pageContext.request.contextPath }/list.pr?category=스킨케어">스킨케어</a>
+					        <a class="dropdown-item" href="${ pageContext.request.contextPath }/list.pr?category=메이크업">메이크업</a>
+					        <a class="dropdown-item" href="${ pageContext.request.contextPath }/list.pr?category=맨즈">맨즈</a>
+					        <a class="dropdown-item" href="${ pageContext.request.contextPath }/list.pr?category=헤어/바디">헤어/바디</a>
 					    </div>
 					</li>
                     <li class="nav-item">
@@ -134,6 +126,15 @@
     </nav>
     <!-- Back to Top Button -->
     <button id="backToTop">&#8679;</button>
+    
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+    <!-- Bootstrap 4.6.2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- header Javascript -->
+    <script src="${ pageContext.request.contextPath }/resources/js/common/header.js"></script>
 
 </body>
 </html>

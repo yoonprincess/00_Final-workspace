@@ -1,24 +1,20 @@
 $(document).ready(function () {
-    // 초기화 버튼 클릭
-    $('#resetFilters').click(function () {
-        $('input[name="filter"]').prop('checked', false);
-    });
-
-    // 필터 적용 버튼 클릭
-    $('#applyFilters').click(function () {
-        let selectedFilters = [];
-        $('input[name="filter"]:checked').each(function () {
-            selectedFilters.push($(this).val());
-        });
-        alert('적용된 필터: ' + selectedFilters.join(', '));
-    });
-
     // 정렬 및 보기 설정
-    $('#sortBy, #itemsPerPage').change(function () {
-        const sortBy = $('#sortBy').val();
-        const itemsPerPage = $('#itemsPerPage').val();
-        alert(`정렬: ${sortBy}, 보기: ${itemsPerPage}개`);
-    });
+	$('#sortBy, #boardLimit').change(function () {
+	    const sortBy = $('#sortBy').val();
+	    const boardLimit = $('#boardLimit').val();
+	
+	    // 현재 URL을 기반으로 파라미터 추가
+	    const currentUrl = new URL(window.location.href);
+	    currentUrl.searchParams.set('sortBy', sortBy);
+	    currentUrl.searchParams.set('boardLimit', boardLimit);
+	    
+	    // 페이지 초기화
+	    currentUrl.searchParams.set('ppage', 1);
+	
+	    // 새 URL로 이동
+	    window.location.href = currentUrl.toString();
+	});
 
     // 장바구니 추가 버튼
     $('.add-cart').click(function (e) {
