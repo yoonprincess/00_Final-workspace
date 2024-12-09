@@ -1,0 +1,298 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.5;
+    color: #333;
+}
+
+
+.outer {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#custom-page.container-fluid {
+    margin-top: 80px !important;
+    margin-bottom: 140px !important;
+}
+
+.steps-container {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+    display: flex; 
+    justify-content: center; /* 부모 요소의 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    gap: 10px; /* span 간 간격 */
+}
+
+.steps-container>span {
+    margin: 0 5px;
+   
+}
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 8px; /* 원하는 만큼 조정 */
+    border-bottom: 2px solid #4A628A;  /* 밑에 줄 추가 */
+}
+
+.section-header h4 {
+    margin: 0;
+}
+
+.plus-notice {
+    font-size: 14px; /* 크기를 약간 작게 */
+    color: gray; /* 스타일로 강조 */
+    margin-left: 8px; /* "추가 정보"와 약간의 간격 */
+}
+
+.section-header .required {
+    margin: 0;
+    float: right;
+    font-size: 0.9em; /* 필요하면 폰트 크기 조정 */
+}
+
+.required-mark{
+    color:red;
+}
+
+
+.registration-form {
+    width: 100%;
+}
+
+.form-row {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    min-height: 60px;
+    align-items: stretch; 
+    background-color: #f8f8f8;
+    margin-top: 0; 
+}
+
+.form-label {
+    width: 180px;
+    padding: 15px;
+    background-color: #f8f8f8;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    height: 100% !important;
+}
+
+.form-input {
+    flex: 1;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: white;
+   
+   
+}
+.input-wrapper {
+    display: flex; /* Flexbox 활성화 */
+    flex-direction: row; /* 가로 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    gap: 10px; /* 간격 추가 (선택 사항) */
+}
+
+.id-input{
+    display: flex; /* Flexbox 활성화 */
+    flex-direction: column; /* 요소들을 세로로 정렬 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+}
+.input-field:disabled {
+    background-color: #edf7f9 !important;  
+}
+
+#email-form-input{
+	flex-direction:column;
+	 align-items: flex-start; /* 항목을 왼쪽으로 정렬 */
+}
+.input-field {
+    height: 35px;
+    padding: 0 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 14px;
+   
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #666;
+}
+
+
+.input-notice {
+    display: inline-flex; /* span을 가로로 배치 */
+    margin-top: 5px; /* 간격 추가 */
+    margin-left: 10px; /* input과의 간격 조정 */
+}
+
+
+.select-field {
+    height: 35px;
+    padding: 0 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background-color: white;
+    font-size: 14px;
+}
+
+.file-button {
+    padding: 8px 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.file-notice {
+    color: #666;
+    font-size: 13px;
+}
+
+.phone-input {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.phone-input .input-field {
+    width: 80px;
+}
+
+.cert-button {
+    padding: 8px 15px;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.zipcode-row {
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    gap: 10px; /* 우편번호와 버튼 사이 간격 */
+    margin-bottom: 10px; /* 아래 입력창과 간격 */
+    margin-top: 10px;
+    padding: 0 5px;
+    gap: 5px; /* 기본주소와 상세주소 사이 간격 */
+    box-sizing: border-box;
+}
+
+.zipcode-field {
+    width: 80px; /* 우편번호 입력창 너비 */
+    box-sizing: border-box;
+   
+}
+
+.address-field {
+    width: 100%;
+    margin-bottom: 5px;
+    resize: none; /* 텍스트 영역 크기 조정 방지 */
+    padding: 0 5px;
+   
+}
+
+.btn-outline-info {
+    padding: 5px 10px; /* 버튼 여백 */
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 35px; /* input 요소와 동일한 높이 */
+    font-size: 14px; /* 버튼의 텍스트 크기 */
+ 
+}
+
+.address-row {
+    display: flex;
+    flex-direction: column; /* 세로로 배치 */
+    padding: 0 5px;
+    
+}
+
+.address-field { 
+    margin-bottom: 5px;
+    width: 100%; /* 입력 필드가 부모 너비에 맞게 확장 */
+}
+
+#sample4_roadAddress{
+    height: 100px !important; /* 도로명주소 텍스트 영역 높이 */
+    flex: none; /* flex로 인한 영향을 제거 */
+    padding: 10px;
+}
+ #sample4_detailAddress {
+    margin-top: -15px; /* 두 요소 간의 간격을 줄여줌 */
+    margin-bottom: 10px;
+}
+.form-input-addr {
+    display: flex;
+    flex-direction: column; /* 요소들을 세로로 정렬 */
+}
+
+
+.info-text {
+    color: #666;
+    font-size: 13px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.input-notice {
+    color: #999;
+    font-size: 13px;
+}
+
+.submit-row {
+    margin-top: 50px;
+    text-align: center;
+  
+}
+
+.submit-button {
+    padding: 12px 40px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-button:hover {
+    background-color: #333;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-label {
+        width: 100%;
+        padding: 10px 15px;
+    }
+
+    .form-input {
+        padding: 10px 15px;
+    }
+
+    .phone-input,
+    .payment-info {
+        flex-wrap: wrap;
+    }
+}

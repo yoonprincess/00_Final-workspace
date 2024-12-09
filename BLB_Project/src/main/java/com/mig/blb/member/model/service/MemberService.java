@@ -37,6 +37,8 @@ public interface MemberService {
 	
 	// 발송한 인증데이터 삭제용
 	int deleteCertEmail(CertEmail validate);
+
+	
 	
 	
 }

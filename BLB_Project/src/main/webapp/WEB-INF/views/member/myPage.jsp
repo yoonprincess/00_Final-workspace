@@ -28,14 +28,20 @@
                     <div class="menu-item">마이 쇼핑</div>
                     <div id="selected" class="sub-menu-item" >주문/배송 조회</div>
                     <div class="sub-menu-item" >취소/반품/교환 내역</div>
-                    <div class="sub-menu-item" >장바구니</div>
+                    <a href="${ pageContext.request.contextPath }/list.ct">
+                    	 <div class="sub-menu-item" >장바구니</div>
+                	</a>
                     <div class="sub-menu-item" >찜한리스트</div>
                 </div>
                 <br>
                 <hr class="custom-hr"> <hr class="custom-hr">
                 <div class="menu-section">
                     <div class="menu-item">마이활동</div>
-                    <div class="sub-menu-item" >1:1 문의내역</div>
+                    <a  href="${ pageContext.request.contextPath }/list.io">
+		                    <div class="sub-menu-item" >1:1 문의내역</div>
+		            </a>
+		                
+                    
                     <div class="sub-menu-item" >리뷰 (3)</div>
                     <div class="sub-menu-item" >상품 Q&A 내역</div>
                 </div>
@@ -43,7 +49,9 @@
                 <hr class="custom-hr"> <hr class="custom-hr">
                 <div class="menu-section">
                     <div class="menu-item">마이 정보</div>
-                    <div class="sub-menu-item" >회원정보 수정</div>
+                   <a  href="${ pageContext.request.contextPath }/updateForm.me">
+            	        <div class="sub-menu-item" >회원정보 수정</div>
+	          	  </a>
                     <div class="sub-menu-item" >배송지 관리</div>
                     <div class="sub-menu-item" >회원탈퇴</div>
                 </div> 

@@ -4,14 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입 | 뷰라밸 (Beauty Life Balance)</title>
+<title>회원정보수정 | 뷰라밸 (Beauty Life Balance)</title>
 
  <!-- jQuery 라이브러리 -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-<link rel="stylesheet" href="resources/css/member/enrollForm.css">
+<link rel="stylesheet" href="resources/css/member/updateMemberForm.css">
 
-<script src="resources/js/member/enrollForm.js" defer></script>   
+<script src="resources/js/member/updateMemberForm.js" defer></script>   
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
@@ -34,15 +34,8 @@
 <body class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
     <div class="container-fluid" id="custom-page">    
-        <h3 align="center"> 회원가입 </h3>
+        <h3 align="center"> 회원정보 수정 </h3>
         
-        <nav class="steps-container outer" align="center">
-            <span>1. 약관동의 </span>
-            <span>></span>
-            <span><b>2. 정보입력</b></span>
-            <span>></span>
-            <span>3. 가입완료</span>
-        </nav>
 
         <form class="registration-form outer" action="insert.me" method="post" id="enrollForm">
             <div class="section-header">
@@ -51,13 +44,13 @@
             </div>
             
             <div class="form-row">
-                <label class="form-label">아이디 <span class="required-mark" >*</span></label>
+                <label class="form-label">아이디 <span class="required-mark" ></span></label>
                 <div class="form-input id-input">
                     <div class="input-wrapper">
-                        <input type="text" class="input-field" name="memberId" id="memberId" required>
-                        <span class="input-notice" id="noticeId">(5-20자의 영문소문자/숫자만)</span>
+                        <input type="text" class="input-field" name="memberId" id="memberId" 
+                        value="${loginUser.memberId}" disabled >
                     </div>
-                    <div id="checkId" style="display:none;"></div>
+                   
                 </div>              
             </div>
 		
@@ -68,7 +61,7 @@
                         <input type="password" class="input-field" name="memberPwd" id="memberPwd" required>
                         <span class="input-notice" id="noticePwd">(영문대/소문자, 숫자, 특수문자 중 2가지 이상 조합, 8-16자)</span>
                     </div>
-					<div id="validatePwd" style="display:none;" ></div>
+					<div id="validatePwd" style="display:none;"></div>
                 </div>
             </div>
 
@@ -105,25 +98,31 @@
                 </div>
             </div>
             <div class="form-row">
-                <label class="form-label">이름 <span class="required-mark" >*</span></label>
+                <label class="form-label">이름 <span class="required-mark" ></span></label>
                 <div class="form-input">
-                    <input type="name" class="input-field" name="memberName" required>
+                    <input type="name" class="input-field" name="memberName" value="${loginUser.memberName}" disabled>
                 </div>
             </div>
             <div class="form-row">
                 <label class="form-label">이메일 <span class="required-mark" >*</span></label>
                 <div class="form-input" id="email-form-input" >
                 	<div class="input-wrapper" >
-	                    <input type="email" class="input-field" name="email" required id="email">
+	                    <input type="email" class="input-field" name="email" required id="email" value="${loginUser.email}">
 	                    <button type="button" class="btn-sm btn-outline-info" id="certbtn" onclick="cert();">인증</button>
                    </div>
                    <div class="input-wrapper" style="display:none;" id="cert-email">
-                         <input type="text" class="input-field" name="checkNo" id="certKey">
+                         <input type="text" class="input-field" name="checkNo" id="certKey" >
                          <button type="button" class="btn-sm btn-outline-info" id="vali_email" onclick="validateEmail();">확인</button>
                     </div> 
                 </div>
             </div>
-            <input type="hidden" id="hiddenEmail" name="email">
+             <div class="form-row">
+                <label class="form-label">이메일 수신여부 <span class="required-mark" >*</span></label>
+                <div class="form-input">
+                    <input type="radio" id="yes" class="input-field" name="receiveEmail" value="yes" checked>동의
+                    <input type="radio" id="no" class="input-field" name="receiveEmail" value="no" >거부
+                </div>
+            </div>
             <br>
             <br>
             <div class="section-header">
@@ -133,12 +132,12 @@
 		<div class="form-row">
            <label class="form-label">생년월일 </label>
            <div class="form-input birthdate-input">
-               <input type="date" class="input-field" style="width:280px;"name="birthdate" >
+               <input type="date" class="input-field" style="width:280px;"name="birthdate" value="${loginUser.birthdate}" >
            </div>
         </div>
         
         <div class="form-row ">
-            <label class="form-label">기본주소 <br> 등록 </label>
+            <label class="form-label">기본주소 <br>  </label>
             <div  class="form-input ">
                 <div class="form-input-addr" >
                     <div class="zipcode-row " >
@@ -156,8 +155,8 @@
         </div>   
                
         <div class="submit-row">
-            <button type="submit" class="btn-lg btn-outline-primary">회원가입</button>
-            <button type="reset" class="btn-lg btn-outline-warning">초기화</button>
+            <button type="submit" class="btn-lg btn-outline-primary">회원정보 수정</button>
+            <button type="button" class="btn-lg btn-outline-warning" onclick="goBack();">취소하기</button>
         </div>
         </form>
     </div>

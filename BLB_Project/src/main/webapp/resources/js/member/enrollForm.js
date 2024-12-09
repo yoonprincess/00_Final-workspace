@@ -286,7 +286,7 @@
 				
 					$("#cert-email").hide();
 					$("#email").css("border","2px solid #71C9CE"); 
-				
+					$("#hiddenEmail").val(email);
 				}else{
 				
 					alert(result);

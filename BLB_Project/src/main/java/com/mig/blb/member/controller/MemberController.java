@@ -117,13 +117,11 @@ public class MemberController {
 	public ModelAndView insertMember(Member m,
 							ModelAndView mv,
 							HttpSession session,
-							Delivery d) {
+							Delivery d,
+							String email) {
 				
 		String encPwd = bcryptPasswordEncoder.encode(m.getMemberPwd());
 		m.setMemberPwd(encPwd);
-		
-		//System.out.println(m);
-		
 		
 		int result = memberService.insertMember(m);
 			
@@ -135,7 +133,6 @@ public class MemberController {
 			d.setDeliPhone(m.getPhone()); // FK 연결
 			d.setDeliName(m.getMemberName()); // FK 연결
 			
-			//System.out.println(d);
 			result2 = memberService.insertDelivery(d);
 		}
 		
@@ -165,11 +162,26 @@ public class MemberController {
 		
 	}
 	
-	//// 마이페이지 요청 
+	// 마이페이지 요청 
 	@GetMapping("myPage.me")
 	public ModelAndView myPage(ModelAndView mv) {
 		
 		mv.setViewName("member/myPage");
+		
+		return mv;
+	}
+	
+	// 회원정보 수정 페이지 요청 및 해당 회원정보 불러오기
+	@GetMapping("updateForm.me")
+	public ModelAndView updateMemberForm(ModelAndView mv,
+										Member m,
+										Delivery d,
+										HttpSession session) {
+		
+		mv.setViewName("member/updateMemberForm");
+		
+		
+		
 		
 		return mv;
 	}
