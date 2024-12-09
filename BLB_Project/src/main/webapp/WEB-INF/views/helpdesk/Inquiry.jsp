@@ -12,10 +12,17 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
     <div class="container-fluid">
         <div class="container">
+        	<h1>고객센터</h1>
+            <div class="tabs">
+                <a class="tab-button" href="Faq.blb">FAQ</a>
+                <a class="tab-button active" href="list.io">1:1문의</a>
+                <a class="tab-button" href="list.no">공지사항</a>
+            </div>
             <div class="tab-content active">
                 <form id="inquiry-form" action="insert.io" method="post" enctype="multipart/form-data">
                     <div class="form-container">
                         <div class="form-group">
+                        <input type="hidden" value="${ sessionScope.loginUser.memberId }" name="memberId" >
                             <label for="inquiryType">문의유형</label>
                             <select id="inquiryType" name="inquiryType">
                                 <option value="카테고리를 선택해주세요">카테고리를 선택해주세요</option>
@@ -46,7 +53,7 @@
                         </div>
                         <div class="form-buttons1">
                             <button type="button" class="cancel" onclick="location.href='list.io'">뒤로가기</button>
-                            <button type="button" class="submit">제출</button>
+                            <button type="submit">제출</button>
                         </div>
                     </div>
                 </form>

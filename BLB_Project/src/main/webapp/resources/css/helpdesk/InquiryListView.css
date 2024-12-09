@@ -1,49 +1,141 @@
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 80%;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 150, 136, 0.1); /* 민트색 그림자 */
+    margin-top: 20px;
     padding: 20px;
+    border-radius: 8px;
 }
 
 h1 {
+    margin-top: 20px;
     text-align: center;
-    color: #333;
+    color: #4A628A; /* 진한 파랑색 */
+    font-size: 28px;
 }
 
-.form-buttons {
-    text-align: right;
-    margin-bottom: 20px;
-}
-
-.new-inquiry-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.new-inquiry-btn:hover {
-    background-color: #45a049;
-}
-
-.inquiries-table {
+table {
     width: 100%;
     border-collapse: collapse;
-}
-
-.inquiries-table th, .inquiries-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
+    margin-top: 20px;
     text-align: center;
+    table-layout: fixed; /* 고정된 너비 레이아웃 */
 }
 
-.inquiries-table th {
-    background-color: #f4f4f4;
+th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 각 열의 너비를 조정 */
+th:nth-child(1), td:nth-child(1) {
+    width: 10%; /* 문의번호 */
+}
+
+th:nth-child(2), td:nth-child(2) {
+    width: 15%; /* 분류 */
+}
+
+
+th:nth-child(3), td:nth-child(4) {
+    width: 55%; /* 문의내용 */
+}
+
+th:nth-child(4), td:nth-child(3) {
+    width: 10%; /* 문의일 */
+}
+
+th:nth-child(5), td:nth-child(5) {
+    width: 10%; /* 답변 상태 */
+}
+
+th {
+    background-color: #b2dfdb; /* 민트색 강조 */
+    color: #4A628A; /* 진한 파랑색 */
+}
+
+td {
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+table tbody tr {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
+    cursor: pointer;
+}
+
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    float : right;
+    margin-bottom : 10px;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 5px 5px;
+}
+
+.pagination li {
+    margin: 0 2px;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 5px 10px 4px 10px;
+    border: 1px solid #DFF2EB;
+    border-radius: 3px;
+    color: #7AB2D3;
+    text-decoration: none !important;
+    font-size: 14px;
     font-weight: bold;
 }
 
-.inquiries-table tr:hover {
-    background-color: #f9f9f9;
+.pagination a:hover {
+    border: 1px solid #7AB2D3;
+}
+
+.pagination .active {
+    border: 1px solid #7AB2D3;
+    font-weight: bold;
+    color: #7AB2D3;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
 }

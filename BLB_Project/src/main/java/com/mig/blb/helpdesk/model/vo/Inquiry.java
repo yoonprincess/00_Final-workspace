@@ -20,5 +20,7 @@ public class Inquiry {
 	private String inquiryCreateDate;
 	private String inquiryAnsweredYn;
 	private String inquiryStatus;
+	private String memberId;
+	private int prodNo;
 	
 }
