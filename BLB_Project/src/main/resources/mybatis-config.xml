@@ -14,9 +14,7 @@
 	 	<typeAlias type="com.mig.blb.member.model.vo.Member" alias="member" />
 		<typeAlias type="com.mig.blb.helpdesk.model.vo.Inquiry" alias="inquiry" />
 	 	<typeAlias type="com.mig.blb.cart.model.vo.Cart" alias="cart" />
-
 	 	<typeAlias type="com.mig.blb.member.model.vo.Delivery" alias="delivery" />
-
 	 </typeAliases>
 	 
 	 

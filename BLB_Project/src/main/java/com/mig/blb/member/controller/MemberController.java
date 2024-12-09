@@ -142,7 +142,10 @@ public class MemberController {
 		if(result > 0 && (result2 > 0 || d.getPostcode().isEmpty())) { 
 			
 			session.setAttribute("alerMsg", "환영합니다-*^^*");
-			mv.setViewName("redirect:/");
+			mv.addObject("memberId", m.getMemberId());
+			mv.addObject("memberName", m.getMemberName());
+			mv.addObject("email", m.getEmail());
+			mv.setViewName("member/welcome");
 			
 		}else {
 			mv.addObject("errorMsg","회원가입실패!");
