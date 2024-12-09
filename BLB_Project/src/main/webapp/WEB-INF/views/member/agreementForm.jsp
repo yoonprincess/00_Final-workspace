@@ -22,7 +22,7 @@
 </head>
 <body  class="body-offset" id="custom">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<div class="container-fluid" id="custom-page">    
+<div class="container-fluid" id="custom-page"  style="width:1200px;">    
     <h3 align="center"> 회원가입 </h3>
     <nav class="steps-container outer" align="center">
         <span><b>1. 약관동의</b> </span>
@@ -32,22 +32,22 @@
         <span>3. 가입완료</span>
     </nav>
     <form id="agreementForm" action="enrollForm.me" method="post">
-    <div >
-        <h5>전체동의</h5>
-        <input type="checkbox" id="all-agreement">
-        <label for="all-agreement" style="margin-left: 5px;">
-        이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신(선택)에 모두 동의합니다.        
-        </label>
-        <br>
-    </div>
-<div class="container">
-    <div class="left">    
-      <div class="terms-row">
-        <input type="checkbox" id="checkbox1" class="checkbox">
-        <label for="checkbox1">이용약관 동의 (필수)</label>
-        <br><br>
-     </div>
-        <textarea style="height: 400px;" readonly>   
+	    <div class="all-agreement">
+	        <h5>전체동의</h5>
+	        <input type="checkbox" id="all-agreement">
+	        <label for="all-agreement" style="margin-left: 5px;">
+	        이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신(선택)에 모두 동의합니다.        
+	        </label>
+	        <br>
+	    </div>
+	<div class="container" style="width:1200px;">
+	    <div class="left">    
+		      <div class="terms-row">
+		        <input type="checkbox" id="checkbox1" class="checkbox">
+		        <label for="checkbox1">이용약관 동의 (필수)</label>
+		        <br><br>
+		     </div>
+       	<textarea style="height: 400px;" readonly>   
     제1조 (목적)
     이 약관은 OO 회사(전자상거래 사업자)가 운영하는 OO 사이버 몰(이하 “몰”이라 한다)에서
     제공하는 인터넷 관련 서비스(이하 “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의
@@ -324,17 +324,16 @@
     당시 이용자의 주소 또는 거소가 분명하지 않거나 외국 거주자의 경우에는 민사소송법상의
     관할법원에 제기합니다.
     ② “몰”과 이용자 간에 제기된 전자상거래 소송에는 한국법을 적용합니다.       
-
-    </textarea>
-   
-</div>
-
-<div class="right">
-    <div class="terms-row" style="padding-top: 5px;">
-        <input type="checkbox" id="checkbox2" class="checkbox">
-        <label for="checkbox2">개인정보처리 방침 (필수)</label>
-    </div>    
-        <textarea style="height: 200px;" readonly>   
+	
+	    </textarea>
+	  	</div>
+	
+	 	<div class="right">
+		    <div class="terms-row" style="padding-top: 5px;">
+		        <input type="checkbox" id="checkbox2" class="checkbox">
+		        <label for="checkbox2">개인정보처리 방침 (필수)</label>
+		    </div>    
+	        <textarea style="height: 200px;" readonly>   
     1. 개인정보 수집목적 및 이용목적
 
     가. 서비스 제공에 관한 계약 이행 및 서비스 제공에 따른 요금정산
@@ -385,25 +384,24 @@
     - 보존기간 : 3개월
     
     ※ 동의를 거부할 수 있으나 거부 시 회원 가입이 불가능합니다.
-    
-    
-    </textarea>
-    
-    <div class="terms-row" >
-        <input type="checkbox" id="checkbox3" class="checkbox">
-        <label for="checkbox3">쇼핑정보 수신 동의 (선택)</label>
-    </div>
-        <textarea style="height: 150px;" readonly>   
+	    
+	    
+	    </textarea>
+	    
+		    <div class="terms-row" >
+		        <input type="checkbox" id="checkbox3" class="checkbox">
+		        <label for="checkbox3">쇼핑정보 수신 동의 (선택)</label>
+		    </div>
+	        <textarea style="height: 150px;" readonly>   
     할인혜택, 이벤트, 신상품 소식 등 쇼핑몰에서 제공하는 유익한 쇼핑정보를 이메일로 받아보실 수 있습니다.
     단, 주문/거래 정보 및 주요 정책과 관련된 내용은 수신동의 여부와 관계없이 발송됩니다. 
 
     선택 약관에 동의하지 않으셔도 회원가입은 가능하며, 회원가입 후 회원정보수정 페이지에서 언제든지 
     수신여부를 변경하실 수 있습니다. 
-
-    </textarea>
-    
-</div>
-</div>
+	
+	    </textarea>
+	 	</div>
+	</div>
 
 <br>           
     <div class="submit-row">

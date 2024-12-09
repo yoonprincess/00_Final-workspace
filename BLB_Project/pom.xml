@@ -274,5 +274,11 @@
                 </configuration>
             </plugin>
         </plugins>
+        <!--  이메일 양식 파일위치 인식용 classPath 설정-->
+        <resources>
+	        <resource>
+	            <directory>src/main/resources</directory>
+	        </resource>
+    	</resources>
     </build>
 </project>

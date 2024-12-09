@@ -22,6 +22,7 @@ body {
 #custom-page{
     margin-bottom: 100px;
     margin-top: 60px !important;
+  
 }
 .steps-container {
     margin-top: 10px;
@@ -40,11 +41,12 @@ body {
 
 .container {
     display: flex; /* 가로 배치 */
-    justify-content: space-between; /* 좌우 정렬 */
-    gap: 50px; /* 좌우 간격을 더 줄임 */
+    justify-content: center; /* 좌우 정렬 */
+    gap: 30px; /* 좌우 간격을 더 줄임 */
     margin: 0 auto;
-    margin-left: 0px !important;
     padding-left: 0px !important;
+    width:100%;
+     max-width: none; /* max-width가 설정된 경우 제거 */
     
 }
 
@@ -61,7 +63,7 @@ body {
 }
 
 #agreementForm textarea{
-    width:670px;
+    width:560px;
     font-size: 14px !important;
     border: 1px solid silver;
     margin-top: 5px; /* 체크박스/텍스트 아래 여백 */

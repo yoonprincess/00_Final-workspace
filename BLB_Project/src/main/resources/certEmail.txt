@@ -14,11 +14,6 @@
                         
                         background-repeat:no-repeat; background-position: right bottom;">
                 <div style="width:550px; height:100%; margin:0; padding:60px 70px;">
-                    <div style="width:97px; height:22px; display:inline-block; overflow:hidden; cursor:pointer;">
-                        <img src="/BLB로고(최종본)_테두기색제거.png" 
-                             style="clear:none; float:none;" 
-                             loading="lazy">
-                    </div>
                     <p style="font-size:35px; font-weight:bold; line-height:1.2; letter-spacing:-0.075em; 
                               color:#fff; padding:0; margin:33px 0 10px;">
                         뷰라밸<br>이메일 인증 안내메일입니다.
@@ -38,15 +33,11 @@
             <p style="font-size:15px; font-weight:400; color:#000; line-height:1.7; letter-spacing:-0.075em; margin:0;">
                 안내드린 정보로 접속하셔서 뷰라밸 서비스를 이용하세요!<br>
                 더욱 편리한 서비스를 제공하기 위해 항상 최선을 다하겠습니다.
+                <br><br>
+                <b>중요:</b> 인증코드는 발송 후 <b>5분 이내</b>에 사용하셔야 합니다.<br>
+				5분을 초과하면 인증코드가 만료되니, 빠른 시일 내에 인증을 완료해 주세요
             </p>
-            <a href="https://www.khedu.co.kr/login/login.kh" 
-               target="_blank" 
-               style="font-size:15px; font-weight:500; letter-spacing:-0.075em; text-decoration:none; 
-                      color:#fff; background:#A4EBF3;; padding:13px 29px 15px; border-radius:50px; 
-                      display:inline-block; margin:28px 0 0px;" 
-               rel="noreferrer noopener">
-                마이페이지로 이동하기
-            </a>
+            
             <div style="width:100%; height:1px; background:#e9e9eb; margin:45px 0px 38px"></div>
             <p style="font-size:14px; font-weight:400; color:#000; line-height:1.5; letter-spacing:-0.075em; margin-bottom:8px;">
                 본 메일은 발신전용 메일이므로, 회신을 통한 문의는 처리되지 않습니다.<br>

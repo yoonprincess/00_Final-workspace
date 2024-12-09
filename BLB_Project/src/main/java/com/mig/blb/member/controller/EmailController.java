@@ -1,14 +1,17 @@
 package com.mig.blb.member.controller;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -45,9 +48,10 @@ public class EmailController {
 		return randomKey.toString();
 	}
 	
+	// 인증코드랑 같이 메일 보내기
 	@ResponseBody
 	@PostMapping(value="cert.do",produces="text/html; charset=UTF-8")
-	public String sendCertNo(String email) throws MessagingException, IOException {
+	public String sendCertNo(String email) throws MessagingException, IOException, URISyntaxException {
 		
 		String certKey = randomKey();
 		
@@ -56,13 +60,13 @@ public class EmailController {
 		certEmail.setCertKey(certKey);
 	    certEmail.setCertEmail(email);
 		 
-		 certNoList.add(certEmail);
-		 
-		 int result = memberService.insertCertEmail(certNoList);
+		int result = memberService.insertCertEmail(certEmail);
 		
-		 if (result > 0) {
-		        
-			String htmlContent = readEmailTemplateFromFile("certEmail.txt");
+		if (result > 0) {
+			
+			File file = new File(getClass().getClassLoader().getResource("certEmail.txt").toURI());
+			
+			String htmlContent = readEmailTemplateFromFile(file);
 			
 			htmlContent = htmlContent.replace("${certKey}", certKey);
 			
@@ -81,7 +85,7 @@ public class EmailController {
 			
 			mailSender.send(message);
 			
-			return "result";
+			return "인증코드 메일 발송!";
 		 
 		 }else {
 	        
@@ -90,10 +94,10 @@ public class EmailController {
 	}
 	
 	// HTML 파일을 읽어오는 메소드
-    private String readEmailTemplateFromFile(String filename) throws IOException {
+    private String readEmailTemplateFromFile(File file) throws IOException {
         StringBuilder content = new StringBuilder();
 
-        BufferedReader br = new BufferedReader(new FileReader("src/main/resources/"+ filename));
+        BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
             while ((line = br.readLine()) != null) {
                 content.append(line).append("\n");
@@ -101,59 +105,35 @@ public class EmailController {
         
         return content.toString();
     }
-	// 인증번호를 만들어서 해당 이메일로 전송해주는 요청
-	/*	@ResponseBody
-		@PostMapping(value="cert.do", 
-					 produces="text/html; charset=UTF-8")
-		public String sendCert) {
-			
-			// 메세지 정보 담기
-			message.setSubject("[KH 정보교육원] 이메일 인증 번호입니다.");
-			message.setText("인증 번호 : " + random);
-			message.setTo(email);
-			
-			// 메세지 전송하기
-			mailSender.send(message);
-			
-			return "인증번호 발급 완료"; // 응답데이터
-		}
+	
 		
 		// 인증번호 대조 요청
 		@ResponseBody
-		@PostMapping(value="validate.do",
-					 produces="text/html; charset=UTF-8")
-		public String validate(String email, String checkNo) {
+		@PostMapping(value="validateEmail.do", produces="text/html; charset=UTF-8")
+		public String validate(String email, String certKey) {
 			
-			// certNoList 로 부터
-			// email 과 checkNo 이 정확하게 모두 일치하는 것을 찾아주면 됨!!
+			CertEmail validate = new CertEmail();
+			validate.setCertEmail(email);
+			validate.setCertKey(certKey);
 			
-			String result = "";
+			int result = memberService.selectCertEmail(validate);	
+
+			String resultMsg = "";
 			
-			// CERT 테이블에서 SELECT
-			// SELECT * FROM CERT WHERE 이메일, 인증번호 모두 일치하고 
-			// 그리고 SYSDATE < CREATE_DATE + 3분
-			// > 3분 이내라면 조회가 되고, 3분 이후라면 null
-			if(certNoList.get(email) != null && 
-					certNoList.get(email).equals(checkNo)) {
-				
-				result = "인증 성공";
-				
+			if(result > 0 ) {
+			
+				resultMsg = "인증성공!";
+			
 			} else {
 				
-				result = "인증 실패";
+				resultMsg = "인증 실패";
 			}
 			
-			// 인증번호 대조작업 완료 후 주의할점 이라고 한다면
-			// 인증번호는 "1회성" 임!!
-			// > 대조에 성공했든, 실패했든 간에 인증번호 발급 내역을
-			//   꼭 지워줘야 한다라는 것!!
-			certNoList.remove(email);
+			// 인증정보 삭제
+			int deleteresult = memberService.deleteCertEmail(validate);
 			
-			// CERT 테이블 DELETE
 			
-			// System.out.println(certNoList);
-			
-			return result;
+			return resultMsg;
 		}
-	*/
+	
 }

@@ -112,13 +112,14 @@
             </div>
             <div class="form-row">
                 <label class="form-label">이메일 <span class="required-mark" >*</span></label>
-                <div class="form-input">
-                    <input type="email" class="input-field" name="email" required id="email">
-                    <button type="button" class="confirm-button" id="cert" onclick="cert();">인증</button>
-                   
+                <div class="form-input" id="email-form-input" >
+                	<div class="input-wrapper" >
+	                    <input type="email" class="input-field" name="email" required id="email">
+	                    <button type="button" class="btn-sm btn-outline-info" id="certbtn" onclick="cert();">인증</button>
+                   </div>
                    <div class="input-wrapper" style="display:none;" id="cert-email">
-                         <input type="text" class="input-field" name="checkNo" >
-                         <button type="button" class="confirm-button" id="vali_email" onclick="validateEmail();">확인</button>
+                         <input type="text" class="input-field" name="checkNo" id="certKey">
+                         <button type="button" class="btn-sm btn-outline-info" id="vali_email" onclick="validateEmail();">확인</button>
                     </div> 
                 </div>
             </div>
@@ -147,7 +148,7 @@
                         <textarea class="input-field address-field" id="sample4_roadAddress" 
                                 placeholder="도로명주소" name="deliAddress"></textarea><br>
                         <input type="text"  class="input-field address-field" 
-                                id="sample4_detailAddress" placeholder="상세주소"   name="detailAddress">
+                                id="sample4_detailAddress" placeholder="상세주소" name="detailAddress">
                     </div>
                 </div>
             </div>

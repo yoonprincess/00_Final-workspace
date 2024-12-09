@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.mig.blb.member.model.vo.CertEmail;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
 
@@ -47,6 +48,21 @@ public class MemberDao {
 	public int insertDelivery(SqlSessionTemplate sqlSession, Delivery d) {
 		
 		return sqlSession.insert("memberMapper.insertDelivery", d);
+	}
+
+	public int insertCertEmail(SqlSessionTemplate sqlSession, CertEmail certEmail) {
+		
+		return sqlSession.insert("memberMapper.insertCertEmail", certEmail);
+	}
+
+	public int selectCertEmail(SqlSessionTemplate sqlSession, CertEmail validate) {
+	
+		return sqlSession.selectOne("memberMapper.selectCertEmail", validate);
+	}
+
+	public int deleteCertEmail(SqlSessionTemplate sqlSession, CertEmail validate) {
+		
+		return sqlSession.delete("memberMapper.deleteCertEmail", validate);
 	}
 
 }

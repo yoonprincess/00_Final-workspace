@@ -29,7 +29,14 @@ public interface MemberService {
 	// 회원가입시 기본배송지 등록
 	int insertDelivery(Delivery d);
 
-	int insertCertEmail(ArrayList<CertEmail> certNoList);
+	// 이메일 인증코드 발송용 
+	int insertCertEmail(CertEmail certEmail);
+	
+	// 이메일 인증코드 대조용 + 인증시간 5분
+	int selectCertEmail(CertEmail validate);
+	
+	// 발송한 인증데이터 삭제용
+	int deleteCertEmail(CertEmail validate);
 	
 	
 }

@@ -50,25 +50,39 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDao.idCheck(sqlSession, checkId);
 	}
+	
 	@Override
 	public ArrayList<Member> selectMemberList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Transactional
 	@Override
 	public int insertDelivery(Delivery d) {
 		
 		return  memberDao.insertDelivery(sqlSession, d);
 	}
+	
+	@Transactional
 	@Override
-	public int insertCertEmail(ArrayList<CertEmail> certNoList) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertCertEmail(CertEmail certEmail) {
+		
+		return memberDao.insertCertEmail(sqlSession,certEmail);
+	}
+	@Override
+	public int selectCertEmail(CertEmail validate) {
+		
+		return memberDao.selectCertEmail(sqlSession,validate);
+	}
+	
+	@Override
+	@Transactional
+	public int deleteCertEmail(CertEmail validate) {
+		
+		return memberDao.deleteCertEmail(sqlSession,validate);
 	}
 
-	
-
-	
 }
 
 

@@ -233,10 +233,12 @@
         }).open();
     }
     
+    
     // 이메일 인증메일보내기 요청 ajax
     function cert(){
 
 		let email = $("#email").val();
+		
 		
 		$.ajax({
 			url : "cert.do",
@@ -250,9 +252,52 @@
 				alert(result);
 				
 				$("#cert-email").show();
+				$("#certKey").attr("disabled", false);
+				$("#vali_email").attr("disabled",false);
 				
 				$("#email").attr("disabled", true);
-				$("#cert").attr("disabled", true);
+				$("#certbtn").attr("disabled", true);
+				
+			},
+			
+			error : function() {
+				console.log("인증번호 발급용 ajax 통신 실패!");
+			}
+		});
+	}
+	
+	 // 이메일 인증번호 대조 ajax
+    function validateEmail(){
+    
+		let email = $("#email").val();
+		let certKey = $("#certKey").val();
+		
+		$.ajax({
+			url : "validateEmail.do",
+			type : "post",
+			data : {
+				certKey : certKey,
+				email : email
+			},
+			success : function(result) {
+				
+				if(result === "인증성공!"){
+					alert(result);
+				
+					$("#cert-email").hide();
+					$("#email").css("border","2px solid #71C9CE"); 
+				
+				}else{
+				
+					alert(result);
+					
+					$("#cert-email").hide();
+					
+					$("#email").val("");
+					$("#email").css("border","1px solid orangered"); 
+					$("#email").attr("disabled", false);
+					$("#certbtn").attr("disabled", false);
+				}
 				
 			},
 			error : function() {

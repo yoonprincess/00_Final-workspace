@@ -14,7 +14,7 @@
  		<result column="TOTAL_POINTS" property="totalPoints" />
  		<result column="CURRENT_POINTS" property="currentPoints" />
  		<result column="GRADE_NAME" property="gradeName" />
- 	</resultMap>
+</resultMap>
 	
 	<select id="loginMember"
 			parameterType="member"
@@ -66,5 +66,31 @@
 							    #{memberId}
 			)       
   	</insert>
-
+	
+	<insert id="insertCertEmail" parameterType="certemail">
+		INSERT INTO TB_CERT_EMAIL (
+							   	CERT_EMAIL,
+							    CERT_KEY	    
+							)
+							VALUES (
+							    #{certEmail},
+							    #{certKey}
+							    )
+	</insert>
+	
+	<select id="selectCertEmail" parameterType="certemail" resultType="_int">
+		SELECT COUNT(*)
+		  FROM TB_CERT_EMAIL
+		 WHERE CERT_EMAIL = #{certEmail}
+	       AND CERT_KEY = #{certKey}
+	       AND SYSDATE &lt; CERT_DATE + INTERVAL '5' MINUTE
+	</select>
+	
+	<delete id="deleteCertEmail" parameterType="certemail">
+		DELETE 
+		  FROM TB_CERT_EMAIL
+		 WHERE CERT_EMAIL = #{certEmail}
+		   AND CERT_KEY = #{certKey}	
+	</delete>
+	
 </mapper>
