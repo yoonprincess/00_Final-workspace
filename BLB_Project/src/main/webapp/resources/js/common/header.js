@@ -47,6 +47,7 @@ $(function() {
     // * 토글 버튼 클릭 시 active 클래스 추가/제거
     $('.navbar-toggler').click(function () {
         $(this).toggleClass('active');
+        $('.navbar').toggleClass('bg-white');
     });
 
     // * 위로가기 버튼 스크립트
