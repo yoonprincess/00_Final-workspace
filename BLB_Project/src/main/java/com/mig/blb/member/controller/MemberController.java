@@ -70,7 +70,6 @@ public class MemberController {
 		
 			// 로그인 성공 ! 
 			session.setAttribute("loginUser", loginUser);
-			session.setAttribute("alertMsg", "로그인성공!");
 			
 			mv.setViewName("redirect:/");
 			
@@ -88,7 +87,6 @@ public class MemberController {
 	public String logoutMember(HttpSession session) {
 		
 		session.removeAttribute("loginUser");
-		session.setAttribute("alertMsg", "로그아웃 성공");
 		
 		return "redirect:/";
 	}
