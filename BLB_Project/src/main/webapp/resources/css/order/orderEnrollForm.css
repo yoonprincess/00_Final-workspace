@@ -137,7 +137,7 @@ input[type="text"]:focus, select:focus, button:focus {
 
 /* 주소 검색 버튼 스타일 */
 button.btn-search {
-    background-color: #7AB2D3;
+    background-color: #4A628A;
     font-size: 14px;
     color: white;
     border: none;
@@ -222,7 +222,7 @@ button.btn-search:hover {
 #order-price {
     width: 100%;
     margin: 40px auto;
-    border-top: 2px solid #B9E5E8;
+    border-top: 2px solid #4A628A;
     border-collapse: collapse;
     text-align: center;
 }
@@ -233,7 +233,7 @@ button.btn-search:hover {
     font-size: 14px;
     font-weight: bold;
     color: #333;
-    border-bottom: 2px solid #B9E5E8;
+    border-bottom: 2px solid #4A628A;
 }
 
 #order-price .value {
@@ -315,8 +315,36 @@ h3 {
     border: 1px solid #ddd;
 }
 
+/* 무통장 입금 시 보여지는 영역 스타일 */
+#bank-info>p {
+    display: flex;
+}
+#receipt-yn {
+    gap: 15px;
+    display: flex; /* 라디오 버튼과 라벨을 가로로 정렬 */
+}
 
-/* 결제 동의 약관 영역 */
+#receipt-yn input[type="radio"] {
+    display: inline-block; /* 라디오 버튼 보이게 설정 */
+    margin-left: 10px;
+
+}
+
+#receipt-yn label {
+    cursor: pointer; /* 클릭 가능한 포인터 설정 */
+    margin-top: 5px;
+}
+
+#bank-info {
+    font-size: 12px;
+    color: #777;
+    background-color: #F4F4F9;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/* 결제 동의 약관 영역 스타일 */
 .terms-container {
     width: 100%;
     margin: 40px auto;
@@ -362,6 +390,41 @@ hr {
     color: #333;
 }
 
+/* 약관 내용 모달창 스타일 */
+.btn-close {
+    background-color: #4A628A !important;
+    color: white !important;
+    border: none !important;
+}
+
+.modal-content .terms-of-use {
+    padding: 20px !important; /* 부트스트랩 기본 스타일 덮어쓰기 */
+    border: 1px solid #ccc !important;
+}
+
+.modal-content ul {
+    list-style: none !important;
+    padding-left: 30px !important;
+    margin: 0 !important;
+}
+
+.modal-content {
+    background-color: #F4F4F9 !important; /* 모달 배경 색상 */
+    border-radius: 10px !important; /* 모서리 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.modal-header {
+    background-color: #4A628A !important; /* 헤더 배경 색상 */
+    color: #fff !important; /* 텍스트 색상 */
+    padding: 15px !important; /* 내부 여백 */
+}
+
+.modal-footer {
+    border-top: 1px solid #ddd !important; /* 상단 경계선 */
+    padding: 10px !important;
+}
+
 /* 결제하기 버튼 */
 .payment-button {
     display: block;
@@ -371,7 +434,7 @@ hr {
     font-size: 24px;
     font-weight: bold;
     color: white;
-    background-color: #4A628A;
+    background-color: #4A628A !important;
     border: none;
     border-radius: 5px;
     cursor: pointer;
