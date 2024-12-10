@@ -106,9 +106,11 @@ public class InquiryController {
 	        ar.addFlashAttribute("alertMsg", "문의 접수에 실패했습니다.");
 	    }
 
-	    System.out.println(i);
+	    //System.out.println(i);
+	    // > 문의 등록 정보가 잘 들어감
 	    
-	    mv.setViewName("redirect:/Inquiry.blb");
+	    session.setAttribute("alertMsg", "문의가 성공적으로 접수되었습니다.");
+	    mv.setViewName("redirect:/Faq.blb");
 	    return mv;
 	}
 	
