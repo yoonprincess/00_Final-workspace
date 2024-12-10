@@ -5,20 +5,25 @@
 	<resultMap id="cartResultSet" type="cart">
 		<id column="CART_NO" property="cartNo" />
 		<result column="MEMBER_ID" property="memberId" />
-		<result column="PROD_NO" property="probNo" />
+		<result column="PROD_NO" property="prodNo" />
 		<result column="OPT_NO" property="optNo" />
 		<result column="CART_QTY" property="cartQty" />
+		
+		<result column="PROD_NAME" property="prodName" />
+		<result column="OPT_NAME" property="optName" />
+		<result column="PROD_PRICE" property="prodPrice" />
 	</resultMap>
 	
 	<select id="selectCartList"
 			parameterType="string"
 			resultMap="cartResultSet">
 		SELECT C.CART_NO
-		     , C.MEMBER_ID
-		     , C.PROD_NO
+		     , P.PROD_NAME
 		     , O.OPT_NAME
 		     , C.CART_QTY
+		     , P.PROD_PRICE
 		  FROM TB_CART C
+		  LEFT JOIN TB_PRODUCT P USING(PROD_NO)
 		  LEFT JOIN TB_OPTION O USING(OPT_NO)
 		 WHERE MEMBER_ID = #{memberId}
 		 ORDER BY CART_NO DESC

@@ -15,8 +15,12 @@ public class Cart {
 	
 	private int cartNo;			//	CART_NO	NUMBER
 	private String memberId;	//	MEMBER_ID	VARCHAR2(20 BYTE)
-	private int probNo;			//	PROD_NO	NUMBER
+	private int prodNo;			//	PROD_NO	NUMBER
 	private int optNo;			//	OPT_NO	NUMBER
 	private int cartQty;		//	CART_QTY	NUMBER
+	
+	private String prodName;
+	private String optName;
+	private int prodPrice;
 
 }

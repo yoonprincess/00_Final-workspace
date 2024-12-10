@@ -10,6 +10,8 @@
 <!-- <link rel="stylesheet" type="text/css" href="../../../resources/css/cart/cartListView.css"> -->
 <!-- 부트스트랩 -->
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+<!-- jQuery 라이브러리 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body class="body-offset">
 
@@ -32,60 +34,63 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><input type="checkbox" checked></td>
-                    <td><img src="set_product.jpg" alt="기초 & 선라인 세트" class="product-image"></td>
-                    <td class="product-info">
-                        <div class="product-detail">
-                            <p class="product-title">[한정수량] 기초&선라인 1+1SET 특가</p>
-                            <p class="product-option">[옵션: 01. 블랙티 스크럽밤 [44%▼]/[44%▼] 스크럽밤 3+3SET (+58,000)]</p>
-                            <p class="product-quantity">수량: 1개</p>
-                            <p class="product-price">75,800원</p>
-                        </div>
-                        <select>
-                            <option checked>- [필수] 옵션을 선택해 주세요. -</option>
-                            <option>01. 선크림</option>
-                            <option>02. 선스틱</option>
-                        </select>
-                    </td>
-                    <td>
-                        <div class="item-quantity">
-                            <span class="quantity-decrease">-</span>
-                            <input type="text" value="1" class="quantity-input" readonly>
-                            <span class="quantity-increase">+</span>
-                        </div>
-                    </td>
-                    <td class="product-price">21,800원</td>
-                    <td class="delete-btn-td"><button class="btn-delete">X</button></td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" checked></td>
-                    <td><img src="lipbalm.jpg" alt="립밤 세트" class="product-image"></td>
-                    <td class="product-info">
-                        <div class="product-detail">
-                            <p class="product-title">립밤 세트</p>
-                            <p class="product-option">[옵션: 내 맘대로 골라담기 SET (44%▼)/립밤 1+1개 ★27% 할인★/내추럴 레드 2개]</p>
-                            <p class="product-quantity">수량: 1개</p>
-                            <p class="product-price">21,800원</p>
-                        </div>
-                        <select>
-                            <option>- [필수] 옵션을 선택해 주세요. -</option>
-                            <option>01. 선크림</option>
-                            <option>02. 선스틱</option>
-                        </select>
-                    </td>
-                    <td>
-                        <div class="item-quantity">
-                            <span class="quantity-decrease">-</span>
-                            <input type="text" value="1" class="quantity-input" readonly>
-                            <span class="quantity-increase">+</span>
-                        </div>
-                    </td>
-                    <td class="product-price">75,800원</td>
-                    <td class="delete-btn-td"><button class="btn-delete">X</button></td>
-                </tr>
+				<c:if test="${ empty list }">
+					<tr>
+						<td colspan="6">장바구니가 비었습니다.</td>
+					</tr>
+				</c:if>
+				<c:forEach var="ct" items="${ requestScope.list }">
+	                <tr>
+	                    <td><input type="checkbox" checked></td>
+	                    <td><img src="" alt="${ ct.prodName }" class="product-image"></td>
+	                    <td class="product-info">
+	                        <div class="product-detail">
+	                            <p class="product-title">${ ct.prodName }</p>
+	                            <p class="product-option">[옵션: ${ ct.optName }]</p>
+	                            <p class="product-quantity">수량: ${ ct.cartQty }</p>
+	                            <p class="product-price">${ ct.prodPrice }원</p>
+	                        </div>
+	                        <select>
+	                            <option checked>- [필수] 옵션을 선택해 주세요. -</option>
+	                            <option>01. 선크림</option>
+	                            <option>02. 선스틱</option>
+	                        </select>
+	                    </td>
+	                    <td>
+	                        <div class="item-quantity">
+	                            <span class="quantity-decrease">-</span>
+	                            <input type="text" value="1" class="quantity-input" readonly>
+	                            <span class="quantity-increase">+</span>
+	                        </div>
+	                        
+	                    </td>
+	                    <td class="product-price" id="product-total-price">21,800원</td>
+	                    <td class="delete-btn-td"><button class="btn-delete">X</button></td>
+	                </tr>
+				</c:forEach>
             </tbody>
         </table>
+        
+        <script>
+	        $(document).ready(function() {
+	        	
+	            // 수량 증가 버튼 클릭 이벤트
+	            $('.quantity-increase').on('click', function() {
+	                let $input = $(this).siblings('.quantity-input'); // input 요소 선택
+	                let currentValue = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기
+	                $input.val(currentValue + 1);
+	            });
+	
+	            // 수량 감소 버튼 클릭 이벤트
+	            $('.quantity-decrease').on('click', function() {
+	                let $input = $(this).siblings('.quantity-input');
+	                let currentValue = parseInt($input.val(), 10);
+	                if (currentValue > 1) {	// 1 이상으로만
+	                    $input.val(currentValue - 1);
+	                }
+	            });
+	        });
+        </script>
 
         <!-- 장바구니 결제 예정 금액 영역 -->
         <table id="cart-price">
@@ -110,7 +115,6 @@
         </table>
 
     </div>
-
 
 </body>
 </html>
