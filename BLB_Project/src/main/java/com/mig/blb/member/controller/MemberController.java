@@ -1,6 +1,7 @@
 package com.mig.blb.member.controller;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -32,8 +33,20 @@ public class MemberController {
 	
 	// 로그인 페이지 요청 
 	@GetMapping("loginForm.me")
-	public ModelAndView loginForm(ModelAndView mv) {
-		mv.setViewName("member/loginForm");
+	public ModelAndView loginForm(ModelAndView mv,
+								HttpServletRequest request,
+								HttpSession session) {
+		
+		// 이전페이지 url 가져오기
+		String referer = request.getHeader("Referer");
+		
+		
+		if( referer != null) {
+			
+			session.setAttribute("beforePage", referer);
+		}
+			
+			mv.setViewName("member/loginForm");
 		
 		return mv;
 	}
@@ -71,7 +84,14 @@ public class MemberController {
 			// 로그인 성공 ! 
 			session.setAttribute("loginUser", loginUser);
 			
-			mv.setViewName("redirect:/");
+			String referer = (String) session.getAttribute("beforePage");
+			
+			if(referer != null) {
+				mv.setViewName("redirect:"+ referer);
+			}else {
+				mv.setViewName("redirect:/" );
+			}
+			
 			
 		}else { // 로그인 실패 
 			
@@ -176,18 +196,16 @@ public class MemberController {
 		return mv;
 	}
 	
-	// 회원정보 수정 페이지 요청 및 해당 회원정보 불러오기
+	// 회원정보 수정 페이지 요청 
 	@GetMapping("updateForm.me")
-	public ModelAndView updateMemberForm(ModelAndView mv,
-										Member m,
-										Delivery d,
-										HttpSession session) {
+	public ModelAndView updateMemberForm(ModelAndView mv, HttpSession session) {
 		
 		Member loginUser =(Member)session.getAttribute("loginUser");
 		
 		if( loginUser != null) {
+			//memberService.selectDefaultDelivery(loginUser.getMemberId());
 			mv.setViewName("member/updateMemberForm");
-		
+			
 		}else {
 			
 			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
@@ -197,6 +215,95 @@ public class MemberController {
 		return mv;
 	}
 	
+	// 회원정보 수정 요청 
+		@PostMapping(value="update.me")	
+		public ModelAndView updateMember(ModelAndView mv,
+										Member m,
+										Delivery d,
+										HttpSession session,
+										String currentPwd,
+										String newPwd,
+										String ckPwd) {
+			
+		Member loginUser =(Member)session.getAttribute("loginUser");
+		
+		if(currentPwd != null && !currentPwd.isEmpty() 
+							&& newPwd != null && !newPwd.isEmpty() 
+							&& ckPwd != null && !ckPwd.isEmpty()) {
+			// 비번 변경이 있을 경우 
+			
+			if(bcryptPasswordEncoder.matches(currentPwd, loginUser.getMemberPwd())){
+
+				String encPwd = bcryptPasswordEncoder.encode(newPwd);
+				m.setMemberPwd(encPwd);
+						
+				int result = memberService.updateMember(m);
+				
+				int result2 = 0; // Delivery 결과 초기화
+			
+				if(!d.getPostcode().isEmpty()) {
+						
+					d.setMemberId(m.getMemberId()); // FK 연결
+					result2 = memberService.updateDelivery(d);
+				}
+			
+				if(result > 0 && (result2 > 0 || d.getPostcode().isEmpty())) { 
+				
+				session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
+				
+				loginUser.setMemberPwd(encPwd);
+				session.setAttribute("loginUser", loginUser);
+				session.setAttribute("delivery", d);
+				
+				mv.setViewName("member/updateMemberForm");
+				System.out.println("회원정보수정은돼?");
+				
+				}else {
+				
+				session.setAttribute("alertMsg", "회원정보 수정 실패..");
+				mv.setViewName("common/errorPage");
+				System.out.println("회원정보수정실패?");
+				}
+			
+			} else{
+				
+				session.setAttribute("alertMsg", "현재 비밀번호가 잘못되었습니다.");
+				mv.setViewName("member/updateMemberForm");
+				System.out.println("현재비번잘못?");
+			}	
+			
+		}else {
+			// 비번변경없을 경우
+			int result = memberService.updateMember(m);
+			int result2 = 0; // Delivery 결과 초기화
+			
+			if(!d.getPostcode().isEmpty()) {
+					
+				d.setMemberId(m.getMemberId()); // FK 연결
+				
+				result2 = memberService.updateDelivery(d);
+			}
+		
+			if(result > 0 && (result2 > 0 || d.getPostcode().isEmpty())) { 
+			
+			session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
+			
+			session.setAttribute("loginUser", loginUser);			
+			mv.setViewName("member/updateMemberForm");
+			System.out.println("회원정보수정은돼?");
+			
+			}else {
+			
+				session.setAttribute("alertMsg", "회원정보 수정 실패..");
+				mv.setViewName("common/errorPage");
+				System.out.println("회원정보수정실패?");
+			}
+		}
+		
+		return mv;
+	}
+		
+
 	// 회원탍퇴페이지 요청 
 		@GetMapping("deleteForm.me")
 		public ModelAndView deleteForm(ModelAndView mv, HttpSession session) {
@@ -212,6 +319,9 @@ public class MemberController {
 			}
 			return mv;
 		}
+		
+	
+		
 }
 
 
