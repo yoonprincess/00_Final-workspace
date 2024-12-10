@@ -1,6 +1,7 @@
 /**
  * 회원가입폼 과 관련된 자바스크립트
  */
+ 
   /* 입력받은 폰번호 하나로 합치기*/
    document.getElementById('enrollForm').addEventListener('submit', function(event) {
        

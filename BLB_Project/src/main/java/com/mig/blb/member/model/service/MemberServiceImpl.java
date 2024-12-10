@@ -35,11 +35,29 @@ public class MemberServiceImpl implements MemberService {
 		
 		return  memberDao.insertMember(sqlSession, m);
 	}
+	
+	@Override
+	public Delivery selectDefaultDelivery(String memberId) {
+		
+		return memberDao.selectDefaultDelivery(sqlSession, memberId);
+	}
+	
+	@Transactional 
 	@Override
 	public int updateMember(Member m) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return memberDao.updateMember(sqlSession, m);
 	}
+	
+	@Override
+	@Transactional
+	public int updateDelivery(Delivery d) {
+		
+		return memberDao.updateDelivery(sqlSession,d);
+	}
+	
+	
+	@Transactional 
 	@Override
 	public int deleteMember(String memberId) {
 		// TODO Auto-generated method stub
@@ -70,6 +88,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDao.insertCertEmail(sqlSession,certEmail);
 	}
+	
 	@Override
 	public int selectCertEmail(CertEmail validate) {
 		
@@ -82,6 +101,9 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDao.deleteCertEmail(sqlSession,validate);
 	}
+	
+	
+	
 
 }
 

@@ -203,7 +203,10 @@ public class MemberController {
 		Member loginUser =(Member)session.getAttribute("loginUser");
 		
 		if( loginUser != null) {
-			//memberService.selectDefaultDelivery(loginUser.getMemberId());
+			
+			Delivery d = memberService.selectDefaultDelivery(loginUser.getMemberId());
+			session.setAttribute("d", d);
+			
 			mv.setViewName("member/updateMemberForm");
 			
 		}else {
@@ -215,9 +218,9 @@ public class MemberController {
 		return mv;
 	}
 	
-	// 회원정보 수정 요청 
-		@PostMapping(value="update.me")	
-		public ModelAndView updateMember(ModelAndView mv,
+	// 회원정보 수정 요청( 주소정보 X) 
+	@PostMapping(value="update.me")	
+	public ModelAndView updateMember(ModelAndView mv,
 										Member m,
 										Delivery d,
 										HttpSession session,
@@ -230,80 +233,78 @@ public class MemberController {
 		if(currentPwd != null && !currentPwd.isEmpty() 
 							&& newPwd != null && !newPwd.isEmpty() 
 							&& ckPwd != null && !ckPwd.isEmpty()) {
-			// 비번 변경이 있을 경우 
 			
+			// 비번 변경이 있을 경우 
 			if(bcryptPasswordEncoder.matches(currentPwd, loginUser.getMemberPwd())){
-
+				// 현재비번 매치되면 
+				
 				String encPwd = bcryptPasswordEncoder.encode(newPwd);
 				m.setMemberPwd(encPwd);
 						
 				int result = memberService.updateMember(m);
+				int result2 = updateDelivery(d,m);
+				if(result > 0 && result2 > 0) { 
 				
-				int result2 = 0; // Delivery 결과 초기화
-			
-				if(!d.getPostcode().isEmpty()) {
-						
-					d.setMemberId(m.getMemberId()); // FK 연결
-					result2 = memberService.updateDelivery(d);
-				}
-			
-				if(result > 0 && (result2 > 0 || d.getPostcode().isEmpty())) { 
-				
-				session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
-				
-				loginUser.setMemberPwd(encPwd);
-				session.setAttribute("loginUser", loginUser);
-				session.setAttribute("delivery", d);
-				
-				mv.setViewName("member/updateMemberForm");
-				System.out.println("회원정보수정은돼?");
+					session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
+					
+					loginUser.setMemberPwd(encPwd);
+					session.setAttribute("loginUser", loginUser);
+					mv.setViewName("member/updateMemberForm");
+					
+					System.out.println("회원정보수정는 돼?");
 				
 				}else {
 				
-				session.setAttribute("alertMsg", "회원정보 수정 실패..");
-				mv.setViewName("common/errorPage");
-				System.out.println("회원정보수정실패?");
+					session.setAttribute("alertMsg", "회원정보 수정 실패..");
+					mv.setViewName("member/updateMemberForm");
+					System.out.println("비번변경있는 회원정보수정실패?");
 				}
 			
 			} else{
-				
+				// 현재 비번 잘못됨
 				session.setAttribute("alertMsg", "현재 비밀번호가 잘못되었습니다.");
 				mv.setViewName("member/updateMemberForm");
 				System.out.println("현재비번잘못?");
 			}	
 			
-		}else {
+		} else {
 			// 비번변경없을 경우
+			
 			int result = memberService.updateMember(m);
-			int result2 = 0; // Delivery 결과 초기화
+			int result2 = updateDelivery(d,m);
+			if(result > 0 && result2 > 0) { 
 			
-			if(!d.getPostcode().isEmpty()) {
-					
-				d.setMemberId(m.getMemberId()); // FK 연결
+				session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
+				session.setAttribute("loginUser", loginUser);	
+				mv.setViewName("member/updateMemberForm");
 				
-				result2 = memberService.updateDelivery(d);
-			}
-		
-			if(result > 0 && (result2 > 0 || d.getPostcode().isEmpty())) { 
-			
-			session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
-			
-			session.setAttribute("loginUser", loginUser);			
-			mv.setViewName("member/updateMemberForm");
-			System.out.println("회원정보수정은돼?");
+				System.out.println("회원정보수정은돼?");
 			
 			}else {
 			
 				session.setAttribute("alertMsg", "회원정보 수정 실패..");
-				mv.setViewName("common/errorPage");
-				System.out.println("회원정보수정실패?");
+				mv.setViewName("member/updateMemberForm");
+				System.out.println(" 비번변경없이 회원정보수정실패?");
 			}
 		}
 		
 		return mv;
 	}
 		
+	// 기본주소 변경 메소드 
+	public int updateDelivery(Delivery d, Member m) {
+		
+		int result = 1;
 
+		if(!d.getPostcode().isEmpty()) {
+			d.setMemberId(m.getMemberId());
+			result = memberService.updateDelivery(d);
+		}
+		
+		return result;
+	}
+	
+	
 	// 회원탍퇴페이지 요청 
 		@GetMapping("deleteForm.me")
 		public ModelAndView deleteForm(ModelAndView mv, HttpSession session) {

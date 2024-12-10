@@ -106,13 +106,22 @@ body {
     gap: 10px; /* 간격 추가 (선택 사항) */
 }
 
+.form-row .hidden{
+	display:none !important;
+}
 .id-input{
     display: flex; /* Flexbox 활성화 */
     flex-direction: column; /* 요소들을 세로로 정렬 */
     align-items: flex-start; /* 왼쪽 정렬 */
 }
-.input-field:disabled {
-    background-color: #edf7f9 !important;  
+
+.input-label{
+	
+	width:150px;
+}
+input:readonly {
+    background-color: red !important;
+    color: silver !important;
 }
 
 #email-form-input{

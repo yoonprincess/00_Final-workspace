@@ -37,6 +37,11 @@ public interface MemberService {
 	
 	// 발송한 인증데이터 삭제용
 	int deleteCertEmail(CertEmail validate);
+	
+	// 기본 주소 변경 
+	int updateDelivery(Delivery d);
+
+	Delivery selectDefaultDelivery(String memberId);
 
 	
 	

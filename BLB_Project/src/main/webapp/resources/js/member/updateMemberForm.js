@@ -8,16 +8,158 @@
 
 	$(document).ready(function() {
 	  
-	  $('#phone1').val(phone.slice(0, 3));
-	  $('#phone2').val(phone.slice(3, 7));
-	  $('#phone3').val(phone.slice(7));
+        $('#phone1').val(phone.slice(0, 3));
+        $('#phone2').val(phone.slice(3, 7));
+        $('#phone3').val(phone.slice(7));
+   
+  });
+	
+	
+	/* 입력받은 폰번호 하나로 합치기*/
+   document.getElementById('updateForm').addEventListener('submit', function(event) {
+       
+        var phone1 = document.getElementById('phone1').value;
+        var phone2 = document.getElementById('phone2').value;
+        var phone3 = document.getElementById('phone3').value;
+
+       
+        var fullPhoneNumber = phone1  + phone2  + phone3;
+		
+        document.getElementById('phone').value = fullPhoneNumber;
+        
+
+    });
+    
+    
+	// 비밀번호 변경 안할 때 로직
+	$(document).ready(function() {
+	
+		if(!$('#newPwd').val()){
+			$('#newPwd').removeAttr('required');
+			$('#ckPwd').removeAttr('required');
+		}
 	});
 
+	// 비밀번호 변경 버튼 toggle 적용 
+	$(document).ready(function() {
+	 
+	 	$('#changePwd').on('click', function(){
+	 		
+	 		  $('#memberPwd, #newPwd, #ckPwd, #noticePwd, .input-label').each(function () {
+		 		
+		 		 if ($(this).hasClass('hidden')) {
+	                    $(this).removeClass('hidden');
+	                    $('#newPwd').attr('required','required');
+						$('#ckPwd').attr('required', 'required');
+	                    
+	                } else {
+	                    $(this).addClass('hidden');
+	                    $('#newPwd').removeAttr('required');
+						$('#ckPwd').removeAttr('required');
+						$('input[name="newPwd"], input[name="ckPwd"]').val('');
+	                }
+	 			});
+	 	});
+	 });
+	
+	
+	// 비밀번호 검증
+	 $(function(){
+	      const $pwdInput = $("#enrollForm input[name=newPwd]");
+	 	
+	      $pwdInput.blur(function(){
+	        
+	        let newPwd=$(this).val();
+	        let validate = /^(?=(.*[A-Za-z].*[0-9]))(?=(.*[0-9].*[!@#$%^&*-_]))(?=(.*[A-Za-z].*[!@#$%^&*-_])).{8,16}$/
+	        
+		if(newPwd.length >= 8){		
+	     
+	        if(validate.test(newPwd)){
+	        
+	       
+	         
+	         $("#validatePwd").show()
+	         				  .css({
+							    "color": "#71C9CE",
+							    "font-size": "12px",
+							    "font-weight": "600"
+								}).text("사용가능한 비밀번호입니다!");
+								
+			$("#newPwd").css("border","2px solid #71C9CE");   
+			$("#enrollForm button[type=submit]").attr("disabled", false);					
+	          
+	        }else{
 
+	        	$("#validatePwd").show()
+	        					.css({
+					                "color": "orangered", // 색상 수정
+					                "font-size": "12px",
+					                "font-weight": "600"
+					            }).text("8~16자의 영문 대/소문자, 숫자, 특수문자 중 2가지 이상 조합해서 사용해 주세요.");    
+				$("#newPwd").css("border","1px solid orangered");  
+				$("#enrollForm button[type=submit]").attr("disabled", true);  
+				$("#noticePwd").show();       	   				
+	        }
+	        
+	   }else{
+	   		  $("#newPwd").css("border", "1px solid #ccc"); // 기본 테두리 색상으로 초기화
+	          $("#enrollForm button[type=submit]").attr("disabled",true);
+	          $("#validatePwd").hide();  
+	          $("#noticePwd").show();               	   				
+	   	
+	   }     
+	        
+	  	 }); 
+	 	});  
+	 	
+	 	/* 비밀번호 확인 체크 */
+	 	
+	 	 $(function() {
+	 	 
+		    const $ckPwdInput = $("#enrollForm input[name=checkPwd]");
+		    const $pwdInput = $("#enrollForm input[name=newPwd]");
+	    
+		    $ckPwdInput.change(function() {
+		        let checkPwd = $(this).val();
+	        
+	      		if(checkPwd.length >= 8){
+	      		  
+		        // 비밀번호 확인
+		        if (checkPwd === $pwdInput.val()) {
+		         		                            
+		           $("#ckPwd").css("border","2px solid #71C9CE");   
+		           $("#enrollForm button[type=submit]").attr("disabled", false);
+		           $("#checkPwd").hide();  
+		           
+		        } else {
+		           
+		            $("#checkPwd").show()
+		                .css({
+		                    "color": "orangered", 
+		                    "font-size": "12px",
+		                    "font-weight": "600"
+		                }).text("비밀번호가 다릅니다");
+		        
+		        	$("#ckPwd").css("border","1px solid orangered");
+		        	$("#enrollForm button[type=submit]").attr("disabled", true);
+		        	
+		        }
+		
+	      }else{
+		
+		      	$("#ckPwd").css("border", "1px solid #ccc"); // 기본 테두리 색상으로 초기화
+		        $("#enrollForm button[type=submit]").attr("disabled",true);
+		        
+	      }   
+	       
+	    });
+	});
+	
+	
 	// 이메일변경버튼 
 	function changeEmail(){
 		$("#email").val("");
-		  $("#email").attr("disabled", false); 
+		$("#email").removeAttr("readonly"); 
 		$("#changebtn").hide();
 		$("#certbtn").show();
 	}
@@ -66,7 +208,7 @@
 	    let countdown; // 카운트다운을 관리하는 변수
 	    
 	    const $timeSpan = $('.time'); 
-	    const $btnSend = $('#certbtn'); 
+	    const $btnSend = $('#changebtn'); 
 
    		 const updateCountdown = function() {
    		 
@@ -87,7 +229,7 @@
                 $("#certKey").val("");
                 $("#email").css("border", "1px solid orangered");
                 $("#email").attr("disabled", false);
-                $("#certbtn").attr("disabled", false);
+                $("#changebtn").attr("disabled", false);
 	        }
     	};
     
@@ -98,7 +240,7 @@
 	        cert();
 	        
 	        clearInterval(countdown);
-	        seconds = 300;
+	        seconds = 100;
 	
 	        updateCountdown();
 	        
@@ -139,7 +281,7 @@
 					$("#certKey").val("");
 					$("#email").css("border","1px solid orangered"); 
 					$("#email").attr("disabled", false);
-					$("#certbtn").attr("disabled", false);
+					$("#changebtn").attr("disabled", false);
 				}
 				
 			},
@@ -149,3 +291,50 @@
 		});
 	}
 	
+ /* DAUM 지도검색 API */
+	 
+	 function sample4_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+            
+                // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                var roadAddr = data.roadAddress; // 도로명 주소 변수
+                var extraRoadAddr = ''; // 참고 항목 변수
+
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraRoadAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraRoadAddr !== ''){
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
+				
+				var fullAddress = '도로명 : ' + roadAddr + extraRoadAddr+ '\n'+ '지번 : '+ data.jibunAddress ;
+				
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('sample4_postcode').value = data.zonecode;
+               
+                document.getElementById("sample4_roadAddress").value = fullAddress;
+                
+                if(data.autoRoadAddress) {
+                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                  
+                } else if(data.autoJibunAddress) {
+                    var expJibunAddr = data.autoJibunAddress;
+                    document.getElementById("sample4_roadAddress").value = '도로명 : ' + roadAddr + extraRoadAddr + '\n' + '지번 : ' + expJibunAddr;
+                    
+                } 
+                
+                document.getElementById("sample4_detailAddress").focus();
+                 $(".address-field").attr("disabled", false);
+                 $("#sample4_detailAddress").val("");
+            }
+        }).open();
+    }
+        	

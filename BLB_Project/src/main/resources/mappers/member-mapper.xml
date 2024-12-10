@@ -15,6 +15,18 @@
  		<result column="CURRENT_POINTS" property="currentPoints" />
  		<result column="GRADE_NAME" property="gradeName" />
 </resultMap>
+
+<resultMap id="deliveryResultSet" type="delivery">
+ 		<id column="DELI_CODE" property="deliCode"/>
+ 		<result column="DELI_NAME" property="deliName" />
+ 		<result column="DELI_PHONE" property="deliPhone" />
+ 		<result column="DELI_ADDRESS" property="deliAddress" />
+ 		<result column="DELI_DEFAULT" property="deliDefault" />
+ 		<result column="DELI_COMMENT" property="deliComment" />
+ 		<result column="POSTCODE" property="postcode" />
+ 		<result column="DETAIL_ADDRESS" property="detailAddress" />
+ 		<result column="MEMBER_ID" property="memberId" />
+</resultMap>
 	
 	<select id="loginMember"
 			parameterType="member"
@@ -93,4 +105,30 @@
 		   AND CERT_KEY = #{certKey}	
 	</delete>
 	
+	<update id="updateMember" parameterType="member">
+		UPDATE TB_MEMBER 
+		   SET 	MEMBER_PWD = #{memberPwd},
+	            PHONE = #{phone},
+	            EMAIL = #{email},
+	            BIRTHDATE = #{birthdate}
+	       WHERE MEMBER_ID = #{memberId}
+	       	AND STATUS= 'Y'                
+	</update>
+	
+	<select id="selectDefaultDelivery" parameterType="delivery" resultMap="deliveryResultSet">
+		SELECT POSTCODE, DELI_ADDRESS, DETAIL_ADDRESS
+			FROM TB_DELIVERY		  
+	      WHERE MEMBER_ID = #{memberId} 
+	                
+	</select>
+	
+	<update id="updateDelivery" parameterType="delivery">
+		UPDATE TB_DELIVERY
+		   SET 	POSTCODE = #{postcode},
+	            DELI_ADDRESS = #{deliAddress},
+	            DETAIL_ADDRESS = #{detailAddress}
+	      WHERE MEMBER_ID = #{memberId}
+	       AND DELI_DEFAULT = 'Y'
+	                
+	</update>
 </mapper>

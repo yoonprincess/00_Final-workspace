@@ -65,4 +65,17 @@ public class MemberDao {
 		return sqlSession.delete("memberMapper.deleteCertEmail", validate);
 	}
 
+	public Delivery selectDefaultDelivery(SqlSessionTemplate sqlSession, String memberId) {
+		
+		return sqlSession.selectOne("memberMapper.selectDefaultDelivery", memberId);
+	}
+	public int updateDelivery(SqlSessionTemplate sqlSession, Delivery d) {
+		
+		return sqlSession.update("memberMapper.updateDelivery", d);
+		
+		
+	}
+
+	
+
 }

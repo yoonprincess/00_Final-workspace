@@ -30,7 +30,7 @@
     <!-- daum 지도검색 api -->
    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     
-    <script> var phone = "${loginUser.phone}"; </script>
+    <script> var phone = "${loginUser.phone}"</script>
 </head>
 <body class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -38,18 +38,19 @@
         <h3 align="center"> 회원정보 수정 </h3>
         
 
-        <form class="registration-form outer" action="insert.me" method="post" id="enrollForm">
+        <form class="registration-form outer" action="update.me" method="POST" id="updateForm">
             <div class="section-header">
                 <h4>기본정보</h4> 
                 <span class="required"><span class="required-mark" >*</span> 필수입력사항</span>
             </div>
             
             <div class="form-row">
+             <input type="hidden" name="memberId" value="${loginUser.memberId}">
                 <label class="form-label">아이디 <span class="required-mark" ></span></label>
                 <div class="form-input id-input">
                     <div class="input-wrapper">
                         <input type="text" class="input-field" name="memberId" id="memberId" 
-                        value="${loginUser.memberId}" disabled >
+                        value="${loginUser.memberId}" readonly >
                     </div>
                    
                 </div>              
@@ -58,23 +59,30 @@
             <div class="form-row">
                 <label class="form-label">비밀번호 <span class="required-mark" >*</span></label>
                 <div class="form-input id-input">
-                    <div class="input-wrapper">
-                        <input type="password" class="input-field" name="memberPwd" id="memberPwd" required>
-                        <span class="input-notice" id="noticePwd">(영문대/소문자, 숫자, 특수문자 중 2가지 이상 조합, 8-16자)</span>
+                    <div class="input-wrapper" style="flex-direction: column; align-items: flex-start;">
+                      <button class="btn btn-outline-secondary" type="button" id="changePwd"> 비밀번호 변경</button>
+                       <div class="input-wrapper">
+                       <span class="input-label hidden"> 현재 비밀번호</span>
+                      <input type="password" class="input-field hidden" name="currentPwd" id="memberPwd" >
+                       </div>
+                      <div class="input-wrapper">
+                      	<span class="input-label hidden"> 새 비밀번호</span>
+                    	<input type="password" class="input-field hidden" name="newPwd" id="newPwd" required >
+                    	<span class="input-notice hidden" id="noticePwd">(영문대/소문자, 숫자, 특수문자 중 2가지 이상 조합, 8-16자)</span>
+                      </div>
+                      <div id="validatePwd" style="display:none;"></div>
+                      <div class="input-wrapper" >
+                        <span class="input-label hidden"> 새 비밀번호 확인</span>
+                        <input type="password" class="input-field hidden" name="checkPwd" id="ckPwd" required>
+                      </div>
+                      <div id="checkPwd" style="display:none;" ></div>
                     </div>
-					<div id="validatePwd" style="display:none;"></div>
+                    <input type="hidden" name="memberPwd" value="${loginUser.memberPwd}" >
+                    <input type="hidden" name="newPwd" value="">
+                    <input type="hidden" name="ckPwd" value="">
                 </div>
             </div>
 
-            <div class="form-row">
-                <label class="form-label">비밀번호 확인 <span class="required-mark" >*</span></label>
-                <div class="form-input id-input">
-                    <div class="input-wrapper">
-                         <input type="password" class="input-field" name="checkPwd" id="ckPwd" required>
-                    </div>
-                    <div id="checkPwd" style="display:none;" ></div>
-                </div>
-            </div>
             <!--
             <div class="form-row">
                 <label class="form-label">회원인증 <span class="required-mark" >*</span></label>
@@ -101,14 +109,14 @@
             <div class="form-row">
                 <label class="form-label">이름 <span class="required-mark" ></span></label>
                 <div class="form-input">
-                    <input type="name" class="input-field" name="memberName" value="${loginUser.memberName}" disabled>
+                    <input type="name" class="input-field" name="memberName" value="${loginUser.memberName}" readonly>
                 </div>
             </div>
             <div class="form-row">
                 <label class="form-label">이메일 <span class="required-mark" >*</span></label>
                 <div class="form-input" id="email-form-input" >
                 	<div class="input-wrapper" >
-	                    <input type="email" class="input-field" name="email" required id="email" value="${loginUser.email}" disabled>
+	                    <input type="email" class="input-field" name="email" required id="email" value="${loginUser.email}" readonly>
 	                    <button type="button" class="btn-sm btn-outline-info" id="changebtn" onclick="changeEmail();">변경</button>
 	                    <button type="button" class="btn-sm btn-outline-info" id="certbtn" style="display:none;">인증</button>
                    </div>
@@ -134,7 +142,7 @@
 		<div class="form-row">
            <label class="form-label">생년월일 </label>
            <div class="form-input birthdate-input">
-               <input type="date" class="input-field" style="width:280px;"name="birthdate" value="${loginUser.birthdate}" >
+               <input type="date" class="input-field" style="width:280px;" name="birthdate" value="${loginUser.birthdate.substring(0,10)}" id="birthdate">
            </div>
         </div>
         
@@ -143,14 +151,15 @@
             <div  class="form-input ">
                 <div class="form-input-addr" >
                     <div class="zipcode-row " >
-                        <input type="text" class="input-field address-field"  id="sample4_postcode" placeholder="우편번호" name="postcode" >
-                        <input type="button" class="btn-sm btn-outline-info" onclick="sample4_execDaumPostcode()" value="우편번호"><br>
+                        <input type="text" class="input-field address-field"  id="sample4_postcode" placeholder="우편번호" 
+                        		name="postcode"  value="${d.postcode}" readonly>
+                        <input type="button" class="btn-sm btn-outline-info" onclick="sample4_execDaumPostcode()" value="주소변경"><br>
                     </div>
                     <div class="address-row ">
                         <textarea class="input-field address-field" id="sample4_roadAddress" 
-                                placeholder="도로명주소" name="deliAddress"></textarea><br>
+                                placeholder="도로명주소" name="deliAddress" readonly>${d.deliAddress}</textarea><br>
                         <input type="text"  class="input-field address-field" 
-                                id="sample4_detailAddress" placeholder="상세주소" name="detailAddress">
+                                id="sample4_detailAddress" placeholder="상세주소" name="detailAddress" value="${d.detailAddress}">
                     </div>
                 </div>
             </div>
