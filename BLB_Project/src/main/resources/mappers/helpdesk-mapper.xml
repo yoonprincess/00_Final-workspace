@@ -89,20 +89,24 @@
 		<result column="INQUIRY_CREATE_DATE" property="inquiryCreateDate"/>
 		<result column="INQUIRY_ANSWERED_YN" property="inquiryAnsweredYn"/>
 		<result column="INQUIRY_STATUS" property="inquiryStatus"/>
+		<result column="MEMBER_ID" property="memberId"/>
+		<result column="PROD_NAME" property="prodName"/>
 	</resultMap>
 	
 	<insert id="insertInquiry" parameterType="inquiry">
 	    INSERT INTO TB_INQUIRY(INQUIRY_NO
-	                    , INQUIRY_CONTENT
-	                    , INQUIRY_TYPE
-	                    , MEMBER_ID
-	                    , PROD_NO)
-	               VALUES(SEQ_INQUIRY_NO.NEXTVAL
-	                    , #{inquiryContent}
-	                    , #{inquiryType}
-	                    , #{memberId}
-	                    , #{prodNo})
-  	</insert>
+	                        , INQUIRY_CONTENT
+	                        , INQUIRY_TYPE
+	                        , MEMBER_ID
+	                        , PROD_NO)
+	                   VALUES(SEQ_INQUIRY_NO.NEXTVAL
+	                        , #{inquiryContent}
+	                        , #{inquiryType}
+	                        , #{memberId}
+	                        , <if test="prodNo == 0">null</if>
+	                        <if test="prodNo != 0">#{prodNo}</if>)
+	</insert>
+
 	
 	<select id="selectInquiryListCount" resultType="_int">
 		SELECT COUNT(*)
@@ -117,6 +121,7 @@
 		     , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD') AS "INQUIRY_CREATE_DATE"
 		  FROM TB_INQUIRY
 		 WHERE INQUIRY_STATUS = 'Y'
+		   AND MEMBER_ID = #{memberId}
 	  ORDER BY INQUIRY_NO DESC
 	</select>
 	
@@ -126,24 +131,27 @@
 	         , INQUIRY_CONTENT
 	         , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD') AS "INQUIRY_CREATE_DATE"
 	         , MEMBER_ID
-	         , PROD_NO
-	      FROM TB_INQUIRY
-	      JOIN TB_MEMBER USING(MEMBER_ID)
-	      JOIN TB_PRODUCT (PROD_NO)
+	         , PROD_NAME
+	      FROM TB_INQUIRY 
+	      LEFT JOIN TB_PRODUCT USING(PROD_NO)
 	     WHERE INQUIRY_NO = #{inquiryNo}
 	       AND INQUIRY_STATUS = 'Y'
-  	</select>
+	</select>
+
+	
+	<update id="deleteInquiry" parameterType="_int">
+		UPDATE TB_INQUIRY
+		   SET INQUIRY_STATUS = 'N'
+		 WHERE INQUIRY_NO = #{inquiryNo}
+	</update>
 	
 	<update id="updateInquiry" parameterType="inquiry">
-	    UPDATE TB_INQUIRY
-	       SET INQUIRY_CONTENT = #{inquiryContent}
-	         , INQUIRY_TYPE = #{inquiryType}
-	         , MEMBER_ID = #{memberId}
-	         , PROD_NO = #{prodNo}
-	         , INQUIRY_CREATE_DATE = SYSDATE
-	     WHERE INQUIRY_NO = #{inquiryNo}
-	       AND INQUIRY_STATUS = 'Y'
-	  </update>
+		UPDATE TB_INQUIRY
+		   SET INQUIRY_CONTENT = #{inquiryContent}
+		     , INQUIRY_CREATE_DATE = SYSDATE
+		 WHERE INQUIRY_NO = #{inquiryNo}
+		   AND INQUIRY_STATUS = 'Y'
+	</update>
 	
 	<resultMap id="inquiryAttResultSet" type="inquiryAtt">
 		<id column="INQUIRY_ATT_NO" property="inquiryAttNo"/>
@@ -181,11 +189,13 @@
 						, MEMBER_ID
 		                , INQUIRY_REPLY_CONTENT
 		                , INQUIRY_NO
-		                , PROD_NO)
+		                , PROD_NAME)
 		           VALUES(SEQ_RNO.NEXTVAL
 		           		, #{memberId}
 		                , #{inquiryReplyContent}
 		                , #{inquiryNo}
-		                , #{prodNo})
+		                , #{prodName})
 	</insert>
+	
+	
 </mapper>

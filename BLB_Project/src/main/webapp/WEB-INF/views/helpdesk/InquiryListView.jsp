@@ -70,11 +70,7 @@
 	                <li><a href="#">»</a></li>
 	            </ul>
 	        </nav>
-    </c:if>
-    <c:if test="${sessionScope.loginUser == null}">
-        <a href="loginForm.me" class="btn btn-warning">로그인이 필요한 서비스 입니다.</a>
-    </c:if>
-    
+    </c:if>    
 </div>
 </div>
 <script src="resources/js/helpdesk/Inquiry.js"></script> <!-- JS 파일 경로 -->

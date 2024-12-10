@@ -16,15 +16,15 @@
         <!-- 상단 내비게이션 -->
         <nav>
             <ul>
-                <li><a href="../list.io">목록</a></li>
-                <li><a href="">수정</a></li>
-                <li><a href="" onclick="return confirm('삭제하시겠습니까?');">삭제</a></li>
+                <li><a href="${ pageContext.request.contextPath }/list.io">목록</a></li>
+                
             </ul>
         </nav>
 
         <!-- 문의내용 -->
         <div class="inquiry-detail">
             <h3>문의 내용</h3>
+            <p><strong>상품명:</strong> ${requestScope.i.prodName }</p>
             <p><strong>문의번호:</strong> ${requestScope.i.inquiryNo}</p>
             <p><strong>문의자:</strong> ${requestScope.i.memberId}</p>
             <p><strong>문의일:</strong> ${requestScope.i.inquiryCreateDate}</p>
@@ -63,6 +63,14 @@
             </form>
         </div>
     </div>
+    	<form action="${ pageContext.request.contextPath }/InquiryUpdateForm.io" method="post">
+        	<input type="hidden" name="ino" value="${requestScope.i.inquiryNo}">
+        	<button type="submit">수정</button>                	
+        </form>
+        <form action="${ pageContext.request.contextPath }/InquiryDelete.io" method="post">
+        	<input type="hidden" name="ino" value="${requestScope.i.inquiryNo}">
+        	<button type="submit">삭제</button>                	
+        </form>
 	</div>
     <script src="${pageContext.request.contextPath}/resources/js/helpdesk/Inquiry.js"></script> <!-- JS 파일 경로 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>

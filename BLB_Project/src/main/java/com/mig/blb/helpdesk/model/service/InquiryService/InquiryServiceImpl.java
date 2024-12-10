@@ -10,6 +10,7 @@ import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.helpdesk.model.dao.InquiryDao;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.helpdesk.model.vo.InquiryReply;
+import com.mig.blb.member.model.vo.Member;
 
 @Service
 public class InquiryServiceImpl implements InquiryService {
@@ -21,19 +22,19 @@ public class InquiryServiceImpl implements InquiryService {
 	private InquiryDao inquiryDao;
 	
 	@Override
-	public int selectInquiryListCount() {
-		return inquiryDao.selectInquiryListCount(sqlSession);
+	public int selectInquiryListCount(String memberId) {
+		return inquiryDao.selectInquiryListCount(sqlSession, memberId);
 	}
 
 	@Override
-	public ArrayList<Inquiry> selectInquiryList(PageInfo pi) {
-		return inquiryDao.selectInquiryList(sqlSession, pi);
+	public ArrayList<Inquiry> selectInquiryList(PageInfo pi, String memberId) {
+		return inquiryDao.selectInquiryList(sqlSession, pi, memberId);
 	}
 
 	// 문의 등록
 	@Override
 	public int insertInquiry(Inquiry i) {
-		System.out.println("service단에서 : " + i);
+
 		return inquiryDao.insertInquiry(sqlSession, i);
 	}
 
@@ -50,5 +51,15 @@ public class InquiryServiceImpl implements InquiryService {
 	@Override
 	public ArrayList<InquiryReply> selectInquiryReplyList(int ino) {
 		return inquiryDao.selectInquiryReplyList(sqlSession, ino);
+	}
+
+	@Override
+	public int deleteInquiry(int ino) {
+		return inquiryDao.deleteInquiry(sqlSession, ino);
+	}
+
+	@Override
+	public int updateInquiry(Inquiry i) {
+		return inquiryDao.updateInquiry(sqlSession, i);
 	}
 }

@@ -21,6 +21,7 @@ public class Inquiry {
 	private String inquiryAnsweredYn;
 	private String inquiryStatus;
 	private String memberId;
-	private int prodNo;
+	private Integer prodNo;
+	private String prodName;
 	
 }

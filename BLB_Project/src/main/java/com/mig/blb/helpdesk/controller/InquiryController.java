@@ -25,8 +25,8 @@ import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.common.template.Pagination;
 import com.mig.blb.helpdesk.model.service.InquiryService.InquiryService;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
-import com.mig.blb.helpdesk.model.vo.InquiryAtt;
 import com.mig.blb.helpdesk.model.vo.InquiryReply;
+import com.mig.blb.member.model.vo.Member;
 
 @Controller
 public class InquiryController {
@@ -38,22 +38,34 @@ public class InquiryController {
 	// 문의 목록 조회 요청
 	@GetMapping("list.io")
 	public String selectInquiryList(@RequestParam(value="cpage", defaultValue="1")int currentPage,
-									Model model) {
-		int listCount = inquiryService.selectInquiryListCount();
+									Model model,
+									HttpSession session) {
 		
-		int pageLimit = 5;
-		int boardLmit = 5;
+		if(session.getAttribute("loginUser") == null) {
+			
+			
+			return "redirect:/loginForm.me";
+			
+		} else {
 		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLmit);
-		ArrayList<Inquiry> list = inquiryService.selectInquiryList(pi);
-		
-		model.addAttribute("list", list);
-		model.addAttribute("pi", pi);
-		
-		//System.out.println(list);
-		// > 상품 정보가 잘 넘어온다.
-		
-		return "helpdesk/InquiryListView";
+			String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
+			
+			//System.out.println(memberId);
+			// > session.loginUser의 memberId가 출력됨
+			
+			int listCount = inquiryService.selectInquiryListCount(memberId);
+			
+			int pageLimit = 5;
+			int boardLmit = 5;
+			
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLmit);
+			ArrayList<Inquiry> list = inquiryService.selectInquiryList(pi, memberId);
+			
+			model.addAttribute("list", list);
+			model.addAttribute("pi", pi);
+			
+			return "helpdesk/InquiryListView";
+		}
 	}
 	
 	// 문의 작성 페이지 요청
@@ -84,35 +96,113 @@ public class InquiryController {
 		}
 		*/
 		
-		int result = inquiryService.insertInquiry(i);
-		
-		
-		System.out.println("controller단에서 : " + i);
-		
-		if(result > 0) {
-			mv.setViewName("redirect:/Inquiry.blb");
-		} else {
-			ar.addFlashAttribute("alertMsg", "문의가 성공적으로 접수되었습니다.");
-			mv.setViewName("redirect:/Inquiry.blb");
-		}
-		
-		
-		return mv;
+		 // 서비스 호출
+	    int result = inquiryService.insertInquiry(i);
+
+	    // 결과 처리
+	    if (result > 0) {
+	        ar.addFlashAttribute("alertMsg", "문의가 성공적으로 접수되었습니다.");
+	    } else {
+	        ar.addFlashAttribute("alertMsg", "문의 접수에 실패했습니다.");
+	    }
+
+	    System.out.println(i);
+	    
+	    mv.setViewName("redirect:/Inquiry.blb");
+	    return mv;
 	}
 	
 	// 문의 상세조회 요청
-		@GetMapping("inquiry/{inquiryNo}")
-		public ModelAndView selectInquiry(@PathVariable(value = "inquiryNo") int ino,
-		                                 ModelAndView mv,
-		                                 RedirectAttributes ra) {
-		        Inquiry i = inquiryService.selectInquiry(ino);
-		        mv.addObject("i", i).setViewName("helpdesk/InquiryDetailView");
-		        
-		        //System.out.println(i);
-		        // > 데이터는 잘 넘어온다.
-		        
-		    return mv;
+	@GetMapping("inquiry/{inquiryNo}")
+	public ModelAndView selectInquiry(@PathVariable(value = "inquiryNo") int ino,
+	                                 ModelAndView mv,
+	                                 RedirectAttributes ra) {
+	        Inquiry i = inquiryService.selectInquiry(ino);
+	        mv.addObject("i", i).setViewName("helpdesk/InquiryDetailView");
+	        
+	        
+	    return mv;
+	}
+		
+	// 문의글 삭제 요청
+	@PostMapping("InquiryDelete.io")
+	public String deleteInquiry(int ino,
+							   String filePath,
+							   Model model,
+							   HttpSession session,
+							   RedirectAttributes ar) {
+		
+		int result = inquiryService.deleteInquiry(ino);
+		
+		session.setAttribute("aletMsg", "문의글이 성공적으로 삭제되었습니다.");		
+		return "redirect:/list.io";
+		/*
+		if(result > 0) {
+			if(!filePath.equals("")) {
+				String realPath = session.getServletContext().getRealPath(filePath);
+				
+				new File(realPath).delete();
+			}
+			
+			System.out.println("문의글 삭제 성공 :" + ino);
+			
+			session.setAttribute("aletMsg", "문의글이 성공적으로 삭제되었습니다.");
+			
+			return "redirect:/list.io";
+		} else {
+			
+			System.out.println("문의글 삭제 실패 :" + ino);
+			
+			ar.addFlashAttribute("alertMsg", "문의글 삭제에 실패했습니다.");
+			return "redirect:/list.io";
 		}
+		*/
+	}
+		
+	// 문의글 수정 페이지 요청
+	@PostMapping("InquiryUpdateForm.io")
+	public String InquiryUpdateForm(@RequestParam int ino,
+								    Model model) {
+		Inquiry i = inquiryService.selectInquiry(ino);
+		
+		model.addAttribute("i",i);
+		return "helpdesk/InquiryUpdateForm";
+	}
+			
+	// 문의글 수정 요청
+	@PostMapping("InquiryUpdate.io")
+	public String updateInquiry(Inquiry i,
+							   /*InquiryAtt ia,*/
+							   RedirectAttributes ar,
+							   MultipartFile reupfile,
+							   HttpSession session,
+							   Model model) {
+		/*
+		if(!reupfile.getOriginalFilename().equals("")) {
+			if(ia.getOriginName() != null) {
+				String realPath = session.getServletContext().getRealPath(ia.getChangeName());
+				
+				new File(realPath).delete();
+			}
+			
+			String changeName = saveFile(reupfile, session);
+			ia.setOriginName(reupfile.getOriginalFilename());
+			ia.setChangeName("resources/uploadFiles/" + changeName);
+		}
+		*/
+		
+		int result = inquiryService.updateInquiry(i);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "문의글이 성공적으로 수정되었습니다.");
+			
+			return "redirect:/inquiry/" + i.getInquiryNo();
+		} else {
+			ar.addFlashAttribute("alertMsg", "문의글 수정에 실패했습니다.");
+			return "redirect:/list.io";
+		} 
+	}	
+		
 		
 	// 댓글 목록 조회 요청 (ajax)
 	@ResponseBody
