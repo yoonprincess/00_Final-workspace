@@ -11,7 +11,7 @@
 </head>
 <body class="body-offset">
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
-    <div class="banner" style="background-color: #CCF2F4;">
+    <div class="banner">
         <div class="container-fluid">
             <img src="${ pageContext.request.contextPath }/resources/images/product/all_banner.jpg">
         </div>
@@ -223,7 +223,8 @@
 	            <span>상품: <strong id="totalProducts">${ pi.listCount }</strong>개</span>
 	            <div class="d-flex">
 	                <select id="sortBy" class="form-control form-control-sm mr-2">
-					    <option value="recommended" ${ param.sortBy == 'recommended' ? 'selected' : '' }>추천순</option>
+	                	<option value="recent" ${ sortBy == 'recent' ? 'selected' : '' }>최신순</option>
+					    <option value="recommended" ${ sortBy == 'recommended' ? 'selected' : '' }>추천순</option>
 					    <option value="popular" ${ sortBy == 'popular' ? 'selected' : '' }>높은판매순</option>
 					    <option value="lowPrice" ${ sortBy == 'lowPrice' ? 'selected' : '' }>낮은가격순</option>
 					    <option value="highPrice" ${ sortBy == 'highPrice' ? 'selected' : '' }>높은가격순</option>
@@ -241,7 +242,7 @@
 	            <!-- 상품 카드 -->
 	            <c:forEach var="p" items="${ requestScope.pList }">
 		            <div class="col-md-3 col-sm-4 col-6 mb-4">
-		                <div class="card product-card position-relative" data-id="1" onclick="location.href='product-detail.html';">
+		                <div class="card product-card position-relative" data-id="1" onclick="location.href='detail.pr?pno=${ p.prodNo }';">
 		                    <div class="card-img-container">
 		                        <img src="${ pageContext.request.contextPath }/resources/images/product/product1.jpg" class="card-img-top" alt="상품 이미지">
 		                        <div class="overlay">
