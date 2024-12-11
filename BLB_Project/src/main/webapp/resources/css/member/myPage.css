@@ -131,6 +131,9 @@ body {
     font-weight: bold;
 }
 
+.sub-menu-link{
+	text-decoration : none !important;
+}
 .label {
     font-size: 12px;
       color: #4A628A;

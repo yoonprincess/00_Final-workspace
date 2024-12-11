@@ -37,8 +37,8 @@
                 <hr class="custom-hr"> <hr class="custom-hr">
                 <div class="menu-section">
                     <div class="menu-item">마이활동</div>
-                    <a  href="${ pageContext.request.contextPath }/list.io">
-		                    <div class="sub-menu-item" >1:1 문의내역</div>
+                    <a class="sub-menu-link" href="${ pageContext.request.contextPath }/list.io">
+		                    <div  class="sub-menu-item" >1:1 문의내역</div>
 		            </a>
 		                
                     
@@ -49,11 +49,11 @@
                 <hr class="custom-hr"> <hr class="custom-hr">
                 <div class="menu-section">
                     <div class="menu-item">마이 정보</div>
-                   <a  href="${ pageContext.request.contextPath }/updateForm.me">
+                   <a  class="sub-menu-link" href="${ pageContext.request.contextPath }/updateForm.me">
             	        <div class="sub-menu-item" >회원정보 수정</div>
 	          	  </a>
-                    <div class="sub-menu-item" >배송지 관리</div>
-                   <a  href="${ pageContext.request.contextPath }/deleteForm.me">
+                    <div  class="sub-menu-item" >배송지 관리</div>
+                   <a  class="sub-menu-link" href="${ pageContext.request.contextPath }/deleteForm.me">
                     <div class="sub-menu-item" >회원탈퇴</div>
                    </a>
                 </div> 

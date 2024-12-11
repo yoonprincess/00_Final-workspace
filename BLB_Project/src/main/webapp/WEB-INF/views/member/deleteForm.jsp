@@ -22,50 +22,32 @@
 </head>
 <body  class="body-offset" id="custom">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-
-            <div class="container-fluid" id="custom-page">    
-               <h3 align="center"> 회원탈퇴 </h3>
-               <nav class="steps-container outer" align="center">
-                   <span>회원님의 정보를 안전하게 보호하기 위해<br> 비밀번호를 다시한번 확인합니다 </span>
-                   
-                   
-               </nav>
-                 <br>
-               <div class="outer" align="center">
-                  <span class="material-symbols-outlined" id="deleteIcon">move_location</span>
-                  <h4>회원탈퇴가 완료 되었습니다.</h4>
-                  <br>
-                  <h6>뷰라밸을 이용해 주시고 사랑해주셔서 감사합니다.</h6>
-                  <h6>더욱더 노력하고 발전하는 뷰라밸이 되겠습니다.</h6>
-                  <br><br>
-                  <div class="rows">
-                      <div class="form-row" style=" border-top: 1px solid #ddd;">
-                          <label class="form-label">아이디 </label>
-                          <div class="form-input">
-                              <span> ${memberId}</span>
-                          </div>
-                      </div>
-                      <div class="form-row">
-                          <label class="form-label">이름 </label>
-                          <div class="form-input ">
-                              <span> ${memberName} </span>
-                          </div>
-                      </div>
-                      
-                  </div>
-               </div>
-               <form action="loginForm.me" method="get">
-               <div class="submit-row">
-                   <button type="button" class="btn-lg btn-outline-primary" onclick="goBack()">취소</button>
-                   <button class="btn-lg btn-primary next" type="submit">탈퇴</button>
-               </div>
-               </form>
+			<br><br><br><br><br><br>
+            <div class="container-fluid" id="check-page" >    
+             	<h3 align="center"> 회원탈퇴 </h3>
+              <form action="delete.me" method="post" id="deleteForm">
+	              <div class="steps-container outer" align="center" id="checkPassword">
+	                  <span>회원님의 정보를 안전하게 보호하기 위해<br> 비밀번호를 다시한번 확인합니다 </span>
+	                  <div >
+	                    <input type="password" class="input-field" name="checkPwd" id="checkPwd" required>
+	              	</div>
+	              </div>
+	              <div class="submit-row">
+	                  <button type="button" class="btn back" onclick="goBack()">취소</button>
+	                  <button class="btn btn-outline-danger next" type="submit">탈퇴</button>
+	              </div>
+             </form>
             </div>
-
-            
-            
-
-
+			<div class="container-fluid" id="result-page" style="display:none;">
+			 <div class="outer" align="center">
+	                    <span class="material-symbols-outlined" id="deleteIcon">move_location</span>
+	                    <h4>회원탈퇴가 완료 되었습니다.</h4>
+	                    <br>
+	                    <h6>뷰라밸을 이용해 주시고 사랑해주셔서 감사합니다.</h6>
+	                    <h6>더욱더 노력하고 발전하는 뷰라밸이 되겠습니다.</h6>
+	                    <br><br>
+	                </div>
+			 </div>
  <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

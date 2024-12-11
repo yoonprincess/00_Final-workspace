@@ -60,9 +60,10 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional 
 	@Override
 	public int deleteMember(String memberId) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return memberDao.deleteMember(sqlSession,memberId);
 	}
+	
 	@Override
 	public int idCheck(String checkId) {
 		
@@ -71,7 +72,6 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public ArrayList<Member> selectMemberList() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

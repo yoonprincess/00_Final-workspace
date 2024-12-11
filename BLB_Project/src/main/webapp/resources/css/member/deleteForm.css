@@ -21,6 +21,8 @@ body {
 #custom-page{
     margin-bottom: 100px;
     margin-top: 60px !important;
+    flex-direction: column;
+    display: flex;
 }
 .steps-container {
     margin-top: 10px;
@@ -50,7 +52,6 @@ body {
 
 .submit-row .next {
     padding: 12px 40px;
-    background-color: #a4ebf3;
     color: #4A628A;
     border: none;
     width: 150px;
@@ -58,17 +59,19 @@ body {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    border : 1px solid #a4ebf3;
 }
 
 .submit-row .back {
     padding: 12px 40px;
-    background-color: white;
-    color: #4A628A;
+    background-color: #a4ebf3;
+    color: white;
     width: 150px;
     height: 50px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    border:none;
 }
 
 #deleteIcon{
@@ -111,6 +114,17 @@ body {
     background-color: white;   
 }
 
+#checkPassword{
+	display: flex; /* Flexbox 활성화 */
+    flex-direction: column; /* 가로 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    gap: 10px; /* 간격 추가 (선택 사항) */
+}
 
+#checkPwd{
+	border:4px solid #a4ebf3;
+	height:30px;
+	
+}
 
 

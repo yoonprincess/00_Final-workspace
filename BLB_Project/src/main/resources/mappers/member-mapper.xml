@@ -129,6 +129,12 @@
 	            DETAIL_ADDRESS = #{detailAddress}
 	      WHERE MEMBER_ID = #{memberId}
 	       AND DELI_DEFAULT = 'Y'
-	                
+	</update>
+	
+	<update id="deleteMember" parameterType="member">
+		UPDATE TB_MEMBER 
+		   SET 	STATUS = 'N'
+	       WHERE MEMBER_ID = #{memberId}
+	       	AND STATUS= 'Y' 
 	</update>
 </mapper>

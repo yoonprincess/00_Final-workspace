@@ -31,9 +31,9 @@ public class MemberDao {
 		return sqlSession.update("memberMapper.updateMember",m);
 	}
 
-	public int deleteMember(SqlSessionTemplate sqlSession, String userId) {
+	public int deleteMember(SqlSessionTemplate sqlSession, String memberId) {
 		// update문 : update 메소드 
-		return sqlSession.update("memberMapper.deleteMember",userId);
+		return sqlSession.update("memberMapper.deleteMember",memberId);
 	}
 
 	public int idCheck(SqlSessionTemplate sqlSession, String checkId) {

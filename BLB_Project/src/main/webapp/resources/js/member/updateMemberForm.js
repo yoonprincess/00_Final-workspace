@@ -155,21 +155,19 @@
 	    });
 	});
 	
-	
-	// 이메일변경버튼 
-	function changeEmail(){
-		$("#email").val("");
-		$("#email").removeAttr("readonly"); 
-		$("#changebtn").hide();
-		$("#certbtn").show();
-	}
-
 	// 이메일 수정시 인증절차 
 	// 이메일 인증메일보내기 요청 ajax
     function cert(){
-
+		
 		let email = $("#email").val();
 		
+		if (email === "") {
+	        alert("이메일을 입력해주세요.");
+	        return;
+	    }
+	    
+	    $("#changebtn").hide();
+		$("#certbtn").show();
 		
 		$.ajax({
 			url : "cert.do",
@@ -182,12 +180,14 @@
 			success : function(result) {
 				
 				alert(result);
-				
+				 $("#changebtn").hide();
+				 $("#certbtn").show();
+				 
 				$("#cert-email").show();
 				$("#certKey").attr("disabled", false);
 				$("#vali_email").attr("disabled",false);
 				
-				$("#email").attr("disabled", true);
+				$("#email").attr("readonly", true);
 				$("#certbtn").attr("disabled", true);
 				
 			},
@@ -200,54 +200,7 @@
 		});
 	}
 	
-	/* 인증시간 표시 - jQuery 로직*/	
-	$(document).ready(function() {
-	    
-	    let seconds; // 남은 시간 변수
-	    
-	    let countdown; // 카운트다운을 관리하는 변수
-	    
-	    const $timeSpan = $('.time'); 
-	    const $btnSend = $('#changebtn'); 
-
-   		 const updateCountdown = function() {
-   		 
-	        if (seconds >= 0) {
-	        
-	            const minutes = Math.floor(seconds / 60);
-	            const remainingSeconds = seconds % 60;
-	            $timeSpan.text(`${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`);
-	            seconds--;
-	        
-	        } else {
-	            
-	            clearInterval(countdown);
-	            alert('인증번호 유효시간이 만료되었습니다.');
-	       
-                $("#cert-email").hide();
-                $("#email").val("");
-                $("#certKey").val("");
-                $("#email").css("border", "1px solid orangered");
-                $("#email").attr("disabled", false);
-                $("#changebtn").attr("disabled", false);
-	        }
-    	};
-    
-	    $btnSend.on('click', function(e) {
-	       
-	        e.preventDefault();
-	        alert('인증번호 발송 요청이 접수되었습니다. 잠시만 기다려주세요.');
-	        cert();
-	        
-	        clearInterval(countdown);
-	        seconds = 100;
 	
-	        updateCountdown();
-	        
-	        countdown = setInterval(updateCountdown, 1000); 
-	    });
-    
-   });
 	
 	 // 이메일 인증번호 대조 ajax
     function validateEmail(){
@@ -280,7 +233,7 @@
 					$("#email").val("");
 					$("#certKey").val("");
 					$("#email").css("border","1px solid orangered"); 
-					$("#email").attr("disabled", false);
+					$("#email").attr("readonly",true);
 					$("#changebtn").attr("disabled", false);
 				}
 				
@@ -291,6 +244,53 @@
 		});
 	}
 	
+	/* 인증시간 표시 - jQuery 로직*/	
+	$(document).ready(function() {
+	    
+	    let seconds; // 남은 시간 변수
+	    
+	    let countdown; // 카운트다운을 관리하는 변수
+	    
+	    const $timeSpan = $('.time'); 
+	    const $btnSend = $('#changebtn'); 
+
+   		 const updateCountdown = function() {
+   		 
+	        if (seconds >= 0) {
+	        
+	            const minutes = Math.floor(seconds / 60);
+	            const remainingSeconds = seconds % 60;
+	            $timeSpan.text(`${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`);
+	            seconds--;
+	        
+	        } else {
+	            
+	            clearInterval(countdown);
+	            alert('인증번호 유효시간이 만료되었습니다.');
+	       
+                $("#cert-email").hide();
+                $("#email").val("");
+                $("#certKey").val("");
+                $("#email").css("border", "1px solid orangered");
+               $("#changebtn").attr("disabled", false);
+	        }
+    	};
+    
+	    $btnSend.on('click', function(e) {
+	       
+	        e.preventDefault();
+	        alert('인증번호 발송 요청이 접수되었습니다. 잠시만 기다려주세요.');
+	        cert();
+	        
+	        clearInterval(countdown);
+	        seconds = 100;
+	
+	        updateCountdown();
+	        
+	        countdown = setInterval(updateCountdown, 1000); 
+	    });
+    
+   });
  /* DAUM 지도검색 API */
 	 
 	 function sample4_execDaumPostcode() {

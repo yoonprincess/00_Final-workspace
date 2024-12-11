@@ -45,7 +45,7 @@
             </div>
             
             <div class="form-row">
-             <input type="hidden" name="memberId" value="${loginUser.memberId}">
+             
                 <label class="form-label">아이디 <span class="required-mark" ></span></label>
                 <div class="form-input id-input">
                     <div class="input-wrapper">
@@ -116,8 +116,8 @@
                 <label class="form-label">이메일 <span class="required-mark" >*</span></label>
                 <div class="form-input" id="email-form-input" >
                 	<div class="input-wrapper" >
-	                    <input type="email" class="input-field" name="email" required id="email" value="${loginUser.email}" readonly>
-	                    <button type="button" class="btn-sm btn-outline-info" id="changebtn" onclick="changeEmail();">변경</button>
+	                    <input type="email" class="input-field" name="email" required id="email" value="${loginUser.email}" >
+	                    <button type="button" class="btn-sm btn-outline-info" id="changebtn" onclick="cert();">변경</button>
 	                    <button type="button" class="btn-sm btn-outline-info" id="certbtn" style="display:none;">인증</button>
                    </div>
                    <div class="input-wrapper" style="display:none;" id="cert-email">
