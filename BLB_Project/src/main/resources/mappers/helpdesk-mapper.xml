@@ -38,7 +38,6 @@
 
 	<select id="selectList" resultMap="noticeResultSet">
 		SELECT NOTICE_NO
-		     , NOTICE_TITLE
 		     , NOTICE_CONTENT
 		     , TO_CHAR(NOTICE_REG_DATE, 'YYYY-MM-DD') AS "NOTICE_REG_DATE"
 		  FROM TB_NOTICE
