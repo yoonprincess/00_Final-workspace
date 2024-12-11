@@ -1,6 +1,7 @@
 package com.mig.blb.helpdesk.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.helpdesk.model.vo.Notice;
+import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 
 @Repository
 public class NoticeDao {
@@ -26,7 +28,9 @@ public class NoticeDao {
 	public int insertNotice(SqlSessionTemplate sqlSession, Notice n) {
 		return sqlSession.insert("helpdeskMapper.insertNotice", n);
 	}
-
+	
+	
+	
 	public Notice selectNotice(SqlSessionTemplate sqlSession, int nno) {
 		return sqlSession.selectOne("helpdeskMapper.selectNotice", nno);
 	}
@@ -38,4 +42,17 @@ public class NoticeDao {
 	public int updateNotice(SqlSessionTemplate sqlSession, Notice n) {
 		return sqlSession.update("helpdeskMapper.updateNotice", n);
 	}
+
+	public int insertNoticeAtt(SqlSessionTemplate sqlSession, List<NoticeAtt> noticeAttList) {
+		
+		int result = 0;
+		
+		// NoticeAtt리스트의 길이만큼 반복하여 INSERT 쿼리 실행
+		for(NoticeAtt att : noticeAttList) {
+			result += sqlSession.insert("helpdeskMapper.insertNoticeAtt", att);
+		}
+		
+		return result;
+	}
+
 }

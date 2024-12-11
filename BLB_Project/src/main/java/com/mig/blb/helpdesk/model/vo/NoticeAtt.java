@@ -18,4 +18,5 @@ public class NoticeAtt {
 	private String saveFileName;
 	private String savePath;
 	private String noticeAttStatus;
+	private int noticeNo;
 }

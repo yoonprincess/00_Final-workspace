@@ -5,37 +5,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="resources/css/helpdesk/FAQ.css">
-    <link rel="stylesheet" href="resources/css/helpdesk/InquiryListView.css"> <!-- CSS 경로 -->
-    <title>내 문의 내역</title>
+    <title>1:1 문의내역</title>
+    <link rel="stylesheet" href="resources/css/helpdesk/InquiryListView.css">
 </head>
 <body class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <div class="container-fluid">
-<div class="container">
-    <h1>고객센터</h1>
-    <div class="tabs">
-		        <a class="tab-button" href="Faq.blb">FAQ</a>
-		        <a class="tab-button active" href="list.io">1:1문의</a>
-		        <a class="tab-button" href="list.no">공지사항</a>
-		    </div>
+    <div class="container">
+    
+    <header>
+        <nav>
+            <a href="Faq.blb">고객센터</a>
+            <a href="list.io">1:1문의</a>
+            <a href="#">리뷰</a>
+            <a href="list.no">공지사항</a>
+        </nav>
+    </header>
     <c:if test="${sessionScope.loginUser != null}">
-        <div class="inquiry-list">
-		    <div class="form-buttons">
-		        <a href="Inquiry.blb" class="btn btn-primary">문의하기</a>
-		    </div>
-            <table id="inquiryList">
-                <thead>
-                    <tr>
-                        <th>문의번호</th>
-                        <th>분류</th>
-                        <th>문의내용</th>
-                        <th>문의일</th>
-                        <th>답변상태</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:if test="${empty list}">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1>1:1 문의내역</h1>
+            <a href="Inquiry.blb" class="button button-primary">문의하기</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>문의번호</th>
+                    <th>분류</th>
+                    <th>내용</th>
+                    <th>등록일</th>
+                    <th>답변상태</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:if test="${empty list}">
                         <tr>
                             <td colspan="5">문의한 내용이 없습니다.</td>
                         </tr>
@@ -54,9 +56,8 @@
                             </td>
                         </tr>
                     </c:forEach>
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
         <br><br>
     <!-- 페이지네이션 -->
 	        <nav>
@@ -70,10 +71,11 @@
 	                <li><a href="#">»</a></li>
 	            </ul>
 	        </nav>
-    </c:if>    
-</div>
-</div>
+        </c:if>
+    </div>
+    </div>
 <script src="resources/js/helpdesk/Inquiry.js"></script> <!-- JS 파일 경로 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>
+

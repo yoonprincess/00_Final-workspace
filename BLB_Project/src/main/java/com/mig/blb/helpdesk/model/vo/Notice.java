@@ -16,8 +16,6 @@ public class Notice {
 	private int noticeNo;
 	private String noticeTitle;
 	private String noticeContent;
-	private String originName;
-	private String changeName;
 	private String noticeRegDate;
 	private String noticePinnedYn;
 	private String noticeStatus;

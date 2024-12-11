@@ -6,34 +6,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자주 묻는 질문 (FAQ)</title>
     <link rel="stylesheet" href="resources/css/helpdesk/FAQ.css"> <!-- CSS 파일 경로 -->
-    <title>FAQ</title>
 </head>
 <body class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 	<div class="container-fluid">
-		<div class="container">
-		<h1>고객센터</h1>
-            <div class="tabs">
-                <a class="tab-button active" href="Faq.blb">FAQ</a>
-                <a class="tab-button" href="list.io">1:1문의</a>
-                <a class="tab-button" href="list.no">공지사항</a>
-            </div>
-	    <div id="faq" class="tab-content active">
-	    <h3>TOP 5</h3>
-	        <div class="sub-tabs">
-	            <button class="sub-tab-button active" data-category="product">상품</button>
-	            <button class="sub-tab-button" data-category="delivery">배송</button>
-	            <button class="sub-tab-button" data-category="order">주문</button>
-	            <button class="sub-tab-button" data-category="payment">결제/환불</button>
-	        </div>
-	        <div class="faq-list">
-	            <!-- FAQ 항목들이 여기에 동적으로 추가됩니다 -->
-	        </div>
-	    </div>
-	    </div>
-	    <script src="resources/js/helpdesk/FAQ.js"></script> <!-- JS 파일 경로 -->
+    <div class="container">
+    
+	    <header>
+	        <nav>
+            <a href="Faq.blb">고객센터</a>
+            <a href="list.io">1:1문의</a>
+            <a href="#">리뷰</a>
+            <a href="list.no">공지사항</a>
+        </nav>
+    </header>
+        <h1>자주 묻는 질문 (FAQ)</h1>
+        <div class="form-group">
+            <select>
+                <option value="all">전체</option>
+                <option value="order">주문/결제/배송</option>
+                <option value="product">상품</option>
+                <option value="return">반품/교환</option>
+            </select>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>카테고리</th>
+                    <th>제목</th>
+                    <th>작성일</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>주문/결제/배송</td>
+                    <td>배송 기간은 얼마나 걸리나요?</td>
+                    <td>2023-09-18</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>주문/결제/배송</td>
+                    <td>주문 취소는 어떻게 하나요?</td>
+                    <td>2023-09-18</td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </div>
     </div>
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>
+
+

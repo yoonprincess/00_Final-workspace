@@ -1,375 +1,236 @@
 .container {
-    width: 80%;
-    overflow: hidden;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 150, 136, 0.1); /* 민트색 그림자 */
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 8px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px 0;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+}
+
+nav a:hover {
+  background-color: #555;
 }
 
 h1 {
-    margin-top: 20px;
-    text-align: center;
-    color: #4A628A; /* 진한 파랑색 */
-    font-size: 28px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.container-fluid > .tabs > a {
-    text-decoration: none;
-    cursor: pointer;
-    color: red;
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-
-.form-buttons1 {
-    display: flex;
-    justify-content: flex-start; /* Align buttons to the left */
-    margin-top: 20px; /* 버튼 그룹 상단 여백 */
+.search-input {
+  width: 300px;
+  padding: 10px;
+  font-size: 16px;
 }
 
-.form-buttons1 button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 10px; /* Add space between buttons */
+.category-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.form-buttons1 a {
-    text-decoration: none;
-    padding: 10px 20px;
-    background-color: #F0F0F0; /* Light grey background */
-    color: #4A628A; /* Dark blue text */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    text-align: center;
+.category-button {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  cursor: pointer;
 }
 
-.form-buttons1 a:hover {
-    background-color: #E0E0E0; /* Slightly darker grey */
-    color: #4A628A; /* Keep the text dark blue */
+.card {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
 }
 
-.form-buttons1 button.submit {
-    background-color: #7AB2D3; /* Light blue for submit button */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-.form-buttons1 button.submit:hover {
-    background-color: #4A628A; /* Darker blue on hover */
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
 }
 
-
-h1 {
-    margin-top: 20px;
-    text-align: center;
-    color: #4A628A; /* 진한 파랑색 */
+.card-link {
+  color: #007bff;
+  text-decoration: none;
 }
 
-.tabs {
-    display: flex;
-    justify-content: space-between; /* 각 버튼을 고르게 배치 */
-    margin-bottom: 10px;
-}
-
-/* 메인 탭 버튼 스타일 */
-.tab-button {
-    flex-grow: 1;
-    padding: 10px 20px;
-    border: none;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    border-radius: 5px;
-    text-align: center;
-}
-
-/* 메인 탭 버튼 hover 시 색상 변화 */
-.tab-button:hover {
-    background-color: #A4EBF3; /* 밝은 파랑색 */
-    color: #fff;
-}
-
-/* 메인 탭 버튼 active 상태 */
-.tab-button.active {
-    background-color: #4A628A; /* 진한 파랑색 */
-    color: #fff;
-    font-weight: bold;
-}
-
-.tab-content {
-    display: none;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse; /* 테두리 중복 제거 */
-}
-
-th, td {
-    text-align: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: center; /* 가운데 정렬 */
-}
-
-th {
-    background-color: #b2dfdb; /* 민트색 강조 */
-}
-
-td {
-    border-top: 1px solid #ddd; /* 상단 테두리 */
-    border-bottom: 1px solid #ddd; /* 하단 테두리 */
-}
-
-/* FAQ 섹션 관련 스타일 */
-.sub-tabs {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-/* 서브탭 버튼 스타일 */
-.sub-tab-button {
-    flex-grow: 1;
-    padding: 10px 20px;
-    border: none;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    border-radius: 5px;
-    text-align: center;
-}
-
-/* 서브탭 버튼 hover 시 색상 변화 */
-.sub-tab-button:hover {
-    background-color: #A4EBF3;
-    color: #fff;
-}
-
-/* 서브탭 버튼 active 상태 */
-.sub-tab-button.active {
-    background-color: #4A628A;
-    color: #fff;
-    font-weight: bold;
-}
-
-/* FAQ 항목 스타일 */
 .faq-item {
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    background-color: #e0f5f1; /* 민트색 배경 */
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
 }
 
 .faq-question {
-    cursor: pointer;
-    font-weight: bold;
-    color: #4A628A; /* 배경색 진한 파랑 */
+  background-color: #f0f0f0;
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.faq-question::after {
+  content: '+';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .faq-answer {
-    display: none;
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #e0f2f1; /* 연한 민트색 */
+  padding: 10px;
+  display: none;
 }
 
-/* 메인 탭과 서브탭 active 상태 */
-.tab-button.active, .sub-tab-button.active {
-    font-weight: bold;
-    background-color: #4A628A; /* 진한 파랑 */
-    color: #fff;
+.faq-item:target .faq-answer {
+  display: block;
 }
 
-/* Header 스타일 */
-.header {
-    background-color: #B9E5E8; /* Soft pastel blue */
-    padding: 20px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: black; /* Darker blue for contrast */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.faq-item:target .faq-question::after {
+  content: '-';
 }
 
-/* Form 스타일 */
-.form-container {
-    max-width: 600px;
-    margin: 20px auto;
-    background: #FFFFFF;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.notice-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #f0f0f0;
 }
 
 .form-group {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #4A628A; /* Darker blue for labels */
+label {
+  display: block;
+  margin-bottom: 5px;
 }
 
-.form-group select,
-.form-group textarea,
-.form-group input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-sizing: border-box;
-    background-color: #F0F0F0; /* Light grey for input background */
-    font-size: 14px;
-    color: #333;
-    transition: border-color 0.3s ease;
+select, textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
 }
 
-.form-group textarea {
-    height: 120px;
-    resize: none;
+.radio-group {
+  display: flex;
+  gap: 20px;
 }
 
-.form-group select:focus,
-.form-group textarea:focus,
-.form-group input[type="text"]:focus {
-    border-color: #7AB2D3; /* Light blue for focus */
-    outline: none;
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.file-list {
-    margin-top: 10px;
+.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-.file-item {
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    background-color: #F9F9F9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 5px;
-    cursor: pointer;
+.button-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
 }
 
-.file-item:hover {
-    background-color: #E0E0E0; /* Slightly darker on hover */
+.button-secondary {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
 }
 
-.file-item img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-right: 10px;
+.file-input {
+  margin-top: 10px;
 }
 
-.file-item span {
-    flex-grow: 1;
+.email-notification {
+  margin-top: 10px;
 }
 
-.file-item button {
-    background-color: #D9534F;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
+.email-input {
+  display: none;
 }
 
-.file-item button:hover {
-    background-color: #C9302C;
+#email-notify:checked ~ .email-input {
+  display: block;
 }
 
-.form-buttons {
-    display: flex;
-    justify-content: flex-end; /* Align buttons to the right */
-    margin-top: 20px;
+.notice-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.form-buttons button {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 10px; /* Add space between buttons */
+.notice-search select, .notice-search input[type="text"] {
+  padding: 5px;
+  margin-right: 10px;
 }
 
-.form-buttons button.cancel {
-    background-color: #F0F0F0;
-    border: 1px solid #ddd;
+.notice-search button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
-.form-buttons button.cancel:hover {
-    background-color: #E0E0E0;
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-.form-buttons button.submit {
-    background-color: #7AB2D3; /* Light blue for submit button */
-    color: white;
-    border: none;
+.pagination a {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: 1px solid #ddd;
+  text-decoration: none;
+  color: #333;
 }
 
-.form-buttons button.submit:hover {
-    background-color: #4A628A; /* Darker blue on hover */
+.pagination a.active {
+  background-color: #007bff;
+  color: white;
 }
 
-
-.form-buttons button.submit:hover {
-    background-color: #4A628A; /* Darker blue on hover */
-}
-
-
-.file-upload-btn {
-    background-color: #7AB2D3; /* Light blue for button */
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: inline-block;
-    margin-right: 10px;
-}
-
-.file-upload-btn:hover {
-    background-color: #4A628A; /* Darker blue on hover */
-}
-
-.form-group input[type="text"]:disabled {
-    background-color: #E9E9E9; /* Disabled background color */
-    border: 1px solid #CCC; /* Disabled border color */
-    color: #999; /* Disabled text color */
-    cursor: not-allowed; /* Disabled cursor */
-}
-
-@media (max-width: 768px) {
-    .container {
-        width: 95%;
-    }
-
-    .tabs {
-        flex-direction: row;
-        justify-content: center;
-    }
-
-    .tab-button {
-        margin-bottom: 5px;
-    }
-}

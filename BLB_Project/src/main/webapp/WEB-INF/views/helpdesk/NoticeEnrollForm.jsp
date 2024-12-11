@@ -34,7 +34,27 @@
                     </tr>
                     <tr>
                         <th><label for="upfile">첨부파일</label></th>
-                        <td><input type="file" id="upfile" class="form-control-file border" name="upfile"></td>
+                        <td>
+                        	<div class="form-group">
+                        	
+                        		<div class="form-check row">
+                        			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+                        		</div>
+                        		<div class="form-check row">
+                        			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+                        		</div>
+                        		<div class="form-check row">
+                        			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+                        		</div>
+                        		<div class="form-check row">
+                        			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+                        		</div>
+                        		<div class="form-check row">
+                        			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+                        		</div>
+                        		
+                        	</div>
+                        </td>
                     </tr>
                     <tr>
                         <th><label for="content">내용</label></th>
