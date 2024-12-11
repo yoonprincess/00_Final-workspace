@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,6 +24,7 @@ import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.common.template.Pagination;
 import com.mig.blb.helpdesk.model.service.NoticeService.NoticeService;
 import com.mig.blb.helpdesk.model.vo.Notice;
+import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 
 	@Controller
 	public class NoticeController {
@@ -61,33 +63,52 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 		
 		}
 		
-		// 공지사항 등록 요청
+		// 공지사항 작성 요청
 		@PostMapping("insert.no")
 		public ModelAndView insertNotice(Notice n,
-										 RedirectAttributes ar,
-										 MultipartFile upfile,
-										 HttpSession session,
-										 ModelAndView mv) {
-			
-			if(!upfile.getOriginalFilename().equals("")) {
+		                                 RedirectAttributes ar,
+		                                 MultipartFile[] upfile,
+		                                 HttpSession session,
+		                                 ModelAndView mv) {
+
+		    // 첨부파일 O
+			if(upfile != null && upfile.length >0) {
+				ArrayList<NoticeAtt> noticeAtt = new ArrayList<NoticeAtt>(); // NoticeAtt 객체를 담을 리스트
 				
-				String changeName = saveFile(upfile, session);
+				// 첨부파일 처리
+				for(int i = 0; i < upfile.length; i++) {
+					MultipartFile upfiles = upfile[i];
+					if(!upfiles.isEmpty()) {
+						
+						// 파일저장
+						String changeName = saveFile(upfiles, session);
+						
+						// NoticeAtt 객체 생성 및 첨부파일 정보 설정
+						NoticeAtt att = new NoticeAtt();
+						att.setOrigFileName(upfiles.getOriginalFilename()); // 원본 파일명
+						att.setSaveFileName("resources/uploadFiles/" + changeName); // 저장된 파일명
+						
+						att.setSavePath("resources/uploadFiles/");
+						
+						// NoticeAtt 객체 리스트에 추가
+						noticeAtt.add(att);
+					}
+				}
+			
+				// Notice 객체와 NoticeAtt 리스트를 서비스에 전달
+				int result = noticeService.insertNotice(n, noticeAtt); // Notice와 NoticeAtt 리스트를 전달
 				
-				n.setOriginName(upfile.getOriginalFilename());
-				n.setChangeName("resources/uploadFiles/" + changeName);
+				if(result > 0) {
+					mv.setViewName("redirect:/list.no");
+				} else {
+					mv.setViewName("common/errorPage");
+				}
 			}
-			
-			int result = noticeService.insertNotice(n);
-			if(result > 0) {
-				mv.setViewName("redirect:/list.no");
-			} else {
-				ar.addFlashAttribute("alertMsg", "공지사항이 성공적으로 등록되었습니다.");
-				mv.setViewName("redirect:/list.no");
-			}
-			
-			
 			return mv;
 		}
+
+
+
 		
 		// 공지사항 상세조회 요청
 		@GetMapping("notice/{noticeNo}")
@@ -135,56 +156,54 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 		// 공지사항 수정 요청
 		@PostMapping("NoticeUpdate.no")
 		public String updateNotice(Notice n,
+								   NoticeAtt na,
 								   RedirectAttributes ar,
 								   MultipartFile reupfile,
 								   HttpSession session,
 								   Model model) {
-			
-			if(!reupfile.getOriginalFilename().equals("")) {
-				if(n.getOriginName() != null) {
-					String realPath = session.getServletContext().getRealPath(n.getChangeName());
-					
-					new File(realPath).delete();
-				}
-				
-				String changeName = saveFile(reupfile, session);
-				n.setOriginName(reupfile.getOriginalFilename());
-				n.setChangeName("resources/uploadFiles/" + changeName);
-			}
-			int result = noticeService.updateNotice(n);
-			
-			if(result > 0) {
-				session.setAttribute("alertMsg", "공지사항이 성공적으로 수정되었습니다.");
-				
-				return "redirect:/notice/" + n.getNoticeNo();
-			} else {
-				ar.addFlashAttribute("alertMsg", "공지사항 수정에 실패했습니다.");
-				return "redirect:/list.no";
-			} 
+
+		    if (!reupfile.getOriginalFilename().equals("")) {
+		        if (na.getOrigFileName() != null) {
+		            String realPath = session.getServletContext().getRealPath(na.getSaveFileName());
+		            new File(realPath).delete();
+		        }
+
+		        String changeName = saveFile(reupfile, session);
+		        na.setOrigFileName(reupfile.getOriginalFilename());
+		        na.setSaveFileName("resources/uploadFiles/" + changeName);
+		    }
+
+		    int result = noticeService.updateNotice(n);
+
+		    if (result > 0) {
+		        session.setAttribute("alertMsg", "공지사항이 성공적으로 수정되었습니다.");
+		        return "redirect:/notice/" + n.getNoticeNo();
+		    } else {
+		        ar.addFlashAttribute("alertMsg", "공지사항 수정에 실패했습니다.");
+		        return "redirect:/list.no";
+		    }
 		}
+
 		
 		// 첨부파일을 위한 메소드
-		public String saveFile(MultipartFile upfile,
-							   HttpSession session) {
-			
-			String originName = upfile.getOriginalFilename();
-			
-			String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-			
-			int ranNum = (int)(Math.random() * 90000 + 10000);
-			String ext = originName.substring(originName.lastIndexOf("."));
-			
-			String changeName = currentTime + ranNum + ext;
-			
-			String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
-			
-			try {
+		public String saveFile(MultipartFile upfile, HttpSession session) {
+		    String originName = upfile.getOriginalFilename();
+		    
+		    String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		    int ranNum = (int)(Math.random() * 90000 + 10000);
+		    String ext = originName.substring(originName.lastIndexOf("."));
+		    String changeName = currentTime + ranNum + ext;
+		    String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
+		    
+		    try {
 				upfile.transferTo(new File(savePath + changeName));
 			} catch (IllegalStateException | IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			return changeName;
+		    
+		    return changeName;
 		}
+
 	}
 

@@ -1,158 +1,236 @@
 .container {
-    width: 80%;
-    overflow: hidden;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 150, 136, 0.1); /* 민트색 그림자 */
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 8px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.container-fluid > .tabs > a {
-    text-decoration: none;
-    cursor: pointer;
-    color: red;
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px 0;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+}
+
+nav a:hover {
+  background-color: #555;
 }
 
 h1 {
-    margin-top: 20px;
-    text-align: center;
-    color: #4A628A; /* 진한 파랑색 */
-    font-size: 28px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.tabs {
-    display: flex;
-    justify-content: space-between; /* 각 버튼을 고르게 배치 */
-    margin-bottom: 10px;
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-/* 메인 탭 버튼 스타일 */
-.tab-button {
-    flex-grow: 1;
-    padding: 10px 20px;
-    border: none;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    border-radius: 5px;
-    text-align: center;
+.search-input {
+  width: 300px;
+  padding: 10px;
+  font-size: 16px;
 }
 
-/* 메인 탭 버튼 hover 시 색상 변화 */
-.tab-button:hover {
-    background-color: #A4EBF3; /* 밝은 파랑색 */
-    color: #fff;
+.category-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-/* 메인 탭 버튼 active 상태 */
-.tab-button.active {
-    background-color: #4A628A; /* 진한 파랑색 */
-    color: #fff;
-    font-weight: bold;
+.category-button {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  cursor: pointer;
 }
 
-.tab-content {
-    display: none;
+.card {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
 }
 
-.tab-content.active {
-    display: block;
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse; /* 테두리 중복 제거 */
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
 }
 
-th, td {
-    text-align: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: center; /* 가운데 정렬 */
+.card-link {
+  color: #007bff;
+  text-decoration: none;
 }
 
-th {
-    background-color: #b2dfdb; /* 민트색 강조 */
-}
-
-td {
-    border-top: 1px solid #ddd; /* 상단 테두리 */
-    border-bottom: 1px solid #ddd; /* 하단 테두리 */
-}
-
-/* FAQ 섹션 관련 스타일 */
-.sub-tabs {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-/* 서브탭 버튼 스타일 */
-.sub-tab-button {
-    flex-grow: 1;
-    padding: 10px 20px;
-    border: none;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    border-radius: 5px;
-    text-align: center;
-}
-
-/* 서브탭 버튼 hover 시 색상 변화 */
-.sub-tab-button:hover {
-    background-color: #A4EBF3;
-    color: #fff;
-}
-
-/* 서브탭 버튼 active 상태 */
-.sub-tab-button.active {
-    background-color: #4A628A;
-    color: #fff;
-    font-weight: bold;
-}
-
-/* FAQ 항목 스타일 */
 .faq-item {
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    background-color: #e0f5f1; /* 민트색 배경 */
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
 }
 
 .faq-question {
-    cursor: pointer;
-    font-weight: bold;
-    color: #4A628A; /* 배경색 진한 파랑 */
+  background-color: #f0f0f0;
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.faq-question::after {
+  content: '+';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .faq-answer {
-    display: none;
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #e0f2f1; /* 연한 민트색 */
+  padding: 10px;
+  display: none;
 }
 
-/* 메인 탭과 서브탭 active 상태 */
-.tab-button.active, .sub-tab-button.active {
-    font-weight: bold;
-    background-color: #4A628A; /* 진한 파랑 */
-    color: #fff;
+.faq-item:target .faq-answer {
+  display: block;
 }
 
-@media (max-width: 768px) {
-    .container {
-        width: 95%;
-    }
-
-    .tabs {
-        flex-direction: row;
-        justify-content: center;
-    }
-
-    .tab-button {
-        margin-bottom: 5px;
-    }
+.faq-item:target .faq-question::after {
+  content: '-';
 }
+
+.notice-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #f0f0f0;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+select, textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.button-secondary {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+}
+
+.file-input {
+  margin-top: 10px;
+}
+
+.email-notification {
+  margin-top: 10px;
+}
+
+.email-input {
+  display: none;
+}
+
+#email-notify:checked ~ .email-input {
+  display: block;
+}
+
+.notice-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.notice-search select, .notice-search input[type="text"] {
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.notice-search button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: 1px solid #ddd;
+  text-decoration: none;
+  color: #333;
+}
+
+.pagination a.active {
+  background-color: #007bff;
+  color: white;
+}
+

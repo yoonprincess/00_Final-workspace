@@ -20,6 +20,15 @@
 		<result column="NOTICE_PINNED_YN" property="noticePinnedYn"/>
 		<result column="NOTICE_STATUS" property="noticeStatus"/>
 	</resultMap>
+	
+	<resultMap id="noticeAttResultSet" type="noticeAtt">
+		<id column="NOTICE_ATT_NO" property="noticeAttNo"/>
+		<result column="ORIG_FILE_NAME" property="origFileName"/>
+		<result column="SAVE_FILE_NAME" property="saveFileName"/>
+		<result column="SAVE_PATH" property="savePath"/>
+		<result column="NOTICE_ATT_STATUS" property="noticeAttStatus"/>
+		<result column="NOTICE_NO" property="noticeNo"/>
+	</resultMap>
 
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
@@ -38,24 +47,42 @@
 	</select>
 	
 	<insert id="insertNotice" parameterType="notice">
-		INSERT INTO TB_NOTICE(NOTICE_NO
-		                , NOTICE_TITLE
-		                , NOTICE_CONTENT)
-		           VALUES(SEQ_NOTICE_NO.NEXTVAL
-		                , #{noticeTitle}
-		                , #{noticeContent})
+	    INSERT INTO TB_NOTICE(NOTICE_NO,
+						      NOTICE_TITLE,
+						      NOTICE_CONTENT)
+					   VALUES(SEQ_NOTICE_NO.NEXTVAL,
+					         #{noticeTitle},
+					         #{noticeContent})
 	</insert>
+
+	<insert id="insertNoticeAtt" parameterType="noticeAtt">
+	    INSERT INTO TB_NOTICE_ATTACHMENT (NOTICE_ATT_NO,
+									      ORIG_FILE_NAME,
+									      SAVE_FILE_NAME,
+									      SAVE_PATH,
+									      NOTICE_NO)
+			    VALUES (SEQ_NOTICE_ATT_NO.NEXTVAL,
+				        #{origFileName},
+				        #{saveFileName},
+				        #{savePath},
+				        SEQ_NOTICE_NO.CURRVAL)
+	</insert>
+
 	
-	<select id="selectNotice" parameterType="_int"
-							 resultMap="noticeResultSet">
-		SELECT NOTICE_NO
-		     , NOTICE_TITLE
-		     , NOTICE_CONTENT
-		     , TO_CHAR(NOTICE_REG_DATE, 'YYYY-MM-DD') AS "NOTICE_REG_DATE"
-		  FROM TB_NOTICE
-		 WHERE NOTICE_NO = #{noticeNo}
-		   AND NOTICE_STATUS = 'Y'
+	<select id="selectNotice" parameterType="int" resultMap="noticeResultSet">
+	    SELECT 
+	        N.NOTICE_NO,
+	        N.NOTICE_TITLE,
+	        N.NOTICE_CONTENT,
+	        A.ORIG_FILE_NAME,
+	        A.SAVE_FILE_NAME,
+	        TO_CHAR(n.NOTICE_REG_DATE, 'YYYY-MM-DD') AS "NOTICE_REG_DATE"
+	    FROM TB_NOTICE N
+	    LEFT JOIN TB_NOTICE_ATTACHMENT A ON (N.NOTICE_NO = A.NOTICE_NO)
+	    WHERE N.NOTICE_NO = #{noticeNo}
+	      AND N.NOTICE_STATUS = 'Y'
 	</select>
+
 	
 	<update id="deleteNotice" parameterType="_int">
 		UPDATE TB_NOTICE
@@ -67,19 +94,12 @@
 		UPDATE TB_NOTICE
 		   SET NOTICE_TITLE = #{noticeTitle}
 		     , NOTICE_CONTENT = #{noticeContent}
+		     , ORIG_FILE_NAME = #{origFileName}
+		     , SAVE_FILE_NAME = #{saveFileName}
 		     , NOTICE_REG_DATE = SYSDATE
 		 WHERE NOTICE_NO = #{noticeNo}
 		   AND NOTICE_STATUS = 'Y'
 	</update>
-	
-	<resultMap id="noticeAttResultSet" type="noticeAtt">
-		<id column="NOTICE_ATT_NO" property="noticeAttNo"/>
-		<result column="ORIG_FILE_NAME" property="origFileName"/>
-		<result column="SAVE_FILE_NAME" property="saveFileName"/>
-		<result column="SAVE_PATH" property="savePath"/>
-		<result column="NOTICE_ATT_STATUS" property="noticeAttStatus"/>
-	</resultMap>
-	
 													<!-- 1:1 문의 관련 매퍼 -->
 	<resultMap id="inquiryResultSet" type="inquiry">
 		<id column="INQUIRY_NO" property="inquiryNo"/>
@@ -97,6 +117,8 @@
 	    INSERT INTO TB_INQUIRY(INQUIRY_NO
 	                        , INQUIRY_CONTENT
 	                        , INQUIRY_TYPE
+	                        , ORIG_FILE_NAME = #{origFileName}
+		                    , SAVE_FILE_NAME = #{saveFileName}
 	                        , MEMBER_ID
 	                        , PROD_NO)
 	                   VALUES(SEQ_INQUIRY_NO.NEXTVAL
