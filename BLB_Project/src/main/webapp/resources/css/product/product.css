@@ -1,8 +1,5 @@
-.container-fluid {
-    max-width: 1440px !important;
-    margin: auto;
-}
-
+/* * 상품 목록보기 css */
+/* 배너 스타일 */
 .banner {
     position: relative;
     width: 100%;
@@ -106,3 +103,27 @@ td label {
     font-size: 0.8rem;
 }
 
+
+/* * 상품 상세보기 css */
+.product-image { height: 500px; object-fit: contain; }
+.thumbnail { width: 80px; height: 80px; object-fit: cover; cursor: pointer; }
+.active-thumbnail { border: 2px solid #007bff; }
+.review-stars { color: #ffc107; }
+.tab-content { padding-top: 20px; }
+.sticky-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+.product-info {
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+}
+#productTabs {
+    background-color: #fff;
+}
+@media (max-width: 991.98px) {
+    .sticky-wrapper {
+        position: static;
+    }
+}

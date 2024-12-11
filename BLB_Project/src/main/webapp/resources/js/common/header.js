@@ -1,15 +1,84 @@
 $(function() {
 
-    // * 헤더 스크롤 효과 스크립트
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 50) {
-            // 스크롤 위치가 50px 이상일 때
-            $('.navbar').removeClass('transparent-navbar').addClass('scrolled-navbar');
-        } else {
-            // 스크롤 위치가 50px 이하일 때
-            $('.navbar').removeClass('scrolled-navbar').addClass('transparent-navbar');
-        }
-    });
+    const navbar = $('.navbar');
+    const productTabs = $('#productTabs'); // 상품 상세보기 페이지 탭 메뉴
+    const isProductPage = productTabs.length > 0; // 상품 상세보기 페이지 여부 확인
+    let lastScrollTop = 0; // 이전 스크롤 위치 저장
+    
+    // * 상품 상세보기 페이지: 헤더 숨김 및 상품 메뉴 탭 고정
+    if (isProductPage) {
+
+        let tabsOffsetTop = productTabs.offset().top; // 탭의 초기 위치 저장
+
+        // 스크롤 이벤트 최적화: throttle
+        const throttle = (func, limit) => {
+            let lastFunc;
+            let lastRan;
+            return function () {
+                const context = this;
+                const args = arguments;
+                if (!lastRan) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                } else {
+                    clearTimeout(lastFunc);
+                    lastFunc = setTimeout(function () {
+                        if (Date.now() - lastRan >= limit) {
+                            func.apply(context, args);
+                            lastRan = Date.now();
+                        }
+                    }, limit - (Date.now() - lastRan));
+                }
+            };
+        };
+
+        // 스크롤 이벤트 처리
+        const handleScroll = () => {
+            const scrollTop = $(window).scrollTop();
+
+            // 탭 고정 및 헤더 숨김 처리
+            if (scrollTop > tabsOffsetTop) {
+                productTabs.addClass('sticky');
+                if (scrollTop > lastScrollTop) {
+                    navbar.addClass('hide-header'); // 아래로 스크롤: 헤더 숨김
+                } else {
+                    navbar.removeClass('hide-header'); // 위로 스크롤: 헤더 표시
+                }
+            } else {
+                productTabs.removeClass('sticky');
+                navbar.removeClass('hide-header');
+            }
+
+            lastScrollTop = scrollTop; // 현재 스크롤 위치 저장
+
+            if ($(this).scrollTop() > 50) {
+                navbar.removeClass('transparent-navbar').addClass('scrolled-navbar');
+            } else {
+                navbar.removeClass('scrolled-navbar').addClass('transparent-navbar');
+            }
+
+            
+        };
+
+        // 이벤트 바인딩
+        $(window).on('scroll', throttle(handleScroll, 50));
+
+        // 윈도우 크기 조정 시 탭 위치 재계산
+        $(window).on('resize', () => {
+            tabsOffsetTop = productTabs.offset().top;
+        });
+
+           
+    } else {
+        // * 상품 상세보기 외 페이지: 기존 배경색 효과 유지
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 50) {
+                navbar.removeClass('transparent-navbar').addClass('scrolled-navbar');
+            } else {
+                navbar.removeClass('scrolled-navbar').addClass('transparent-navbar');
+            }
+        });
+    }
 
 	// * 반응형 드롭다운 메뉴 스크립트
     // 데스크톱: 마우스 오버로 드롭다운 메뉴 표시
@@ -68,5 +137,4 @@ $(function() {
         $('html, body').animate({ scrollTop: 0 }, 300);
         return false;
     });
-
 });

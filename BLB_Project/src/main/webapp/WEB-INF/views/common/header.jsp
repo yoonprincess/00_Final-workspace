@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,7 +69,7 @@
                 <c:choose>
 	                <c:when test="${ empty sessionScope.loginUser }">
 		                <a class="menu-btn" href="${ pageContext.request.contextPath }/loginForm.me">
-		                    <span class="material-symbols-outlined menu-icon last-btn">
+		                    <span class="material-symbols-outlined menu-icon">
 		                        person
 		                    </span>
 		                </a>
@@ -80,7 +81,7 @@
 		                    </span>
 		                </a>	
 	               	 	<a class="menu-btn" href="${ pageContext.request.contextPath }/logout.me">
-		                    <span class="material-symbols-outlined menu-icon last-btn">
+		                    <span class="material-symbols-outlined menu-icon">
 		                        Logout
 		                    </span>
 		              	</a>

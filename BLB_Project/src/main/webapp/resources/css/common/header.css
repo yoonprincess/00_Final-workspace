@@ -12,10 +12,40 @@ body {
 .container-fluid {
     max-width: 1440px !important;
     margin: 0 auto;
+    padding: 0 10px !important;
 }
 /* 기본적으로 navbar 높이만큼 공백 추가 */
 .body-offset {
-    padding-top: 70px; /* navbar 높이와 동일하게 설정 */
+    padding-top: 50px; /* navbar 높이와 동일하게 설정 */
+}
+
+
+.navbar {
+    transform: translateY(0);
+    z-index: 50;
+    transition: transform 0.3s ease-in-out !important; /* 부드러운 전환 효과 */
+    padding: 0;
+}
+
+
+/* 헤더 숨김 상태 */
+.hide-header {
+    transform: translateY(-100%) !important; /* 헤더를 화면 위로 숨김 */
+    transition: transform 0.3s ease-in-out; /* 부드러운 전환 효과 */
+}
+
+#productTabs {
+    z-index: 40;
+}
+
+/* 상품 메뉴 탭 고정 */
+#productTabs.sticky {
+    position: fixed !important;
+    top: 0px; /* 헤더가 숨겨졌을 때 상단에 고정 */
+    z-index: 40;
+    width: 100%;
+    transition: background-color 0.3s ease-in-out;
+    border-bottom: none !important; /* sticky 상태에서도 하단 테두리 제거 */
 }
 
 /* 초기 투명 헤더 스타일 */
@@ -29,7 +59,7 @@ body {
 /* 스크롤 후 배경색 적용 */
 .scrolled-navbar {
     background-color: rgba(255, 255, 255, 0.9); /* 불투명 흰색 */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
+    /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
 }
 
 .navbar-brand img {
@@ -49,9 +79,6 @@ body {
     color: #4A628A; /* 호버 시 색상 변경 */
     text-decoration: none; /* 밑줄 제거 */
 }
-.last-btn {
-    margin-right: 10px; /* 마지막 버튼 우측 간격추가 */
-}
 
 /* Google Fonts Icon 스타일 */
 .material-symbols-outlined {
@@ -64,6 +91,7 @@ body {
 .menu-icon {
     font-size: 35px !important;
 }
+
 
 /* navbar 스타일 */
 .navbar-nav .nav-link {
@@ -144,7 +172,7 @@ body {
 .navbar-toggler {
     border: none; /* 테두리 제거 */
     outline: none;
-    padding: 0;
+    padding: 0 0 0 5px;
 }
 .toggler-icon {
     display: block;

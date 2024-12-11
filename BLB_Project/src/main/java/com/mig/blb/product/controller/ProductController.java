@@ -22,6 +22,7 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
+	// 상품 목록보기 요청
 	@GetMapping("list.pr")
 	public String selectProductList(@RequestParam(value="ppage", defaultValue="1")int currentPage,
 									@RequestParam(value="category", defaultValue="전체제품")String category,
@@ -51,5 +52,13 @@ public class ProductController {
 	    model.addAttribute("boardLimit", boardLimit);
 		
 		return "product/productListView";
+	}
+	
+	// 상품 상세보기 요청
+	@GetMapping("detail.pr")
+	public String selectProduct(@RequestParam(value="pno", defaultValue="1")int pno,
+								Model model) {
+		
+		return "product/productDetailView";
 	}
 }

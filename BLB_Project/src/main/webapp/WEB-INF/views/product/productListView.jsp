@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 	<!-- product CSS -->
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/product/product.css">
-<title>뷰라밸 - 제품보기</title>
+<title>뷰라밸 - 제품목록보기</title>
 </head>
 <body class="body-offset">
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -261,7 +260,9 @@
 		                    <div class="card-body text-center">
 		                        <h5 class="card-title">${ p.prodName }</h5>
 		                        <p class="card-text text-muted">${ p.prodContent }</p>
-		                        <p class="card-text font-weight-bold">${ p.prodPrice }</p>
+		                        
+		                        <p class="card-text font-weight-bold"><fmt:formatNumber value="${ p.prodPrice }" type="number" pattern="#,###" /><small>원</small>
+                    			<small class="text-danger">${product.discountRate}% 할인</small></p>
 		                        <p class="card-text text-warning">★ ★ ★ ★ ☆ (4.5)</p>
 		                    </div>
 		                </div>
