@@ -171,6 +171,21 @@ public class MyPageController {
 			return result;
 		}
 		
-	
+	// 내 주문,배송조회 페이지 요청 
+	@GetMapping("orderList.me")
+	public ModelAndView myOrderList(ModelAndView mv, HttpSession session) {
+		
+		Member loginUser =(Member)session.getAttribute("loginUser");
+		
+		if( loginUser != null) {
+			mv.setViewName("member/myOrderList");
+		
+		}else {
+			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+			mv.setViewName("/main");
+		}
+		return mv;
+	}
+				
 				
 }

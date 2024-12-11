@@ -46,9 +46,9 @@
                 </div>
                 <button type="submit" id="loginBtn"> 로그인 </button>
                 <div class="links">
-                    <a href="#">아이디 찾기</a>
+                    <a href="${ pageContext.request.contextPath }/findIdForm.me">아이디 찾기</a>
                     <span class="divider"></span>
-                    <a href="#">비밀번호 찾기</a>
+                    <a href="${ pageContext.request.contextPath }/findPwdForm.me">비밀번호 찾기</a>
                     <span class="divider"></span>
                     <a href="${ pageContext.request.contextPath }/agreement.me">회원가입</a>
                 </div>

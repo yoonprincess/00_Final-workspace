@@ -223,6 +223,25 @@ public class MemberController {
 		 return response;
 	}
 	
+	// 아이디찾기페이지 요청 
+		@GetMapping("findIdForm.me")
+		public ModelAndView findIdForm(ModelAndView mv) {
+			
+			mv.setViewName("member/findIdForm");
+			
+			return mv;
+		}
+
+
+	// 비번찾기페이지 요청 
+		@GetMapping("findPwdForm.me")
+		public ModelAndView findPwdForm(ModelAndView mv) {
+			
+			mv.setViewName("member/findPwdForm");
+			
+			return mv;
+		}
+		
 }
 
 
