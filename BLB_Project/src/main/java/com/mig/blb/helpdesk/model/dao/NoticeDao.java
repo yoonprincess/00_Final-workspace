@@ -29,7 +29,17 @@ public class NoticeDao {
 		return sqlSession.insert("helpdeskMapper.insertNotice", n);
 	}
 	
-	
+	public int insertNoticeAtt(SqlSessionTemplate sqlSession, List<NoticeAtt> na) {
+		
+		int result = 0;
+		
+		// NoticeAtt리스트의 길이만큼 반복하여 INSERT 쿼리 실행
+		for(NoticeAtt att : na) {
+			result += sqlSession.insert("helpdeskMapper.insertNoticeAtt", att);
+		}
+		
+		return result;
+	}
 	
 	public Notice selectNotice(SqlSessionTemplate sqlSession, int nno) {
 		return sqlSession.selectOne("helpdeskMapper.selectNotice", nno);
@@ -46,18 +56,12 @@ public class NoticeDao {
 	public int updateNotice(SqlSessionTemplate sqlSession, Notice n) {
 		return sqlSession.update("helpdeskMapper.updateNotice", n);
 	}
-
-	public int insertNoticeAtt(SqlSessionTemplate sqlSession, List<NoticeAtt> noticeAttList) {
-		
-		int result = 0;
-		
-		// NoticeAtt리스트의 길이만큼 반복하여 INSERT 쿼리 실행
-		for(NoticeAtt att : noticeAttList) {
-			result += sqlSession.insert("helpdeskMapper.insertNoticeAtt", att);
-		}
-		
-		return result;
+	
+	public int updateNoticeAtt(SqlSessionTemplate sqlSession, ArrayList<NoticeAtt> na) {
+		return sqlSession.update("helpdeskMapper.updateNoticeAtt", na);
 	}
+
+	
 
 	
 

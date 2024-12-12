@@ -1,106 +1,120 @@
-/* 제목 스타일 */
-h1 {
-    color: #009688; /* 진한 민트 */
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* 버튼 스타일 */
-a.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: bold;
-    color: #ffffff; /* 텍스트 색상 */
-    background-color: #009688; /* 버튼 배경색: 민트 */
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-}
-
-a.btn:hover {
-    background-color: #00796b; /* 더 어두운 민트 */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.24);
-}
-
-/* 테이블 스타일 */
-table.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #ffffff; /* 흰색 배경 */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 테이블 그림자 */
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-/* 테이블 헤더 */
-table.table th {
-    background-color: #e0f7fa; /* 연한 민트 */
-    color: #00796b; /* 진한 민트 */
-    text-align: left;
-    padding: 10px;
-    font-weight: bold;
-}
-
-/* 테이블 셀 */
-table.table td {
-    padding: 10px;
-    border-top: 1px solid #e0f0f0; /* 연한 회색 */
-    color: #333; /* 기본 텍스트 색상 */
-}
-
-/* 테이블 줄무늬 효과 */
-table.table tr:nth-child(even) {
-    background-color: #f9f9f9; /* 밝은 회색 */
-}
-
-/* 링크 스타일 */
-a {
-    color: #00796b; /* 진한 민트 */
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* 첨부파일 링크 */
-table.table a {
-    color: #009688;
-    text-decoration: none;
-}
-
-table.table a:hover {
-    text-decoration: underline;
-    color: #00796b;
-}
-
-/* "수정하기" 및 "삭제하기" 버튼 */
-.btn-primary {
-    background-color: #4caf50; /* 밝은 초록 */
-    color: #ffffff;
-}
-
-.btn-primary:hover {
-    background-color: #388e3c; /* 진한 초록 */
-}
-
-.btn-danger {
-    background-color: #e57373; /* 밝은 빨강 */
-    color: #ffffff;
-}
-
-.btn-danger:hover {
-    background-color: #d32f2f; /* 진한 빨강 */
-}
-
-/* 내용 텍스트 */
-p {
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     line-height: 1.6;
-    color: #555; /* 중간 회색 */
+    color: #333;
+    background-color: #f8f9fa;
 }
+
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.notice-detail {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.notice-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.notice-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: #1971c2;
+}
+
+.notice-meta {
+    display: flex;
+    gap: 1rem;
+    color: #868e96;
+    font-size: 0.9rem;
+}
+
+.notice-content {
+    margin-bottom: 2rem;
+}
+
+.content-image {
+    width: 100%;
+    max-width: 600px;
+    margin: 1rem 0;
+    border-radius: 8px;
+}
+
+.text-content {
+    margin-top: 1.5rem;
+    line-height: 1.8;
+}
+
+.text-content p {
+    margin-bottom: 0.5rem;
+}
+
+.notice-description {
+    color: #868e96;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+.notice-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.admin-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn {
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-back {
+    background-color: #e9ecef;
+    color: #495057;
+}
+
+.btn-back:hover {
+    background-color: #dee2e6;
+}
+
+.btn-edit {
+    background-color: #228be6;
+    color: #fff;
+}
+
+.btn-edit:hover {
+    background-color: #1c7ed6;
+}
+
+.btn-delete {
+    background-color: #fa5252;
+    color: #fff;
+}
+
+.btn-delete:hover {
+    background-color: #e03131;
+}
+

@@ -23,9 +23,8 @@ public interface NoticeService {
 	
 	int deleteNotice(int nno);
 
-	int updateNotice(Notice n);
+	int updateNotice(Notice n, ArrayList<NoticeAtt> na);
 
-	
-
+	void deleteNoticeFile(String fileName);
 	
 }

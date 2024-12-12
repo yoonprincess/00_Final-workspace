@@ -2,68 +2,53 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>공지사항 상세조회</title>	
-	<link rel="stylesheet" href="../resources/css/helpdesk/NoticeDetailView.css"> <!-- 스타일 시트 링크 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 상세보기</title>
+    <link rel="stylesheet" href="../resources/css/helpdesk/NoticeDetailView.css"> <!-- 스타일 시트 링크 -->
 </head>
 <body class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
     <div class="container-fluid">
-    <div class="content">
-        <br><br>
-        <div class="innerOuter">
-            <br>
-            <a class="btn btn-secondary" style="float:right;" href="../list.no">목록으로</a>
-            <br><br>
-            <table id="contentArea" align="center" class="table">
-                <tr>
-                    <th width="100">제목</th>
-                    <td colspan="3">${ requestScope.n.noticeTitle }</td>
-                </tr>
-                <tr>
-                    <th>작성일</th>
-                    <td>${ requestScope.n.noticeRegDate }</td>
-                </tr>
-                <tr>
-                    <th>첨부파일</th>
-                    <td colspan="3">
-                    	<c:choose>
-                    		<c:when test="${ empty requestScope.na }">
-                    		    첨부파일이 없습니다.
-                    		</c:when>
-                    		<c:otherwise>
-                    			<c:forEach var="a" items="${ requestScope.na }">
-                    				<img src="${pageContext.request.contextPath }/${ a.savePath }${ a.saveFileName}" width="1200px;">
-                    			</c:forEach>
-                    		</c:otherwise>
-                    	</c:choose>
-                    </td>
-                </tr>
-                <tr>
-                    <th>내용</th>
-                    <td colspan="3"></td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                    	<p style="height:150px;">
-                    		${ requestScope.n.noticeContent }
-                    	</p>
-                    </td>
-                </tr>
-            </table>
-            <br>
+    <div class="container">
+        <div class="notice-detail">
+            <div class="notice-header">
+                <h2 class="notice-title">${ requestScope.n.noticeTitle }</h2>
+                <div class="notice-meta">
+                    <span class="author">작성자: BLB 관리자</span>
+                    <span class="date">${ requestScope.n.noticeRegDate }</span>
+                </div>
+            </div>
 
-			<c:if test="${ sessionScope.loginUser.memberId eq 'admin' }">
+            <div class="notice-content">
+                <div class="text-content">
+                    <p>${ requestScope.n.noticeContent }</p>
+                    <br>
+                    <c:choose>
+                   		<c:when test="${ empty requestScope.na }">
+                   		    첨부파일이 없습니다.
+                   		</c:when>
+                   		<c:otherwise>
+                   			<c:forEach var="a" items="${ requestScope.na }">
+                   				<img src="${pageContext.request.contextPath }/${ a.savePath }${a.saveFileName}" width="1200px;">
+                   			</c:forEach>
+                   		</c:otherwise>
+                   	</c:choose>
+                </div>
+            </div>
+
+            <div class="notice-footer">
+                <button type="button" class="btn btn-back" onclick="goList();">목록</button>
+                    
+                </div>
+                
+                <c:if test="${ sessionScope.loginUser.memberId eq 'admin' }">
 	            <div align="center">
 	                <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
-	                <a class="btn btn-primary" onclick="postFormSubmit(1);">
-	                	수정하기
-	                </a>
-	                <a class="btn btn-danger" onclick="postFormSubmit(2);">
-	                	삭제하기
-	                </a>
+	                <button type="button" class="btn btn-edit" onclick="postFormSubmit(1);">수정</button>
+	                <button type="button" class="btn btn-delete" onclick="postFormSubmit(2);">삭제</button>
 	            </div>
 	            
 	            <form id="postForm" action="" method="post">
@@ -91,14 +76,25 @@
 	            }
 	            </script>
             </c:if>
-            
-            <br><br>
+            </div>
         </div>
-        <br><br>
-
     </div>
+    
     </div>
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
-    
+
+    <script>
+        // 관리자 확인 및 버튼 표시 로직
+        const isAdmin = localStorage.getItem('userId') === 'admin';
+        const adminControls = document.getElementById('adminControls');
+        if (isAdmin) {
+            adminControls.style.display = 'flex';
+        }
+        
+        function goList(){
+        	location.href="../list.no";
+        }
+    </script>
 </body>
 </html>
+

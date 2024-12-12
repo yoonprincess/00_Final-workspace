@@ -99,11 +99,15 @@
 		UPDATE TB_NOTICE
 		   SET NOTICE_TITLE = #{noticeTitle}
 		     , NOTICE_CONTENT = #{noticeContent}
-		     , ORIG_FILE_NAME = #{origFileName}
-		     , SAVE_FILE_NAME = #{saveFileName}
 		     , NOTICE_REG_DATE = SYSDATE
 		 WHERE NOTICE_NO = #{noticeNo}
 		   AND NOTICE_STATUS = 'Y'
+	</update>
+	
+	<update id="updateNoticeAtt" parameterType="noticeAtt">
+		UPDATE TB_NOTICE_ATT
+		   SET NOTICE_STATUS = 'N'
+		 WHERE NOTICE_ATT_NO = #{noticeAttNo}
 	</update>
 													<!-- 1:1 문의 관련 매퍼 -->
 	<resultMap id="inquiryResultSet" type="inquiry">

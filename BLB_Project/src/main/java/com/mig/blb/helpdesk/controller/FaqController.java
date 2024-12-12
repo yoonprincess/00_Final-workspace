@@ -13,10 +13,10 @@ public class FaqController {
 	@Autowired
 	private NoticeService noticeService;
 	
+	// FAQ 페이지 요청
 	@GetMapping("Faq.blb")
 	public String FAQ() {
-		
-		
+				
 		return "helpdesk/FAQ";
 	}
 }

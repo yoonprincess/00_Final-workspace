@@ -152,40 +152,27 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 		public String updateForm(int nno,
 								 Model model) {
 			Notice n = noticeService.selectNotice(nno);
+			ArrayList<NoticeAtt> na = noticeService.selectNoticeAtt(nno);
 			
 			model.addAttribute("n",n);
+			model.addAttribute("na", na);
 			return "helpdesk/NoticeUpdateForm";
 		}
 		
 		// 공지사항 수정 요청
 		@PostMapping("NoticeUpdate.no")
 		public String updateNotice(Notice n,
-								   NoticeAtt na,
 								   RedirectAttributes ar,
-								   MultipartFile reupfile,
+								   MultipartFile[] reupfile,
 								   HttpSession session,
 								   Model model) {
 
-		    if (!reupfile.getOriginalFilename().equals("")) {
-		        if (na.getOrigFileName() != null) {
-		            String realPath = session.getServletContext().getRealPath(na.getSaveFileName());
-		            new File(realPath).delete();
-		        }
-
-		        String changeName = saveFile(reupfile, session);
-		        na.setOrigFileName(reupfile.getOriginalFilename());
-		        na.setSaveFileName("resources/uploadFiles/notice/" + changeName);
-		    }
-
-		    int result = noticeService.updateNotice(n);
-
-		    if (result > 0) {
-		        session.setAttribute("alertMsg", "공지사항이 성공적으로 수정되었습니다.");
-		        return "redirect:/notice/" + n.getNoticeNo();
-		    } else {
-		        ar.addFlashAttribute("alertMsg", "공지사항 수정에 실패했습니다.");
-		        return "redirect:/list.no";
-		    }
+			if(reupfile != null && reupfile.length > 0) {
+			
+			int result = noticeService.updateNoticeAtt();
+			}
+			
+			return null;
 		}
 
 		

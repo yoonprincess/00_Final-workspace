@@ -6,60 +6,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자주 묻는 질문 (FAQ)</title>
-    <link rel="stylesheet" href="resources/css/helpdesk/FAQ.css"> <!-- CSS 파일 경로 -->
+    <title>CONTACT</title>
+    <link rel="stylesheet" href="resources/css/helpdesk/FAQ.css">
 </head>
 <body class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 	<div class="container-fluid">
     <div class="container">
-    
-	    <header>
-	        <nav>
-            <a href="Faq.blb">고객센터</a>
-            <a href="list.io">1:1문의</a>
-            <a href="#">리뷰</a>
-            <a href="list.no">공지사항</a>
-        </nav>
-    </header>
-        <h1>자주 묻는 질문 (FAQ)</h1>
-        <div class="form-group">
-            <select>
-                <option value="all">전체</option>
-                <option value="order">주문/결제/배송</option>
-                <option value="product">상품</option>
-                <option value="return">반품/교환</option>
-            </select>
+        <div class="grid">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">CONTACT</h2>
+                </div>
+                <div class="card-content">
+                    <div class="menu-items">
+                        <a href="${ pageContext.request.contextPath }/list.no" class="menu-item">
+                            <span class="font-medium">공지사항</span>
+                            <span class="chevron-right">›</span>
+                        </a>
+                        <a href="${ pageContext.request.contextPath }/Faq.blb" class="menu-item">
+                            <span class="font-medium">FAQ</span>
+                            <span class="chevron-right">›</span>
+                        </a>
+                        <a href="${ pageContext.request.contextPath }/list.io" class="menu-item">
+                            <span class="font-medium">고객 문의</span>
+                            <span class="chevron-right">›</span>
+                        </a>
+                    </div>
+                    <div class="notices" id="notices">
+                        <!-- Notices will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-light">
+                <div class="card-content">
+                    <div class="info-item">
+                        <div class="info-label">운영 시간</div>
+                        <div class="info-content">
+                            <p class="font-medium">평일 13:00 ~ 17:00</p>
+                            <p class="text-muted">주말 및 공휴일 휴무</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">전화 문의</div>
+                        <div class="info-content">
+                            <p class="font-medium">고객 문의 : 1544-6418</p>
+                            <p class="font-medium">대표 문의 : 080-022-2285</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">대표 메일</div>
+                        <div class="info-content">
+                            <p class="font-medium">whole_member@hello.co.kr</p>
+                            <p class="text-muted">문의 시간에 상담이 몰릴 경우 답변이 늦을 수 있음을 양해 부탁 드립니다</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>카테고리</th>
-                    <th>제목</th>
-                    <th>작성일</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>주문/결제/배송</td>
-                    <td>배송 기간은 얼마나 걸리나요?</td>
-                    <td>2023-09-18</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>주문/결제/배송</td>
-                    <td>주문 취소는 어떻게 하나요?</td>
-                    <td>2023-09-18</td>
-                </tr>
-                <!-- Add more rows as needed -->
-            </tbody>
-        </table>
+
+        <div class="card mt-6">
+            <div class="card-header">
+                <h2 class="card-title">FAQ Top 10</h2>
+                <a href="https://Faq.blb" class="text-muted">더보기 ›</a>
+            </div>
+            <div class="card-content">
+                <div class="faq-grid" id="faqGrid">
+                    <!-- FAQ items will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script src="resources/js/helpdesk/FAQ.js"></script>
     </div>
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>
+
 
 
