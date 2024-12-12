@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.product.model.vo.Product;
+import com.mig.blb.product.model.vo.ProductAtt;
 
 @Repository
 public class ProductDao {
@@ -25,6 +26,18 @@ public class ProductDao {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
 		return (ArrayList)sqlSession.selectList("productMapper.selectProductList", params, rowBounds);
+	}
+
+	public int increaseViewCount(SqlSessionTemplate sqlSession, int prodNo) {
+		return sqlSession.update("productMapper.increaseViewCount", prodNo);
+	}
+
+	public Product selectProduct(SqlSessionTemplate sqlSession, int prodNo) {
+		return sqlSession.selectOne("productMapper.selectProduct", prodNo);
+	}
+
+	public ArrayList<ProductAtt> selectProductAtt(SqlSessionTemplate sqlSession, int prodNo) {
+		return (ArrayList)sqlSession.selectList("productMapper.selectProductAtt", prodNo);
 	}
 
 }

@@ -34,10 +34,6 @@ body {
     transition: transform 0.3s ease-in-out; /* 부드러운 전환 효과 */
 }
 
-#productTabs {
-    z-index: 40;
-}
-
 /* 상품 메뉴 탭 고정 */
 #productTabs.sticky {
     position: fixed !important;

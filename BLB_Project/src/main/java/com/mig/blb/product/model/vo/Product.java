@@ -26,5 +26,6 @@ public class Product {
 	private int prodCount;				//	PROD_COUNT	NUMBER
 	private Timestamp prodEnrollDate;	//	PROD_ENROLL_DATE	DATE
 	private String prodStatus;			//	PROD_STATUS	CHAR(1 BYTE)
+	private String thumbImg;			//	PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
 		
 }

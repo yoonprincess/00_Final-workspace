@@ -15,6 +15,7 @@ import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.common.template.Pagination;
 import com.mig.blb.product.model.service.ProductService;
 import com.mig.blb.product.model.vo.Product;
+import com.mig.blb.product.model.vo.ProductAtt;
 
 @Controller
 public class ProductController {
@@ -27,7 +28,7 @@ public class ProductController {
 	public String selectProductList(@RequestParam(value="ppage", defaultValue="1")int currentPage,
 									@RequestParam(value="category", defaultValue="전체제품")String category,
 									@RequestParam(value="subcategories", required=false) List<String> subcategories,
-									@RequestParam(value="sortBy", defaultValue="recommended") String sortBy,
+									@RequestParam(value="sortBy", defaultValue="recent") String sortBy,
 							        @RequestParam(value="boardLimit", defaultValue="12") int boardLimit,
 									Model model) {
 		// params를 생성하여 전달
@@ -59,6 +60,25 @@ public class ProductController {
 	public String selectProduct(@RequestParam(value="pno", defaultValue="1")int pno,
 								Model model) {
 		
-		return "product/productDetailView";
+		int count = productService.increaseViewCount(pno);
+		
+		if(count > 0) {
+			
+			// 상품정보 상세조회
+			Product p = productService.selectProduct(pno);
+			
+			// 상품 첨부이미지 조회
+			ArrayList<ProductAtt> paList = productService.selectProductAtt(pno);
+			
+			model.addAttribute("p", p);
+			model.addAttribute("paList", paList);
+			
+			return "product/productDetailView";
+		} else {
+			
+			model.addAttribute("errorMsg", "게시글 조회 실패");
+			
+			return "common/errorPage";
+		}
 	}
 }

@@ -19,15 +19,15 @@
             <div class="col-lg-6 mb-4">
                 <div id="productCarousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="/placeholder.svg?height=500&width=500" class="d-block w-100 product-image" alt="Product 1">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/placeholder.svg?height=500&width=500" class="d-block w-100 product-image" alt="Product 2">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/placeholder.svg?height=500&width=500" class="d-block w-100 product-image" alt="Product 3">
-                        </div>
+                    	<c:forEach var="pa" items="${ requestScope.paList }" varStatus="status">
+					        <c:if test="${ not empty pa.thumbPath }">
+							    <div class="carousel-item ${status.first ? 'active' : ''}">
+						            <img src="${ pageContext.request.contextPath }${ pa.thumbPath }${ pa.saveFileName }" 
+						                 class="d-block w-100 product-image" 
+						                 alt="${ pa.origFileName }">
+							    </div>
+					        </c:if>
+						</c:forEach>
                     </div>
                     <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -39,16 +39,19 @@
                     </a>
                 </div>
                 <div class="d-flex mt-3 overflow-auto">
-                    <img src="/placeholder.svg?height=100&width=100" class="thumbnail mr-2 active-thumbnail" data-target="#productCarousel" data-slide-to="0">
-                    <img src="/placeholder.svg?height=100&width=100" class="thumbnail mr-2" data-target="#productCarousel" data-slide-to="1">
-                    <img src="/placeholder.svg?height=100&width=100" class="thumbnail mr-2" data-target="#productCarousel" data-slide-to="2">
+					<c:forEach var="pa" items="${ requestScope.paList }" varStatus="status">
+						<c:if test="${ not empty pa.thumbPath }">
+	                    	<img src="${ pageContext.request.contextPath }${ pa.thumbPath }${ pa.saveFileName }" class="thumbnail mr-2 ${status.first ? 'active-thumbnail' : ''}" data-target="#productCarousel" data-slide-to="${ status.index }">
+	                    </c:if>
+                    </c:forEach>
                 </div>
             </div>
             
             <!-- 상품 정보 -->
             <div class="col-lg-6 sticky-wrapper">
                 <div class="product-info">
-                    <h1 class="mb-3">내추럴 커버 로션</h1>
+                    <h1 class="mb-3">${ requestScope.p.prodName }</h1>
+                    <p class="text-muted">${ requestScope.p.prodContent }</p>
                     <div class="mb-3">
                         <span class="review-stars">
                             <i class="fas fa-star"></i>
@@ -60,7 +63,7 @@
                         <span class="ml-2 font-weight-bold">4.9</span>
                     </div>
                     <h2 class="mb-3">
-                        <fmt:formatNumber value="29800" type="number" pattern="#,###" /><small>원</small>
+                        <p id="base-price"><fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /></p><small>원</small>
                         <small class="text-danger">21% 할인</small>
                     </h2>
                     <p>배송비: 3,000원 (50,000원 이상 구매 시 무료)</p>
@@ -78,7 +81,7 @@
                         <div id="selectedOptions"></div>
                         <div class="form-group">
                             <label>총 상품금액</label>
-                            <h3 id="totalPrice">29,800원</h3>
+                            <h3 id="totalPrice"><fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /><small>원</small></h3>
                         </div>
                         <div class="form-group">
                             <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="addToCart">
@@ -94,107 +97,43 @@
             </div>
         </div>
 
+        <!-- 탭 고정 위치 -->
+        <div class="origin-tab-location"></div>
+
         <!-- 탭 메뉴 -->
-        <ul class="nav nav-tabs mt-5" id="productTabs" role="tablist">
+        <ul class="nav nav-tabs body-offset" id="productTabs" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab">상세정보</a>
+                <a class="tab-item nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab">상세정보</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab">상품리뷰 <span class="badge badge-secondary">624</span></a>
+                <a class="tab-item nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab">상품리뷰 <span class="badge badge-secondary">624</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="qna-tab" data-toggle="tab" href="#qna" role="tab">상품문의 <span class="badge badge-secondary">12</span></a>
+                <a class="tab-item nav-link" id="qna-tab" data-toggle="tab" href="#qna" role="tab">상품문의 <span class="badge badge-secondary">12</span></a>
             </li>
         </ul>
         <div class="tab-content" id="productTabsContent">
             <div class="tab-pane fade show active" id="details" role="tabpanel">
-                <img src="/placeholder.svg?height=1000&width=800" alt="Product Details" class="img-fluid">
-                <pre>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                </pre>
+            	<c:forEach var="pa" items="${ requestScope.paList }" varStatus="status">
+					<c:if test="${ empty pa.thumbPath }">
+                    	<img src="${ pageContext.request.contextPath }${ pa.savePath }${ pa.saveFileName }" 
+                             alt="${ pa.origFileName }" 
+                             class="img-fluid full-width-image">
+                    </c:if>
+                </c:forEach>
+                <div class="container pt-2 pb-5">
+                    <!-- 화장품 성분 -->
+                    <div class="cosmetic-ingredients mb-4">
+                        <h2 class="section-title">화장품 성분</h2>
+                        <div class="content-box">${ requestScope.p.prodOrigin }</div>
+                    </div>
+                
+                    <!-- 주의사항 -->
+                    <div class="cosmetic-warnings">
+                        <h2 class="section-title">사용 시 주의사항</h2>
+                        <div class="content-box">${ requestScope.p.prodCaution }</div>
+                    </div>
+                </div>
             </div>
             <div class="tab-pane fade" id="reviews" role="tabpanel">
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -231,6 +170,55 @@
                     </div>
                 </div>
                 <div id="reviewList"></div>
+                <pre>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                </pre>
                 <nav aria-label="Page navigation for reviews">
                     <ul class="pagination justify-content-center" id="reviewPagination"></ul>
                 </nav>
@@ -241,6 +229,65 @@
                     <button class="btn btn-primary">문의하기</button>
                 </div>
                 <div id="qnaList"></div>
+                <pre>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                </pre>
                 <nav aria-label="Page navigation for qna">
                     <ul class="pagination justify-content-center" id="qnaPagination"></ul>
                 </nav>

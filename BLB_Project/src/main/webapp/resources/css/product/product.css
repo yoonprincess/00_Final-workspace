@@ -115,15 +115,49 @@ td label {
     top: 0;
     z-index: 20;
 }
+.tab-item {
+    background-color: #E3FDFD !important;
+    color: gray;
+}
+.tab-item.active {
+    background-color: white !important;
+    color: #4A628A;
+}
 .product-info {
     max-height: calc(100vh - 60px);
     overflow-y: auto;
 }
 #productTabs {
     background-color: #fff;
+    z-index: 40;
+}
+.full-width-image {
+    width: 100%; /* 부모 div의 가로 크기에 맞춤 */
+    height: auto; /* 비율 유지 */
+    object-fit: contain; /* 내용이 비율에 맞게 보이도록 설정 */
 }
 @media (max-width: 991.98px) {
     .sticky-wrapper {
         position: static;
     }
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4A628A;
+    margin-bottom: 15px;
+}
+
+.content-box {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #4A628A;
+    background-color: #f9f9f9; /* 배경색 */
+    border: 1px solid #e0e0e0; /* 테두리 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    padding: 15px;
+    white-space: pre-wrap; /* 줄바꿈 처리를 위해 설정 */
+    overflow-wrap: break-word; /* 단어가 길 경우 자동으로 줄바꿈 */
+    word-break: break-word; /* 긴 단어에 대해 줄바꿈 */
 }

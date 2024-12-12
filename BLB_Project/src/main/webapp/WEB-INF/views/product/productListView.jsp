@@ -223,7 +223,7 @@
 	            <div class="d-flex">
 	                <select id="sortBy" class="form-control form-control-sm mr-2">
 	                	<option value="recent" ${ sortBy == 'recent' ? 'selected' : '' }>최신순</option>
-					    <option value="recommended" ${ sortBy == 'recommended' ? 'selected' : '' }>추천순</option>
+					    <option value="recommended" ${ sortBy == 'recommended' ? 'selected' : '' }>별점순</option>
 					    <option value="popular" ${ sortBy == 'popular' ? 'selected' : '' }>높은판매순</option>
 					    <option value="lowPrice" ${ sortBy == 'lowPrice' ? 'selected' : '' }>낮은가격순</option>
 					    <option value="highPrice" ${ sortBy == 'highPrice' ? 'selected' : '' }>높은가격순</option>
@@ -243,7 +243,7 @@
 		            <div class="col-md-3 col-sm-4 col-6 mb-4">
 		                <div class="card product-card position-relative" data-id="1" onclick="location.href='detail.pr?pno=${ p.prodNo }';">
 		                    <div class="card-img-container">
-		                        <img src="${ pageContext.request.contextPath }/resources/images/product/product1.jpg" class="card-img-top" alt="상품 이미지">
+		                        <img src="${ pageContext.request.contextPath }${ p.thumbImg }" class="card-img-top" alt="상품 이미지">
 		                        <div class="overlay">
 		                            <button class="btn btn-light btn-sm rounded-circle shadow add-cart" title="장바구니 추가" data-id="1">
 		                                <span class="material-symbols-outlined">

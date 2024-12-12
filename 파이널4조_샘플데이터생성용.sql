@@ -238,4 +238,616 @@ INSERT INTO TB_PRODUCT (PROD_NO, CATEGORY_NAME, PROD_NAME, PROD_CONTENT, PROD_PR
 VALUES (SEQ_PROD_NO.NEXTVAL, '메이크업', '뷰라밸 롱래스팅 파우더', '오랜 시간 지속되는 피부 표현을 위한 파우더', 13900, '미네랄파우더, 실리카, 쉐어버터', '가. 사용 후 밀폐 보관. 나. 직사광선 피할 것.', DEFAULT, DEFAULT, DEFAULT, '베이스');
 
 
+-- 상품 이미지 샘플 데이터--
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_1.jpg'
+                                       , 'product1_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 36);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_2.jpg'
+                                       , 'product1_2.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 36);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_3.jpg'
+                                       , 'product1_3.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 36);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product_caution.jpg'
+                                       , 'product_caution.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 36);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_detail.jpg'
+                                       , 'product1_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 36);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_1.jpg'
+                                       , 'product2_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 35);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_2.jpg'
+                                       , 'product2_2.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 35);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_3.jpg'
+                                       , 'product2_3.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 35);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product_caution.jpg'
+                                       , 'product_caution.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 35);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_detail.jpg'
+                                       , 'product2_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 35);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_1.jpg'
+                                       , 'product3_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 34);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_2.jpg'
+                                       , 'product3_2.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 34);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_3.jpg'
+                                       , 'product3_3.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 34);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product_caution.jpg'
+                                       , 'product_caution.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 34);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_detail.jpg'
+                                       , 'product3_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 34);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_detail.jpg'
+                                       , 'product3_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 34);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_1.jpg'
+                                       , 'product2_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 33);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_detail.jpg'
+                                       , 'product2_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 33);
+                                       
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_1.jpg'
+                                       , 'product1_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 32);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_detail.jpg'
+                                       , 'product1_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 32);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_1.jpg'
+                                       , 'product3_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 31);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_detail.jpg'
+                                       , 'product3_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 31);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_1.jpg'
+                                       , 'product2_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 30);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_detail.jpg'
+                                       , 'product2_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 30);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_1.jpg'
+                                       , 'product1_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 29);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_detail.jpg'
+                                       , 'product1_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 29);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_1.jpg'
+                                       , 'product3_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 28);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_detail.jpg'
+                                       , 'product3_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 28);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_1.jpg'
+                                       , 'product2_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 27);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_detail.jpg'
+                                       , 'product2_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 27);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_1.jpg'
+                                       , 'product1_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 26);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_detail.jpg'
+                                       , 'product1_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 26);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_1.jpg'
+                                       , 'product3_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 25);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_detail.jpg'
+                                       , 'product3_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 25);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_1.jpg'
+                                       , 'product2_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 24);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_detail.jpg'
+                                       , 'product2_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 24);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_1.jpg'
+                                       , 'product1_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 23);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_detail.jpg'
+                                       , 'product1_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 23);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_1.jpg'
+                                       , 'product3_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 22);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_detail.jpg'
+                                       , 'product3_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 22);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_1.jpg'
+                                       , 'product1_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 21);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_detail.jpg'
+                                       , 'product1_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 21);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_1.jpg'
+                                       , 'product2_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 20);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_detail.jpg'
+                                       , 'product2_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 20);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_1.jpg'
+                                       , 'product3_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 19);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_detail.jpg'
+                                       , 'product3_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 19);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_1.jpg'
+                                       , 'product1_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 18);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_detail.jpg'
+                                       , 'product1_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 18);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_1.jpg'
+                                       , 'product2_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 17);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_detail.jpg'
+                                       , 'product2_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 17);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_1.jpg'
+                                       , 'product3_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 16);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_detail.jpg'
+                                       , 'product3_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 16);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_1.jpg'
+                                       , 'product1_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 15);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_detail.jpg'
+                                       , 'product1_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 15);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_1.jpg'
+                                       , 'product2_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 14);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_detail.jpg'
+                                       , 'product2_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 14);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_1.jpg'
+                                       , 'product3_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 13);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_detail.jpg'
+                                       , 'product3_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 13);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_1.jpg'
+                                       , 'product1_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 12);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_detail.jpg'
+                                       , 'product1_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 12);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_1.jpg'
+                                       , 'product2_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 11);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_detail.jpg'
+                                       , 'product2_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 11);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_1.jpg'
+                                       , 'product3_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 10);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_detail.jpg'
+                                       , 'product3_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 10);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_1.jpg'
+                                       , 'product1_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 9);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_detail.jpg'
+                                       , 'product1_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 9);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_1.jpg'
+                                       , 'product2_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 8);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_detail.jpg'
+                                       , 'product2_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 8);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_1.jpg'
+                                       , 'product3_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 7);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_detail.jpg'
+                                       , 'product3_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 7);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_1.jpg'
+                                       , 'product1_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 6);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_detail.jpg'
+                                       , 'product1_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 6);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_1.jpg'
+                                       , 'product2_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 5);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_detail.jpg'
+                                       , 'product2_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 5);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_1.jpg'
+                                       , 'product3_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 4);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_detail.jpg'
+                                       , 'product3_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 4);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_1.jpg'
+                                       , 'product1_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 3);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product1_detail.jpg'
+                                       , 'product1_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 3);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_1.jpg'
+                                       , 'product2_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 2);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product2_detail.jpg'
+                                       , 'product2_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 2);
+
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_1.jpg'
+                                       , 'product3_1.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , '/resources/uploadFiles/product/thumb/'
+                                       , 'Y'
+                                       , 1);
+INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
+                                       , 'product3_detail.jpg'
+                                       , 'product3_detail.jpg'
+                                       , '/resources/uploadFiles/product/'
+                                       , null
+                                       , 'Y'
+                                       , 1);
+
+
 COMMIT;

@@ -14,6 +14,17 @@
 		<result column="PROD_COUNT" property="prodCount"/>
 		<result column="PROD_ENROLL_DATE" property="prodEnrollDate"/>
 		<result column="PROD_STATUS" property="prodStatus"/>
+		<result column="THUMB_IMG" property="thumbImg"/>
+	</resultMap>
+	
+	<resultMap id="productAttResultSet" type="productAtt">
+		<id column="PROD_ATT_NO" property="prodAttNo"/>
+		<result column="ORIG_FILE_NAME" property="origFileName"/>
+		<result column="SAVE_FILE_NAME" property="saveFileName"/>
+		<result column="SAVE_PATH" property="savePath"/>
+		<result column="THUMB_PATH" property="thumbPath"/>
+		<result column="PROD_ATT_STATUS" property="prodAttStatus"/>
+		<result column="PROD_NO" property="prodNo"/>
 	</resultMap>
 	
 	<select id="selectProductCount" parameterType="map" 
@@ -40,7 +51,20 @@
 		     , P.PROD_PRICE
 		     , P.PROD_COUNT
 		     , P.PROD_ENROLL_DATE
+		     , PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
 		  FROM TB_PRODUCT P
+		  LEFT JOIN (
+		      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+		        FROM TB_PRODUCT_ATTACHMENT
+		       WHERE (PROD_NO, PROD_ATT_NO) IN (
+		           SELECT PROD_NO, MIN(PROD_ATT_NO)
+		             FROM TB_PRODUCT_ATTACHMENT
+		            WHERE PROD_ATT_STATUS = 'Y'
+		              AND THUMB_PATH IS NOT NULL
+		            GROUP BY PROD_NO
+		       )
+		  ) PA
+		    ON P.PROD_NO = PA.PROD_NO
 		 WHERE P.PROD_STATUS = 'Y'
 		   AND (#{category} = '전체제품' OR CATEGORY_NAME = #{category})
 		   <if test="subcategories != null and subcategories.size() > 0">
@@ -51,4 +75,42 @@
 	       </if>
 		 ORDER BY P.PROD_NO DESC
 	</select>
+	
+	<select id="increaseViewCount" parameterType="_int">
+		UPDATE TB_PRODUCT
+		   SET PROD_COUNT = PROD_COUNT + 1
+		 WHERE PROD_NO = #{prodNo}
+		   AND PROD_STATUS = 'Y'
+	</select>
+	
+	<select id="selectProduct" parameterType="_int"
+			resultMap="productResultSet">
+		SELECT PROD_NO
+		     , CATEGORY_NAME
+		     , SUBCATEGORY_NAME
+		     , PROD_NAME
+		     , PROD_CONTENT
+		     , PROD_PRICE
+		     , PROD_ORIGIN
+		     , PROD_CAUTION
+		     , PROD_COUNT
+		     , PROD_ENROLL_DATE
+		  FROM TB_PRODUCT
+		 WHERE PROD_NO = #{prodNo}
+		   AND PROD_STATUS = 'Y'
+	</select>
+	
+	<select id="selectProductAtt" parameterType="_int"
+			resultMap="productAttResultSet">
+		SELECT PROD_ATT_NO
+		     , ORIG_FILE_NAME
+		     , SAVE_FILE_NAME
+		     , SAVE_PATH
+		     , THUMB_PATH
+		  FROM TB_PRODUCT_ATTACHMENT
+		 WHERE PROD_NO = #{prodNo}
+		   AND PROD_ATT_STATUS = 'Y'
+	</select>
+	
+	
 </mapper>

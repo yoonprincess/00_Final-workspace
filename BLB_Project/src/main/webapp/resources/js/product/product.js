@@ -108,7 +108,7 @@ $(document).ready(function () {
 
     // 총 금액 계산
     function updateTotalPrice() {
-        const basePrice = 29800; // 기본 가격
+        const basePrice = $("#base-price").val(); // 기본 가격
         const total = selectedOptions.reduce((sum, opt) => sum + (basePrice + opt.price) * opt.quantity, 0);
         $('#totalPrice').text(total.toLocaleString() + '원');
     }
@@ -246,5 +246,25 @@ $(document).ready(function () {
             $('.sticky-wrapper').removeClass('is-sticky');
         }
     });
+
+    // 탭 클릭 시 스크롤 이동
+    $('#productTabs a').on('click', function (e) {
+        e.preventDefault();
+
+        const targetId = $(this).attr('href'); // 클릭한 탭의 ID (#details, #reviews, #qna)
+        const tabsOffset = $('.origin-tab-location').offset().top || 0; // 탭 메뉴의 위치
+
+        // 부드러운 스크롤 이동
+        $('html, body').animate(
+            {
+                scrollTop: tabsOffset,
+            },
+            300 // 스크롤 이동 속도 (밀리초)
+        );
+
+        // 탭 활성화 처리
+        $(this).tab('show');
+    });
+
 
 });
