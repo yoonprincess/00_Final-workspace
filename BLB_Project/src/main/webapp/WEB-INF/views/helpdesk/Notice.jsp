@@ -20,7 +20,7 @@
             <a href="Faq.blb">고객센터</a>
             <a href="list.io">1:1문의</a>
             <a href="#">리뷰</a>
-            <a href="list.nol">공지사항</a>
+            <a href="list.no">공지사항</a>
         </nav>
     </header>
 	    <c:if test="${ not empty sessionScope.loginUser }">

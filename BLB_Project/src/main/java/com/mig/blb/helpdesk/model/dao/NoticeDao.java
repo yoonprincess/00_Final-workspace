@@ -34,6 +34,10 @@ public class NoticeDao {
 	public Notice selectNotice(SqlSessionTemplate sqlSession, int nno) {
 		return sqlSession.selectOne("helpdeskMapper.selectNotice", nno);
 	}
+	
+	public ArrayList<NoticeAtt> selectNoticeAtt(SqlSessionTemplate sqlSession, int nno) {
+		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectNoticeAtt", nno);
+	}
 
 	public int deleteNotice(SqlSessionTemplate sqlSession, int nno) {
 		return sqlSession.update("helpdeskMapper.deleteNotice", nno);
@@ -54,5 +58,7 @@ public class NoticeDao {
 		
 		return result;
 	}
+
+	
 
 }

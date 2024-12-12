@@ -46,6 +46,11 @@ public class NoticeServiceImpl implements NoticeService{
 	public Notice selectNotice(int nno) {
 		return noticeDao.selectNotice(sqlSession, nno);
 	}
+	
+	@Override
+	public ArrayList<NoticeAtt> selectNoticeAtt(int nno) {
+		return noticeDao.selectNoticeAtt(sqlSession, nno);
+	}
 
 	@Override
 	public int deleteNotice(int nno) {
@@ -56,6 +61,8 @@ public class NoticeServiceImpl implements NoticeService{
 	public int updateNotice(Notice n) {
 		return noticeDao.updateNotice(sqlSession, n);
 	}
+
+	
 
 	
 

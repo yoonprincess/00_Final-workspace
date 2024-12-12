@@ -30,14 +30,13 @@
                     <th>첨부파일</th>
                     <td colspan="3">
                     	<c:choose>
-                    		<c:when test="${ empty requestScope.na.origFileName }">
+                    		<c:when test="${ empty requestScope.na }">
                     		    첨부파일이 없습니다.
                     		</c:when>
                     		<c:otherwise>
-                    			<a href="${ pageContext.request.contextPath }/${ requestScope.na.saveFileName }" 
-                    			   download="${ requestScope.na.origFileName }">
-                    				${ requestScope.na.origFileName }
-                    			</a>
+                    			<c:forEach var="a" items="${ requestScope.na }">
+                    				<img src="${pageContext.request.contextPath }/${ a.savePath }${ a.saveFileName}" width="1200px;">
+                    			</c:forEach>
                     		</c:otherwise>
                     	</c:choose>
                     </td>
@@ -73,7 +72,7 @@
 	            		   value="${ requestScope.n.noticeNo }">
 	            	<input type="hidden"
 	            		   name="filePath"
-	            		   value="${ requestScope.na.saveFileName }">
+	            		   value="${ requestScope.a.saveFileName }">
 	            		   
 	            </form>
 	            

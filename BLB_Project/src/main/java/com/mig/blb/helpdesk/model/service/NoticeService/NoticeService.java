@@ -19,9 +19,13 @@ public interface NoticeService {
 
 	Notice selectNotice(int nno);
 
+	ArrayList<NoticeAtt> selectNoticeAtt(int nno);
+	
 	int deleteNotice(int nno);
 
 	int updateNotice(Notice n);
+
+	
 
 	
 }

@@ -86,9 +86,9 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 						// NoticeAtt 객체 생성 및 첨부파일 정보 설정
 						NoticeAtt att = new NoticeAtt();
 						att.setOrigFileName(upfiles.getOriginalFilename()); // 원본 파일명
-						att.setSaveFileName("resources/uploadFiles/" + changeName); // 저장된 파일명
+						att.setSaveFileName(changeName); // 저장된 파일명
 						
-						att.setSavePath("resources/uploadFiles/");
+						att.setSavePath("resources/uploadFiles/notice/");
 						
 						// NoticeAtt 객체 리스트에 추가
 						noticeAtt.add(att);
@@ -116,7 +116,11 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 		                                 ModelAndView mv,
 		                                 RedirectAttributes ra) {
 		        Notice n = noticeService.selectNotice(nno);
+		        ArrayList<NoticeAtt> na = noticeService.selectNoticeAtt(nno);
 		        mv.addObject("n", n).setViewName("helpdesk/NoticeDetailView");
+		        mv.addObject("na", na).setViewName("helpdesk/NoticeDetailView");
+		        //System.out.println(na);
+		        // > na 배열에 잘 담겨있음!
 		    return mv;
 		}
 
@@ -170,7 +174,7 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 
 		        String changeName = saveFile(reupfile, session);
 		        na.setOrigFileName(reupfile.getOriginalFilename());
-		        na.setSaveFileName("resources/uploadFiles/" + changeName);
+		        na.setSaveFileName("resources/uploadFiles/notice/" + changeName);
 		    }
 
 		    int result = noticeService.updateNotice(n);
@@ -193,7 +197,7 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 		    int ranNum = (int)(Math.random() * 90000 + 10000);
 		    String ext = originName.substring(originName.lastIndexOf("."));
 		    String changeName = currentTime + ranNum + ext;
-		    String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
+		    String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/notice/");
 		    
 		    try {
 				upfile.transferTo(new File(savePath + changeName));

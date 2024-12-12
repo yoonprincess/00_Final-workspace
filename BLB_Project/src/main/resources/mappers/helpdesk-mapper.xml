@@ -68,18 +68,24 @@
 	</insert>
 
 	
-	<select id="selectNotice" parameterType="int" resultMap="noticeResultSet">
-	    SELECT 
-	        N.NOTICE_NO,
-	        N.NOTICE_TITLE,
-	        N.NOTICE_CONTENT,
-	        A.ORIG_FILE_NAME,
-	        A.SAVE_FILE_NAME,
-	        TO_CHAR(n.NOTICE_REG_DATE, 'YYYY-MM-DD') AS "NOTICE_REG_DATE"
-	    FROM TB_NOTICE N
-	    LEFT JOIN TB_NOTICE_ATTACHMENT A ON (N.NOTICE_NO = A.NOTICE_NO)
-	    WHERE N.NOTICE_NO = #{noticeNo}
-	      AND N.NOTICE_STATUS = 'Y'
+	<select id="selectNotice" parameterType="_int" resultMap="noticeResultSet">
+	    SELECT NOTICE_NO,
+		       NOTICE_TITLE,
+		       NOTICE_CONTENT,
+		       TO_CHAR(n.NOTICE_REG_DATE, 'YYYY-MM-DD') AS "NOTICE_REG_DATE"
+		  FROM TB_NOTICE N
+		 WHERE NOTICE_NO = #{noticeNo}
+		   AND NOTICE_STATUS = 'Y'
+	</select>
+	
+	<select id="selectNoticeAtt" parameterType="_int" resultMap="noticeAttResultSet">
+		SELECT NOTICE_ATT_NO,
+			   ORIG_FILE_NAME,
+		       SAVE_FILE_NAME,
+		       SAVE_PATH
+		  FROM TB_NOTICE_ATTACHMENT
+		 WHERE NOTICE_ATT_STATUS = 'Y'
+		   AND NOTICE_NO = #{noticeNo}
 	</select>
 
 	

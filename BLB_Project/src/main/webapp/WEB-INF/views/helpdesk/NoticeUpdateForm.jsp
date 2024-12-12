@@ -5,73 +5,100 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항 수정</title>
-	<link rel="stylesheet" href="resources/css/helpdesk/NoticeUpdateForm.css"> <!-- 스타일 시트 링크 -->
+<title>공지사항 상세조회</title>	
+	<link rel="stylesheet" href="../resources/css/helpdesk/NoticeDetailView.css"> <!-- 스타일 시트 링크 -->
 </head>
 <body class="body-offset">
-    <%@ include file="/WEB-INF/views/common/header.jsp" %>
-	<div class="container-fluid">
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+    <div class="container-fluid">
     <div class="content">
         <br><br>
         <div class="innerOuter">
-            <h2>게시글 수정하기</h2>
             <br>
-            <form id="NoticeUpdateForm" method="post" 
-            					  action="NoticeUpdate.no" enctype="multipart/form-data">
-                
-                <!-- 게시글 번호도 같이 넘기기 -->
-                <input type="hidden" name="noticeNo" value="${ requestScope.n.noticeNo }">
-                
-                <table align="center">
-                    <tr>
-                        <th><label for="title">제목</label></th>
-                        <td><input type="text" id="title" class="form-control" value="${ requestScope.n.noticeTitle }" name="noticeTitle" required></td>
-                    </tr>
-                    <tr>
-                        <th><label for="upfile">첨부파일</label></th>
-                        <td>
-                            <input type="file" id="upfile" class="form-control-file border" name="reupfile">
-                            
-                            <c:if test="${ not empty requestScope.n.originName }">
-	                            현재 업로드된 파일 : 
-	                            <a href="${ requestScope.n.changeName }" 
-	                               download="${ requestScope.n.originName }">
-	                            	${ requestScope.n.originName }
-	                            </a>
-	                            
-	                            <!-- 
-	                            	기존의 첨부파일이 있었을 경우 
-	                            	: 기존 첨부파일에 대한 정보들 (originName, changeName) 보내기	
-	                            -->
-	                            <input type="hidden" name="originName" 
-	                            					 value="${ requestScope.n.originName }">
-	                            <input type="hidden" name="changeName"
-	                            					 value="${ requestScope.n.changeName }">
-                            </c:if>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label for="content">내용</label></th>
-                        <td><textarea id="content" class="form-control" rows="10" style="resize:none;" name="noticeContent" required>${ requestScope.n.noticeContent }</textarea></td>
-                    </tr>
-                </table>
-                <br>
+            <a class="btn btn-secondary" style="float:right;" href="../list.no">목록으로</a>
+            <br><br>
+            <table id="contentArea" align="center" class="table">
+                <tr>
+                    <th width="100">제목</th>
+                    <td colspan="3">${ requestScope.n.noticeTitle }</td>
+                </tr>
+                <tr>
+                    <th>작성일</th>
+                    <td>${ requestScope.n.noticeRegDate }</td>
+                </tr>
+                <tr>
+                    <th>첨부파일</th>
+                    <td colspan="3">
+                    	<c:choose>
+                    		<c:when test="${ empty requestScope.na }">
+                    		    첨부파일이 없습니다.
+                    		</c:when>
+                    		<c:otherwise>
+                    			<c:forEach var="a" items="${ requestScope.na }">
+                    				<img src="${pageContext.request.contextPath }/${ a.savePath }${ a.saveFileName}" width="1200px;">
+                    			</c:forEach>
+                    		</c:otherwise>
+                    	</c:choose>
+                    </td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                    	<p style="height:150px;">
+                    		${ requestScope.n.noticeContent }
+                    	</p>
+                    </td>
+                </tr>
+            </table>
+            <br>
 
-                <div align="center">
-                    <button type="submit" class="btn btn-primary">수정하기</button>
-                    <button type="button" class="btn btn-danger" onclick="javascript:history.go(-1);">이전으로</button>
-                </div>
-            </form>
+			<c:if test="${ sessionScope.loginUser.memberId eq 'admin' }">
+	            <div align="center">
+	                <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
+	                <a class="btn btn-primary" onclick="postFormSubmit(1);">
+	                	수정하기
+	                </a>
+	                <a class="btn btn-danger" onclick="postFormSubmit(2);">
+	                	삭제하기
+	                </a>
+	            </div>
+	            
+	            <form id="postForm" action="" method="post">
+	            	<input type="hidden" 
+	            		   name="nno" 
+	            		   value="${ requestScope.n.noticeNo }">
+	            	<input type="hidden"
+	            		   name="filePath"
+	            		   value="${ requestScope.a.saveFileName }">
+	            		   
+	            </form>
+	            
+	            <script>
+	            function postFormSubmit(num) {
+	                if (num === 1) { // 수정하기를 클릭했을 경우
+	                    $("#postForm").attr("action", "../NoticeUpdateForm.no").submit();
+	                } else { // 삭제하기를 클릭했을 경우
+	                    if (confirm("삭제하시겠습니까?")) { // 사용자 확인
+	                        $("#postForm").attr("action", "../NoticeDelete.no").submit();
+	                        alert("공지사항이 삭제되었습니다.")
+	                    } else {
+	                        return "redirect://../NoticeUpdateForm.no";
+	                    }
+	                }
+	            }
+	            </script>
+            </c:if>
+            
+            <br><br>
         </div>
         <br><br>
 
     </div>
     </div>
-    <script src="resources/js/helpdesk/Notice.js"></script> <!-- JS 파일 경로 -->
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+    
 </body>
 </html>
-
-
-
-
