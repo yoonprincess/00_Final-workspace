@@ -65,6 +65,19 @@ tr>img {
     font-weight: bold;
 }
 
+/* 옵션 변경 모달 스타일 */
+.option-btn {
+    background-color: #4A628A !important;
+    font-size: 12px !important;
+    color: white !important;
+    border: none !important;
+    padding: 5px 10px !important;
+}
+
+.option-btn:hover {
+    background-color: #4A628A !important;
+}
+
 /* 수량 조절 컨트롤 */
 .item-quantity {
     display: flex;

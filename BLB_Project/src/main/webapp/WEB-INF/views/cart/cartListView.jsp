@@ -1,17 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>장바구니 | 뷰라밸</title>
 <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/cart/cartListView.css">
+<!-- css 파일 프리뷰 확인용 -->
 <!-- <link rel="stylesheet" type="text/css" href="../../../resources/css/cart/cartListView.css"> -->
 <!-- 부트스트랩 -->
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <!-- jQuery 라이브러리 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- JS 파일 -->
+<script src="resources/js/cart/cart.js"></script>
 </head>
 <body class="body-offset">
 
@@ -47,16 +53,47 @@
 	                        <div class="product-detail">
 	                            <p class="product-title">${ ct.prodName }</p>
 	                            <p class="product-option">[옵션: ${ ct.optName }]</p>
+								
+								<!-- 옵션 변경 버튼 및 모달 -->
+								<!-- Button trigger modal -->
+								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+									옵션 변경
+								</button>
+								
+								<!-- Modal -->
+								<form action="${ pageContext.request.contextPath }/updateCartOption.ct">
+
+									<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+										<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+											<h1 class="modal-title fs-5" id="staticBackdropLabel">옵션 선택</h1>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<select>
+													<option>${ ct.optName }</option>
+												</select>
+											</div>
+											<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+											<button type="button" class="btn btn-primary">선택 완료</button>
+											</div>
+										</div>
+										</div>
+									</div>
+								</form>
+								<!-- 옵션 변경 모달창 끝 -->
+
 	                            <p class="product-quantity">수량: ${ ct.cartQty }</p>
-	                            <p class="product-price">${ ct.prodPrice }원</p>
+	                            <p class="product-price">
+	                            	<fmt:formatNumber pattern="###,###,###" value="${ ct.prodPrice }" />원
+	                            </p>
 	                        </div>
-	                        <select>
-	                            <option checked>- [필수] 옵션을 선택해 주세요. -</option>
-	                            <option>01. 선크림</option>
-	                            <option>02. 선스틱</option>
-	                        </select>
+	                        
 	                    </td>
 	                    <td>
+	                    	
 	                        <div class="item-quantity">
 	                            <span class="quantity-decrease">-</span>
 	                            <input type="text" value="1" class="quantity-input" readonly>
@@ -65,32 +102,17 @@
 	                        
 	                    </td>
 	                    <td class="product-price" id="product-total-price">21,800원</td>
-	                    <td class="delete-btn-td"><button class="btn-delete">X</button></td>
+	                    <td class="delete-btn-td">
+	                    	<button class="btn-delete"  onclick="deleteCartItem(${ ct.cartNo });">X</button>
+	                    </td>
 	                </tr>
 				</c:forEach>
             </tbody>
         </table>
         
-        <script>
-	        $(document).ready(function() {
-	        	
-	            // 수량 증가 버튼 클릭 이벤트
-	            $('.quantity-increase').on('click', function() {
-	                let $input = $(this).siblings('.quantity-input'); // input 요소 선택
-	                let currentValue = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기
-	                $input.val(currentValue + 1);
-	            });
-	
-	            // 수량 감소 버튼 클릭 이벤트
-	            $('.quantity-decrease').on('click', function() {
-	                let $input = $(this).siblings('.quantity-input');
-	                let currentValue = parseInt($input.val(), 10);
-	                if (currentValue > 1) {	// 1 이상으로만
-	                    $input.val(currentValue - 1);
-	                }
-	            });
-	        });
-        </script>
+        <form id="deleteCart" action="${ pageContext.request.contextPath }/delete.ct" method="post">
+		    <input type="hidden" name="cartNo" id="delCartNo">
+		</form>
 
         <!-- 장바구니 결제 예정 금액 영역 -->
         <table id="cart-price">

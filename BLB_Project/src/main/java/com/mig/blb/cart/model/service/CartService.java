@@ -12,5 +12,13 @@ public interface CartService {
 	
 	// 장바구니 목록 조회
 	ArrayList<Cart> selectCartList(String MemberId);
+
+	// 장바구니 X버튼으로 1개 상품만 삭제
+	int deleteCartOne(int cartNo);
+	
+	// 장바구니 옵션 변경
+//	int updateCartOption(Cart ct);
+	
+	
 	
 }
