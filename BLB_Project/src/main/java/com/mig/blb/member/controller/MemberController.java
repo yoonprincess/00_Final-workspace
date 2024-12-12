@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,18 +36,18 @@ public class MemberController {
 		
 	
 	// 로그인 페이지 요청 
-	@GetMapping("loginForm.me")
+	@RequestMapping("loginForm.me")
 	public ModelAndView loginForm(ModelAndView mv,
 								HttpServletRequest request,
 								HttpSession session) {
 		
 		// 이전페이지 url 가져오기
-		String referer = request.getHeader("Referer");
+		String redirectURL = request.getParameter("redirectURL");
 		
 		
-		if( referer != null) {
+		if( redirectURL != null) {
 			
-			session.setAttribute("beforePage", referer);
+			session.setAttribute("beforePage", redirectURL);
 		}
 			
 			mv.setViewName("member/loginForm");
@@ -60,8 +61,17 @@ public class MemberController {
 							ModelAndView mv,
 							HttpSession session,
 							HttpServletResponse response,
-							String saveId) {
+							String saveId,
+							HttpServletRequest request) {
 		
+		
+		String method = request.getMethod();
+	    if (!"POST".equalsIgnoreCase(method)) {
+	        session.setAttribute("alertMsg", "잘못된 접근입니다. 메인페이지로이동합니다");
+	        mv.setViewName("redirect:/main");
+	        return mv;
+	    }
+	    
 		if(saveId != null && saveId.equals("y")) {
 			
 			Cookie cookie = new Cookie("saveId", m.getMemberId());
@@ -87,14 +97,21 @@ public class MemberController {
 			// 로그인 성공 ! 
 			session.setAttribute("loginUser", loginUser);
 			
-			String referer = (String) session.getAttribute("beforePage");
+			String redirectURL = (String) session.getAttribute("beforePage");
 			
-			if(referer != null) {
-				mv.setViewName("redirect:"+ referer);
+			if(redirectURL != null) {
+
+			    if ("POST".equalsIgnoreCase(request.getMethod())) {
+			        // POST 메서드인 경우 메인 페이지로 이동
+			    	mv.setViewName("redirect:/");
+			    	
+			    } else {
+			        // GET 메서드인 경우 redirectURL로 이동
+			        mv.setViewName("redirect:" + redirectURL);
+			    }
 			}else {
 				mv.setViewName("redirect:/" );
 			}
-			
 			
 		}else { // 로그인 실패 
 			
@@ -241,10 +258,72 @@ public class MemberController {
 			
 			return mv;
 		}
+
+	// 비번찾기 확인용 
+	@PostMapping("findPwd.me")
+	public ModelAndView findPwd(ModelAndView mv,
+								HttpSession session,
+								String memberId,
+								String memberName,
+								String email) {
+		Member m = new Member();
+		m.setMemberName(memberName);
+		m.setMemberId(memberId);
+		m.setEmail(email);
+	
+		if((!memberId.isEmpty() && memberId != null) 
+				&&(!memberName.isEmpty() && memberName != null)
+				&&( !email.isEmpty() && email != null )) {
+			
+			 
+	       int result = memberService.validateMemberData(m);
+	       
+	       if( result > 0 ) {
+				mv.addObject("ckPwdMember",m);
+				mv.setViewName("member/findPwdForm2");
+			
+	       } else {
+				
+				session.setAttribute("alertMsg", "입력하신 정보로 가입 된 회원은 존재하지 않습니다.");
+				mv.setViewName("member/findPwdForm");
+			}
 		
+		}
+		return mv;
+	}
+	
+
+	// 새로운 비번 설정 
+	@PostMapping("newPwd.me")
+	public ModelAndView validatePwd(ModelAndView mv,
+						String newPwd,
+						String ckMemberId,
+						Member m,
+						HttpSession session) {
+		
+
+		String encPwd = bcryptPasswordEncoder.encode(newPwd);
+		m.setMemberPwd(encPwd);
+		m.setMemberId(ckMemberId);
+		System.out.println(m);
+		int result = memberService.updateMember(m);
+		
+		if(result>0) {
+			
+			session.setAttribute("alertMsg", "비밀번호 변경되었습니다.");
+			mv.setViewName("/main");
+			
+		
+		}else {
+			session.setAttribute("alertMsg", "비밀번호 변경실패..");
+			System.out.println(newPwd);
+			mv.setViewName("/member/findPwdForm2");
+		}
+		
+		return mv;
+	}
+	
 }
-
-
 
 
 

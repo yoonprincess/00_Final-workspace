@@ -102,8 +102,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.deleteCertEmail(sqlSession,validate);
 	}
 	
-	
-	
+	@Override
+	public int validateMemberData(Member m) {
+		
+		return memberDao.validateMemberData(sqlSession,m);
+	}
 
 }
 

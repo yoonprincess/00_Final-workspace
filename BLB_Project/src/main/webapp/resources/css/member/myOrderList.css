@@ -72,14 +72,16 @@ body {
 .tab {
     border: 1px solid #ddd;
     background: none;
-    padding: 8px 15px;
+    padding: 0px 15px;
     margin-right: 5px;
     border-radius: 4px;
     cursor: pointer;
+    height:30px;
+    font-size: 15px;
 }
 
 .tab.active {
-    background: #666;
+    background: #4A628A;
     color: white;
     border-color: #666;
 }
@@ -335,6 +337,13 @@ h1 {
     align-items: center;
     justify-content: center;
     color: #AAAAAA;
+}
+
+.date-selector select{
+	width:80px !important;
+	border-radius:5px;
+	boder : 1px solid silver;
+	font-size:12px;
 }
 
 .likes{

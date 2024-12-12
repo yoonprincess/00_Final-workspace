@@ -72,6 +72,9 @@ public class MyPageController {
 											String ckPwd) {
 				
 			Member loginUser =(Member)session.getAttribute("loginUser");
+			//System.out.println(currentPwd);
+			//System.out.println(newPwd);
+			//System.out.println(ckPwd);
 			
 			if(currentPwd != null && !currentPwd.isEmpty() 
 								&& newPwd != null && !newPwd.isEmpty()
@@ -80,11 +83,10 @@ public class MyPageController {
 				System.out.println(m);
 				if(bcryptPasswordEncoder.matches(currentPwd, loginUser.getMemberPwd())){
 					// 현재비번 매치되면 
-					System.out.println("현재비번 잘 작성함!");
+					//System.out.println("현재비번 잘 작성함!");
 					
 					String encPwd = bcryptPasswordEncoder.encode(newPwd);
 					m.setMemberPwd(encPwd);
-					
 					
 					int result = memberService.updateMember(m);
 					int result2 = updateDelivery(d,m);
@@ -102,11 +104,11 @@ public class MyPageController {
 						
 						mv.setViewName("member/updateMemberForm"); 
 						
-						System.out.println("회원정보수정 비번변경포함 완");
+						//System.out.println("회원정보수정 비번변경포함 완");
 					
 					}else {
 						
-						System.out.println("비번변경있는 회원정보수정실패?");
+						//System.out.println("비번변경있는 회원정보수정실패?");
 						session.setAttribute("alertMsg", "회원정보 수정 실패..");
 						mv.setViewName("member/updateMemberForm");
 						
@@ -117,13 +119,11 @@ public class MyPageController {
 					
 					session.setAttribute("alertMsg", "현재 비밀번호가 잘못되었습니다.");
 					mv.setViewName("member/updateMemberForm");
-					System.out.println("현재비번잘못?");
+					//System.out.println("현재비번잘못?");
 				}	
 				
 			} else {
 				// 비번변경없을 경우
-				System.out.println("비번뺀 나머지 변경된 정보들 잘 넘어옴? : " + m);
-				System.out.println("비번뺀 나머지 변경된 정보들 잘 넘어옴? : " + d);
 				
 				int result = memberService.updateMember(m);
 				
@@ -141,13 +141,12 @@ public class MyPageController {
 					session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
 					mv.setViewName("member/updateMemberForm");
 					
-					System.out.println("회원정보수정은돼");
 				
 				}else {
 				
 					session.setAttribute("alertMsg", "회원정보 수정 실패..");
 					mv.setViewName("member/updateMemberForm");
-					System.out.println(" 비번변경없이 회원정보수정실패?");
+					//System.out.println(" 비번변경없이 회원정보수정실패?");
 				}
 			}
 			
@@ -161,11 +160,12 @@ public class MyPageController {
 
 			 // 로그 추가: Delivery 객체의 값 확인
 			if(!d.getPostcode().isEmpty()) {
-				
+
+				d.setDeliPhone(m.getPhone()); // FK 연결
+				d.setDeliName(m.getMemberName()); // FK 연결
 				d.setMemberId(m.getMemberId());
 				
 				result = memberService.updateDelivery(d);
-				System.out.println("DB update result: " + result);
 			}
 			
 			return result;
@@ -186,6 +186,22 @@ public class MyPageController {
 		}
 		return mv;
 	}
+	
+	// 내 배송지조회 페이지 요청 
+		@GetMapping("deliveryList.me")
+		public ModelAndView myDeliveryList(ModelAndView mv, HttpSession session) {
+			
+			Member loginUser =(Member)session.getAttribute("loginUser");
+			
+			if( loginUser != null) {
+				mv.setViewName("member/myDeliveryList");
+			
+			}else {
+				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+				mv.setViewName("/main");
+			}
+			return mv;
+		}
 				
 				
 }

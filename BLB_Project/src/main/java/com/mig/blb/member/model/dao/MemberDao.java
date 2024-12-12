@@ -71,9 +71,22 @@ public class MemberDao {
 	}
 	public int updateDelivery(SqlSessionTemplate sqlSession, Delivery d) {
 		
-		return sqlSession.update("memberMapper.updateDelivery", d);
+		String memberId = d.getMemberId();
 		
+		Delivery findDelivery = sqlSession.selectOne("memberMapper.selectDefaultDelivery",memberId);
 		
+		if(findDelivery != null) {
+			
+			return sqlSession.update("memberMapper.updateDelivery", d);
+		
+		}else {
+			
+			return sqlSession.insert("memberMapper.insertDelivery", d);
+		}
+	}
+
+	public int validateMemberData(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.selectOne("memberMapper.validateMemberData", m);
 	}
 
 	

@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>로그인 | 뷰라밸 (Beauty Life Balance)</title>
 <link rel="stylesheet" href="resources/css/member/loginForm.css">
+<script src="resources/js/member/loginForm.js" defer></script> 
     
 <!-- Noto Sans font-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,6 +30,7 @@
         <br><br><br>
 
             <form action="login.me" method="post">
+               	<input type="hidden" name="redirectURL" id="redirectURL">
                 <input type="text" class="input-field" placeholder="아이디" required name="memberId" value="${ cookie.saveId.value }">
                 <input type="password" class="input-field" placeholder="비밀번호" required name="memberPwd">
             

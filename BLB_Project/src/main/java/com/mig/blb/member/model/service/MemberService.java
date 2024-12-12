@@ -41,8 +41,11 @@ public interface MemberService {
 	// 기본 주소 변경 
 	int updateDelivery(Delivery d);
 
+	// 기본주소 조회
 	Delivery selectDefaultDelivery(String memberId);
-
+	
+	// 비번찾기용 회원정보 확인 
+	int validateMemberData(Member m);
 	
 	
 	

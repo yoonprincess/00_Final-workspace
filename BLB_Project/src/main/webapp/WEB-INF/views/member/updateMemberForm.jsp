@@ -70,16 +70,14 @@
                     	<input type="password" class="input-field hidden" name="newPwd" id="newPwd" required >
                     	<span class="input-notice hidden" id="noticePwd">(영문대/소문자, 숫자, 특수문자 중 2가지 이상 조합, 8-16자)</span>
                       </div>
-                      <div id="validatePwd" style="display:none;"></div>
+                      <div id="validatePwd"  class="hidden"></div>
                       <div class="input-wrapper" >
                         <span class="input-label hidden"> 새 비밀번호 확인</span>
-                        <input type="password" class="input-field hidden" name="checkPwd" id="ckPwd" required>
+                        <input type="password" class="input-field hidden" name="ckPwd" id="ckPwd" required>
                       </div>
-                      <div id="checkPwd" style="display:none;" ></div>
+                      <div id="checkPwd" class="hidden" ></div>
                     </div>
                     <input type="hidden" name="memberPwd" value="${loginUser.memberPwd}" >
-                    <input type="hidden" name="newPwd" value="">
-                    <input type="hidden" name="ckPwd" value="">
                 </div>
             </div>
 
@@ -117,12 +115,13 @@
                 <div class="form-input" id="email-form-input" >
                 	<div class="input-wrapper" >
 	                    <input type="email" class="input-field" name="email" required id="email" value="${loginUser.email}" >
-	                    <button type="button" class="btn-sm btn-outline-info" id="changebtn" onclick="cert();">변경</button>
-	                    <button type="button" class="btn-sm btn-outline-info" id="certbtn" style="display:none;">인증</button>
+	                    <button type="button" class="btn-sm btn-outline-info" id="changebtn">변경</button>
+	                    <button type="button" class="btn-sm btn-outline-info" id="certbtn"  onclick="cert();" style="display:none;">인증</button>
                    </div>
                    <div class="input-wrapper" style="display:none;" id="cert-email">
                          <input type="text" class="input-field" name="checkNo" id="certKey" >
                          <button type="button" class="btn-sm btn-outline-info" id="vali_email" onclick="validateEmail();">확인</button>
+                   		 <span class="time" >인증시간</span>
                     </div> 
                 </div>
             </div>

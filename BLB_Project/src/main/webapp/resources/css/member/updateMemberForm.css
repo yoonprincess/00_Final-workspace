@@ -128,6 +128,13 @@ input:readonly {
 	flex-direction:column;
 	 align-items: flex-start; /* 항목을 왼쪽으로 정렬 */
 }
+
+#cert-email .time{
+	color: #4A628A; 
+	font-size:13px;
+	font-weight:bold;
+	
+}
 .input-field {
     height: 35px;
     padding: 0 10px;

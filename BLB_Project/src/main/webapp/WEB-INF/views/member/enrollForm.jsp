@@ -158,7 +158,7 @@
                
         <div class="submit-row">
             <button type="submit" class="btn-lg btn-outline-primary">회원가입</button>
-            <button type="reset" class="btn-lg btn-outline-warning">초기화</button>
+            <button type="reset" onclick="window.location.reload();" class="btn-lg btn-outline-warning" id="resetBtn">초기화</button>
         </div>
         </form>
     </div>

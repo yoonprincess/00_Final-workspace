@@ -45,7 +45,7 @@
 	 
 	 	$('#changePwd').on('click', function(){
 	 		
-	 		  $('#memberPwd, #newPwd, #ckPwd, #noticePwd, .input-label').each(function () {
+	 		  $('#memberPwd, #newPwd, #ckPwd, #noticePwd, #validatePwd, #checkPwd, .input-label').each(function () {
 		 		
 		 		 if ($(this).hasClass('hidden')) {
 	                    $(this).removeClass('hidden');
@@ -65,7 +65,7 @@
 	
 	// 비밀번호 검증
 	 $(function(){
-	      const $pwdInput = $("#enrollForm input[name=newPwd]");
+	      const $pwdInput = $("#updateForm input[name=newPwd]");
 	 	
 	      $pwdInput.blur(function(){
 	        
@@ -76,8 +76,6 @@
 	     
 	        if(validate.test(newPwd)){
 	        
-	       
-	         
 	         $("#validatePwd").show()
 	         				  .css({
 							    "color": "#71C9CE",
@@ -97,7 +95,7 @@
 					                "font-weight": "600"
 					            }).text("8~16자의 영문 대/소문자, 숫자, 특수문자 중 2가지 이상 조합해서 사용해 주세요.");    
 				$("#newPwd").css("border","1px solid orangered");  
-				$("#enrollForm button[type=submit]").attr("disabled", true);  
+				$("#updateForm button[type=submit]").attr("disabled", true);  
 				$("#noticePwd").show();       	   				
 	        }
 	        
@@ -116,21 +114,20 @@
 	 	
 	 	 $(function() {
 	 	 
-		    const $ckPwdInput = $("#enrollForm input[name=checkPwd]");
-		    const $pwdInput = $("#enrollForm input[name=newPwd]");
+		    const $ckPwdInput = $("#updateForm input[name=ckPwd]");
+		    const $pwdInput = $("#updateForm input[name=newPwd]");
 	    
 		    $ckPwdInput.change(function() {
-		        let checkPwd = $(this).val();
+		        let ckPwd = $(this).val();
 	        
-	      		if(checkPwd.length >= 8){
+	      		if(ckPwd.length >= 8){
 	      		  
 		        // 비밀번호 확인
-		        if (checkPwd === $pwdInput.val()) {
+		        if (ckPwd === $pwdInput.val()) {
 		         		                            
 		           $("#ckPwd").css("border","2px solid #71C9CE");   
-		           $("#enrollForm button[type=submit]").attr("disabled", false);
-		           $("#checkPwd").hide();  
-		           
+		           $("#updateForm button[type=submit]").attr("disabled", false);
+		           $("#checkPwd").hide();
 		        } else {
 		           
 		            $("#checkPwd").show()
@@ -141,18 +138,24 @@
 		                }).text("비밀번호가 다릅니다");
 		        
 		        	$("#ckPwd").css("border","1px solid orangered");
-		        	$("#enrollForm button[type=submit]").attr("disabled", true);
-		        	
+		        	$("#updateForm button[type=submit]").attr("disabled", true);
 		        }
 		
 	      }else{
 		
 		      	$("#ckPwd").css("border", "1px solid #ccc"); // 기본 테두리 색상으로 초기화
-		        $("#enrollForm button[type=submit]").attr("disabled",true);
-		        
+		        $("#updateForm button[type=submit]").attr("disabled",true);
 	      }   
 	       
 	    });
+	});
+
+// 이메일 변경 버튼 클릭시 	
+	$("#changebtn").on('click',function(){
+		$("#email").val("");
+		$("#changebtn").hide();
+		$("#certbtn").show();
+	
 	});
 	
 	// 이메일 수정시 인증절차 
@@ -163,13 +166,14 @@
 		
 		if (email === "") {
 	        alert("이메일을 입력해주세요.");
+	        $("#email").css("border","1px solid orangered"); 
+	        $("#updateForm button[type=submit]").attr("disabled",true);
+	        
 	        return;
-	    }
-	    
-	    $("#changebtn").hide();
-		$("#certbtn").show();
-		
-		$.ajax({
+	        
+		  }
+		  
+	    $.ajax({
 			url : "cert.do",
 			type : "post",
 			data : {
@@ -180,6 +184,7 @@
 			success : function(result) {
 				
 				alert(result);
+				
 				 $("#changebtn").hide();
 				 $("#certbtn").show();
 				 
@@ -194,7 +199,6 @@
 			
 			error : function() {
 				console.log("인증번호 발급용 ajax 통신 실패!");
-				
 				alert("인증번호 발송에 실패했습니다. 다시 시도해주세요.");
 			}
 		});
@@ -223,6 +227,7 @@
 					$("#cert-email").hide();
 					$("#email").css("border","2px solid #71C9CE"); 
 					$("#hiddenEmail").val(email);
+					 $("#updateForm button[type=submit]").attr("disabled",false);
 				
 				}else{
 				
@@ -233,8 +238,9 @@
 					$("#email").val("");
 					$("#certKey").val("");
 					$("#email").css("border","1px solid orangered"); 
-					$("#email").attr("readonly",true);
-					$("#changebtn").attr("disabled", false);
+					$("#certbtn").attr("disabled", false);
+					$("#email").attr("readonly", false);
+					$("#updateForm button[type=submit]").attr("disabled",true);
 				}
 				
 			},
@@ -248,11 +254,9 @@
 	$(document).ready(function() {
 	    
 	    let seconds; // 남은 시간 변수
-	    
 	    let countdown; // 카운트다운을 관리하는 변수
-	    
 	    const $timeSpan = $('.time'); 
-	    const $btnSend = $('#changebtn'); 
+	    const $btnSend = $('#certbtn'); 
 
    		 const updateCountdown = function() {
    		 
@@ -272,15 +276,24 @@
                 $("#email").val("");
                 $("#certKey").val("");
                 $("#email").css("border", "1px solid orangered");
-               $("#changebtn").attr("disabled", false);
+                $("#certbtn").attr("disabled", false);
+                $("#email").attr("readonly", false);
+                $("#updateForm button[type=submit]").attr("disabled",true);
 	        }
     	};
     
 	    $btnSend.on('click', function(e) {
 	       
+	       let email = $("#email").val();
+		
+			if (email === "") {
+		        $("#email").css("border","1px solid orangered"); 
+	        	$("#updateForm button[type=submit]").attr("disabled",true);
+	        return;
+	        
+		  }
 	        e.preventDefault();
 	        alert('인증번호 발송 요청이 접수되었습니다. 잠시만 기다려주세요.');
-	        cert();
 	        
 	        clearInterval(countdown);
 	        seconds = 100;
@@ -291,6 +304,8 @@
 	    });
     
    });
+   
+   
  /* DAUM 지도검색 API */
 	 
 	 function sample4_execDaumPostcode() {

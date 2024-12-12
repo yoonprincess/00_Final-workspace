@@ -137,4 +137,13 @@
 	       WHERE MEMBER_ID = #{memberId}
 	       	AND STATUS= 'Y' 
 	</update>
+	
+	<select id="validateMemberData" parameterType="member" resultType="_int">
+		SELECT COUNT(*)
+		  FROM TB_MEMBER
+		 WHERE MEMBER_ID = #{memberId}
+	       AND MEMBER_NAME = #{memberName}
+	       AND EMAIL = #{email}
+	       AND STATUS='Y'
+	</select>
 </mapper>

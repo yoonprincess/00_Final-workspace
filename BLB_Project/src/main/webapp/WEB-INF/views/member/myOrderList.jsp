@@ -73,83 +73,134 @@
       
               
               <!-- Header -->
+             
               <div class="search-filters">
+               <p>구매기간</p>
                 <div class="tabs">
-                    <button class="tab active">1개월</button>
-                    <button class="tab">3주일</button>
-                    <button class="tab">6개월</button>
-                    <button class="tab">12개월</button>
+                    <button class="tab active" id="one">1개월</button>
+                    <button class="tab" id="three">3개월</button>
+                    <button class="tab" id="six">6개월</button>
+                    <button class="tab" id="twelve">12개월</button>
                 </div>
                 
                 <div class="date-selector">
                     <select name="year">
-                        <option>2024</option>
-                    </select>년
+                        <option value="2017">2017</option>
+	                    <option value="2018">2018</option>
+	                    <option value="2019">2019</option>
+	                    <option value="2020">2020</option>
+	                    <option value="2021">2021</option>
+	                    <option value="2022">2022</option>
+	                 	<option value="2023">2023</option>
+	                    <option value="2024">2024</option>
+                    </select>
+                    <span>년</span>
                     <select name="month">
-                        <option>1</option>
-                    </select>월
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    <span>월</span>
                     <select name="day">
-                        <option>3</option>
-                    </select>일
-                    <span>~</span>
-                    <select name="year">
-	                    <option>2017</option>
-	                    <option>2018</option>
-	                    <option>2019</option>
-	                    <option>2020</option>
-	                    <option>2021</option>
-	                    <option>2022</option>
-	                 	<option>2023</option>
-	                    <option>2024</option>
-                    </select>년
-                    <select name="month">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                        <option>10</option>
-                        <option>11</option>
-                        <option>12</option>
-                        
-                    </select>월
-                    <select name="day">
-                          <option>1</option>
-						  <option>2</option>
-						  <option>3</option>
-						  <option>4</option>
-						  <option>5</option>
-						  <option>6</option>
-						  <option>7</option>
-						  <option>8</option>
-						  <option>9</option>
-						  <option>10</option>
-						  <option>11</option>
-						  <option>12</option>
-						  <option>13</option>
-						  <option>14</option>
-						  <option>15</option>
-						  <option>16</option>
-						  <option>17</option>
-						  <option>18</option>
-						  <option>19</option>
-						  <option>20</option>
-						  <option>21</option>
-						  <option>22</option>
-						  <option>23</option>
-						  <option>24</option>
-						  <option>25</option>
-						  <option>26</option>
-						  <option>27</option>
-						  <option>28</option>
-						  <option>29</option>
-						  <option>30</option>
-						  <option>31</option>
-                    </select>일
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                        <option value="26">26</option>
+                        <option value="27">27</option>
+                        <option value="28">28</option>
+                        <option value="29">29</option>
+                        <option value="30">30</option>
+                        <option value="31">31</option>
+                    </select><span>일</span>
+                    <span style="width:100px;">&nbsp;&nbsp;&nbsp;~&nbsp;&nbsp;&nbsp;</span>
+                    <select name="year1">
+	                    <option value="2017">2017</option>
+	                    <option value="2018">2018</option>
+	                    <option value="2019">2019</option>
+	                    <option value="2020">2020</option>
+	                    <option value="2021">2021</option>
+	                    <option value="2022">2022</option>
+	                 	<option value="2023">2023</option>
+	                    <option value="2024">2024</option>
+                    </select><span>년</span>
+                    <select name="month1">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select><span>월</span>
+                    <select name="day1">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                        <option value="26">26</option>
+                        <option value="27">27</option>
+                        <option value="28">28</option>
+                        <option value="29">29</option>
+                        <option value="30">30</option>
+                        <option value="31">31</option>
+                    </select><span>일</span>
                     <button type="button"> 조회</button>
                 </div>
             </div>
@@ -211,6 +262,53 @@
 	                    </tr>
 	                </tbody>
 	            </table>
+	            
+	            <br><br>
+	            
+	             <!-- 페이지네이션 -->
+			<nav>
+			    <ul class="pagination">
+			        <c:choose>
+			            <c:when test="${ requestScope.pi.currentPage ne 1 }">
+			                <li class="page-item">
+			                    <a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ requestScope.pi.currentPage - 1 }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+			                        ＜
+			                    </a>
+			                </li>
+			            </c:when>
+			        </c:choose>
+			        
+			        <c:forEach var="p" begin="${ requestScope.pi.startPage }" end="${ requestScope.pi.endPage }" step="1">
+			            <c:choose>
+			                <c:when test="${ p ne requestScope.pi.currentPage }">
+			                    <li class="page-item">
+			                        <a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+			                            ${ p }
+			                        </a>
+			                    </li>
+			                </c:when>
+			                <c:otherwise>
+			                    <li class="page-item">
+			                        <a class="active" href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+			                            ${ p }
+			                        </a>
+			                    </li>
+			                </c:otherwise>
+			            </c:choose>
+			        </c:forEach>
+			        
+			        <c:choose>
+			            <c:when test="${ requestScope.pi.currentPage ne requestScope.pi.maxPage }">
+			                <li class="page-item">
+			                    <a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ requestScope.pi.currentPage + 1 }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+			                        ＞
+			                    </a>
+			                </li>
+			            </c:when>
+			        </c:choose>
+			    </ul>
+			</nav>
+	        <!-- 페이지네이션 end -->
 	        </div>
 	      </div>
 	    </div>
