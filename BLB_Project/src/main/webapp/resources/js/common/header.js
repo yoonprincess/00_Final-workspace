@@ -41,8 +41,10 @@ $(function() {
                 productTabs.addClass('sticky');
                 if (scrollTop > lastScrollTop) {
                     navbar.addClass('hide-header'); // 아래로 스크롤: 헤더 숨김
+                    productTabs.removeClass('body-offset');
                 } else {
                     navbar.removeClass('hide-header'); // 위로 스크롤: 헤더 표시
+                    productTabs.addClass('body-offset');
                 }
             } else {
                 productTabs.removeClass('sticky');
