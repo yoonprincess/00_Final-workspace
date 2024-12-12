@@ -38,7 +38,7 @@ public class ProductController {
 		
 		int listCount = productService.selectProductCount(params);
 		
-		int pageLimit = 5;
+		int pageLimit = 2;
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
 											 pageLimit, boardLimit);

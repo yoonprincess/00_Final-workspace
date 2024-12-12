@@ -108,9 +108,9 @@ $(document).ready(function () {
 
     // 총 금액 계산
     function updateTotalPrice() {
-        const basePrice = $("#base-price").val(); // 기본 가격
+        const basePrice = parseInt($("#base-price").val()) || 0; // 기본 가격
         const total = selectedOptions.reduce((sum, opt) => sum + (basePrice + opt.price) * opt.quantity, 0);
-        $('#totalPrice').text(total.toLocaleString() + '원');
+        $('#totalPrice').html(total.toLocaleString() + '<small>원</small>');
     }
 
     // 리뷰 데이터 (실제로는 서버에서 가져와야 함)
@@ -233,18 +233,6 @@ $(document).ready(function () {
     // 바로 구매
     $('#buyNow').click(function() {
         alert('구매 페이지로 이동합니다.');
-    });
-
-    // 스크롤 이벤트 처리
-    $(window).scroll(function() {
-        var windowTop = $(window).scrollTop();
-        var imageBottom = $('.col-lg-6:first-child').offset().top + $('.col-lg-6:first-child').outerHeight();
-
-        if (windowTop > imageBottom) {
-            $('.sticky-wrapper').addClass('is-sticky');
-        } else {
-            $('.sticky-wrapper').removeClass('is-sticky');
-        }
     });
 
     // 탭 클릭 시 스크롤 이동

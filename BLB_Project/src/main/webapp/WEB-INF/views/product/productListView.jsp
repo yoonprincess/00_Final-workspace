@@ -272,48 +272,45 @@
 	        </div>
 	        <!-- 페이지네이션 -->
 			<nav>
-			    <ul class="pagination">
-			        <c:choose>
-			            <c:when test="${ requestScope.pi.currentPage ne 1 }">
-			                <li class="page-item">
-			                    <a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ requestScope.pi.currentPage - 1 }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-			                        ＜
-			                    </a>
-			                </li>
-			            </c:when>
-			        </c:choose>
-			        
-			        <c:forEach var="p" begin="${ requestScope.pi.startPage }" end="${ requestScope.pi.endPage }" step="1">
-			            <c:choose>
-			                <c:when test="${ p ne requestScope.pi.currentPage }">
-			                    <li class="page-item">
-			                        <a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-			                            ${ p }
-			                        </a>
-			                    </li>
-			                </c:when>
-			                <c:otherwise>
-			                    <li class="page-item">
-			                        <a class="active" href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-			                            ${ p }
-			                        </a>
-			                    </li>
-			                </c:otherwise>
-			            </c:choose>
-			        </c:forEach>
-			        
-			        <c:choose>
-			            <c:when test="${ requestScope.pi.currentPage ne requestScope.pi.maxPage }">
-			                <li class="page-item">
-			                    <a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ requestScope.pi.currentPage + 1 }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-			                        ＞
-			                    </a>
-			                </li>
-			            </c:when>
-			        </c:choose>
-			    </ul>
+				<ul class="pagination">
+					<!-- 이전 페이지 그룹 -->
+					<c:if test="${ pi.startPage > 1 }">
+						<li class="page-item">
+							<a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage - pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+								＜
+							</a>
+						</li>
+					</c:if>
+					
+					<!-- 페이지 번호 -->
+					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }" step="1">
+						<c:if test="${ p == pi.currentPage }">
+							<li class="page-item">
+								<a class="active" href="#">
+									${ p }
+								</a>
+							</li>
+						</c:if>
+						<c:if test="${ p != pi.currentPage }">
+							<li class="page-item">
+								<a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+									${ p }
+								</a>
+							</li>
+						</c:if>
+					</c:forEach>
+					
+					<!-- 다음 페이지 그룹 -->
+					<c:if test="${ pi.endPage < pi.maxPage }">
+						<li class="page-item">
+							<a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage + pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+								＞
+							</a>
+						</li>
+					</c:if>
+				</ul>
 			</nav>
-	        <!-- 페이지네이션 end -->
+			<!-- 페이지네이션 end -->
 	    </div>
 	</div>
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>

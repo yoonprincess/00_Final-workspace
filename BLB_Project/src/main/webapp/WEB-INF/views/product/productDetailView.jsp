@@ -63,9 +63,10 @@
                         <span class="ml-2 font-weight-bold">4.9</span>
                     </div>
                     <h2 class="mb-3">
-                        <p id="base-price"><fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /></p><small>원</small>
+                        <fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /><small>원</small>
                         <small class="text-danger">21% 할인</small>
                     </h2>
+                    <input type="hidden" id="base-price" value="${ requestScope.p.prodPrice }">
                     <p>배송비: 3,000원 (50,000원 이상 구매 시 무료)</p>
                     <p>적립금: L.POINT 1,000원 / 롯데카드 5% 추가</p>
                     
@@ -81,7 +82,7 @@
                         <div id="selectedOptions"></div>
                         <div class="form-group">
                             <label>총 상품금액</label>
-                            <h3 id="totalPrice"><fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /><small>원</small></h3>
+                            <h2 id="totalPrice"><fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /><small>원</small></h2>
                         </div>
                         <div class="form-group">
                             <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="addToCart">
@@ -300,5 +301,20 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 	<!-- product JS -->
     <script src="${ pageContext.request.contextPath }/resources/js/product/product.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 스크롤 이벤트 처리
+            $(window).scroll(function() {
+                var windowTop = $(window).scrollTop();
+                var imageBottom = $('.col-lg-6:first-child').offset().top + $('.col-lg-6:first-child').outerHeight();
+
+                if (windowTop > imageBottom) {
+                    $('.sticky-wrapper').addClass('is-sticky');
+                } else {
+                    $('.sticky-wrapper').removeClass('is-sticky');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
