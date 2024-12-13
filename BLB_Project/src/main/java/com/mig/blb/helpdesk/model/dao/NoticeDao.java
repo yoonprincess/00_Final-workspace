@@ -52,17 +52,13 @@ public class NoticeDao {
 	public int deleteNotice(SqlSessionTemplate sqlSession, int nno) {
 		return sqlSession.update("helpdeskMapper.deleteNotice", nno);
 	}
-
+	
 	public int updateNotice(SqlSessionTemplate sqlSession, Notice n) {
-		return sqlSession.update("helpdeskMapper.updateNotice", n);
-	}
-	
-	public int updateNoticeAtt(SqlSessionTemplate sqlSession, ArrayList<NoticeAtt> na) {
-		return sqlSession.update("helpdeskMapper.updateNoticeAtt", na);
-	}
+        return sqlSession.update("helpdeskMapper.updateNotice", n);
+    }
 
-	
-
-	
+	public int deleteNoticeAtt(SqlSessionTemplate sqlSession, int noticeAttNo) {
+		return sqlSession.delete("helpdeskMapper.deleteNoticeAtt", noticeAttNo);
+	}
 
 }

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
+import com.mig.blb.helpdesk.model.vo.InquiryAtt;
 import com.mig.blb.helpdesk.model.vo.InquiryReply;
-import com.mig.blb.member.model.vo.Member;
 
 public interface InquiryService {
 
@@ -13,9 +13,11 @@ public interface InquiryService {
 
 	ArrayList<Inquiry> selectInquiryList(PageInfo pi, String memberId);
 	
-	int insertInquiry(Inquiry i);
+	int insertInquiry(Inquiry i, ArrayList<InquiryAtt> inquiryAtt);
 
 	Inquiry selectInquiry(int ino);
+	
+	ArrayList<InquiryAtt> selectInquiryAtt(int ino);
 
 	int insertInquiryReply(InquiryReply ir);
 
@@ -24,4 +26,6 @@ public interface InquiryService {
 	int deleteInquiry(int ino);
 
 	int updateInquiry(Inquiry i);
+
+	
 }

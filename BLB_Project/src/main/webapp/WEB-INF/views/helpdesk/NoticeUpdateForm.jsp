@@ -7,65 +7,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공지사항 수정</title>
-    <link rel="stylesheet" href="resources/css/helpdesk/NoticeUpdateForm.css"> <!-- 스타일 시트 링크 -->
+    <link rel="stylesheet" href="resources/css/helpdesk/NoticeUpdateForm.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-	<div class="container-fluied">
-    <div class="container">
-        <h2 class="page-title">공지사항</h2>
-        
-        <form class="edit-form" id="noticeUpdate" name="noticeUpdate" action="NoticeUpdate.no" method="post">
-            <div class="form-group">
-                <label for="title">제목</label>
-                <input type="text" id="title" name="title" class="input-field" value="${ requestScope.n.noticeTitle }">
-            </div>
+    <div class="container-fluied">
+        <div class="container">
+            <h2 class="page-title">공지사항</h2>
+            
+            <form class="edit-form" id="noticeUpdate" name="noticeUpdate" action="NoticeUpdate.no" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" name="title" class="input-field" value="${ requestScope.n.noticeTitle }">
+                </div>
 
-            <div class="form-group">
-                <label for="content">내용</label>
-                <textarea id="content" name="content" class="input-field textarea">${requestScope.n.noticeContent }</textarea>
-            </div>
+                <div class="form-group">
+                    <label for="content">내용</label>
+                    <textarea id="content" name="content" class="input-field textarea">${requestScope.n.noticeContent }</textarea>
+                </div>
 
-            <div class="form-group">
-                <label>첨부파일</label>
-                <div class="file-upload-container">
-                    <div class="file-preview-grid">
-                        <div class="file-preview">
+                <div class="form-group">
+                    <label>첨부파일</label>
+                    <div class="file-upload-container">
+                        <div class="file-preview-grid" id="filePreviewGrid">
                             <c:choose>
-                   		<c:when test="${ empty requestScope.na }">
-                   		    첨부파일이 없습니다.
-                   		</c:when>
-                   		<c:otherwise>
-                   			<c:forEach var="a" items="${ requestScope.na }">
-                   				<img src="${pageContext.request.contextPath }/${ a.savePath }${a.saveFileName}" width="400px;" heigh="400px;">
-                   				<button type="button" class="delete-btn" data-index="a">×</button>
-                   			</c:forEach>
-                   		</c:otherwise>
-                   	</c:choose>
-                            
+                                <c:when test="${ empty requestScope.na }">
+                                    첨부파일이 없습니다.
+                                </c:when>
+                                <c:otherwise>
+                                    <c:forEach var="a" items="${ requestScope.na }">
+                                        <div class="file-preview" data-id="${a.saveFileName}">
+                                            <img src="${pageContext.request.contextPath }/${ a.savePath }${a.saveFileName}" width="400px" height="400px">
+                                            <button type="button" class="delete-btn" data-id="${a.saveFileName}">×</button>
+                                        </div>
+                                    </c:forEach>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                         <div class="file-upload-box">
                             <input type="file" id="upfile" name="upfile" accept="image/*" class="file-input">
                             <span class="upload-icon">+</span>
                         </div>
+                        <p class="file-info">이미지는 최대 5개까지 업로드 가능합니다.</p>
                     </div>
-                    <p class="file-info">이미지는 최대 5개까지 업로드 가능합니다.</p>
                 </div>
-            </div>
 
-            <div class="button-group">
-                <button type="submit" class="btn btn-primary">수정하기</button>
-                <button type="button" class="btn btn-danger">삭제하기</button>
-            </div>
-        </form>
+                
+            </form>
+            <form id="noticeUpdate" action="NoticeUpdate.no" method="post">
+            	<div class="button-group">
+                    <input type="hidden" name="nno" value="${ requestScope.n.noticeNo }">
+                    <button type="submit" class="btn btn-primary">수정하기</button>
+                    <button type="button" class="btn btn-danger" onclick="goBack();">목록으로</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
+    <script>
+    // 임시 삭제 저장소 배열
+    const tempDeleteStorage = [];
+
+    // X 버튼 클릭 시 파일 삭제 처리
+    $(document).on("click", ".delete-btn", function () {
+        const fileId = $(this).data("id"); // 파일의 식별자 (saveFileName 사용)
+
+        // 삭제 배열에 추가 (중복 방지)
+        if (!tempDeleteStorage.includes(fileId)) {
+            tempDeleteStorage.push(fileId);
+        }
+
+        // 화면에서 미리보기 삭제
+        $(this).closest(".file-preview").remove();
+
+        console.log("삭제 예정 파일 리스트:", tempDeleteStorage); // 디버깅용
+    });
+
+    // 폼 제출 시 삭제 파일 리스트를 숨겨진 input에 추가
+    $("#noticeUpdate").on("submit", function () {
+        const hiddenInput = $("<input>")
+            .attr("type", "hidden")
+            .attr("name", "deleteFiles") // 서버에서 읽을 파라미터 이름
+            .val(tempDeleteStorage.join(",")); // 배열을 콤마로 연결
+        $(this).append(hiddenInput);
+    });
+
+    // 목록으로 돌아가기
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+<script src="resources/js/helpdesk/NoticeUpdateForm.js"></script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>
-
-
-
-
-

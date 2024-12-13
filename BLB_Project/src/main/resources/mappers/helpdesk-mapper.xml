@@ -95,6 +95,12 @@
 		 WHERE NOTICE_NO = #{noticeNo}
 	</update>
 	
+	<update id="deleteNoticeAtt" parameterType="_int">
+		DELETE
+		  FROM TB_NOTICE_ATTACHMENT 
+		 WHERE NOTICE_ATT_NO = #{noticeAttNo}
+	</update>
+	
 	<update id="updateNotice" parameterType="notice">
 		UPDATE TB_NOTICE
 		   SET NOTICE_TITLE = #{noticeTitle}
@@ -105,10 +111,18 @@
 	</update>
 	
 	<update id="updateNoticeAtt" parameterType="noticeAtt">
-		UPDATE TB_NOTICE_ATT
-		   SET NOTICE_STATUS = 'N'
+		UPDATE TB_NOTICE_ATTACHMENT
+		   SET ORIG_FILE_NAME = #{origFileName},
+			   SAVE_FILE_NAME = #{saveFileName},
+			   SAVE_PATH = 'resources/uploadFiles/notice/' + #{saveFileName}
+			   NOTICE_ATT_STATUS = 'N'
 		 WHERE NOTICE_ATT_NO = #{noticeAttNo}
+		   AND NOTICE_NO = #{noticeNo};
 	</update>
+	
+	
+	
+	
 													<!-- 1:1 문의 관련 매퍼 -->
 	<resultMap id="inquiryResultSet" type="inquiry">
 		<id column="INQUIRY_NO" property="inquiryNo"/>
@@ -126,8 +140,6 @@
 	    INSERT INTO TB_INQUIRY(INQUIRY_NO
 	                        , INQUIRY_CONTENT
 	                        , INQUIRY_TYPE
-	                        , ORIG_FILE_NAME = #{origFileName}
-		                    , SAVE_FILE_NAME = #{saveFileName}
 	                        , MEMBER_ID
 	                        , PROD_NO)
 	                   VALUES(SEQ_INQUIRY_NO.NEXTVAL
@@ -138,6 +150,18 @@
 	                        <if test="prodNo != 0">#{prodNo}</if>)
 	</insert>
 
+	<insert id="insertInquiryAtt" parameterType="inquiryAtt">
+	    INSERT INTO TB_INQUIRY_ATTACHMENT (INQUIRY_ATT_NO,
+									       ORIG_FILE_NAME,
+									       SAVE_FILE_NAME,
+									       SAVE_PATH,
+									       INQUIRY_NO)
+			    VALUES (SEQ_INQUIRY_ATT_NO.NEXTVAL,
+				        #{origFileName},
+				        #{saveFileName},
+				        #{savePath},
+				        SEQ_INQUIRY_NO.CURRVAL)
+	</insert>
 	
 	<select id="selectInquiryListCount" resultType="_int">
 		SELECT COUNT(*)
@@ -168,7 +192,18 @@
 	     WHERE INQUIRY_NO = #{inquiryNo}
 	       AND INQUIRY_STATUS = 'Y'
 	</select>
-
+	
+	<select id="selectInquiryAtt" parameterType="_int" resultMap="inquiryAttResultSet">
+		SELECT INQUIRY_ATT_NO,
+			   ORIG_FILE_NAME,
+		       SAVE_FILE_NAME,
+		       SAVE_PATH
+		  FROM TB_INQUIRY_ATTACHMENT
+		 WHERE INQUIRY_ATT_STATUS = 'Y'
+		   AND INQUIRY_NO = #{inquiryNo}
+	</select>
+	
+	
 	
 	<update id="deleteInquiry" parameterType="_int">
 		UPDATE TB_INQUIRY

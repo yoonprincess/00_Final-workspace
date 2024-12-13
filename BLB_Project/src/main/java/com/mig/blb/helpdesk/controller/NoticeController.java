@@ -161,28 +161,92 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 		
 		// 공지사항 수정 요청
 		@PostMapping("NoticeUpdate.no")
-		public String updateNotice(Notice n,
-								   ArrayList<NoticeAtt> na,
-								   RedirectAttributes ar,
-								   MultipartFile[] reupfile,
-								   HttpSession session,
-								   Model model) {
+		public ModelAndView updateNotice(int nno,
+										 Notice n,
+		                                 RedirectAttributes ar,
+		                                 MultipartFile[] upfile, // 새로 업로드된 파일들
+		                                 @RequestParam(value = "deleteFiles", required = false) String deleteFiles, // 삭제 파일 목록
+		                                 HttpSession session,
+		                                 ModelAndView mv) {
 
-			if(reupfile != null && reupfile.length > 0) {
-			
-				ArrayList<NoticeAtt> updateNoticeAtt = new ArrayList<NoticeAtt>();
-				
-				// 1. 기존에 첨부파일이 있었을 경우
-				if(updateNoticeAtt != null && updateNoticeAtt.size() > 0) {
-					
-					
-					
-				}
-			
-			}
-			
-			return null;
+		    // 기존 첨부파일 목록 가져오기
+		    ArrayList<NoticeAtt> na = noticeService.selectNoticeAtt(nno);
+
+		    System.out.println("기존첨부파일" + na);
+		    
+		    // 삭제 파일 처리: deleteFiles를 ,로 분리하여 리스트로 변환
+		    ArrayList<NoticeAtt> tmpRepository = new ArrayList<>(); // 임시 삭제 저장소
+		    if (deleteFiles != null && !deleteFiles.isEmpty()) {
+		        String[] deleteFileNames = deleteFiles.split(",");
+		        for (String fileName : deleteFileNames) {
+		            for (NoticeAtt att : na) {
+		                if (att.getSaveFileName().equals(fileName)) {
+		                    tmpRepository.add(att);
+		                }
+		            }
+		        }
+		    }
+
+		    // 실제 파일 삭제 (tmpRepository에 있는 파일들 삭제)
+		    for (NoticeAtt att : tmpRepository) {
+		        String filePath = session.getServletContext().getRealPath(att.getSavePath()) + att.getSaveFileName();
+		        File file = new File(filePath);
+		        if (file.exists()) {
+		            file.delete(); // 실제 파일 삭제
+		        }
+		        noticeService.deleteNoticeAtt(att.getNoticeAttNo()); // DB에서 파일 정보 삭제
+		    }
+
+		    // 기존 첨부파일 목록에서 삭제된 파일 제외
+		    na.removeAll(tmpRepository);
+
+		    // 새로 업로드된 파일 처리
+		    if (upfile != null && upfile.length > 0) {
+		        for (MultipartFile file : upfile) {
+		            if (!file.isEmpty()) {
+		                // 파일 저장 경로 생성
+		                String savePath = session.getServletContext().getRealPath("/resources/noticeFiles/");
+		                String originFileName = file.getOriginalFilename();
+		                String saveFileName = System.currentTimeMillis() + "_" + originFileName;
+
+		                // 파일 저장
+		                try {
+		                    file.transferTo(new File(savePath + saveFileName));
+
+		                    // DB에 새 파일 정보 저장
+		                    NoticeAtt newAtt = new NoticeAtt();
+		                    newAtt.setNoticeNo(n.getNoticeNo());
+		                    newAtt.setOrigFileName(originFileName);
+		                    newAtt.setSaveFileName(saveFileName);
+		                    newAtt.setSavePath("/resources/noticeFiles/notice/");
+		                    //noticeService.insertNotice(newAtt);
+
+		                } catch (IOException e) {
+		                    e.printStackTrace();
+		                    ar.addFlashAttribute("message", "파일 업로드 중 오류가 발생했습니다.");
+		                    mv.setViewName("redirect:/errorPage"); // 에러 페이지로 리다이렉트
+		                    return mv;
+		                }
+		            }
+		        }
+		    }
+
+		    // 공지사항 업데이트
+		    //int result = noticeService.updateNotice(n);
+		    /*
+		    if (result > 0) {
+		        ar.addFlashAttribute("message", "공지사항이 성공적으로 수정되었습니다.");
+		        mv.setViewName("redirect:/noticeDetail.no?nno=" + n.getNoticeNo());
+		    } else {
+		        ar.addFlashAttribute("message", "공지사항 수정에 실패했습니다.");
+		        mv.setViewName("redirect:/errorPage");
+		    }
+			*/
+		    return mv;
+		    
 		}
+
+
 
 		
 		// 첨부파일을 위한 메소드

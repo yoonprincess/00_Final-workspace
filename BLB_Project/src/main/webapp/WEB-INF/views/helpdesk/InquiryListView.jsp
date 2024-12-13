@@ -26,7 +26,7 @@
             <h1>1:1 문의내역</h1>
             <a href="Inquiry.blb" class="button button-primary">문의하기</a>
         </div>
-        <table>
+        <table id="inquiryList">
             <thead>
                 <tr>
                     <th>문의번호</th>

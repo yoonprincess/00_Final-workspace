@@ -25,6 +25,7 @@ import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.common.template.Pagination;
 import com.mig.blb.helpdesk.model.service.InquiryService.InquiryService;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
+import com.mig.blb.helpdesk.model.vo.InquiryAtt;
 import com.mig.blb.helpdesk.model.vo.InquiryReply;
 import com.mig.blb.member.model.vo.Member;
 
@@ -80,38 +81,49 @@ public class InquiryController {
 	// 문의 등록 요청
 	@PostMapping("insert.io")
 	public ModelAndView insertInquiry(Inquiry i,
-									  /*InquiryAtt ia,*/
 									  RedirectAttributes ar,
-									  /*MultipartFile upfile,*/
+									  MultipartFile[] upfile,
 									  HttpSession session,
 									  ModelAndView mv){
 		
-		/*
-		if(!upfile.getOriginalFilename().equals("")) {
+		// 첨부파일 O
+		if(upfile != null && upfile.length >0) {
+			ArrayList<InquiryAtt> inquiryAtt = new ArrayList<InquiryAtt>(); // InquiryAtt 객체를 담을 리스트
 			
-			String changeName = saveFile(upfile, session);
-			
-			ia.setOrigFileName(upfile.getOriginalFilename());
-			ia.setSaveFileName("resources/uploadFiles/" + changeName);
-		}
-		*/
+			// 첨부파일 처리
+			for(int ia = 0; ia < upfile.length; ia++) {
+				MultipartFile upfiles = upfile[ia];
+				if(!upfiles.isEmpty()) {
+					
+					// 파일저장
+					String changeName = saveFile(upfiles, session);
+					
+					// InquiryAtt 객체 생성 및 첨부파일 정보 설정
+					InquiryAtt iatt = new InquiryAtt();
+					iatt.setOrigFileName(upfiles.getOriginalFilename()); // 원본 파일명
+					iatt.setSaveFileName(changeName); // 저장된 파일명
+					
+					iatt.setSavePath("resources/uploadFiles/inquiry/");
+					
+					// InquiryAtt 객체 리스트에 추가
+					inquiryAtt.add(iatt);
+				}
+			}
 		
 		 // 서비스 호출
-	    int result = inquiryService.insertInquiry(i);
+	    int result = inquiryService.insertInquiry(i, inquiryAtt);
 
 	    // 결과 처리
 	    if (result > 0) {
 	        ar.addFlashAttribute("alertMsg", "문의가 성공적으로 접수되었습니다.");
+	        mv.setViewName("redirect:/list.io");
 	    } else {
 	        ar.addFlashAttribute("alertMsg", "문의 접수에 실패했습니다.");
+	        mv.setViewName("common/errorPage");
 	    }
-
-	    //System.out.println(i);
-	    // > 문의 등록 정보가 잘 들어감
-	    
-	    session.setAttribute("alertMsg", "문의가 성공적으로 접수되었습니다.");
-	    mv.setViewName("redirect:/Faq.blb");
+	}
 	    return mv;
+	   
 	}
 	
 	// 문의 상세조회 요청
@@ -120,9 +132,9 @@ public class InquiryController {
 	                                 ModelAndView mv,
 	                                 RedirectAttributes ra) {
 	        Inquiry i = inquiryService.selectInquiry(ino);
+	        ArrayList<InquiryAtt> iatt = inquiryService.selectInquiryAtt(ino);
 	        mv.addObject("i", i).setViewName("helpdesk/InquiryDetailView");
-	        
-	        
+	        mv.addObject("iatt", iatt).setViewName("helpdesk/InquiryDetailView");
 	    return mv;
 	}
 		
@@ -231,26 +243,26 @@ public class InquiryController {
 	}
 	
 	// 첨부파일을 위한 메소드
-			public String saveFile(MultipartFile upfile,
-								   HttpSession session) {
-				
-				String originName = upfile.getOriginalFilename();
-				
-				String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-				
-				int ranNum = (int)(Math.random() * 90000 + 10000);
-				String ext = originName.substring(originName.lastIndexOf("."));
-				
-				String changeName = currentTime + ranNum + ext;
-				
-				String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
-				
-				try {
-					upfile.transferTo(new File(savePath + changeName));
-				} catch (IllegalStateException | IOException e) {
-					e.printStackTrace();
-				}
-				
-				return changeName;
-			}
+	public String saveFile(MultipartFile upfile,
+						   HttpSession session) {
+		
+		String originName = upfile.getOriginalFilename();
+		
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		
+		int ranNum = (int)(Math.random() * 90000 + 10000);
+		String ext = originName.substring(originName.lastIndexOf("."));
+		
+		String changeName = currentTime + ranNum + ext;
+		
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/inquiry/");
+		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return changeName;
+	}
 }

@@ -6,3 +6,5 @@ $(function() {
 		location.href = "notice/" + nno;
 	});
 });
+
+
