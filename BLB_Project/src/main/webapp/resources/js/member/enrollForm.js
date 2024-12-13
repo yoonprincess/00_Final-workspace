@@ -190,7 +190,21 @@
 	});
 	
 	
+	 let isCerted = false;
     
+	// 폼 제출 이벤트
+     $(document).ready(function () {
+        $("#enrollForm").on("submit", function (event) {
+          console.log("보여?"); 
+           console.log("isCerted 상태:", isCerted);
+            if (!isCerted) { // 인증이 완료되지 않았다면
+                event.preventDefault();
+                alert('이메일 인증을 완료해주세요.');
+            }else{
+            	console.log("인증완 제출허용");
+            }
+        });
+    });
     
     // 이메일 인증메일보내기 요청 ajax
     function cert(){
@@ -213,30 +227,30 @@
 				$("#cert-email").show();
 				$("#certKey").attr("disabled", false);
 				$("#vali_email").attr("disabled",false);
-				
 				$("#email").attr("disabled", true);
 				$("#certbtn").attr("disabled", true);
-				
+				isCerted = true;
 			},
 			
 			error : function() {
 				console.log("인증번호 발급용 ajax 통신 실패!");
-				
 				alert("인증번호 발송에 실패했습니다. 다시 시도해주세요.");
 			}
 		});
 	}
 	
-	/* 인증시간 표시 - jQuery 로직*/	
+	
 	$(document).ready(function() {
 	    
 	    let seconds; // 남은 시간 변수
-	    
 	    let countdown; // 카운트다운을 관리하는 변수
+	    let isCerted = false;
 	    
 	    const $timeSpan = $('.time'); 
-	    const $btnSend = $('#certbtn'); 
-
+	    const $btnSend = $('#certbtn');
+	    const $submitBtn = $('#submitBtn') 
+		
+		//인증시간표시	
    		 const updateCountdown = function() {
    		 
 	        if (seconds >= 0) {
@@ -257,23 +271,24 @@
                 $("#email").css("border", "1px solid orangered");
                 $("#email").attr("disabled", false);
                 $("#certbtn").attr("disabled", false);
+                $submitBtn.attr("disabled", true);
+	    		isCerted = false;
 	        }
     	};
-    
+    	
+    	// 인증메일요청 함수 호출
 	    $btnSend.on('click', function(e) {
-	       
 	        e.preventDefault();
+	        
 	        alert('인증번호 발송 요청이 접수되었습니다. 잠시만 기다려주세요.');
 	        cert();
 	        
 	        clearInterval(countdown);
 	        seconds = 300;
-	
 	        updateCountdown();
-	        
 	        countdown = setInterval(updateCountdown, 1000); 
 	    });
-    
+    	
    });
 	
 	 // 이메일 인증번호 대조 ajax
@@ -297,6 +312,8 @@
 					$("#cert-email").hide();
 					$("#email").css("border","2px solid #71C9CE"); 
 					$("#hiddenEmail").val(email);
+					$("#enrollForm button[type=submit]").attr("disabled",false);
+	    			isCerted = true;
 				
 				}else{
 				
@@ -309,8 +326,10 @@
 					$("#email").css("border","1px solid orangered"); 
 					$("#email").attr("disabled", false);
 					$("#certbtn").attr("disabled", false);
+					$("#enrollForm button[type=submit]").attr("disabled",true);
+					isCerted = false;
 				}
-				
+				 console.log("isCerted 상태:", isCerted);
 			},
 			error : function() {
 				console.log("인증번호 발급용 ajax 통신 실패!");
@@ -318,7 +337,7 @@
 		});
 	}
 	
-	
+		
 	 /* DAUM 지도검색 API */
 	 
 	 function sample4_execDaumPostcode() {

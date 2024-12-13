@@ -45,6 +45,7 @@
 	                    	<label for="saveId" class="inline-label">아이디 저장</label>
                    		</c:otherwise>
                    	</c:choose>
+                   	<div style="color:orangered;">아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해주세요</div>
                 </div>
                 <button type="submit" id="loginBtn"> 로그인 </button>
                 <div class="links">

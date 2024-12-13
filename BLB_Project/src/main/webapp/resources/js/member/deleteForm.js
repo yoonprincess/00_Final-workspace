@@ -7,8 +7,7 @@
 	// 탈퇴버튼 
 	$(document).ready(function() {
 	    $('#deleteForm').submit(function(event) {
-	       event.preventDefault();
-	       
+	        event.preventDefault(); // 폼 제출 기본 동작 방지
 	        var checkPwd = $('#checkPwd').val();
 	        
 		    $.ajax({
@@ -18,17 +17,14 @@
 		        	checkPwd : checkPwd
 		        },
 		        success: function(response) {
-		        	
-		        	console.log("response : "  + response);
-		        	
+		        			        	
 		           if(response.result === "탈퇴완료"){
 		           	
 		           	$('#check-page').hide();
 		            $('#result-page').show();
 		               
 		           }else{
-		           	
-		           		console.log(response.result);
+		           	 alert(response.result);
 		           }
 		        },
 		        error: function() {
@@ -37,3 +33,8 @@
 		    });
 	    });
 	});
+	
+	// 메인버튼
+	function goMain() {
+   		 window.location.href = "/blb";
+	}

@@ -115,8 +115,7 @@ public class MemberController {
 			
 		}else { // 로그인 실패 
 			
-			session.setAttribute("alertMsg", "로그인실패실패..");
-			mv.setViewName("member/loginForm");
+			mv.setViewName("member/loginErrorForm");
 		}
 		
 		return mv;
@@ -226,16 +225,19 @@ public class MemberController {
 		Map<String, String> response = new HashMap<>(); 
 		   
 		if(bcryptPasswordEncoder.matches(checkPwd, loginUser.getMemberPwd())){
+			
 			int result = memberService.deleteMember(loginUser.getMemberId());
 			
 			if (result>0) {
 				  response.put("result", "탈퇴완료");
+				 
+				  session.invalidate();
 			}else {
 				response.put("result", "탈퇴실패");
 			}
 		
 		}else {
-			 response.put("result", "비밀번호불일치");
+			 response.put("result", "비밀번호가 다릅니다. 다시 확인 바랍니다.");
 		}
 		 return response;
 	}
