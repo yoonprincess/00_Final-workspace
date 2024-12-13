@@ -864,7 +864,7 @@ BEGIN
     COMMIT;
 END;
 /
-
+-- 상품 옵션 (추가옵션1) 전체 추가 --
 BEGIN
     FOR i IN 1..36 LOOP
         INSERT INTO TB_OPTION VALUES(
@@ -959,68 +959,53 @@ END;
 
 -- 상품 리뷰 샘플 데이터 --
 BEGIN
-    FOR order_no IN (SELECT DISTINCT ORDER_NO FROM TB_ORDER) LOOP
-        FOR opt_no IN 50..72 LOOP
-            -- ORDER_NO에 매칭되는 MEMBER_ID 가져오기
-            DECLARE
-                v_member_id VARCHAR2(20);
-            BEGIN
-                -- 매칭되는 MEMBER_ID 가져오기
-                SELECT MEMBER_ID
-                INTO v_member_id
-                FROM TB_ORDER
-                WHERE ORDER_NO = order_no.ORDER_NO
-                AND ROWNUM = 1; -- 하나의 MEMBER_ID만 가져옴
-                
-                -- 매칭된 경우에만 데이터 생성
-                IF v_member_id IS NOT NULL THEN
-                    INSERT INTO TB_REVIEW VALUES(
-                        SEQ_REV_NO.NEXTVAL,
-                        '제품이 너무 좋아요! 재구매 의사 있습니다.',
-                        SYSDATE,
-                        5, -- 별점 정보
-                        'Y', -- 리뷰 상태
-                        order_no.ORDER_NO, -- ORDER_NO
-                        v_member_id -- MEMBER_ID
-                    );
+    -- TB_ORDER에서 고유한 ORDER_NO 가져오기
+    FOR order_rec IN (SELECT DISTINCT ORDER_NO, MEMBER_ID FROM TB_ORDER) LOOP
+        -- 리뷰 생성: ORDER_NO당 하나만 생성
+        INSERT INTO TB_REVIEW VALUES(
+            SEQ_REV_NO.NEXTVAL,
+            '제품이 너무 좋아요! 재구매 의사 있습니다.',
+            SYSDATE,
+            5, -- 별점 정보
+            'Y', -- 리뷰 상태
+            order_rec.ORDER_NO, -- ORDER_NO
+            order_rec.MEMBER_ID -- MEMBER_ID
+        );
 
-                    INSERT INTO TB_PRODUCT_ORDER VALUES(
-                        SEQ_SERIAL_NO.NEXTVAL,
-                        1, -- 주문 수량
-                        38000, -- 총 금액
-                        order_no.ORDER_NO, -- ORDER_NO
-                        opt_no -- OPT_NO
-                    );
-                END IF;
-            EXCEPTION
-                WHEN NO_DATA_FOUND THEN
-                    -- 매칭되지 않는 경우 처리하지 않음
-                    NULL;
-            END;
+        -- 상품 주문 생성: 하나의 ORDER_NO당 여러 옵션을 추가
+        FOR opt_no IN 50..72 LOOP
+            INSERT INTO TB_PRODUCT_ORDER VALUES(
+                SEQ_SERIAL_NO.NEXTVAL,
+                1, -- 주문 수량
+                38000, -- 총 금액
+                order_rec.ORDER_NO, -- ORDER_NO
+                opt_no -- OPT_NO
+            );
         END LOOP;
     END LOOP;
+
     COMMIT; -- 변경 사항 저장
 END;
 /
+-- 상품 리뷰 별점 랜덤 부여 --
+BEGIN
+    FOR rev_no IN 1..100 LOOP
+        UPDATE TB_REVIEW
+        SET REV_RATING = TRUNC(DBMS_RANDOM.VALUE(1, 6)) -- 1부터 5까지의 랜덤값
+        WHERE REV_NO = rev_no;
+    END LOOP;
 
-INSERT INTO TB_REVIEW VALUES(
-                     SEQ_REV_NO.NEXTVAL
-                   , '제품이 너무 좋아요! 재구매 의사 있습니다.' || id_num
-                   , DEFAULT
-                   , 5 -- 별점 정보
-                   , DEFAULT
-                   , order_no -- ORDER_NO
-                   , 'user' || id_num  -- MEMBER_ID
-                   );
-INSERT INTO TB_PRODUCT_ORDER VALUES(
-                     SEQ_SERIAL_NO.NEXTVAL
-                   , id_num -- 주문 수량
-                   , 38000 -- 총 금액
-                   , order_no -- ORDER_NO
-                   , opt_no -- OPT_NO
-                   );
-
-
+    COMMIT; -- 변경 사항 저장
+END;
+-- 리뷰 내용에 번호 부여 --
+BEGIN
+    FOR rev_no IN 1..100 LOOP
+        UPDATE TB_REVIEW
+        SET REV_CONTENT = '제품이 너무 좋아요! 재구매 의사 있습니다.' || rev_no -- 1부터 5까지의 랜덤값
+        WHERE REV_NO = rev_no;
+    END LOOP;
+    COMMIT; -- 변경 사항 저장
+END;
 
 
 COMMIT;
