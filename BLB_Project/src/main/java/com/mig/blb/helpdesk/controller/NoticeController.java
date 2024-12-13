@@ -162,6 +162,7 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 		// 공지사항 수정 요청
 		@PostMapping("NoticeUpdate.no")
 		public String updateNotice(Notice n,
+								   ArrayList<NoticeAtt> na,
 								   RedirectAttributes ar,
 								   MultipartFile[] reupfile,
 								   HttpSession session,
@@ -169,7 +170,15 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 
 			if(reupfile != null && reupfile.length > 0) {
 			
-			int result = noticeService.updateNoticeAtt();
+				ArrayList<NoticeAtt> updateNoticeAtt = new ArrayList<NoticeAtt>();
+				
+				// 1. 기존에 첨부파일이 있었을 경우
+				if(updateNoticeAtt != null && updateNoticeAtt.size() > 0) {
+					
+					
+					
+				}
+			
 			}
 			
 			return null;
