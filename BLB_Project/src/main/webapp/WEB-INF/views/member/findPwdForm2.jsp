@@ -23,36 +23,37 @@
 <body  class="body-offset" id="custom">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 			<br><br><br><br>
-            <div class="container-fluid outer" id="check-page" style="display:none;" >    
+            <div class="container-fluid outer" id="check-page"  >    
              	<h4 align="center"><b>비밀번호찾기</b></h4>
               
-	              <div class="div-container outer" id="findId">
+	              <div class="div-container outer" id="findPwd">
 	                 <div style="padding-left:60px;"><b>본인인증 확인</b></div>
 	                 
 	                 <div id="radio-input" >
-	                 <span>인증방법</span>
+	                 <span class="cert-label">인증방법</span>
 	                    <input type="radio" class="radio-field" name="checkType" id="email" value="email" checked >
 	                    <label for="email">이메일</label>
 	              	</div>
 	              	<div class="inputAndBtn" >
 		                 <div class="input-wrapper" >
-		                    <span id="email-label" >이메일</span>
-		                    <span>${ckPwdMember.getEmail()}</span>  
-		                    <button type="button" onclick="cert()" id="certBtn">인증</button>
+		                    <span id="email-label"  class="cert-label">이메일</span>
+		                    <span style="padding-left:15px;" class="cert-label">${ckPwdMember.getEmail()}</span>  
+		                    <button  type="button" onclick="cert()" id="certBtn" > 인증번호 받기</button>
 		              	</div>
 		              	 <div class="input-wrapper">
 		                    <span class="cert-label" >인증코드</span>
 		                    <input type="text" class="input-field" name="certKey" id="certKey">
-		                    <span class="time">인증시간</span>
+		                    <span class="time"></span>
 		                </div>
 	              	</div>
 	             	<div class="submit-row">
 	             		<button type="submit" id="findPwdBtn" class="btn btn-outline-info">확인</button>
+	             		<button type="reset"  class="btn btn-outline-info" onclick="goBack();">취소</button>
 			       </div>
 	              </div>
              
             </div>
-			<div class="container-fluid outer" id="result-page">	
+			<div class="container-fluid outer" id="result-page" style="display:none;">	
 				<h4 align="center"><b>비밀번호 재설정</b></h4>
 	              <form action="newPwd.me" method="post" id="newPwdForm">
 		              <div class="div-container outer" id="findId">
@@ -87,7 +88,7 @@
 		              	
 		              	<div class="submit-row">
 		             		<button type="submit"  class="btn btn-outline-info">확인</button>
-		             		<button type="reset"  class="btn btn-outline-info">취소</button>
+		             		<button type="button"  class="btn btn-outline-info">취소</button>
 				        </div>
 		              </div>
 	             </form>

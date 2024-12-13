@@ -73,5 +73,10 @@ public class InquiryServiceImpl implements InquiryService {
 		return inquiryDao.updateInquiry(sqlSession, i);
 	}
 
+	@Override
+	public ArrayList<Inquiry> selectInquiryListTop4(String memberId) {
+		return inquiryDao.selectInquiryListTop4(sqlSession, memberId);
+	}
+
 	
 }

@@ -146,4 +146,12 @@
 	       AND EMAIL = #{email}
 	       AND STATUS='Y'
 	</select>
+	
+	<select id="findMemberId" parameterType="member" resultType="string">
+		SELECT MEMBER_ID
+		  FROM TB_MEMBER
+		 WHERE MEMBER_NAME = #{memberName}
+	       AND EMAIL = #{email}
+	       AND STATUS='Y'
+	</select>
 </mapper>

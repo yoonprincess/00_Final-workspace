@@ -47,6 +47,9 @@ public interface MemberService {
 	// 비번찾기용 회원정보 확인 
 	int validateMemberData(Member m);
 	
+	// 아이디찾기용 회원정보확인
+	String findMemberId(Member m);
+	
 	
 	
 }

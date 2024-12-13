@@ -27,37 +27,38 @@
              	<h4 align="center"><b>아이디찾기</b></h4>
               <form action="findId.me" method="post" id="findIdForm">
 	              <div class="div-container outer" id="findId">
-	                 <div style="padding-left:60px;"><b>회원 아이디 찾기</b></div>
-	                 <div  id="radio-input" >
+	                 <div style="padding-left:15px;"><b>회원 아이디 찾기</b></div>
+	                 <div  id="radio-input" sty>
 	                    <input type="radio" class="radio-field" name="checkType" id="email" value="email" checked >
 	                    <label for="email">이메일</label>
 	                    <input type="radio" class="radio-field" name="checkType" id="phone" value="phone">
 	              		<label for="phone">휴대번호</label>
 	              	</div>
-	              	<div id="inputAndBtn" >
-		                 <div id="input-wrapper" >
-		                    <input type="text" class="input-field" name="name" id="checkName" required>
-		                    <input type="email" class="input-field" name="email" id="checkEmail" >
-		                    <input type="text" class="input-field" name="phone" id="checkPhone" 
-		                    		placeholder="- 빼고 작성" style="display:none;">
+	              	<div id="input-group">
+		              	<div class="inputAndBtn" >
+			                 <div class="input-wrapper" >
+			                    <input type="text" class="input-field" name="memberName" id="checkName"
+			                    placeholder="이름" required>
+			                 </div >
+			                 <div class="input-wrapper">
+			                    <input type="email" class="input-field" name="email" id="checkEmail"
+			                     placeholder="가입메일주소" required>
+		                      <input type="text" class="input-field" name="phone" id="checkPhone" 
+		                    		placeholder="가입휴대번호 (- 빼고 작성)"  style="display:none;">
+			                 </div>
 		              	</div>
-		              	<div>
+		              	<div class="inputAndBtn"> 
 		              		<button type="submit" id="findIdBtn" class="btn btn-outline-info">아이디찾기</button>
 		              	</div>
 	              	</div>
 	             	<div class="submit-row">
 			            <button type="button" class="btn btn-outline-info findPwd" onclick="goFindPwd()">비밀번호 찾기</button>
-			            <button class="btn btn-outline-info goLogin" type="button" onclick="goLogin">로그인하기</button>
+			            <button class="btn btn-outline-info goLogin" type="button" onclick="goLogin()">로그인하기</button>
 			       </div>
 	              </div>
 	               
              </form>
             </div>
-			
-			<div class="container-fluid outer" id="result-page" style="display:none;">
-			
-			</div>
-			 
 			
  <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

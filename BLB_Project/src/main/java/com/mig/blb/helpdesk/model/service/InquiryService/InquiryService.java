@@ -27,5 +27,7 @@ public interface InquiryService {
 
 	int updateInquiry(Inquiry i);
 
+	ArrayList<Inquiry> selectInquiryListTop4(String memberId);
+
 	
 }

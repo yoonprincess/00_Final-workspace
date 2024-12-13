@@ -26,29 +26,30 @@
             <div class="container-fluid outer" id="check-page" >    
              	<h4 align="center"><b>비밀번호찾기</b></h4>
               <form action="findPwd.me" method="post" id="findPwdForm">
-	              <div class="div-container outer" id="findId">
-	                 <div style="padding-left:60px;"><b>회원 비밀번호 찾기</b></div>
+	              <div class="div-container outer" id="findPwd">
+	                 <div ><b>회원 비밀번호 찾기</b></div>
+	                 <p >본인 확인 완료 후 비밀번호를 재설정할 수 있습니다.</p>
 	                 <div  id="radio-input" >
 	                    <input type="radio" class="radio-field" name="checkType" id="email" value="email" checked >
 	                    <label for="email">이메일</label>
-	                    <input type="radio" class="radio-field" name="checkType" id="phone" value="phone" disabled>
+	                    <input type="radio" class="radio-field" name="checkType" id="phone" value="phone" >
 	              		<label for="phone">휴대번호</label>
 	              	</div>
 	              	<div id="inputAndBtn" >
 		                 <div id="input-wrapper" >
-		                 	<div id="id-label" >아이디</div>
-		                 	<input type="text" class="input-field" name="memberId" id="checkId">
-		                   	<div id="name-label" >이름</div>
-		                    <input type="text" class="input-field" name="memberName" id="checkName" >
-		                    <div id="email-label" >이메일</div>
-		                    <input type="email" class="input-field" name="email" id="checkEmail" >
-		                    <div id="phone-label" style="display:none;">휴대번호</div>
+		                 	<input type="text" class="input-field" name="memberId" id="checkId"
+		                 	placeholder="아이디">
+		                    <input type="text" class="input-field" name="memberName" id="checkName"
+		                    placeholder="이름" >
+		                    <input type="email" class="input-field" name="email" id="checkEmail"
+		                    placeholder="가입한 이메일" >
 		                    <input type="text" class="input-field" name="phone" id="checkPhone" 
 		                    		placeholder="- 빼고 작성" style="display:none;">
 		              	</div>
 	              	</div>
 	             	<div class="submit-row">
 	             		<button type="submit" id="findPwdBtn" class="btn btn-outline-info">확인</button>
+	             		<button type="button" id="findPwdBtn" class="btn btn-outline-secondary" onclick="goMain();">취소</button>
 			       </div>
 	              </div>
              </form>

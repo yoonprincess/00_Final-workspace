@@ -156,7 +156,6 @@
 		    $ckPwdInput.change(function() {
 		        let checkPwd = $(this).val();
 	        
-	      		if(checkPwd.length >= 8){
 	      		  
 		        // 비밀번호 확인
 		        if (checkPwd === $pwdInput.val()) {
@@ -178,13 +177,6 @@
 		        	$("#enrollForm button[type=submit]").attr("disabled", true);
 		        	
 		        }
-		
-	      }else{
-		
-		      	$("#ckPwd").css("border", "1px solid #ccc"); // 기본 테두리 색상으로 초기화
-		        $("#enrollForm button[type=submit]").attr("disabled",true);
-		        
-	      }   
 	       
 	    });
 	});
@@ -196,7 +188,6 @@
      $(document).ready(function () {
         $("#enrollForm").on("submit", function (event) {
           console.log("보여?"); 
-           console.log("isCerted 상태:", isCerted);
             if (!isCerted) { // 인증이 완료되지 않았다면
                 event.preventDefault();
                 alert('이메일 인증을 완료해주세요.');

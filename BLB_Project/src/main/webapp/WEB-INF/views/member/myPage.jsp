@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -175,7 +176,24 @@
 	                          <h4>1:1 문의내역</h4>
 	                          <button class="more-btn">더보기 &gt;</button>
 	                      </div>
-	                      <p class="no-content">최근 1개월간 문의하신 내용이 없습니다.</p>
+	                     <div class="qna-list">
+		                    <c:forEach var="list" items="${list}">
+		                        <div class="qna-item">
+		                          <div class="qna-details">
+		                          <c:choose>
+		                           <c:when test="${list.inquiryAnsweredYn == 'N'}">
+		                            <span class="answer-status">답변대기</span>
+		                            </c:when>
+		                            <c:otherwise>
+		                             <span class="answer-status">답변완료</span>
+		                            </c:otherwise>
+		                            </c:choose>
+		                          </div>
+		                            <div class="qna-title">${list.inquiryContent}</div>
+		                            <div class="qna-date">${list.inquiryCreateDate}</div>
+		                         </div>
+		                     </c:forEach>
+	                     </div>
 	                  </div>
 	                  <div class="section inquiry" style="border:none;">
 	                      <div class="section-header">
@@ -183,36 +201,7 @@
 	                          <button class="more-btn">더보기 &gt;</button>
 	                      </div>
 	                      <div class="qna-list">
-	                        <div class="qna-item">
-	                          <div class="qna-details">
-	                            <span class="answer-status">답변대기</span>
-	                          </div>
-	                            <div class="qna-title">어떤 용도로 사용하는 건가요?</div>
-	                            <div class="qna-date">2024-11-18</div>
-	                          </div>
-	                        </div>
-
-                        <div class="qna-item">
-                          <div class="qna-details">
-                            <span class="answer-status">답변대기</span>
-                          </div>
-                            <div class="qna-title">사용기한이 궁금합니다.</div>
-                            <div class="qna-date">2024-11-18</div>
-                        </div>
-                          <div class="qna-item">
-                          <div class="qna-details">
-                            <span class="answer-status">답변대기</span>
-                          </div>
-                            <div class="qna-title">사용기한이 궁금합니다.</div>
-                            <div class="qna-date">2024-11-18</div>
-                        </div>
-                          <div class="qna-item">
-                          <div class="qna-details">
-                            <span class="answer-status">답변대기</span>
-                          </div>
-                            <div class="qna-title">사용기한이 궁금합니다.</div>
-                            <div class="qna-date">2024-11-18</div>
-                        </div>
+	                     <p>문의하신 내역이 없습니다</p>
                         </div>
                     </div>
                   </div>

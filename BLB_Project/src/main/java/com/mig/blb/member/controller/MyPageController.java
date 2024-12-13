@@ -1,14 +1,21 @@
 package com.mig.blb.member.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mig.blb.common.model.vo.PageInfo;
+import com.mig.blb.common.template.Pagination;
+import com.mig.blb.helpdesk.model.service.InquiryService.InquiryService;
+import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.member.model.service.MemberService;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
@@ -20,15 +27,27 @@ public class MyPageController {
 	private MemberService memberService;
 	
 	@Autowired
+	private InquiryService inquiryService;
+	
+	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	// 마이페이지 요청 
 		@GetMapping("myPage.me")
-		public ModelAndView myPage(ModelAndView mv, HttpSession session) {
+		public ModelAndView myPage(ModelAndView mv
+								, HttpSession session) {
 			
 			Member loginUser =(Member)session.getAttribute("loginUser");
 			
+			String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
 			if( loginUser != null) {
+				
+				
+				ArrayList<Inquiry> list = inquiryService.selectInquiryListTop4(memberId);
+				
+				mv.addObject("list", list);
+				//System.out.println(list);
+				
 				mv.setViewName("member/myPage");
 			
 			}else {
@@ -203,5 +222,5 @@ public class MyPageController {
 			return mv;
 		}
 				
-				
+	
 }

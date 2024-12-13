@@ -89,6 +89,10 @@ public class MemberDao {
 		return sqlSession.selectOne("memberMapper.validateMemberData", m);
 	}
 
+	public String findMemberId(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.selectOne("memberMapper.findMemberId", m);
+	}
+
 	
 
 }

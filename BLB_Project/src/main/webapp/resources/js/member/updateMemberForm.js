@@ -1,7 +1,7 @@
 
 	// 버튼 관련
 	function goBack() {
-	    history.back();
+	     window.location.href = "/blb";
 	}
 
 	// 저장된 회원 번호 다시 나누기 

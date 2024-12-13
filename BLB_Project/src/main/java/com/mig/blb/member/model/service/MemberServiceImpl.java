@@ -107,6 +107,10 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDao.validateMemberData(sqlSession,m);
 	}
+	@Override
+	public String findMemberId(Member m) {
+		return memberDao.findMemberId(sqlSession,m);
+	}
 
 }
 

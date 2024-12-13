@@ -250,7 +250,35 @@ public class MemberController {
 			
 			return mv;
 		}
-
+		
+		// 아이디찾기 요청 (이메일버전)
+		@PostMapping("findId.me")
+		public ModelAndView findId(ModelAndView mv,	
+									String memberName,
+									String email,
+									HttpSession session) {
+			Member m  = new Member (); 
+			m.setMemberName(memberName);
+			m.setEmail(email);
+			
+			if((!memberName.isEmpty() && memberName != null)
+				&&( !email.isEmpty() && email != null )) {
+				
+		       String result = memberService.findMemberId(m);
+		       if( result != null && !result.isEmpty() ) {
+		    	   
+					mv.addObject("findIdMember",m);
+					mv.addObject("findId", result);
+					mv.setViewName("member/findIdForm2");
+				
+		       } else {
+		    	   session.setAttribute("alertMsg", "입력하신 정보로 가입된 회원은 존재하지 않습니다.");
+		    	   mv.setViewName("member/findIdForm");
+		       }
+			}
+			return mv;
+		}
+		
 
 	// 비번찾기페이지 요청 
 		@GetMapping("findPwdForm.me")
@@ -286,7 +314,7 @@ public class MemberController {
 			
 	       } else {
 				
-				session.setAttribute("alertMsg", "입력하신 정보로 가입 된 회원은 존재하지 않습니다.");
+				session.setAttribute("alertMsg", "입력하신 정보로 가입된 회원은 존재하지 않습니다.");
 				mv.setViewName("member/findPwdForm");
 			}
 		

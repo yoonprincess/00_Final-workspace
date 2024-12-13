@@ -68,6 +68,10 @@ public class InquiryDao {
 		return sqlSession.update("helpdeskMapper.updateInquiry", i);
 	}
 
+	public ArrayList<Inquiry> selectInquiryListTop4(SqlSessionTemplate sqlSession, String memberId) {
+		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectInquiryListTop4", memberId);
+	}
+
 	
 
 	

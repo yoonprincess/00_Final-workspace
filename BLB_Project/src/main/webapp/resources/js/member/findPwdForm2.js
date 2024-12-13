@@ -1,9 +1,15 @@
 
+	// 취소
+	function goBack() {
+	    window.location.href = "/blb/findPwdForm.me";
+	}
+
+
 // 이메일 인증메일보내기 요청 ajax
     function cert(){
 		
 		let email = "${ckPwdMember.getEmail()}";
-		  
+		  console.log(email);
 	    $.ajax({
 			url : "cert.do",
 			type : "post",
@@ -32,7 +38,6 @@
 	 // 이메일 인증번호 대조 ajax
     function validateEmail(){
     
-		
 		let certKey = $("#certKey").val();
 		
 		$.ajax({

@@ -13,15 +13,15 @@ body {
 .outer {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 50px;
+    padding: 40px;
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    text-align: center; /* 텍스트 중앙 정렬 */
 }
-h6{
-	font-size : 12px;
-}
-
 .div-container {
-    margin-top: 30px;
-    margin-bottom: 100px;
+    margin-top: 0; /* 상단 마진 제거 */
+    margin-bottom: 100px; /* 하단 마진 제거 */
     padding-top:50px;
     font-size: 14px;
     color: #666;
@@ -32,80 +32,24 @@ h6{
     max-width: 600px;
     height: 350px;
     flex-wrap: wrap;
-   
-   
 }
 
 .div-container>div{
     display: flex;
     flex-direction: column;
     gap: 10px; /* 각 입력 필드 간 간격 */
-    padding-left:10px;
   
 }
 
-input[type="radio"] {
-    vertical-align: middle; /* 라디오 버튼의 수직 정렬을 중간으로 설정 */
- 	padding-left:10px;
-}
-
-.div-container label{
-	font-size:13px;
-	vertical-align: middle;
-    line-height: 12px; 
-}
-
-#findId{
-	width:100%;
-	display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* 수평 가운데 정렬 */
-    gap: 10px; /* 요소 간 간격 */
-   
-}
-
-#radio-input{
-	 display:flex;
-	 flex-direction: row;
-	 padding-left:15px;
-	 align-items: center !important;
-	 justify-content: center;
-}
-#input-group{
-	display:flex; 
-	flex-direction: row;
-}
-
-.inputAndBtn{
-	display:flex; 
-	flex-direction: column;
-	padding-left:5px; 
-	gap: 6px;
-}
-
-.input-wrapper{
-	display: flex; 
-	flex-direction: row; 
-	margin-bottom:10px;
-}
-
-.input-wrapper>input{
+.input-wrapper>div{
 	height:35px;
 	width: 300px;
 	padding-left:10px;
-	border: 1px solid silver;
-}
-#findIdBtn{
-	height:85px;
-	width: 150px;
-	background-color:#4A628A;
-	color: white;
-	border:none;
-	margin-left:5px;
+	text-align:center;
 }
 .submit-row {
     margin: 0 auto;
-    margin-top : 5px;
+    margin-top : 45px;
     padding-top: 20px;
     text-align: center;
     border-top : 1px solid  #e0e0e0;
