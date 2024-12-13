@@ -1,6 +1,9 @@
 package com.mig.blb.cart.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -71,8 +74,7 @@ public class CartController {
 		System.out.println("장바구니 번호 :" + cartNo);
 		
 		int result = cartService.deleteCartOne(cartNo);
-		
-		
+		// 지워도 됨? session도?
 		if(result > 0) {
 			
 			session.setAttribute("alertMsg", "장바구니 삭제 성공");
@@ -80,6 +82,42 @@ public class CartController {
 		} else {
 			
 			session.setAttribute("errorMsg", "해당 상품 삭제를 실패했습니다.");
+		}
+		
+		return "redirect:/list.ct";
+	}
+	
+	/**
+	 * 장바구니 체크박스 선택 삭제
+	 * @param cartNos
+	 * @param ct
+	 * @return
+	 */
+	@PostMapping("deleteCheck.ct")
+	public String deleteCheckItems(@RequestParam("cartNos") String cartNos,
+								   Cart ct,
+								   HttpSession session) {
+		
+		System.out.println("Received cartNos: " + cartNos);
+		
+//        String[] cartNoArr = cartNos.split(","); // 문자열을 배열로 변환
+        
+        // 문자열 배열을 정수 리스트로 변환
+//        List<Integer> cartNoList = Arrays.stream(cartNoArr)
+//                                         .map(Integer::parseInt)
+//                                         .collect(Collectors.toList());
+//
+//        // 값 확인
+//        for (Integer cartNo : cartNoList) {
+//            System.out.println("삭제할 카트 번호: " + cartNo);
+//        }
+        
+		int result = cartService.deleteCheckItems(cartNos);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "선택한 상품이 삭제되었습니다.");
+		} else {
+			session.setAttribute("errorMsg", "선택한 상품 삭제를 실패했습니다.");
 		}
 		
 		return "redirect:/list.ct";

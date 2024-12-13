@@ -15,6 +15,9 @@ public interface CartService {
 
 	// 장바구니 X버튼으로 1개 상품만 삭제
 	int deleteCartOne(int cartNo);
+
+	// 장바구니 체크박스 선택 삭제
+	int deleteCheckItems(String cartNos);
 	
 	// 장바구니 옵션 변경
 //	int updateCartOption(Cart ct);

@@ -12,6 +12,7 @@
 		<result column="PROD_NAME" property="prodName" />
 		<result column="OPT_NAME" property="optName" />
 		<result column="PROD_PRICE" property="prodPrice" />
+
 	</resultMap>
 	
 	<!-- 장바구니 목록 조회 -->
@@ -38,6 +39,14 @@
 		 WHERE CART_NO = #{cartNo}
 	</delete>
 	
+	<!-- 장바구니 체크박스 선택 삭제 -->
+	<delete id="deleteCheckItems"
+			parameterType="string">
+		DELETE
+		  FROM TB_CART
+		 WHERE CART_NO IN (${cartNo})
+	</delete>
+	 
 	<!-- 장바구니 옵션 변경 -->
 	<!-- 
 	<update id="updateCartOption"

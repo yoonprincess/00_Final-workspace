@@ -42,7 +42,15 @@ SELECT C.CART_NO
 -- 3. 장바구니 X버튼으로 1개 상품만 삭제
 DELETE
   FROM TB_CART
- WHERE CART_NO = #{cmo}
+ WHERE CART_NO IN (${cartNo})
+
+-- 4. 장바구니 선택 삭제
+DELETE
+  FROM TB_CART
+ WHERE CART_NO IN
+<foreach collection="cartNoList" item="cartNos" separator="," open="(" close=")">
+    #{cartNo}
+</foreach>
 
 -- 옵션 조회 (예원이가 할 게 아닌듯..?)
 SELECT O.OPT_NAME

@@ -33,6 +33,11 @@ public class CartServiceImpl implements CartService {
 		return cartDao.deleteCartOne(sqlSession, cartNo);
 	}
 
+	@Override
+	public int deleteCheckItems(String cartNos) {
+		return cartDao.deleteCheckItems(sqlSession, cartNos);
+	}
+
 //	@Override
 //	public int updateCartOption(Cart ct) {
 //		return cartDao.updateCartOption(sqlSession, ct);

@@ -16,8 +16,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <!-- jQuery 라이브러리 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<!-- JS 파일 -->
-<script src="resources/js/cart/cart.js"></script>
 </head>
 <body class="body-offset">
 
@@ -33,10 +31,17 @@
         <table id="cart-product">
             <thead>
                 <tr>
-                    <th><input type="checkbox" checked colspan="4"></th>
+                    <th><input type="checkbox" id="check-all" checked></th>
                     <th>전체선택</th>
                     <th colspan="3"></th>
-                    <th class="delete-btn-td"><button id="select-detlete">선택 삭제</button></th>
+                    <th class="delete-btn-td">
+
+						<form id="checkDeleteForm" action="${ pageContext.request.contextPath }/deleteCheck.ct" method="post">
+							<input type="hidden" name="cartNos" id="delCartNos">
+						</form>
+						<button type="button" id="select-detlete" onclick="checkDelete();">선택 삭제</button>
+
+					</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,7 +52,7 @@
 				</c:if>
 				<c:forEach var="ct" items="${ requestScope.list }">
 	                <tr>
-	                    <td><input type="checkbox" checked></td>
+	                    <td><input type="checkbox" class="check-one" name="check-one" value="${ ct.cartNo }" checked></td>
 	                    <td><img src="" alt="${ ct.prodName }" class="product-image"></td>
 	                    <td class="product-info">
 	                        <div class="product-detail">
@@ -103,7 +108,7 @@
 	                    </td>
 	                    <td class="product-price" id="product-total-price">21,800원</td>
 	                    <td class="delete-btn-td">
-	                    	<button class="btn-delete"  onclick="deleteCartItem(${ ct.cartNo });">X</button>
+	                    	<button class="btn-delete" onclick="deleteCartItem(${ ct.cartNo });">X</button>
 	                    </td>
 	                </tr>
 				</c:forEach>
@@ -138,5 +143,7 @@
 
     </div>
 
+<!-- JS 파일 -->
+<script src="resources/js/cart/cart.js"></script>
 </body>
 </html>
