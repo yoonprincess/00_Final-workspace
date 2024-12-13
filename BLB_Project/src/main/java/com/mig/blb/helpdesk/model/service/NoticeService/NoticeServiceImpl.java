@@ -58,14 +58,11 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public int updateNotice(Notice n, ArrayList<NoticeAtt> na) {
-		int result1 = noticeDao.updateNotice(sqlSession, n);
-		int result2 = noticeDao.updateNoticeAtt(sqlSession, na);
-		return result1 * result2;
+	public int deleteNoticeAtt(int noticeAttNo) {
+		return noticeDao.deleteNoticeAtt(sqlSession, noticeAttNo);
 	}
 
-	@Override
-	public void deleteNoticeFile(String fileName) {
-		
-	}
+	
 }
+
+

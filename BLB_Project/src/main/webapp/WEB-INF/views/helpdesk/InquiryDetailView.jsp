@@ -29,6 +29,21 @@
             <p><strong>문의자:</strong> ${requestScope.i.memberId}</p>
             <p><strong>문의일:</strong> ${requestScope.i.inquiryCreateDate}</p>
             <p><strong>내용:</strong> ${requestScope.i.inquiryContent}</p>
+            
+            <div class="text-content">
+                <p>${ requestScope.i.inquiryContent }</p>
+                <br>
+                <c:choose>
+               		<c:when test="${ empty requestScope.iatt }">
+               		    첨부파일이 없습니다.
+               		</c:when>
+               		<c:otherwise>
+               			<c:forEach var="p" items="${ requestScope.iatt }">
+               				<img src="${pageContext.request.contextPath }/${ p.savePath }${p.saveFileName}" width="1200px;">
+               			</c:forEach>
+               		</c:otherwise>
+               	</c:choose>
+            </div>
         </div>
 
         <!-- 댓글 섹션 -->

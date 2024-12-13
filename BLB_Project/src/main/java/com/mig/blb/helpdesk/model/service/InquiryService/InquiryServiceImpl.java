@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.helpdesk.model.dao.InquiryDao;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
+import com.mig.blb.helpdesk.model.vo.InquiryAtt;
 import com.mig.blb.helpdesk.model.vo.InquiryReply;
-import com.mig.blb.member.model.vo.Member;
 
 @Service
 public class InquiryServiceImpl implements InquiryService {
@@ -33,9 +34,13 @@ public class InquiryServiceImpl implements InquiryService {
 
 	// 문의 등록
 	@Override
-	public int insertInquiry(Inquiry i) {
+	@Transactional
+	public int insertInquiry(Inquiry i, ArrayList<InquiryAtt> inquiryAtt) {
 
-		return inquiryDao.insertInquiry(sqlSession, i);
+		int result1 = inquiryDao.insertInquiry(sqlSession, i);
+		int result2 = inquiryDao.insertInquiryAtt(sqlSession, inquiryAtt);
+		
+		return result1 * result2;
 	}
 
 	@Override
@@ -43,6 +48,11 @@ public class InquiryServiceImpl implements InquiryService {
 		return inquiryDao.selectInquiry(sqlSession, ino);
 	}
 
+	@Override
+	public ArrayList<InquiryAtt> selectInquiryAtt(int ino){ 
+		return inquiryDao.selectInquiryAtt(sqlSession, ino);
+	}
+	
 	@Override
 	public int insertInquiryReply(InquiryReply ir) {
 		return inquiryDao.insertInquiryReply(sqlSession, ir);
@@ -62,4 +72,6 @@ public class InquiryServiceImpl implements InquiryService {
 	public int updateInquiry(Inquiry i) {
 		return inquiryDao.updateInquiry(sqlSession, i);
 	}
+
+	
 }

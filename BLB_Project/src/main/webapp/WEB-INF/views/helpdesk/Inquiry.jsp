@@ -22,7 +22,7 @@
         </nav>
     </header>
         <h1>1:1 문의하기</h1>
-        <form>
+        <form id="insertInquiry" name="insertInquiry" action="insert.io" method="post" enctype="multipart/form-data">
         	 <input type="hidden" value="${ sessionScope.loginUser.memberId }" name="memberId" >
             <div class="form-group">
                 <label for="inquiryType">문의유형</label>
@@ -39,13 +39,23 @@
                 <textarea id="inquiryContent" name="inquiryContent" rows="10" placeholder="문의하실 내용을 입력해주세요 (2000자 이내)"></textarea>
             </div>
             <div class="form-group">
-                <label for="file-upload">첨부파일</label>
-                <input type="file" id="file-upload" class="file-input">
-                <input type="file" id="file-upload" class="file-input">
-                <input type="file" id="file-upload" class="file-input">
-                <input type="file" id="file-upload" class="file-input">
-                <input type="file" id="file-upload" class="file-input">
-            </div>
+            	<label for="upfile">첨부파일</label>
+          		<div class="form-check row">
+          			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+          		</div>
+          		<div class="form-check row">
+          			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+          		</div>
+          		<div class="form-check row">
+          			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+          		</div>
+          		<div class="form-check row">
+          			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+          		</div>
+          		<div class="form-check row">
+          			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+          		</div>
+          	</div>
             <div class="form-group">
                 <label>
                     <input type="checkbox" id="email-notify" name="email"> 이메일로 답변 완료 시 알림 받기
@@ -60,6 +70,47 @@
             </div>
         </form>
     </div>
+    <!-- 페이지네이션 -->
+			<nav>
+				<ul class="pagination">
+					<!-- 이전 페이지 그룹 -->
+					<c:if test="${ pi.startPage > 1 }">
+						<li class="page-item">
+							<a href="list.io?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage - pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+								＜
+							</a>
+						</li>
+					</c:if>
+					
+					<!-- 페이지 번호 -->
+					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }" step="1">
+						<c:if test="${ p == pi.currentPage }">
+							<li class="page-item">
+								<a class="active" href="#">
+									${ p }
+								</a>
+							</li>
+						</c:if>
+						<c:if test="${ p != pi.currentPage }">
+							<li class="page-item">
+								<a href="list.io?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+									${ p }
+								</a>
+							</li>
+						</c:if>
+					</c:forEach>
+					
+					<!-- 다음 페이지 그룹 -->
+					<c:if test="${ pi.endPage < pi.maxPage }">
+						<li class="page-item">
+							<a href="list.io?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage + pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+								＞
+							</a>
+						</li>
+					</c:if>
+				</ul>
+			</nav>
+			<!-- 페이지네이션 end -->
     </div>
     <script src="resources/js/helpdesk/Inquiry.js"></script> <!-- JS 파일 경로 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
