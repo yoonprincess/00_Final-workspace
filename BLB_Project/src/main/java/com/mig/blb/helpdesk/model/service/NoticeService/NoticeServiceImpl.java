@@ -62,6 +62,11 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDao.deleteNoticeAtt(sqlSession, noticeAttNo);
 	}
 
+	@Override
+	public int updateNotice(Notice n) {
+		return noticeDao.updateNotice(sqlSession, n);
+	}
+
 	
 }
 

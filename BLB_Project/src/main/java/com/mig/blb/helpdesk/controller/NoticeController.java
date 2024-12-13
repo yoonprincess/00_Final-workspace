@@ -230,9 +230,9 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 
 		    // 공지사항 본문 및 제목 수정
 		    n.setNoticeNo(nno); // 공지사항 번호 설정
-		    //int result = noticeService.updateNotice(n);
+		    int result = noticeService.updateNotice(n);
 
-		    /*
+		    
 		    if (result > 0) {
 		        ar.addFlashAttribute("message", "공지사항이 성공적으로 수정되었습니다.");
 		        mv.setViewName("redirect:/noticeDetail.no?nno=" + nno);
@@ -240,7 +240,7 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 		        ar.addFlashAttribute("message", "공지사항 수정에 실패했습니다.");
 		        mv.setViewName("redirect:/errorPage");
 		    }
-			*/
+			
 		    return mv;
 		}
 		

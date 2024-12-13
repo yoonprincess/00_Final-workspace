@@ -24,5 +24,7 @@ public interface NoticeService {
 	int deleteNotice(int nno);
 
 	int deleteNoticeAtt(int noticeAttNo);
+
+	int updateNotice(Notice n);
 	
 }
