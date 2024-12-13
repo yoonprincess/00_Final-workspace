@@ -61,7 +61,7 @@
 								
 								<!-- 옵션 변경 버튼 및 모달 -->
 								<!-- Button trigger modal -->
-								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="cart-option-btn">
 									옵션 변경
 								</button>
 								
@@ -95,6 +95,12 @@
 	                            	<fmt:formatNumber pattern="###,###,###" value="${ ct.prodPrice }" />원
 	                            </p>
 	                        </div>
+
+							<select>
+								<option checked>- [필수] 옵션을 선택해 주세요. -</option>
+								<option>01. 선크림</option>
+								<option>02. 선스틱</option>
+							</select>
 	                        
 	                    </td>
 	                    <td>

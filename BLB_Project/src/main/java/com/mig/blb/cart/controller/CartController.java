@@ -1,9 +1,6 @@
 package com.mig.blb.cart.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -95,7 +92,6 @@ public class CartController {
 	 */
 	@PostMapping("deleteCheck.ct")
 	public String deleteCheckItems(@RequestParam("cartNos") String cartNos,
-								   Cart ct,
 								   HttpSession session) {
 		
 		System.out.println("Received cartNos: " + cartNos);
@@ -125,14 +121,15 @@ public class CartController {
 	
 	/*
 	@GetMapping("list.ct")
-	public String selectCartOption(@RequestParam("prodNo")int prodNo,
+	public String selectCartOption(int prodNo,
 								   Model model,
 								   HttpSession session) {
 		
-		prodNo = 105;
-		// 나중에 상품 번호 Session에 담아서 불러오기?
+		System.out.println(prodNo);
 		
-		model.addAttribute(prodNo);
+		ArrayList<Option> list = cartService.selectCartOption(prodNo);
+		
+		
 		
 		return "cart/cartListView";
 	}
@@ -140,7 +137,7 @@ public class CartController {
 	
 	/**
 	 * 장바구니 상품 옵션 변경
-	 * - 예원 12/11
+	 * - 예원 12/13
 	 * @param ct
 	 * @param session
 	 * @param model

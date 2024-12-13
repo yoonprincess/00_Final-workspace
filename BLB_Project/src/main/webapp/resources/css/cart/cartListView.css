@@ -7,7 +7,7 @@ table {
     width : 1200px;
 }
 
-/* 삭제 버튼 */
+/* X(삭제) 버튼 */
 #select-detlete {
     background-color: #7AB2D3;
     border: none;
@@ -66,7 +66,7 @@ tr>img {
 }
 
 /* 옵션 변경 모달 스타일 */
-.option-btn {
+#cart-option-btn {
     background-color: #4A628A !important;
     font-size: 12px !important;
     color: white !important;
