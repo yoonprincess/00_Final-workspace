@@ -72,11 +72,12 @@
                     
                     <form id="productForm">
                         <div class="form-group">
-                            <label for="option">옵션 선택</label>
-                            <select class="form-control" id="option">
+                            <label for="product-option">옵션 선택</label>
+                            <select class="form-control" id="product-option">
                                 <option value="">선택하세요</option>
-                                <option value="1" data-price="0">기본 옵션</option>
-                                <option value="2" data-price="5000">프리미엄 옵션 (+5,000원)</option>
+                                <option value="1" data-name="기본 옵션" data-price="0" data-stock="30">기본 옵션 (재고: 30)</option>
+                                <option value="2" data-name="프리미엄 옵션 (+5,000원)" data-price="5000" data-stock="8">프리미엄 옵션 (+5,000원) (재고: 8)</option>
+                                <option value="3" data-name="스페셜 옵션 (+8,000원)" data-price="8000" data-stock="5">스페셜 옵션 (+8,000원) (재고: 5)</option>
                             </select>
                         </div>
                         <div id="selectedOptions"></div>
@@ -136,6 +137,9 @@
                     </div>
                 </div>
             </div>
+
+
+            <!-- 상품 리뷰 -->
             <div class="tab-pane fade" id="reviews" role="tabpanel">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>상품리뷰</h2>
@@ -170,125 +174,73 @@
                         </div>
                     </div>
                 </div>
-                <div id="reviewList"></div>
-                <pre>
+                <div id="reviewList">
+                    <c:forEach var="review" items="${revList}">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <span class="review-stars">
+                                            <c:forEach var="i" begin="1" end="${review.revRating}">
+                                                <i class="fas fa-star"></i>
+                                            </c:forEach>
+                                            <c:forEach var="i" begin="1" end="${5 - review.revRating}">
+                                                <i class="far fa-star"></i>
+                                            </c:forEach>
+                                        </span>
+                                        <span class="ml-2">${review.memberId}</span>
+                                    </div>
+                                    <small class="text-muted">
+                                        <fmt:formatDate value="${review.revEnrollDate}" pattern="yyyy-MM-dd hh:mm" />
+                                    </small>
+                                </div>
+                                <p class="card-text">${review.revContent}</p>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
                 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                </pre>
-                <nav aria-label="Page navigation for reviews">
-                    <ul class="pagination justify-content-center" id="reviewPagination"></ul>
+                <!-- 리뷰 페이지네이션 -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination" id="review-page">
+                        <!-- 이전 페이지 그룹 -->
+                        <c:if test="${ revPi.startPage > 1 }">
+                            <li class="page-item">
+                                <a data-url="detail.pr?pno=${ requestScope.p.prodNo }&rpage=${ revPi.startPage - revPi.pageLimit }">
+                                    ＜
+                                </a>
+                            </li>
+                        </c:if>
+                        <!-- 페이지 번호 -->
+                        <c:forEach var="p" begin="${revPi.startPage}" end="${revPi.endPage}">
+                            <li class="page-item">
+                                <a class="${p == revPi.currentPage ? 'active' : ''}" 
+                                   data-url="detail.pr?pno=${ requestScope.p.prodNo }&rpage=${p}">
+                                   ${p}
+                                </a>
+                            </li>
+                        </c:forEach>
+                        <!-- 다음 페이지 그룹 -->
+                        <c:if test="${ revPi.endPage < revPi.maxPage }">
+                            <li class="page-item">
+                                <a data-url="detail.pr?pno=${ requestScope.p.prodNo }&rpage=${ revPi.startPage + revPi.pageLimit }">
+                                    ＞
+                                </a>
+                            </li>
+                        </c:if>
+                    </ul>
                 </nav>
             </div>
+
+
+            <!-- 상품 문의 -->
             <div class="tab-pane fade" id="qna" role="tabpanel">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>상품문의</h2>
                     <button class="btn btn-primary">문의하기</button>
                 </div>
                 <div id="qnaList"></div>
-                <pre>
                 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                </pre>
                 <nav aria-label="Page navigation for qna">
                     <ul class="pagination justify-content-center" id="qnaPagination"></ul>
                 </nav>
@@ -296,25 +248,10 @@
         </div>
     </div>
     </div>
-    
 	
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 	<!-- product JS -->
     <script src="${ pageContext.request.contextPath }/resources/js/product/product.js"></script>
-    <script>
-        $(document).ready(function() {
-            // 스크롤 이벤트 처리
-            $(window).scroll(function() {
-                var windowTop = $(window).scrollTop();
-                var imageBottom = $('.col-lg-6:first-child').offset().top + $('.col-lg-6:first-child').outerHeight();
 
-                if (windowTop > imageBottom) {
-                    $('.sticky-wrapper').addClass('is-sticky');
-                } else {
-                    $('.sticky-wrapper').removeClass('is-sticky');
-                }
-            });
-        });
-    </script>
 </body>
 </html>

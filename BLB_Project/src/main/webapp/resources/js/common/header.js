@@ -69,8 +69,7 @@ $(function() {
         $(window).on('resize', () => {
             tabsOffsetTop = productTabs.offset().top;
         });
-
-           
+              
     } else {
         // * 상품 상세보기 외 페이지: 기존 배경색 효과 유지
         $(window).scroll(function () {

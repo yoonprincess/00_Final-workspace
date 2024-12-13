@@ -279,6 +279,7 @@ body {
 
 .pagination a:hover {
     border: 1px solid #7AB2D3;
+    cursor: pointer;
 }
 
 .pagination .active {

@@ -10,8 +10,31 @@
 		<result column="REV_RATING" property="revRating"/>
 		<result column="REV_STATUS" property="revStatus"/>
 		<result column="ORDER_NO" property="orderNo"/>
-		<result column="memberId" property="MEMBER_ID"/>
+		<result column="MEMBER_ID" property="memberId"/>
 	</resultMap>
 	
+	<select id="selectReviewCount" parameterType="_int" 
+			resultType="_int">
+		SELECT COUNT(*) AS COUNT
+		  FROM TB_REVIEW R
+		  LEFT JOIN TB_PRODUCT_ORDER PO ON (R.ORDER_NO = PO.ORDER_NO)
+		  LEFT JOIN TB_OPTION OPT ON (PO.OPT_NO = OPT.OPT_NO)
+		 WHERE OPT.PROD_NO = #{prodNo}
+		   AND REV_STATUS = 'Y'
+	</select>
+	
+	<select id="selectReviewList" parameterType="_int"
+			resultMap="reviewResultSet">
+		SELECT R.REV_NO
+		     , R.REV_CONTENT
+		     , R.REV_ENROLL_DATE
+		     , R.REV_RATING
+		     , R.MEMBER_ID
+		  FROM TB_REVIEW R
+		  LEFT JOIN TB_PRODUCT_ORDER PO ON (R.ORDER_NO = PO.ORDER_NO)
+		  LEFT JOIN TB_OPTION OPT ON (PO.OPT_NO = OPT.OPT_NO)
+		 WHERE OPT.PROD_NO = #{prodNo}
+		 ORDER BY REV_NO DESC
+	</select>
 	
 </mapper>

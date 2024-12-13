@@ -43,19 +43,22 @@ $(document).ready(function () {
     let selectedOptions = [];
 
     // 옵션 선택 시 옵션 목록에 추가
-    $('#option').change(function() {
+    $('#product-option').change(function () {
         const optionId = $(this).val(); // 옵션 ID
-        const optionName = $(this).find('option:selected').text(); // 옵션 이름
+        const optionName = $(this).find('option:selected').data('name'); // 옵션 이름
         const optionPrice = parseInt($(this).find('option:selected').data('price')) || 0; // 옵션 가격
+        const optionStock = parseInt($(this).find('option:selected').data('stock')) || 0; // 옵션 재고
 
         if (optionId) {
             let existingOption = selectedOptions.find(opt => opt.id == optionId); // `==`으로 비교
             if (existingOption) {
                 existingOption.quantity++;
             } else {
-                selectedOptions.push({ id: optionId, name: optionName, price: optionPrice, quantity: 1 });
+                selectedOptions.push({ id: optionId, name: optionName, price: optionPrice, stock: optionStock, quantity: 1 });
             }
             updateSelectedOptions();
+            // 선택 값을 초기화하여 "선택하세요"로 변경
+            $(this).val("");
         }
     });
 
@@ -66,7 +69,12 @@ $(document).ready(function () {
             html += `
                 <div class="selected-option mb-2 p-2 border rounded">
                     <div class="d-flex justify-content-between align-items-center">
-                        <span>${option.name}</span>
+                        <!-- 옵션 내용 (좌측 정렬) -->
+                        <span style="flex: 1; text-align: left;">${option.name}</span>
+                        <!-- 옵션 재고 (우측 정렬, 조건부 스타일) -->
+                        <span style="flex: 1; text-align: right; color: ${option.stock < 10 ? 'red' : 'inherit'};">
+                            재고: ${option.stock}개
+                        </span>
                         <div>
                             <button type="button" class="btn btn-sm btn-outline-secondary decrease-quantity" data-id="${option.id}">-</button>
                             <span class="mx-2 option-quantity">${option.quantity}</span>
@@ -84,8 +92,9 @@ $(document).ready(function () {
     $(document).on('click', '.increase-quantity', function(e) {
         e.preventDefault(); // 기본 동작 방지
         const id = $(this).data('id'); // data-id 가져오기
+        const optionStock = parseInt($(this).find('option:selected').data('stock')) || 0; // 옵션 재고
         const option = selectedOptions.find(opt => opt.id == id); // `==`으로 비교
-        if (option) {
+        if (option && option.quantity < option.stock) {
             option.quantity++; // 수량 증가
             updateSelectedOptions();
         }
@@ -113,15 +122,6 @@ $(document).ready(function () {
         $('#totalPrice').html(total.toLocaleString() + '<small>원</small>');
     }
 
-    // 리뷰 데이터 (실제로는 서버에서 가져와야 함)
-    const reviews = [
-        { id: 1, author: 'user1', rating: 5, content: '제품이 너무 좋아요! 재구매 의사 있습니다.', date: '2024-01-10' },
-        { id: 2, author: 'user2', rating: 4, content: '전반적으로 만족스럽습니다.', date: '2024-01-09' },
-        { id: 3, author: 'user3', rating: 5, content: '피부에 잘 맞아요. 추천합니다!', date: '2024-01-08' },
-        { id: 4, author: 'user4', rating: 3, content: '보통이에요. 큰 기대는 하지 마세요.', date: '2024-01-07' },
-        { id: 5, author: 'user5', rating: 5, content: '가격 대비 품질이 훌륭해요.', date: '2024-01-06' },
-    ];
-
     // 상품문의 데이터 (실제로는 서버에서 가져와야 함)
     const qnas = [
         { id: 1, title: '배송 관련 문의', author: 'user1', content: '언제쯤 배송될까요?', date: '2024-01-10', answer: '주문 후 1-2일 내에 발송됩니다.' },
@@ -130,37 +130,6 @@ $(document).ready(function () {
         { id: 4, title: '할인 쿠폰', author: 'user4', content: '첫 구매 할인 쿠폰은 어떻게 받나요?', date: '2024-01-07', answer: '회원가입 시 자동으로 지급됩니다. 마이페이지에서 확인 가능합니다.' },
         { id: 5, title: '품절 문의', author: 'user5', content: '언제 재입고 되나요?', date: '2024-01-06', answer: '현재 생산 중이며, 이번 주 내로 재입고 예정입니다.' },
     ];
-
-    function renderReviews(page) {
-        const itemsPerPage = 3;
-        const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const paginatedReviews = reviews.slice(start, end);
-
-        let html = '';
-        paginatedReviews.forEach(review => {
-            html += `
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div>
-                                <span class="review-stars">
-                                    ${'<i class="fas fa-star"></i>'.repeat(review.rating)}
-                                    ${'<i class="far fa-star"></i>'.repeat(5 - review.rating)}
-                                </span>
-                                <span class="ml-2">${review.author}</span>
-                            </div>
-                            <small class="text-muted">${review.date}</small>
-                        </div>
-                        <p class="card-text">${review.content}</p>
-                    </div>
-                </div>
-            `;
-        });
-        $('#reviewList').html(html);
-
-        renderPagination(reviews.length, itemsPerPage, page, 'reviewPagination', renderReviews);
-    }
 
     function renderQna(page) {
         const itemsPerPage = 3;
@@ -212,14 +181,14 @@ $(document).ready(function () {
     }
 
     // 초기 렌더링
-    renderReviews(1);
+    // renderReviews(1);
     renderQna(1);
 
     // 탭 전환 시 해당 컨텐츠 렌더링
     $('#productTabs a').on('shown.bs.tab', function (e) {
         const target = $(e.target).attr("href");
         if (target === '#reviews') {
-            renderReviews(1);
+            // renderReviews(1);
         } else if (target === '#qna') {
             renderQna(1);
         }
@@ -235,13 +204,11 @@ $(document).ready(function () {
         alert('구매 페이지로 이동합니다.');
     });
 
+    
     // 탭 클릭 시 스크롤 이동
     $('#productTabs a').on('click', function (e) {
         e.preventDefault();
-
-        const targetId = $(this).attr('href'); // 클릭한 탭의 ID (#details, #reviews, #qna)
-        const tabsOffset = $('.origin-tab-location').offset().top || 0; // 탭 메뉴의 위치
-
+        let tabsOffset = $('.origin-tab-location').offset().top || 0; // 탭 메뉴의 위치
         // 부드러운 스크롤 이동
         $('html, body').animate(
             {
@@ -254,5 +221,31 @@ $(document).ready(function () {
         $(this).tab('show');
     });
 
+    // 리뷰 페이지 구현
+    $(document).on('click', '#review-page a', function (e) {
+        e.preventDefault();
+    
+        const targetUrl = $(this).data('url'); // data-url 속성에서 URL 가져오기
+        
+        // AJAX로 데이터 로드
+        $.ajax({
+            url: targetUrl,
+            method: 'GET',
+            success: function (response) {
+                // 리뷰 리스트 및 페이지네이션 갱신
+                const newReviewList = $(response).find('#reviewList').html();
+                const newPagination = $(response).find('#review-page').html();
 
+                // 새로운 데이터로 대체
+                $('#reviewList').html(newReviewList);
+                $('#review-page').html(newPagination);
+
+                // 페이지네이션 클릭된 버튼 활성화 처리
+                $(`#review-page a[data-url="${targetUrl}"]`).addClass('active');
+            },
+            error: function () {
+                console.error('리뷰 데이터를 불러오는 중 오류 발생');
+            },
+        });
+    });
 });

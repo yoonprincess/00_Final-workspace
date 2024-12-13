@@ -16,12 +16,17 @@ import com.mig.blb.common.template.Pagination;
 import com.mig.blb.product.model.service.ProductService;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
+import com.mig.blb.review.model.service.ReviewService;
+import com.mig.blb.review.model.vo.Review;
 
 @Controller
 public class ProductController {
 	
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private ReviewService reviewService;
 
 	// 상품 목록보기 요청
 	@GetMapping("list.pr")
@@ -58,6 +63,7 @@ public class ProductController {
 	// 상품 상세보기 요청
 	@GetMapping("detail.pr")
 	public String selectProduct(@RequestParam(value="pno", defaultValue="1")int pno,
+								@RequestParam(value="rpage", defaultValue="1")int revCurPage,
 								Model model) {
 		
 		int count = productService.increaseViewCount(pno);
@@ -70,8 +76,20 @@ public class ProductController {
 			// 상품 첨부이미지 조회
 			ArrayList<ProductAtt> paList = productService.selectProductAtt(pno);
 			
+			// 리뷰 목록조회
+			int revListCount = reviewService.selectReviewCount(pno);
+			int revPageLimit = 5;
+			int revBoardLimit = 5;
+			PageInfo revPi = Pagination.getPageInfo(revListCount, revCurPage, 
+												 revPageLimit, revBoardLimit);
+			ArrayList<Review> revList = reviewService.selectReviewList(revPi, pno);
+			
+			
+			// requestScope에 객체 전달
 			model.addAttribute("p", p);
 			model.addAttribute("paList", paList);
+			model.addAttribute("revList", revList);
+			model.addAttribute("revPi", revPi);
 			
 			return "product/productDetailView";
 		} else {
