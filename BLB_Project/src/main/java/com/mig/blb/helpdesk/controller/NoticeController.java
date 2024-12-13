@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -169,12 +168,13 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 		                                 HttpSession session,
 		                                 ModelAndView mv) {
 			
-			System.out.println("삭제할파일 : " + deleteFiles);
+			
 			
 			
 		    // 기존 첨부파일 목록 가져오기
 		    ArrayList<NoticeAtt> na = noticeService.selectNoticeAtt(nno);
-
+		    
+		    System.out.println("삭제할파일 : " + deleteFiles);
 		    
 		    System.out.println(na);
 		    
