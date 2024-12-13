@@ -39,7 +39,7 @@
                                     <c:forEach var="a" items="${ requestScope.na }">
                                         <div class="file-preview" data-id="${a.saveFileName}">
                                             <img src="${pageContext.request.contextPath }/${ a.savePath }${a.saveFileName}" width="400px" height="400px">
-                                            <button type="button" class="delete-btn" data-id="${a.saveFileName}">×</button>
+                                            <button type="button" class="delete-btn" data-saveFileName="${a.saveFileName}">×</button>
                                         </div>
                                     </c:forEach>
                                 </c:otherwise>
@@ -52,46 +52,96 @@
                         <p class="file-info">이미지는 최대 5개까지 업로드 가능합니다.</p>
                     </div>
                 </div>
-
-                
-            </form>
-            <form id="noticeUpdate" action="NoticeUpdate.no" method="post">
-            	<div class="button-group">
-                    <input type="hidden" name="nno" value="${ requestScope.n.noticeNo }">
-                    <button type="submit" class="btn btn-primary">수정하기</button>
-                    <button type="button" class="btn btn-danger" onclick="goBack();">목록으로</button>
-                </div>
+					<input type="hidden" name="nno" value="${requestScope.n.noticeNo }">
+                 <button type="submit" class="btn btn-primary">수정하기</button>
+                    <button type="button" class="btn btn-danger" onclick="goBack();">이전으로</button>
             </form>
         </div>
     </div>
 
     <script>
-    // 임시 삭제 저장소 배열
+ // 임시 삭제 저장소 배열 (기존 파일)
     const tempDeleteStorage = [];
+
+    // 새로 업로드된 파일 저장소
+    const newFileStorage = [];
 
     // X 버튼 클릭 시 파일 삭제 처리
     $(document).on("click", ".delete-btn", function () {
-        const fileId = $(this).data("id"); // 파일의 식별자 (saveFileName 사용)
+        const fileId = $(this).data("saveFileName"); // 파일의 식별자 (saveFileName 사용)
 
-        // 삭제 배열에 추가 (중복 방지)
-        if (!tempDeleteStorage.includes(fileId)) {
-            tempDeleteStorage.push(fileId);
+        // 삭제 대상이 기존 파일인지 새로 업로드된 파일인지 확인
+        if (newFileStorage.includes(fileId)) {
+            // 새로 업로드된 파일일 경우
+            newFileStorage.splice(newFileStorage.indexOf(fileId), 1); // 새 파일 저장소에서 제거
+        } else {
+            // 기존 파일일 경우
+            if (!tempDeleteStorage.includes(fileId)) {
+                tempDeleteStorage.push(fileId); // 임시 삭제 저장소에 추가
+            }
         }
 
         // 화면에서 미리보기 삭제
         $(this).closest(".file-preview").remove();
 
         console.log("삭제 예정 파일 리스트:", tempDeleteStorage); // 디버깅용
+        console.log("새 파일 저장소:", newFileStorage); // 디버깅용
     });
 
-    // 폼 제출 시 삭제 파일 리스트를 숨겨진 input에 추가
-    $("#noticeUpdate").on("submit", function () {
-        const hiddenInput = $("<input>")
-            .attr("type", "hidden")
-            .attr("name", "deleteFiles") // 서버에서 읽을 파라미터 이름
-            .val(tempDeleteStorage.join(",")); // 배열을 콤마로 연결
-        $(this).append(hiddenInput);
+    // 새 파일 업로드 처리
+    $(document).on("change", ".file-input", function () {
+        const fileInput = this;
+        const files = fileInput.files;
+
+        if (files.length > 0) {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const fileId = Date.now() + "_" + file.name; // 유니크한 식별자 생성
+
+                // 새 파일 미리보기 추가
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewHtml = `
+                        <div class="file-preview" data-id="${fileId}">
+                            <img src="${e.target.result}" width="400px" height="400px">
+                            <button type="button" class="delete-btn" data-id="${fileId}">×</button>
+                        </div>`;
+                    $("#filePreviewGrid").append(previewHtml);
+                };
+                reader.readAsDataURL(file);
+
+                // 새 파일 저장소에 추가
+                newFileStorage.push(fileId);
+            }
+
+            // 파일 input 초기화
+            $(fileInput).val("");
+        }
+
+        console.log("새 파일 저장소:", newFileStorage); // 디버깅용
     });
+
+    // 폼 제출 시 삭제 파일 리스트와 새 파일 리스트를 숨겨진 input에 추가
+    $("#noticeUpdate").on("submit", function () {
+        // 기존 파일 삭제 목록 추가
+        if (tempDeleteStorage.length > 0) {
+            const hiddenDeleteInput = $("<input>")
+                .attr("type", "hidden")
+                .attr("name", "deleteFiles")
+                .val(tempDeleteStorage.join(",")); // 배열을 콤마로 연결
+            $(this).append(hiddenDeleteInput);
+        }
+
+        // 새로 추가된 파일 목록 추가
+        if (newFileStorage.length > 0) {
+            const hiddenNewInput = $("<input>")
+                .attr("type", "hidden")
+                .attr("name", "newFiles")
+                .val(newFileStorage.join(",")); // 배열을 콤마로 연결
+            $(this).append(hiddenNewInput);
+        }
+    });
+
 
     // 목록으로 돌아가기
     function goBack() {
