@@ -849,5 +849,178 @@ INSERT INTO TB_PRODUCT_ATTACHMENT VALUES(SEQ_PROD_ATT_NO.NEXTVAL
                                        , 'Y'
                                        , 1);
 
+-- 상품 옵션 (기본상품) 전체 추가 --
+BEGIN
+    FOR i IN 1..36 LOOP
+        INSERT INTO TB_OPTION VALUES(
+            SEQ_OPT_NO.NEXTVAL,
+            '기본 상품', -- 옵션 이름
+            NULL, -- 옵션 값
+            0, -- 추가금액
+            300, -- 재고수량
+            i -- PROD_NO
+        );
+    END LOOP;
+    COMMIT;
+END;
+/
+
+BEGIN
+    FOR i IN 1..36 LOOP
+        INSERT INTO TB_OPTION VALUES(
+            SEQ_OPT_NO.NEXTVAL,
+            '추가 옵션1', -- 옵션 이름
+            '50ml', -- 옵션 값
+            5000, -- 추가금액
+            5, -- 재고수량
+            i -- PROD_NO
+        );
+    END LOOP;
+    COMMIT;
+END;
+/
+
+-- 주문 샘플 데이터 --
+BEGIN
+    FOR order_no IN 1..100 LOOP
+        INSERT INTO TB_ORDER (
+            ORDER_NO, 
+            RCVR_NAME, 
+            RCVR_PHONE, 
+            RCVR_ADDRESS, 
+            DLVR_REQ_MESSAGE, 
+            DLVR_STATUS, 
+            DLVR_FEE, 
+            DLVR_COMPANY, 
+            DISPATCH_DATE, 
+            COMPLETE_DATE, 
+            ORDER_TOTAL_AMT, 
+            PAYMENT_CODE, 
+            PAYMENT_METHOD, 
+            ORDER_DATE, 
+            REFUND_DATE, 
+            REFUND_REASON, 
+            MEMBER_ID
+        ) VALUES (
+            SEQ_ORDER_NO.NEXTVAL, -- ORDER_NO 시퀀스로 생성
+            '수령자' || TO_CHAR(order_no, 'FM000'), -- RCVR_NAME
+            '010' || LPAD(TRUNC(DBMS_RANDOM.VALUE(10000000, 99999999)), 8, '0'), -- RCVR_PHONE
+            '서울특별시 강남구 역삼동 ' || TO_CHAR(order_no, 'FM000') || '번지', -- RCVR_ADDRESS
+            CASE 
+                WHEN MOD(order_no, 5) = 0 THEN '배송 요청 사항 없음'
+                WHEN MOD(order_no, 5) = 1 THEN '부재 시 경비실에 맡겨주세요.'
+                WHEN MOD(order_no, 5) = 2 THEN '배송 전 연락 부탁드립니다.'
+                ELSE NULL
+            END, -- DLVR_REQ_MESSAGE
+            '배송대기', -- DLVR_STATUS
+            2500, -- DLVR_FEE
+            CASE 
+                WHEN MOD(order_no, 3) = 0 THEN 'CJ대한통운'
+                WHEN MOD(order_no, 3) = 1 THEN '한진택배'
+                ELSE '로젠택배'
+            END, -- DLVR_COMPANY
+            CASE 
+                WHEN MOD(order_no, 4) = 0 THEN SYSDATE + TRUNC(DBMS_RANDOM.VALUE(1, 5)) -- DISPATCH_DATE
+                ELSE NULL
+            END, 
+            CASE 
+                WHEN MOD(order_no, 4) = 0 THEN SYSDATE + TRUNC(DBMS_RANDOM.VALUE(6, 10)) -- COMPLETE_DATE
+                ELSE NULL
+            END, 
+            TRUNC(DBMS_RANDOM.VALUE(30000, 150000)), -- ORDER_TOTAL_AMT
+            CASE 
+                WHEN MOD(order_no, 4) = 0 THEN 'PAYCODE' || TO_CHAR(order_no, 'FM000')
+                ELSE NULL
+            END, -- PAYMENT_CODE
+            CASE 
+                WHEN MOD(order_no, 2) = 0 THEN '카드결제'
+                ELSE '계좌이체'
+            END, -- PAYMENT_METHOD
+            SYSDATE - TRUNC(DBMS_RANDOM.VALUE(0, 30)), -- ORDER_DATE
+            CASE 
+                WHEN MOD(order_no, 10) = 0 THEN SYSDATE + TRUNC(DBMS_RANDOM.VALUE(1, 5)) -- REFUND_DATE
+                ELSE NULL
+            END, 
+            CASE 
+                WHEN MOD(order_no, 10) = 0 THEN '상품 파손으로 인한 환불 요청'
+                ELSE NULL
+            END, -- REFUND_REASON
+            CASE 
+                WHEN MOD(order_no, 3) = 0 THEN 'user01'
+                WHEN MOD(order_no, 3) = 1 THEN 'user02'
+                ELSE 'user03'
+            END -- MEMBER_ID
+        );
+    END LOOP;
+    COMMIT;
+END;
+/
+
+
+-- 상품 리뷰 샘플 데이터 --
+BEGIN
+    FOR order_no IN (SELECT DISTINCT ORDER_NO FROM TB_ORDER) LOOP
+        FOR opt_no IN 50..72 LOOP
+            -- ORDER_NO에 매칭되는 MEMBER_ID 가져오기
+            DECLARE
+                v_member_id VARCHAR2(20);
+            BEGIN
+                -- 매칭되는 MEMBER_ID 가져오기
+                SELECT MEMBER_ID
+                INTO v_member_id
+                FROM TB_ORDER
+                WHERE ORDER_NO = order_no.ORDER_NO
+                AND ROWNUM = 1; -- 하나의 MEMBER_ID만 가져옴
+                
+                -- 매칭된 경우에만 데이터 생성
+                IF v_member_id IS NOT NULL THEN
+                    INSERT INTO TB_REVIEW VALUES(
+                        SEQ_REV_NO.NEXTVAL,
+                        '제품이 너무 좋아요! 재구매 의사 있습니다.',
+                        SYSDATE,
+                        5, -- 별점 정보
+                        'Y', -- 리뷰 상태
+                        order_no.ORDER_NO, -- ORDER_NO
+                        v_member_id -- MEMBER_ID
+                    );
+
+                    INSERT INTO TB_PRODUCT_ORDER VALUES(
+                        SEQ_SERIAL_NO.NEXTVAL,
+                        1, -- 주문 수량
+                        38000, -- 총 금액
+                        order_no.ORDER_NO, -- ORDER_NO
+                        opt_no -- OPT_NO
+                    );
+                END IF;
+            EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    -- 매칭되지 않는 경우 처리하지 않음
+                    NULL;
+            END;
+        END LOOP;
+    END LOOP;
+    COMMIT; -- 변경 사항 저장
+END;
+/
+
+INSERT INTO TB_REVIEW VALUES(
+                     SEQ_REV_NO.NEXTVAL
+                   , '제품이 너무 좋아요! 재구매 의사 있습니다.' || id_num
+                   , DEFAULT
+                   , 5 -- 별점 정보
+                   , DEFAULT
+                   , order_no -- ORDER_NO
+                   , 'user' || id_num  -- MEMBER_ID
+                   );
+INSERT INTO TB_PRODUCT_ORDER VALUES(
+                     SEQ_SERIAL_NO.NEXTVAL
+                   , id_num -- 주문 수량
+                   , 38000 -- 총 금액
+                   , order_no -- ORDER_NO
+                   , opt_no -- OPT_NO
+                   );
+
+
+
 
 COMMIT;
