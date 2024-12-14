@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mig.blb.cart.model.service.CartService;
 import com.mig.blb.cart.model.vo.Cart;
@@ -136,6 +137,72 @@ public class CartController {
 		}
 		
 		return "redirect:/list.ct";
+	}
+	
+	// 장바구니 상품 옵션 변경
+	/*
+	@PostMapping("updateOption.ct")
+	public String updateCartOption(int cartNo,
+								   int optNo,
+								   HttpSession session) {
+		
+		System.out.println("옵션 바꾼 장바구니 번호 : " + cartNo);
+		System.out.println("바꿀 옵션 번호 : " + optNo);
+		
+		if (optNo == -1) {	// 옵션이 선택되지 않았을 때
+
+			session.setAttribute("errorMsg", "옵션을 선택해 주세요.");
+		    return "redirect:/list.ct";
+		 }
+		//> 나중에 js로 구현하기
+		
+		Map<String, Integer> params = new HashMap<>();
+		params.put("cartNo", cartNo);
+		params.put("newOptNo", optNo);
+		
+		int result = cartService.updateCartOption(params);
+		
+		if(result > 0) {
+			
+			session.setAttribute("alertMsg", "해당 상품의 옵션이 성공적으로 변경되었습니다.");
+			
+		} else {
+			
+			session.setAttribute("errorMsg", "해당 상품 옵션 변경에 실패하였습니다.");
+		}
+		
+		return "redirect:/list.ct";
+	}
+	*/
+	
+	// 장바구니 수량 변경
+	@PostMapping("updateQty.ct")
+	@ResponseBody
+	public Map<String, Object> updateCartQty(@RequestParam("cartNo") int cartNo,
+											 @RequestParam("currentQty") int currentQty,
+											 @RequestParam("change") int change) {
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		// 새로운 수량 계산
+		int updatedQty = currentQty + change;
+		
+		if(updatedQty <= 0) {
+			
+			response.put("success", false);
+			response.put("message", "수량은 1개 이상이어야 합니다.");
+			return response;
+		}
+		
+		int result = cartService.updateCartQty(cartNo, updatedQty);
+
+		if(result > 0) {
+			
+			response.put("success", true);
+			response.put("updqteQty", updatedQty);
+		}
+
+		return response;
 	}
 	
 }

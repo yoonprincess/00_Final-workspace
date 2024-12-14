@@ -47,5 +47,22 @@
 		  FROM TB_CART
 		 WHERE CART_NO IN (${cartNo})
 	</delete>
+	
+	<!-- 장바구니 수량 변경 -->
+	<update id="updateCartQuantity" parameterType="map">
+	    UPDATE TB_CART
+	    SET CART_QTY = #{updatedQty}
+	    WHERE CART_NO = #{cartNo}
+	</update>
+	
+	<!-- 장바구니 상품 선택 옵션 변경 -->
+	<!-- 
+	<update id="updateCartOption"
+			parameterType="map">
+		UPDATE TB_CART
+		  SET OPT_NO = #{optNo}
+		WHERE CART_NO = #{cartNo}
+	</update>
+	-->
 	 
 </mapper>

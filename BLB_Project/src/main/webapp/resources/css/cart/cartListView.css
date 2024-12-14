@@ -15,6 +15,13 @@ table {
     padding: 3px;
 }
 
+/* 장바구니가 비었을 때 */
+#empty-cart {
+    padding: 500px;
+    height: 1000px;
+    text-align: center;
+}
+
 /* 상품 정보 영역 */
 .product-info {
     padding: 15px;

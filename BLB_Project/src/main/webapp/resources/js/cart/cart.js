@@ -76,3 +76,62 @@ function checkDelete() {
     $checkDeleteForm.submit();
 }
 
+// 옵션 변경 셀렉트박스
+// function updateCartOption() {
+
+//     // select box Name로 접근하여 선택된 값 읽기
+//     const $selectedForm = ("#sel-opt-form");
+//     const $selectedOpt = $(".sel-opt:selected");
+
+//     $selectedOpt.each(function() {
+
+//         console.log("옵션 값:", $(this).val()); // 현재 요소의 값
+        
+//     })
+
+//     // form에 hidden input으로 값 추가
+//     if ($("#hiddenNewOptNo").length === 0) {
+//         $("<input>")
+//             .attr({
+//                 type: "hidden",
+//                 id: "hiddenNewOptNo",
+//                 name: "newOptNo",
+//                 value: newOptNo
+//             })
+//             .appendTo("#selectNewOpt");
+//     } else {
+//         $("#hiddenNewOptNo").val(newOptNo);
+//     }
+//     $("#selectNewOpt").submit();
+// }
+
+
+// 장바구니 수량 변경
+function updateQty(cartNo, currentQty, change) {
+
+    $.ajax({
+        url: "updateQty.ct",
+        method: "POST",
+        data: {
+            cartNo : cartNo,
+            currentQty: currentQty, // 현재 수량 전달
+            change: change  // -1(감소), 1(증가) 값 전달
+        },
+        success: function(response) {
+            if(response.success) {
+                // alert("수량이 변경되었습니다.");
+                location.reload();  // 페이지 새로고침
+            } else {
+                alert(response.message || "수량 변경에 실패하였습니다.");
+            }
+        },
+        error: function() {
+            alert("서버 오류가 발생했습니다. 다시 시도해 주세요.");
+        }
+
+    });
+
+    console.log("cartNo:", cartNo);
+console.log("currentQty:", currentQty);
+console.log("change:", change);
+}

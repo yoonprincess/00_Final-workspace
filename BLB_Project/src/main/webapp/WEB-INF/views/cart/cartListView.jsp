@@ -50,7 +50,11 @@
             <tbody>
 				<c:if test="${ empty list }">
 					<tr>
-						<td colspan="6">장바구니가 비었습니다.</td>
+						<td colspan="6">
+							<div>
+								장바구니가 비었습니다.
+							</div>
+						</td>
 					</tr>
 				</c:if>
 				<c:forEach var="ct" items="${ requestScope.list }">
@@ -68,24 +72,29 @@
 	                        </div>
 
 							<!-- 옵션 선택 -->
-							<select class="sel-prod-opt"
-									name="newOptNo"
-									data-cart-no="${ ct.cartNo }">
+							<form id="sel-opt-form"
+								  action="${ pageContext.request.contextPath }/updateOption.ct"
+								  method="post">
+								<input type="hidden" name="cartNo" value="${ ct.cartNo }">
 
-								<option selected>- [필수] 옵션을 선택해 주세요. -</option>
-								<c:forEach var="opt" items="${ ct.optionList }">
-									<option value="${ opt.optNo }">${ opt.optName }</option>
-								</c:forEach>
-								
-							</select>
+								  <select class="sel-prod-opt"
+										  name="newOptNo"
+										  onchange="updateCartOption();">
+									  <option value="-1">- [필수] 옵션을 선택해 주세요. -</option>
+									  <c:forEach var="opt" items="${ ct.optionList }">
+										  <option class="sel-opt" value="${ opt.optNo }">${ opt.optName }</option>
+									  </c:forEach>
+								  </select>
+
+							</form>
 
 	                    </td>
 	                    <td>
 	                    	
 	                        <div class="item-quantity">
-	                            <span class="quantity-decrease">-</span>
-	                            <input type="text" value="1" class="quantity-input" readonly>
-	                            <span class="quantity-increase">+</span>
+	                            <span class="quantity-decrease" onclick="updateQty(${ ct.cartNo }, ${ ct.cartQty }, -1)">-</span>
+	                            <input type="text" value="${ ct.cartQty }" class="quantity-input" readonly>
+	                            <span class="quantity-increase" onclick="updateQty(${ ct.cartNo }, ${ ct.cartQty }, 1)">+</span>
 	                        </div>
 	                        
 	                    </td>

@@ -1,6 +1,7 @@
 package com.mig.blb.cart.model.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,15 @@ public class CartServiceImpl implements CartService {
 	public int deleteCheckItems(String cartNos) {
 		return cartDao.deleteCheckItems(sqlSession, cartNos);
 	}
+
+	@Override
+	public int updateCartQty(int cartNo, int updatedQty) {
+		return cartDao.updateCartQty(sqlSession, cartNo, updatedQty);
+	}
+
+//	@Override
+//	public int updateCartOption(Map<String, Integer> params) {
+//		return cartDao.updateCartOption(sqlSession, params);
+//	}
 
 }

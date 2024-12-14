@@ -1,6 +1,7 @@
 package com.mig.blb.cart.model.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.mig.blb.cart.model.vo.Cart;
 
@@ -18,5 +19,12 @@ public interface CartService {
 
 	// 장바구니 체크박스 선택 삭제
 	int deleteCheckItems(String cartNos);
+
+	// 장바구니 수량 변경
+	int updateCartQty(int cartNo, int updatedQty);
+
+	// 장바구니 선택 옵션 변경
+//	int updateCartOption(Map<String, Integer> params);
+
 	
 }
