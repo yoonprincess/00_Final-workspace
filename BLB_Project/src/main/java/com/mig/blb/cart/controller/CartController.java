@@ -1,6 +1,8 @@
 package com.mig.blb.cart.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,12 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.mig.blb.cart.model.service.CartService;
 import com.mig.blb.cart.model.vo.Cart;
 import com.mig.blb.member.model.vo.Member;
+import com.mig.blb.option.model.service.OptionService;
+import com.mig.blb.option.model.vo.Option;
 
 @Controller
 public class CartController {
 	
 	@Autowired
 	public CartService cartService;
+	
+	@Autowired
+	public OptionService optionService;
 	
 	/**
 	 * 장바구니 목록 조회
@@ -44,12 +51,23 @@ public class CartController {
 		    String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
 	    	
 	    	// 회원아이디로 장바구니 목록 조회
-	    	ArrayList<Cart> list = cartService.selectCartList(memberId);
+	    	ArrayList<Cart> cartList = cartService.selectCartList(memberId);
 	    	
-	    	System.out.println(list);
+//	    	System.out.println("장바구니 목록 : " + cartList);
+	    	
+	    	for(Cart cart : cartList) {
+	    		
+	    		int prodNo = cart.getProdNo();
+//	    		System.out.println(prodNo);
+	    		
+	    		ArrayList<Option> optionList = optionService.selectCartOption(prodNo);
+	    		cart.setOptionList(optionList);
+	    		
+//	    		System.out.println(optionList);
+	    	}
 	    	
 	    	// 장바구니 목록 조회 페이지를 포워딩
-	    	model.addAttribute("list", list);
+	    	model.addAttribute("list", cartList);
 	    	
 	    	return "cart/cartListView";
 	    }
@@ -68,14 +86,15 @@ public class CartController {
 	public String deleteCartOne(int cartNo,
 							 	Model model,
 							 	HttpSession session) {
-		System.out.println("장바구니 번호 :" + cartNo);
+		
+//		System.out.println("장바구니 번호 :" + cartNo);
 		
 		int result = cartService.deleteCartOne(cartNo);
-		// 지워도 됨? session도?
+
 		if(result > 0) {
 			
 			session.setAttribute("alertMsg", "장바구니 삭제 성공");
-			// 구현 후 지우기
+
 		} else {
 			
 			session.setAttribute("errorMsg", "해당 상품 삭제를 실패했습니다.");
@@ -94,7 +113,7 @@ public class CartController {
 	public String deleteCheckItems(@RequestParam("cartNos") String cartNos,
 								   HttpSession session) {
 		
-		System.out.println("Received cartNos: " + cartNos);
+//		System.out.println("Received cartNos: " + cartNos);
 		
 //        String[] cartNoArr = cartNos.split(","); // 문자열을 배열로 변환
         
@@ -118,51 +137,5 @@ public class CartController {
 		
 		return "redirect:/list.ct";
 	}
-	
-	/*
-	@GetMapping("list.ct")
-	public String selectCartOption(int prodNo,
-								   Model model,
-								   HttpSession session) {
-		
-		System.out.println(prodNo);
-		
-		ArrayList<Option> list = cartService.selectCartOption(prodNo);
-		
-		
-		
-		return "cart/cartListView";
-	}
-	*/
-	
-	/**
-	 * 장바구니 상품 옵션 변경
-	 * - 예원 12/13
-	 * @param ct
-	 * @param session
-	 * @param model
-	 * @return
-	 */
-	/*
-	@PostMapping("updateOption.ct")
-	public String updateCartOption(Cart ct,
-								   HttpSession session,
-								   Model model) {
-		
-		int result = cartService.updateCartOption(ct);
-		
-		if(result > 0) {
-			
-			session.setAttribute("alertMsg", "옵션이 성공적으로 변경되었습니다.");
-			return "redirect:/cart/list.ct";
-		} else {
-			
-			session.setAttribute("errorMssg", "옵션 변경에 실패하였습니다.");
-			return "redirect:/cart/list.ct";
-		}
-	}
-	*/
-	
-
 	
 }

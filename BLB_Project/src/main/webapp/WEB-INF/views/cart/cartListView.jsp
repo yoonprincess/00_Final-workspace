@@ -35,12 +35,15 @@
                     <th>전체선택</th>
                     <th colspan="3"></th>
                     <th class="delete-btn-td">
-
-						<form id="checkDeleteForm" action="${ pageContext.request.contextPath }/deleteCheck.ct" method="post">
-							<input type="hidden" name="cartNos" id="delCartNos">
+						<!-- 선택 삭제 버튼 -->
+						<form id="checkDeleteForm"
+							  action="${ pageContext.request.contextPath }/deleteCheck.ct"
+							  method="post">
+							<input type="hidden"
+								   name="cartNos"
+								   id="delCartNos">
 						</form>
 						<button type="button" id="select-detlete" onclick="checkDelete();">선택 삭제</button>
-
 					</th>
                 </tr>
             </thead>
@@ -58,50 +61,24 @@
 	                        <div class="product-detail">
 	                            <p class="product-title">${ ct.prodName }</p>
 	                            <p class="product-option">[옵션: ${ ct.optName }]</p>
-								
-								<!-- 옵션 변경 버튼 및 모달 -->
-								<!-- Button trigger modal -->
-								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="cart-option-btn">
-									옵션 변경
-								</button>
-								
-								<!-- Modal -->
-								<form action="${ pageContext.request.contextPath }/updateCartOption.ct">
-
-									<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-										<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-											<h1 class="modal-title fs-5" id="staticBackdropLabel">옵션 선택</h1>
-											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-												<select>
-													<option>${ ct.optName }</option>
-												</select>
-											</div>
-											<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-											<button type="button" class="btn btn-primary">선택 완료</button>
-											</div>
-										</div>
-										</div>
-									</div>
-								</form>
-								<!-- 옵션 변경 모달창 끝 -->
-
 	                            <p class="product-quantity">수량: ${ ct.cartQty }</p>
 	                            <p class="product-price">
 	                            	<fmt:formatNumber pattern="###,###,###" value="${ ct.prodPrice }" />원
 	                            </p>
 	                        </div>
 
-							<select>
-								<option checked>- [필수] 옵션을 선택해 주세요. -</option>
-								<option>01. 선크림</option>
-								<option>02. 선스틱</option>
+							<!-- 옵션 선택 -->
+							<select class="sel-prod-opt"
+									name="newOptNo"
+									data-cart-no="${ ct.cartNo }">
+
+								<option selected>- [필수] 옵션을 선택해 주세요. -</option>
+								<c:forEach var="opt" items="${ ct.optionList }">
+									<option value="${ opt.optNo }">${ opt.optName }</option>
+								</c:forEach>
+								
 							</select>
-	                        
+
 	                    </td>
 	                    <td>
 	                    	

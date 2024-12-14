@@ -1,6 +1,7 @@
 package com.mig.blb.cart.model.dao;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -25,10 +26,5 @@ public class CartDao {
 	public int deleteCheckItems(SqlSessionTemplate sqlSession, String cartNos) {
 		return sqlSession.delete("cartMapper.deleteCheckItems", cartNos);
 	}
-
-//	public int updateCartOption(SqlSessionTemplate sqlSession, Cart ct) {
-//		return sqlSession.update("cartMapper.updateCartOption", ct);
-//	}
-
 
 }

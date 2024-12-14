@@ -20,12 +20,13 @@
 			parameterType="string"
 			resultMap="cartResultSet">
 		SELECT C.CART_NO
+			 , P.PROD_NO
 		     , P.PROD_NAME
 		     , O.OPT_NAME
 		     , C.CART_QTY
 		     , P.PROD_PRICE
 		  FROM TB_CART C
-		  LEFT JOIN TB_PRODUCT P USING(PROD_NO)
+		  LEFT JOIN TB_PRODUCT P ON (C.PROD_NO = P.PROD_NO)
 		  LEFT JOIN TB_OPTION O USING(OPT_NO)
 		 WHERE MEMBER_ID = #{memberId}
 		 ORDER BY CART_NO DESC
@@ -47,14 +48,4 @@
 		 WHERE CART_NO IN (${cartNo})
 	</delete>
 	 
-	<!-- 장바구니 옵션 변경 -->
-	<!-- 
-	<update id="updateCartOption"
-			parameterType="_int">
-		UPDATE TB_CART
-		  SET OPT_NO = #{optNo}
-		WHERE CART_NO = #{cartNo}
-	</update>
-	 -->
-
 </mapper>

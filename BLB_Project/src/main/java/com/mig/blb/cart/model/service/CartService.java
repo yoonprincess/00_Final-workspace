@@ -19,9 +19,4 @@ public interface CartService {
 	// 장바구니 체크박스 선택 삭제
 	int deleteCheckItems(String cartNos);
 	
-	// 장바구니 옵션 변경
-//	int updateCartOption(Cart ct);
-	
-	
-	
 }

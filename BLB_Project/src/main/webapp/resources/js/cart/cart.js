@@ -4,9 +4,9 @@ $(function() {
     // 전체 선택 체크/해제
     $("#check-all").on("change", function() {
 
-        const isChecked = $(this).is(":checked");
+        const isChecked = $(this).is(":checked");   // 전체선택 체크박스 선택 여부
 
-        $(".check-one").prop("checked", isChecked);
+        $(".check-one").prop("checked", isChecked); // 선택 여부에 따른 요소의 속성을 가져옴
     });
     // 개별 상품 체크
     $(".check-one").on("change", function() {
@@ -74,5 +74,5 @@ function checkDelete() {
     $("#delCartNos").val(cartNos);
 
     $checkDeleteForm.submit();
-
 }
+

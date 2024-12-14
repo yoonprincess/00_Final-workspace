@@ -65,17 +65,14 @@ tr>img {
     font-weight: bold;
 }
 
-/* 옵션 변경 모달 스타일 */
-#cart-option-btn {
-    background-color: #4A628A !important;
-    font-size: 12px !important;
-    color: white !important;
-    border: none !important;
-    padding: 5px 10px !important;
-}
-
-.option-btn:hover {
-    background-color: #4A628A !important;
+/* 옵션 선택 영역 */
+#optNo {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin: 5px 0; /* 위아래 간격 추가 */
 }
 
 /* 수량 조절 컨트롤 */
