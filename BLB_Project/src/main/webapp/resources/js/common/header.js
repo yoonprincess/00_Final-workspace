@@ -85,12 +85,12 @@ $(function() {
     // 데스크톱: 마우스 오버로 드롭다운 메뉴 표시
     $(".custom-dropdown").on("mouseenter", function () {
         if (window.innerWidth >= 768) {
-            $(this).find(".custom-dropdown-menu").css({ display: "block", opacity: 1, transform: "translateY(0)" });
+            $(this).find(".custom-dropdown-menu").css({ opacity: 1, transform: "translateY(0)" });
         }
     });
     $(".custom-dropdown").on("mouseleave", function () {
         if (window.innerWidth >= 768) {
-            $(this).find(".custom-dropdown-menu").css({ display: "none", opacity: 0, transform: "translateY(5px)" });
+            $(this).find(".custom-dropdown-menu").css({ opacity: 0, transform: "translateY(5px)" });
         }
     });
     // 모바일: 클릭 시 드롭다운 메뉴 열기/닫기
@@ -109,8 +109,11 @@ $(function() {
     });
     // 메뉴 외부 클릭 시 닫기
     $(document).on("click", function (e) {
-        if (!$(e.target).closest(".custom-dropdown").length) {
-            $(".custom-dropdown-menu").slideUp();
+        // 모바일 화면 크기에서만 적용 (768px 이하)
+        if (window.innerWidth < 768) {
+            if (!$(e.target).closest(".custom-dropdown").length) {
+                $(".custom-dropdown-menu").slideUp();
+            }
         }
     });
 
@@ -118,6 +121,17 @@ $(function() {
     $('.navbar-toggler').click(function () {
         $(this).toggleClass('active');
         $('.navbar').toggleClass('bg-white');
+    });
+
+    // * search 버튼 스크립트
+    $("#searchIcon").click(function () {
+        const searchBox = $("#searchBox");
+        searchBox.toggleClass("show"); // 검색창 확장/축소
+        if (searchBox.hasClass("show")) {
+            searchBox.focus(); // 입력창에 포커스
+        } else {
+            searchBox.blur(); // 포커스 해제
+        }
     });
 
     // * 위로가기 버튼 스크립트

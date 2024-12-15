@@ -47,11 +47,15 @@
 
             <!-- 메뉴 버튼 (토글러 좌측) -->
             <div class="ml-auto d-flex align-items-center order-md-2">
-                <a class="menu-btn" href="#">
-                    <span class="material-symbols-outlined menu-icon">
-                        search
-                    </span>
-                </a>
+                <!-- 검색 버튼 -->
+                <div class="search-container d-flex align-items-center">
+                    <input type="text" id="searchBox" class="form-control search-box" placeholder="검색어를 입력하세요">
+                    <a class="menu-btn" id="searchIcon">
+                        <span class="material-symbols-outlined menu-icon">search</span>
+                    </a>
+                </div>
+
+                <!-- 찜 -->
                 <a class="menu-btn" href="#">
                     <span class="material-symbols-outlined menu-icon">
                         favorite
