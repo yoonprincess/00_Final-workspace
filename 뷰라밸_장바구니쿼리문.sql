@@ -59,8 +59,35 @@ SELECT OPT_NO
  WHERE PROD_NO = #{prodNo}
  ORDER BY OPT_NO DESC
  
+-- 6. 장바구니 수량 및 가격 변경
+UPDATE TB_CART
+   SET CART_QTY = #{updatedQty}
+ WHERE CART_NO = #{cartNo}
+ 
 -- 옵션 변경
 UPDATE TB_CART
   SET OPT_NO = ?
 WHERE CART_NO = ?
+
+-- 장바구니 랜덤 부여 --
+BEGIN
+    FOR cart_no IN 1..10 LOOP
+        INSERT INTO TB_CART (
+            CART_NO, 
+            MEMBER_ID, 
+            PROD_NO, 
+            OPT_NO, 
+            CART_QTY
+        ) VALUES (
+            SEQ_CART_NO.NEXTVAL, -- CART_NO는 시퀀스로 생성
+            'admin', -- MEMBER_ID는 항상 'admin'
+            TRUNC(DBMS_RANDOM.VALUE(1, 36)), -- PROD_NO (1부터 36 사이 랜덤 값)
+            TRUNC(DBMS_RANDOM.VALUE(1, 72)), -- OPT_NO (1부터 72 사이 랜덤 값)
+            TRUNC(DBMS_RANDOM.VALUE(1, 10)) -- CART_QTY (1부터 10 사이 랜덤 값)
+        );
+    END LOOP;
+
+    COMMIT;
+END;
+/
 

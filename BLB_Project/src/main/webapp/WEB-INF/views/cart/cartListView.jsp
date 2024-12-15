@@ -78,8 +78,7 @@
 								<input type="hidden" name="cartNo" value="${ ct.cartNo }">
 
 								  <select class="sel-prod-opt"
-										  name="newOptNo"
-										  onchange="updateCartOption();">
+										  name="newOptNo">
 									  <option value="-1">- [필수] 옵션을 선택해 주세요. -</option>
 									  <c:forEach var="opt" items="${ ct.optionList }">
 										  <option class="sel-opt" value="${ opt.optNo }">${ opt.optName }</option>
@@ -90,15 +89,18 @@
 
 	                    </td>
 	                    <td>
-	                    	
+							<!-- 수량 증감 -->
 	                        <div class="item-quantity">
-	                            <span class="quantity-decrease" onclick="updateQty(${ ct.cartNo }, ${ ct.cartQty }, -1)">-</span>
+	                            <span class="quantity-decrease" onclick="updateQty(${ ct.cartNo }, ${ ct.cartQty }, ${ ct.prodPrice }, -1)">-</span>
 	                            <input type="text" value="${ ct.cartQty }" class="quantity-input" readonly>
-	                            <span class="quantity-increase" onclick="updateQty(${ ct.cartNo }, ${ ct.cartQty }, 1)">+</span>
+	                            <span class="quantity-increase" onclick="updateQty(${ ct.cartNo }, ${ ct.cartQty }, ${ ct.prodPrice }, 1)">+</span>
 	                        </div>
-	                        
 	                    </td>
-	                    <td class="product-price" id="product-total-price">21,800원</td>
+	                    <td class="product-price">
+							<span id="update-price-${ct.cartNo}">
+								<fmt:formatNumber pattern="###,###,###" value="${ct.prodPrice}" />원
+							</span>
+						</td>
 	                    <td class="delete-btn-td">
 	                    	<button class="btn-delete" onclick="deleteCartItem(${ ct.cartNo });">X</button>
 	                    </td>
@@ -107,6 +109,7 @@
             </tbody>
         </table>
         
+		<!-- 1개의 상품만 삭제할 때 form -->
         <form id="deleteCart" action="${ pageContext.request.contextPath }/delete.ct" method="post">
 		    <input type="hidden" name="cartNo" id="delCartNo">
 		</form>
@@ -123,6 +126,7 @@
                 </tr>
             </thead>
             <tbody>
+				<!-- 장바구니 총 가격 -->
                 <tr>
                     <td>97,600원</td>
                     <td>+</td>

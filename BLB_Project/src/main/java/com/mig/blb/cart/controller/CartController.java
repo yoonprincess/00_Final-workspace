@@ -179,20 +179,14 @@ public class CartController {
 	@PostMapping("updateQty.ct")
 	@ResponseBody
 	public Map<String, Object> updateCartQty(@RequestParam("cartNo") int cartNo,
-											 @RequestParam("currentQty") int currentQty,
-											 @RequestParam("change") int change) {
+											 @RequestParam("updatedQty") int updatedQty) {
+		
+		System.out.println(cartNo);
+		System.out.println(updatedQty);
+//		System.out.println(currentQty);
+//		System.out.println(change);
 		
 		Map<String, Object> response = new HashMap<>();
-		
-		// 새로운 수량 계산
-		int updatedQty = currentQty + change;
-		
-		if(updatedQty <= 0) {
-			
-			response.put("success", false);
-			response.put("message", "수량은 1개 이상이어야 합니다.");
-			return response;
-		}
 		
 		int result = cartService.updateCartQty(cartNo, updatedQty);
 
