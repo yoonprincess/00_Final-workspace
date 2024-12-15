@@ -103,6 +103,63 @@ INSERT INTO TB_MEMBER (
                                             DEFAULT,
                                             'BABY'
                                         );
+                                        
+INSERT INTO TB_MEMBER (
+                        MEMBER_ID,
+                        MEMBER_NAME,
+                        MEMBER_PWD,
+                        PHONE,
+                        EMAIL,
+                        BIRTHDATE,
+                        CREATE_DATE,
+                        DELETE_DATE,
+                        STATUS,
+                        TOTAL_POINTS,
+                        CURRENT_POINTS,
+                        GRADE_NAME
+                    ) 
+                    VALUES (
+                        'user02',
+                        '이유저',
+                        '$2a$10$10sE..DFkXAKR0br6NBeAu1i3bNswzZq2sA34zdq9244HK1cai2b2', -- 'password01!'
+                        '01022222222',
+                        'user02@gmail.com',
+                        TO_DATE('2000-01-11', 'YYYY-MM-DD'), 
+                        DEFAULT,
+                        NULL,
+                        'Y',
+                        DEFAULT,
+                        DEFAULT,
+                        'BABY'
+                    );
+INSERT INTO TB_MEMBER (
+                        MEMBER_ID,
+                        MEMBER_NAME,
+                        MEMBER_PWD,
+                        PHONE,
+                        EMAIL,
+                        BIRTHDATE,
+                        CREATE_DATE,
+                        DELETE_DATE,
+                        STATUS,
+                        TOTAL_POINTS,
+                        CURRENT_POINTS,
+                        GRADE_NAME
+                    ) 
+                    VALUES (
+                        'user03',
+                        '삼유저',
+                        '$2a$10$10sE..DFkXAKR0br6NBeAu1i3bNswzZq2sA34zdq9244HK1cai2b2', -- 'password01!'
+                        '01022222222',
+                        'user03@gmail.com',
+                        TO_DATE('2000-01-11', 'YYYY-MM-DD'), 
+                        DEFAULT,
+                        NULL,
+                        'Y',
+                        DEFAULT,
+                        DEFAULT,
+                        'BABY'
+                    );
 
 -- 상품샘플 데이터--
 INSERT INTO TB_PRODUCT (PROD_NO
