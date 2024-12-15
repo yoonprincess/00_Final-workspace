@@ -182,7 +182,7 @@
                             <p class="total-price">
                                 총 결제 예상 금액 최소
                                 <span class="final-price">
-                                    <span style="font-size: 30px;">18,180</span>원
+                                    <span style="font-size: 30px;">93,780</span>원
                                 </span>
                             </p>
                         </td>

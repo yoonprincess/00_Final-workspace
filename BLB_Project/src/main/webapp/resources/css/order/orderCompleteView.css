@@ -171,6 +171,7 @@
 }
 
 .btn-primary {
+    text-decoration: none;
     background-color: #4A628A;
     color: #fff;
 }
