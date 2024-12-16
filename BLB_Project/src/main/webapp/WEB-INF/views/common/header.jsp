@@ -130,7 +130,9 @@
         </div>
     </nav>
     <!-- Back to Top Button -->
-    <button id="backToTop">&#8679;</button>
+    <button id="backToTop">
+    	<span class="material-symbols-outlined bold-icon">vertical_align_top</span>
+    </button>
     
     <!-- Popper JS -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>

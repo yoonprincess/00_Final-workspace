@@ -137,12 +137,12 @@ $(function() {
     // * 위로가기 버튼 스크립트
     // 초기 로딩 시 스크롤 위치에 따라 버튼 표시 여부 결정
     if ($(window).scrollTop() > 250) {
-        $('#backToTop').css('opacity', '0.7'); // 초기 로딩 시 버튼이 노출될 높이에 있을 경우
+        $('#backToTop').css('opacity', '0.5'); // 초기 로딩 시 버튼이 노출될 높이에 있을 경우
     }
     // 스크롤 이벤트로 버튼 표시/숨김
     $(window).scroll(function () {
         if ($(this).scrollTop() > 250) {
-            $('#backToTop').css('opacity', '0.7');
+            $('#backToTop').css('opacity', '0.5');
         } else {
             $('#backToTop').css('opacity', '0');
         }
