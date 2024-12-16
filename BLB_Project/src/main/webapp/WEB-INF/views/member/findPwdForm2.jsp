@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +24,7 @@
 <body  class="body-offset" id="custom">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 			<br><br><br><br>
-            <div class="container-fluid outer" id="check-page"  >    
+            <div class="container-fluid" id="check-page"  >    
              	<h4 align="center"><b>비밀번호찾기</b></h4>
               
 	              <div class="div-container outer" id="findPwd">
@@ -37,7 +38,8 @@
 	              	<div class="inputAndBtn" >
 		                 <div class="input-wrapper" >
 		                    <span id="email-label"  class="cert-label">이메일</span>
-		                    <span style="padding-left:15px;" class="cert-label">${ckPwdMember.getEmail()}</span>  
+		                    <span style="padding-left:15px;" class="cert-label">${ckPwdMember.getEmail()}</span> 
+		                    <input type="hidden" id="hiddenEmail" value="${ckPwdMember.getEmail()}"> 
 		                    <button  type="button" onclick="cert()" id="certBtn" > 인증번호 받기</button>
 		              	</div>
 		              	 <div class="input-wrapper">
@@ -47,54 +49,48 @@
 		                </div>
 	              	</div>
 	             	<div class="submit-row">
-	             		<button type="submit" id="findPwdBtn" class="btn btn-outline-info">확인</button>
+	             		<button type="button" id="validateBtn" class="btn btn-outline-info" onclick="validateEmail()">확인</button>
 	             		<button type="reset"  class="btn btn-outline-info" onclick="goBack();">취소</button>
 			       </div>
 	              </div>
              
             </div>
-			<div class="container-fluid outer" id="result-page" style="display:none;">	
-				<h4 align="center"><b>비밀번호 재설정</b></h4>
-	              <form action="newPwd.me" method="post" id="newPwdForm">
-		              <div class="div-container outer" id="findId">
-		              	<div class="inputAndBtn" >
-			                 <div class="input-wrapper" >
-			                    <span id="id-label" >아이디</span>
-			                    <span>${ckPwdMember.getMemberId()}</span>  
-			                    <input type="hidden" name="ckMemberId" value="${ckPwdMember.getMemberId()}">
-			                    
-			              	</div>
-	                      	
-	                      	 <label class="form-label">새 비밀번호 </label>
-			                <div class="form-input id-input">
-			                    <div class="input-wrapper">
-			                        <input type="password" class="input-field" name="newPwd" id="newPwd" required>
-			                        <span class="input-notice" id="noticePwd">(영문대/소문자, 숫자, 특수문자 중 2가지 이상 조합, 8-16자)</span>
-			                    </div>
-								<div id="validatePwd" style="display:none;" ></div>
-			                </div>
-			            </div>
-			
-			            <div class="form-row">
-			                <label class="form-label">새 비밀번호 확인 </label>
-			                <div class="form-input id-input">
-			                    <div class="input-wrapper">
-			                         <input type="password" class="input-field" name="checkPwd" id="ckPwd" required>
-			                    </div>
-			                    <div id="checkPwd" style="display:none;" ></div>
-			                </div>
-			            </div>
-	                    <input type="hidden" name="memberPwd" value="${ckPwdMember.getMemberPwd()}" >
-		              	
-		              	<div class="submit-row">
-		             		<button type="submit"  class="btn btn-outline-info">확인</button>
-		             		<button type="button"  class="btn btn-outline-info">취소</button>
-				        </div>
-		              </div>
-	             </form>
+              
+             <div class="page-wrapper">
+           		<div class="container-fluid" id="result-page" style="display:none;">
+		        <h4><b>비밀번호 재설정</b></h4>
+		        <div class="container">
+		        <form action="newPwd.me" method="post" id="newPwdForm">
+		            <div class="form-group">
+		                <label for="memberId" class="label">아이디</label>
+		                <div class="input-wrapper1">
+		                     <span style="color:#4A628A; ">${ckPwdMember.getMemberId()}</span>  
+			                 <input type="hidden" name="ckMemberId" value="${ckPwdMember.getMemberId()}">
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <label for="newPassword" class="label" style="margin-bottom:70px;">새 비밀번호</label>
+		                <div class="input-wrapper1">
+		                    <input type="password" id="newPwd" name="newPwd">
+		                    <p id="noticePwd" class="helper-text">영문 대소문자/숫자/특수문자 중 2가지 이상 조합, (8~16자)</p>
+		                    <p id="validatePwd" style="display:none;"></p>
+		                </div>
+		            </div>
+		            <div class="form-group">
+		                <label for="confirmPassword" class="label">새 비밀번호 확인</label>
+		                <div class="input-wrapper1">
+		                    <input type="password" id="ckPwd" name="ckPwd">
+		                    <p id="checkPwd" style="display:none;"></p>
+		                </div>
+		            </div>
+		            <div class="btn-wrapper">
+		                <button type="submit" class="submit-btn">비밀번호 변경</button>
+		                <button type="button" class="btn btn-outline-secondary cancel-btn">취소</button>
+		            </div>
+		        </form>
+		        </div>
+    		</div>
 			</div>
-			 
-			
  <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

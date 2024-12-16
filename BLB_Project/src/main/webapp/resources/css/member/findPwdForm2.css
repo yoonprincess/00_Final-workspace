@@ -13,7 +13,7 @@ body {
 .outer {
     max-width: 1000px;
     margin: 0 auto;
-     padding: 20px 80px;
+    padding: 30px 50px;
 }
 h6{
 	font-size : 12px;
@@ -26,13 +26,11 @@ h6{
     font-size: 14px;
     color: #666;
     display: flex; 
-     flex-direction: column;
+    flex-direction: column;
     gap: 10px; 
     border: 1px solid #e0e0e0;
     width: 100%;
     max-width: 600px;
-    height: 450px;
-    flex-wrap: wrap;
    
    
 }
@@ -147,6 +145,99 @@ input[type="radio"] {
     font-size: 12px;
     border:none;
 }
+ .page-wrapper {
+           display: flex;
+           justify-content: center;
+           align-items: center;
+             margin: 0;
+       }
+
+  .container {
+      width: 100%;
+      max-width: 500px;
+      padding: 20px;
+      background-color: white;
+      border: 1px solid #e0e0e0;
+      margin-top: 30px;
+	  margin-bottom: 20px;
+	  padding: 40px 80px !important;
+	  color:#333;
+  }
+   
+   #result-page{
+   	width:600px;
+   }
+
+   h4 {
+       text-align: center;
+       margin-bottom: 30px;
+   }
+
+
+.form-group {
+          display: flex;
+          align-items: center;
+          margin-bottom: 20px;
+      }
+
+.label {
+    flex: 0 0 150px;
+    text-align: left; 
+    padding-right: 15px;
+    font-size: 14px;
+    margin-bottom:0px;
+}
+
+ .input-wrapper1 {
+     flex: 1;
+ }
+
+ #memberId,
+ #newPassword,
+ #confirmPassword {
+     width: 100%;
+     padding: 8px;
+     border: 1px solid #ddd;
+     border-radius: 4px;
+     box-sizing: border-box;
+     height:35px;
+ }
+
+ .helper-text {
+     font-size: 12px;
+     color: #666;
+     margin-top: 4px;
+ }
+
+ .btn-wrapper {
+     display: flex;
+     justify-content: center;
+     gap: 10px;
+     margin-top: 35px;
+ }
+
+ .submit-btn {
+     background-color: #4A628A;
+     color: white;
+     border: none;
+     padding: 10px 20px;
+     border-radius: 4px;
+     cursor: pointer;
+     font-size: 14px;
+ }
+
+ .submit-btn:hover {
+     background-color: #3a251b;
+ }
+
+ .cancel-btn {
+     background-color: #f0f0f0;
+     border: none;
+     padding: 10px 20px;
+     border-radius: 4px;
+     cursor: pointer;
+     font-size: 14px;
+ }
 
 
 

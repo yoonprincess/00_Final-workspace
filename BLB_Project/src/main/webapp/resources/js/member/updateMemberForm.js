@@ -84,7 +84,7 @@
 								}).text("사용가능한 비밀번호입니다!");
 								
 			$("#newPwd").css("border","2px solid #71C9CE");   
-			$("#enrollForm button[type=submit]").attr("disabled", false);					
+			$("#updateForm button[type=submit]").attr("disabled", false);					
 	          
 	        }else{
 
@@ -101,7 +101,7 @@
 	        
 	   }else{
 	   		  $("#newPwd").css("border", "1px solid #ccc"); // 기본 테두리 색상으로 초기화
-	          $("#enrollForm button[type=submit]").attr("disabled",true);
+	          $("#updateForm button[type=submit]").attr("disabled",true);
 	          $("#validatePwd").hide();  
 	          $("#noticePwd").show();               	   				
 	   	
@@ -120,7 +120,7 @@
 		    $ckPwdInput.change(function() {
 		        let ckPwd = $(this).val();
 	        
-	      		if(ckPwd.length >= 8){
+	      		if(ckPwd.length >= 1){
 	      		  
 		        // 비밀번호 확인
 		        if (ckPwd === $pwdInput.val()) {

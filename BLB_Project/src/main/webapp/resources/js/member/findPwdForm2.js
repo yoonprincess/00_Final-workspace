@@ -7,8 +7,9 @@
 
 // 이메일 인증메일보내기 요청 ajax
     function cert(){
-		
-		let email = "${ckPwdMember.getEmail()}";
+		 alert("잠시 기다려 주세요... 인증번호를 발송 중입니다.");
+    	 
+		 const email = document.getElementById('hiddenEmail').value;
 		  console.log(email);
 	    $.ajax({
 			url : "cert.do",
@@ -37,14 +38,18 @@
 	
 	 // 이메일 인증번호 대조 ajax
     function validateEmail(){
-    
+    	const email = document.getElementById('hiddenEmail').value;
 		let certKey = $("#certKey").val();
+		console.log(certKey);
+		console.log(email);
 		
 		$.ajax({
-			url : "validatePwd.me",
+			url : "validateEmail.do",
 			type : "post",
 			data : {
+			
 				certKey : certKey,
+				email : email
 			},
 			
 			success : function(result) {
@@ -62,7 +67,7 @@
 					$("#certKey").val("");
 					$("#certKey").css("border","1px solid orangered"); 
 					$("#certbtn").attr("disabled", false);
-					$("#validatePwd button[type=submit]").attr("disabled",true);
+					
 				}
 				
 			},
@@ -162,26 +167,74 @@
 	        
 	  	 }); 
 	});
+	
+	// 새로운 비번 설정
+	$(function(){
+	      const $pwdInput = $("#newPwdForm input[name=newPwd]");
+	 	
+	      $pwdInput.blur(function(){
+	        
+	        let newPwd=$(this).val();
+	        let validate = /^(?=(.*[A-Za-z].*[0-9]))(?=(.*[0-9].*[!@#$%^&*-_]))(?=(.*[A-Za-z].*[!@#$%^&*-_])).{8,16}$/
+	        
+		if(newPwd.length >= 8){		
+	     
+	        if(validate.test(newPwd)){
+	        
+	         $("#validatePwd").show()
+	         				  .css({
+							    "color": "#71C9CE",
+							    "font-size": "12px",
+							    "font-weight": "600"
+								}).text("사용가능한 비밀번호입니다!");
+								
+			$("#newPwd").css("border","2px solid #71C9CE");   
+			$("#newPwdForm button[type=submit]").attr("disabled", false);	
+			$("#noticePwd").hide(); 				
+	          
+	        }else{
+
+	        	$("#validatePwd").show()
+	        					.css({
+					                "color": "orangered", // 색상 수정
+					                "font-size": "12px",
+					                "font-weight": "600"
+					            }).text("8~16자의 영문 대/소문자, 숫자, 특수문자 중 2가지 이상 조합해서 사용해 주세요.");    
+				$("#newPwd").css("border","1px solid orangered");  
+				$("#newPwdForm button[type=submit]").attr("disabled", true);  
+				$("#noticePwd").hide();  
+	        }
+	        
+	   }else{
+	   		  $("#newPwd").css("border", "1px solid #ccc"); // 기본 테두리 색상으로 초기화
+	          $("#newPwdForm button[type=submit]").attr("disabled",true);
+	          $("#validatePwd").hide();  
+	          $("#noticePwd").show();  
+	   	
+	   }     
+	        
+	  	 }); 
+	 	});  
 	 	
 	 	/* 비밀번호 확인 체크 */
 	 	
 	 	 $(function() {
 	 	 
-		    const $ckPwdInput = $("#newPwdForm input[name=checkPwd]");
+		    const $ckPwdInput = $("#newPwdForm input[name=ckPwd]");
 		    const $pwdInput = $("#newPwdForm input[name=newPwd]");
 	    
 		    $ckPwdInput.change(function() {
-		        let checkPwd = $(this).val();
+		        let ckPwd = $(this).val();
 	        
-	      		if(checkPwd.length >= 8){
+	      		if(ckPwd.length >= 1){
 	      		  
 		        // 비밀번호 확인
-		        if (checkPwd === $pwdInput.val()) {
+		        if (ckPwd === $pwdInput.val()) {
 		         		                            
 		           $("#ckPwd").css("border","2px solid #71C9CE");   
 		           $("#newPwdForm button[type=submit]").attr("disabled", false);
-		           $("#checkPwd").hide();  
-		           
+		           $("#checkPwd").hide();
+		      
 		        } else {
 		           
 		            $("#checkPwd").show()
@@ -193,18 +246,14 @@
 		        
 		        	$("#ckPwd").css("border","1px solid orangered");
 		        	$("#newPwdForm button[type=submit]").attr("disabled", true);
-		        	
 		        }
 		
 	      }else{
 		
 		      	$("#ckPwd").css("border", "1px solid #ccc"); // 기본 테두리 색상으로 초기화
 		        $("#newPwdForm button[type=submit]").attr("disabled",true);
-		        
 	      }   
 	       
 	    });
 	});
-
-
-	
+	 	
