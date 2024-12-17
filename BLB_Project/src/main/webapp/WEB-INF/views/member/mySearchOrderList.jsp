@@ -15,7 +15,7 @@
 
 <link rel="stylesheet" href="resources/css/member/myOrderList.css">
 
-<script src="resources/js/member/myOrderList.js" defer></script>   
+<script src="resources/js/member/mySearchOrderList.js" defer></script>   
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
@@ -75,7 +75,7 @@
       
               
               <!-- search-filter -->
-             <form action="searchOrderList.me" method="get">
+             <form action="searchOrderList.me" method="get"  id="searchOrderListForm">
               <div class="search-filters">
               <div class="search-filters-content">
                <p style="padding-left:5px;">구매기간</p>
@@ -206,6 +206,7 @@
                     </select><span>일</span>
                 </div>
             </div>
+            
             <button type="submit"> 조회</button>
          </div>
         </form>
@@ -256,22 +257,6 @@
 	              	 </td> 
 	              	</tr>
 	              </c:forEach>
-
-                    <tr class="date-row">
-                        <td class="date" rowspan="1">2024.11.05</td>
-                        <td class="product">
-                            <img src="https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0012/A00000012374104ko.jpg?l=ko" alt="아베다로즈메리샴푸">
-                            <div class="product-info">
-                                <div class="name">아베다 로즈메리 민트 샴푸</div>
-                                <div class="seller">아베다</div>
-                            </div>
-                        </td>
-                        <td class="quantity">1</td>
-                        <td class="price">9,900원</td>
-                        <td class="status">
-                            <span class="delivery-complete">배송완료</span>
-                        </td>
-	                </tr>
 	                </tbody>
 	            </table>
 	            <br><br>

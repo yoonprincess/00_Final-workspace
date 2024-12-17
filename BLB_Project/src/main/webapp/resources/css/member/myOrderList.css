@@ -63,10 +63,18 @@ body {
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 20px;
+    display: flex;
+}
+
+
+/* Create a wrapper for the left content */
+.search-filters-content {
+    flex: 1;
 }
 
 .tabs {
     margin-bottom: 15px;
+    padding-left:5px;
 }
 
 .tab {
@@ -86,17 +94,29 @@ body {
     border-color: #666;
 }
 
-.date-selector select {
-    padding: 5px;
-    margin: 0 5px;
+
+.search-filters button[type="submit"] {
+    background: #4A628A;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0 30px;
+    cursor: pointer;
+    height: 118px;
+    align-self: stretch;
+    margin-right:5px;
 }
 
+.search-filters button[type="submit"]:hover {
+    background: #3A527A;
+}
 .order-table {
-    width: 100%;
+   width: 100%;
     background: white;
     border-radius: 8px;
     border-collapse: separate;
     border-spacing: 0;
+    padding:0px 25px;
 }
 
 .order-table th{
@@ -126,7 +146,7 @@ body {
 }
 
 .product-info {
-    width: 300px;
+   flex:1;
 }
 .product img {
     width: 80px;
@@ -160,11 +180,17 @@ body {
 /* 변경: 수량, 가격, 상태 스타일 통일 */
 .quantity, .price, .status {
     min-width: 150px;
-    text-align: center !important;
+}
+.quantity{
+	padding-left:80px;
 }
 
 .price {
     font-weight: bold;
+    padding-left:50px;
+}
+.status{
+	 padding-left:50px;
 }
 
 .delivery-complete {
@@ -382,6 +408,8 @@ h1 {
 	border-radius:5px;
 	boder : 1px solid silver;
 	font-size:12px;
+	 padding: 5px;
+    margin: 0 5px;
 }
 
 .likes{
@@ -485,7 +513,7 @@ h1 {
 
 }
 
-#outer {
+#main {
     width: 1280px;
     margin: 0 auto; /* 중앙 정렬 */
     position: relative; /* navigator의 위치를 기준으로 할 수 있도록 설정 */

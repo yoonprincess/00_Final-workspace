@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mig.blb.common.model.vo.PageInfo;
@@ -212,7 +213,7 @@ public class MyPageController {
 			ArrayList<Order> myOrder = orderService.selectMyOrderList(memberId); 
 			
 			HashMap<String, ArrayList<Order>> myListbyDate = new HashMap<>();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 			for (Order order : myOrder) {
 				String orderDate = dateFormat.format(order.getOrderDate());
 				myListbyDate.putIfAbsent(orderDate, new ArrayList<>());
@@ -234,6 +235,39 @@ public class MyPageController {
 		return mv;
 	}
 	
+	// 내 주문,배송조회 기간별 검색요청 
+		@GetMapping("searchOrderList.me")
+		public ModelAndView myOrderList(ModelAndView mv,
+										 HttpSession session,
+										 @RequestParam("year") String year,
+		                                 @RequestParam("month") String month,
+		                                 @RequestParam("day") String day,
+		                                 @RequestParam("year1") String year1,
+		                                 @RequestParam("month1") String month1,
+		                                 @RequestParam("day1") String day1) {
+			
+			HashMap<String, String> dateMap = new HashMap<>();
+		    dateMap.put("year", year);
+		    dateMap.put("month", month);
+		    dateMap.put("day", day);
+		    dateMap.put("year1", year1);
+		    dateMap.put("month1", month1);
+		    dateMap.put("day1", day1);
+		    
+
+			
+			mv.addObject("year", year);
+		    mv.addObject("month", month);
+		    mv.addObject("day", day);
+		    mv.addObject("year1", year1);
+		    mv.addObject("month1", month1);
+		    mv.addObject("day1", day1);				
+			
+			mv.setViewName("member/mySearchOrderList");
+			
+			
+			return mv;
+		}
 	
 	// 내 배송지조회 페이지 요청 
 		@GetMapping("deliveryList.me")

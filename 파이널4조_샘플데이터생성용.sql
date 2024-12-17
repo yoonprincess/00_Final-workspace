@@ -1080,5 +1080,95 @@ BEGIN
 END;
 /
 
+-- 마이페이지 조회용 order, product_order 샘플데이터----
+INSERT INTO TB_ORDER(ORDER_NO,
+                     RCVR_NAME,
+                     RCVR_PHONE,
+                     RCVR_ADDRESS,
+                     DLVR_STATUS,
+                     DLVR_FEE,
+                     DLVR_COMPANY,
+                     ORDER_TOTAL_AMT,
+                     PAYMENT_METHOD,
+                     ORDER_DATE,
+                     MEMBER_ID)
+        VALUES(SEQ_ORDER_NO.NEXTVAL,
+               '홍길동',
+               '01088889999',
+               '선유도공원',
+               '배송완료',
+                0,
+               '우체국택배',
+                35800,
+                '신용카드',
+                TO_DATE('2024-11-11', 'YYYY-MM-DD'),
+                'user01' );
+                   
+INSERT INTO TB_ORDER(ORDER_NO,
+                     RCVR_NAME,
+                     RCVR_PHONE,
+                     RCVR_ADDRESS,
+                     DLVR_STATUS,
+                     DLVR_FEE,
+                     DLVR_COMPANY,
+                     ORDER_TOTAL_AMT,
+                     PAYMENT_METHOD,
+                     ORDER_DATE,
+                     MEMBER_ID)
+        VALUES(SEQ_ORDER_NO.NEXTVAL,
+                    '홍길동',
+                    '01088889999',
+                    '선유도공원',
+                    '배송완료',
+                     0,
+                    '우체국택배',
+                    63600,
+                   '신용카드',
+                   TO_DATE('2024-11-21', 'YYYY-MM-DD'),
+                   'user01' );
+    
+                   
+ INSERT INTO TB_PRODUCT_ORDER(SERIAL_NO,
+                             ORDER_QTY,
+                             TOTAL_AMT,
+                             ORDER_NO,
+                             OPT_NO)
+        VALUES(SEQ_SERIAL_NO.NEXTVAL,
+                    2,
+                    35800,
+                    1,
+                    1 );    
+                    
+INSERT INTO TB_PRODUCT_ORDER(SERIAL_NO,
+                             ORDER_QTY,
+                             TOTAL_AMT,
+                             ORDER_NO,
+                             OPT_NO)
+        VALUES(SEQ_SERIAL_NO.NEXTVAL,
+                    1,
+                    12900,
+                    2,
+                    2 );  
+                    
+INSERT INTO TB_PRODUCT_ORDER(SERIAL_NO,
+                             ORDER_QTY,
+                             TOTAL_AMT,
+                             ORDER_NO,
+                             OPT_NO)
+        VALUES(SEQ_SERIAL_NO.NEXTVAL,
+                    2,
+                    35800,
+                    2,
+                    1 ); 
+INSERT INTO TB_PRODUCT_ORDER(SERIAL_NO,
+                             ORDER_QTY,
+                             TOTAL_AMT,
+                             ORDER_NO,
+                             OPT_NO)
+        VALUES(SEQ_SERIAL_NO.NEXTVAL,
+                    1,
+                    14900,
+                    2,
+                    57);              
 
 COMMIT;
