@@ -113,4 +113,78 @@
 	</select>
 	
 	
+	<!-- 1:1 문의 관련 매퍼 -->
+    <!-- QnA와 답글 resultMap -->
+    <resultMap id="inquiryResultMap" type="inquiry">
+        <id column="INQUIRY_NO" property="inquiryNo"/>
+        <result column="INQUIRY_CONTENT" property="inquiryContent"/>
+   		<result column="INQUIRY_CREATE_DATE" property="inquiryCreateDate"/>
+        <result column="MEMBER_ID" property="memberId"/>
+        
+        <!-- 답글을 리스트로 포함 -->
+        <collection property="replyList" ofType="inquiryReply">
+            <id column="INQUIRY_REPLY_NO" property="inquiryReplyNo"/>
+            <result column="INQUIRY_REPLY_CONTENT" property="inquiryReplyContent"/>
+            <result column="INQUIRY_REPLY_CREATE_DATE" property="inquiryReplyCreateDate"/>
+            <result column="REPLY_MEMBER_ID" property="memberId"/>
+        </collection>
+    </resultMap>
+	
+	<select id="selectProdInquiryCount" parameterType="_int" 
+			resultType="_int">
+		SELECT COUNT(*)
+		  FROM TB_INQUIRY
+		 WHERE INQUIRY_STATUS = 'Y'
+		   AND PROD_NO = #{prodNo}
+	</select>
+	
+	<!-- QnA 목록 조회 (답글 포함) -->
+    <select id="selectProdInquiryList" parameterType="_int" resultMap="inquiryResultMap">
+        SELECT I.INQUIRY_NO
+          	 , I.INQUIRY_CONTENT
+          	 , TO_CHAR(I.INQUIRY_CREATE_DATE, 'YYYY-MM-DD HH:mm:ss') AS "INQUIRY_CREATE_DATE"
+          	 , I.MEMBER_ID
+          	 , R.INQUIRY_REPLY_NO
+          	 , R.INQUIRY_REPLY_CONTENT
+          	 , TO_CHAR(R.INQUIRY_REPLY_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS INQUIRY_REPLY_CREATE_DATE
+          	 , R.MEMBER_ID AS REPLY_MEMBER_ID
+        FROM TB_INQUIRY I
+        LEFT JOIN TB_INQUIRY_REPLY R 
+            ON I.INQUIRY_NO = R.INQUIRY_NO
+            AND R.INQUIRY_REPLY_STATUS = 'Y'
+        WHERE I.PROD_NO = #{prodNo} 
+          AND I.INQUIRY_STATUS = 'Y'
+        ORDER BY I.INQUIRY_NO DESC
+    </select>
+	
+	
+	
+	<insert id="insertInquiry" parameterType="inquiry">
+	    INSERT INTO TB_INQUIRY(INQUIRY_NO
+	    					, INQUIRY_TYPE
+	                        , INQUIRY_CONTENT
+	                        , MEMBER_ID
+	                        , PROD_NO)
+	                   VALUES(SEQ_INQUIRY_NO.NEXTVAL
+	                   		, #{inquiryType}
+	                        , #{inquiryContent}
+	                        , #{memberId}
+	                        , <if test="prodNo == 0">null</if>
+	                        <if test="prodNo != 0">#{prodNo}</if>)
+	</insert>
+	
+	<update id="deleteInquiry" parameterType="_int">
+		UPDATE TB_INQUIRY
+		   SET INQUIRY_STATUS = 'N'
+		 WHERE INQUIRY_NO = #{inquiryNo}
+	</update>
+	
+	<update id="updateInquiry" parameterType="inquiry">
+		UPDATE TB_INQUIRY
+		   SET INQUIRY_CONTENT = #{inquiryContent}
+		     , INQUIRY_CREATE_DATE = SYSDATE
+		 WHERE INQUIRY_NO = #{inquiryNo}
+		   AND INQUIRY_STATUS = 'Y'
+	</update>
+	
 </mapper>

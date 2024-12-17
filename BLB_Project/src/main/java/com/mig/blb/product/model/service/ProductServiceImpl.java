@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mig.blb.common.model.vo.PageInfo;
+import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.product.model.dao.ProductDao;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
@@ -46,5 +47,15 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ArrayList<ProductAtt> selectProductAtt(int prodNo) {
 		return productDao.selectProductAtt(sqlSession, prodNo);
+	}
+
+	@Override
+	public int selectProdInquiryCount(int prodNo) {
+		return productDao.selectProdInquiryCount(sqlSession, prodNo);
+	}
+
+	@Override
+	public ArrayList<Inquiry> selectProdInquiryList(PageInfo qnaPi, int prodNo) {
+		return productDao.selectProdInquiryList(sqlSession, qnaPi, prodNo);
 	}
 }

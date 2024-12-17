@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,8 +28,6 @@
 <title>뷰라밸 (Beauty Life Balance)</title>
 </head>
 <body>
-
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <div class="banner">
     <div class="container-fluid">
         <img src="${ pageContext.request.contextPath }/resources/images/product/all_banner.jpg">

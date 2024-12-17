@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.mig.blb.common.model.vo.PageInfo;
+import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
 
@@ -38,6 +39,20 @@ public class ProductDao {
 
 	public ArrayList<ProductAtt> selectProductAtt(SqlSessionTemplate sqlSession, int prodNo) {
 		return (ArrayList)sqlSession.selectList("productMapper.selectProductAtt", prodNo);
+	}
+
+	public int selectProdInquiryCount(SqlSessionTemplate sqlSession, int prodNo) {
+		return sqlSession.selectOne("productMapper.selectProdInquiryCount", prodNo);
+	}
+
+	public ArrayList<Inquiry> selectProdInquiryList(SqlSessionTemplate sqlSession, PageInfo qnaPi, int prodNo) {
+		
+		int offset = (qnaPi.getCurrentPage() - 1) * qnaPi.getBoardLimit();
+		int limit = qnaPi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("productMapper.selectProdInquiryList", prodNo, rowBounds);
 	}
 
 }

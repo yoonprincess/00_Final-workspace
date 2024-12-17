@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.mig.blb.common.model.vo.PageInfo;
+import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
 
@@ -22,5 +23,11 @@ public interface ProductService {
 	Product selectProduct(int prodNo);
 	// 상품 이미지 조회
 	ArrayList<ProductAtt> selectProductAtt(int prodNo);
+	
+	// 상품문의 목록조회 서비스
+	// 문의 총 갯수 조회
+	int selectProdInquiryCount(int prodNo);
+	// 문의 목록(상세, 댓글포함)조회
+	ArrayList<Inquiry> selectProdInquiryList(PageInfo qnaPi, int prodNo);
 
 }

@@ -308,7 +308,7 @@ body {
     padding: 5px 10px 4px 10px;
     border: 1px solid #DFF2EB;
     border-radius: 3px;
-    color: #7AB2D3;
+    color: #7AB2D3 !important;
     text-decoration: none !important;
     font-size: 14px;
     font-weight: bold;

@@ -11,6 +11,8 @@
 		<result column="REV_STATUS" property="revStatus"/>
 		<result column="ORDER_NO" property="orderNo"/>
 		<result column="MEMBER_ID" property="memberId"/>
+		<result column="OPT_NAME" property="optName"/>
+		<result column="OPT_VALUE" property="optValue"/>
 	</resultMap>
 	
 	<select id="selectReviewCount" parameterType="_int" 
@@ -30,6 +32,8 @@
 		     , R.REV_ENROLL_DATE
 		     , R.REV_RATING
 		     , R.MEMBER_ID
+		     , OPT.OPT_NAME
+		     , OPT.OPT_VALUE
 		  FROM TB_REVIEW R
 		  LEFT JOIN TB_PRODUCT_ORDER PO ON (R.ORDER_NO = PO.ORDER_NO)
 		  LEFT JOIN TB_OPTION OPT ON (PO.OPT_NO = OPT.OPT_NO)

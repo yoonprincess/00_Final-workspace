@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,8 +11,6 @@
 <title>뷰라밸 - 제품상세보기</title>
 </head>
 <body class="body-offset">
-	<%@ include file="/WEB-INF/views/common/header.jsp" %>
-	
 	<div class="container-fluid">
 	<div class="container mt-5">
         <div class="row">
@@ -111,7 +110,7 @@
                 <a class="tab-item nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab">상품리뷰 <span class="badge badge-secondary">${ revPi.listCount }</span></a>
             </li>
             <li class="nav-item">
-                <a class="tab-item nav-link" id="qna-tab" data-toggle="tab" href="#qna" role="tab">상품문의 <span class="badge badge-secondary">12</span></a>
+                <a class="tab-item nav-link" id="qna-tab" data-toggle="tab" href="#qna" role="tab">상품문의 <span class="badge badge-secondary">${ qnaPi.listCount }</span></a>
             </li>
         </ul>
         <div class="tab-content" id="productTabsContent">
@@ -175,34 +174,43 @@
                     </div>
                 </div>
                 <div id="reviewList">
-                    <c:forEach var="review" items="${revList}">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <div>
-                                        <span class="review-stars">
-                                            <c:forEach var="i" begin="1" end="${review.revRating}">
-                                                <i class="fas fa-star"></i>
-                                            </c:forEach>
-                                            <c:forEach var="i" begin="1" end="${5 - review.revRating}">
-                                                <i class="far fa-star"></i>
-                                            </c:forEach>
-                                        </span>
-                                        <span class="ml-2">${review.memberId}</span>
-                                    </div>
-                                    <small class="text-muted">
-                                        <fmt:formatDate value="${review.revEnrollDate}" pattern="yyyy-MM-dd hh:mm" />
-                                    </small>
-                                </div>
-                                <p class="card-text">${review.revContent}</p>
+                    <c:choose>
+                        <c:when test="${empty qnaList}">
+                            <div class="text-center">
+                                <p>등록된 리뷰가 없습니다.</p>
                             </div>
-                        </div>
-                    </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="review" items="${revList}">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div>
+                                                <span class="review-stars">
+                                                    <c:forEach var="i" begin="1" end="${review.revRating}">
+                                                        <i class="fas fa-star"></i>
+                                                    </c:forEach>
+                                                    <c:forEach var="i" begin="1" end="${5 - review.revRating}">
+                                                        <i class="far fa-star"></i>
+                                                    </c:forEach>
+                                                </span>
+                                                <span class="ml-2">${review.memberId}</span>
+                                            </div>
+                                            <small class="text-muted">
+                                                <fmt:formatDate value="${review.revEnrollDate}" pattern="yyyy-MM-dd hh:mm" />
+                                            </small>
+                                        </div>
+                                        <p class="card-text">${review.revContent}</p>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 
                 <!-- 리뷰 페이지네이션 -->
-                <nav aria-label="Page navigation">
-                    <ul class="pagination" id="review-page">
+                <nav aria-label="Rev Page navigation">
+                    <ul class="pagination" id="rev-pagination">
                         <!-- 이전 페이지 그룹 -->
                         <c:if test="${ revPi.startPage > 1 }">
                             <li class="page-item">
@@ -212,11 +220,11 @@
                             </li>
                         </c:if>
                         <!-- 페이지 번호 -->
-                        <c:forEach var="p" begin="${revPi.startPage}" end="${revPi.endPage}">
+                        <c:forEach var="rp" begin="${revPi.startPage}" end="${revPi.endPage}">
                             <li class="page-item">
-                                <a class="${p == revPi.currentPage ? 'active' : ''}" 
-                                   data-url="detail.pr?pno=${ requestScope.p.prodNo }&rpage=${p}">
-                                   ${p}
+                                <a class="${rp == revPi.currentPage ? 'active' : ''}" 
+                                   data-url="detail.pr?pno=${ requestScope.p.prodNo }&rpage=${rp}">
+                                   ${rp}
                                 </a>
                             </li>
                         </c:forEach>
@@ -239,10 +247,68 @@
                     <h2>상품문의</h2>
                     <button class="btn btn-primary">문의하기</button>
                 </div>
-                <div id="qnaList"></div>
-                
-                <nav aria-label="Page navigation for qna">
-                    <ul class="pagination justify-content-center" id="qnaPagination"></ul>
+                <div id="qnaList">
+                    <c:choose>
+                        <c:when test="${empty qnaList}">
+                            <div class="text-center">
+                                <p>등록된 문의글이 없습니다.</p>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="qna" items="${qnaList}">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <!-- 문의글 -->
+                                        <h5>${qna.inquiryContent}</h5>
+                                        <p class="text-muted">
+                                            작성자: ${qna.memberId} | 작성일: ${qna.inquiryCreateDate} | ${qna.inquiryNo}
+                                        </p>
+                    
+                                        <!-- 답변 -->
+                                        <c:if test="${not empty qna.replyList}">
+                                            <div class="mt-3 p-3 bg-light">
+                                                <c:forEach var="reply" items="${qna.replyList}">
+                                                    <strong>답변:</strong>
+                                                    <p>${reply.inquiryReplyContent}</p>
+                                                    <small class="text-muted">
+                                                        작성자: ${reply.memberId} | 작성일: ${reply.inquiryReplyCreateDate}
+                                                    </small>
+                                                </c:forEach>
+                                            </div>
+                                        </c:if>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            
+                <!-- 상품문의 페이지네이션 -->
+                <nav aria-label="QnA Page navigation">
+                    <ul class="pagination" id="qna-pagination">
+                        <c:if test="${qnaPi.startPage > 1}">
+                            <li class="page-item">
+                                <a data-url="detail.pr?pno=${ requestScope.p.prodNo }&qpage=${qnaPi.startPage - qnaPi.pageLimit}">
+                                    ＜
+                                </a>
+                            </li>
+                        </c:if>
+                        <c:forEach var="qp" begin="${qnaPi.startPage}" end="${qnaPi.endPage}">
+                            <li class="page-item">
+                                <a class="${qp == qnaPi.currentPage ? 'active' : ''}" 
+                                   data-url="detail.pr?pno=${ requestScope.p.prodNo }&qpage=${qp}">
+                                   ${qp}
+                                </a>
+                            </li>
+                        </c:forEach>
+                        <c:if test="${qnaPi.endPage < qnaPi.maxPage}">
+                            <li class="page-item">
+                                <a data-url="detail.pr?pno=${ requestScope.p.prodNo }&qpage=${qnaPi.startPage + qnaPi.pageLimit}">
+                                    ＞
+                                </a>
+                            </li>
+                        </c:if>
+                    </ul>
                 </nav>
             </div>
         </div>

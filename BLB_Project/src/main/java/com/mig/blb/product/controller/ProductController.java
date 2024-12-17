@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.common.template.Pagination;
+import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.product.model.service.ProductService;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
@@ -62,27 +63,36 @@ public class ProductController {
 	
 	// 상품 상세보기 요청
 	@GetMapping("detail.pr")
-	public String selectProduct(@RequestParam(value="pno", defaultValue="1")int pno,
-								@RequestParam(value="rpage", defaultValue="1")int revCurPage,
+	public String selectProduct(@RequestParam(value="pno", defaultValue="1")int prodNo,
+								@RequestParam(value="rpage", defaultValue="1")int revPage,
+								@RequestParam(value="qpage", defaultValue="1")int qnaPage,
 								Model model) {
 		
-		int count = productService.increaseViewCount(pno);
+		int count = productService.increaseViewCount(prodNo);
 		
 		if(count > 0) {
 			
 			// 상품정보 상세조회
-			Product p = productService.selectProduct(pno);
+			Product p = productService.selectProduct(prodNo);
 			
 			// 상품 첨부이미지 조회
-			ArrayList<ProductAtt> paList = productService.selectProductAtt(pno);
+			ArrayList<ProductAtt> paList = productService.selectProductAtt(prodNo);
 			
 			// 리뷰 목록조회
-			int revListCount = reviewService.selectReviewCount(pno);
+			int revListCount = reviewService.selectReviewCount(prodNo);
 			int revPageLimit = 5;
-			int revBoardLimit = 5;
-			PageInfo revPi = Pagination.getPageInfo(revListCount, revCurPage, 
+			int revBoardLimit = 10;
+			PageInfo revPi = Pagination.getPageInfo(revListCount, revPage, 
 												 revPageLimit, revBoardLimit);
-			ArrayList<Review> revList = reviewService.selectReviewList(revPi, pno);
+			ArrayList<Review> revList = reviewService.selectReviewList(revPi, prodNo);
+			
+			// 상품문의 목록(상세, 댓글포함)조회
+			int qnaListCount = productService.selectProdInquiryCount(prodNo);
+			int qnaPageLimit = 5;
+			int qnaBoardLimit = 10;
+			PageInfo qnaPi = Pagination.getPageInfo(qnaListCount, revPage, 
+												 qnaPageLimit, qnaBoardLimit);
+			ArrayList<Inquiry> qnaList = productService.selectProdInquiryList(qnaPi, prodNo);
 			
 			
 			// requestScope에 객체 전달
@@ -90,6 +100,8 @@ public class ProductController {
 			model.addAttribute("paList", paList);
 			model.addAttribute("revList", revList);
 			model.addAttribute("revPi", revPi);
+			model.addAttribute("qnaList", qnaList);
+		    model.addAttribute("qnaPi", qnaPi);
 			
 			return "product/productDetailView";
 		} else {

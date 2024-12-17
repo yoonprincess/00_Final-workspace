@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,12 +10,43 @@
 <title>뷰라밸 - 제품목록보기</title>
 </head>
 <body class="body-offset">
-	<%@ include file="/WEB-INF/views/common/header.jsp" %>
-    <div class="banner">
-        <div class="container-fluid">
-            <img src="${ pageContext.request.contextPath }/resources/images/product/all_banner.jpg">
-        </div>
-    </div>
+	<c:choose>
+		<c:when test="${ category eq '전체제품' }">
+			<div class="banner" style="background-color: #C4EFF8;">
+				<div class="container-fluid">
+					<img src="${ pageContext.request.contextPath }/resources/images/product/all_banner.jpg">
+				</div>
+			</div>
+		</c:when>
+		<c:when test="${ category eq '스킨케어' }">
+			<div class="banner" style="background-color: #4081BE;">
+				<div class="container-fluid">
+					<img src="${ pageContext.request.contextPath }/resources/images/product/skincare_banner.jpg">
+				</div>
+			</div>
+		</c:when>
+		<c:when test="${ category eq '메이크업' }">
+			<div class="banner" style="background-color: #F0BFDA;">
+				<div class="container-fluid">
+					<img src="${ pageContext.request.contextPath }/resources/images/product/makeup_banner.jpg">
+				</div>
+			</div>
+		</c:when>
+		<c:when test="${ category eq '맨즈' }">
+			<div class="banner" style="background-color: #7AAEDD;">
+				<div class="container-fluid">
+					<img src="${ pageContext.request.contextPath }/resources/images/product/mens_banner.jpg">
+				</div>
+			</div>
+		</c:when>
+		<c:when test="${ category eq '헤어/바디' }">
+			<div class="banner" style="background-color: #79DBF8;">
+				<div class="container-fluid">
+					<img src="${ pageContext.request.contextPath }/resources/images/product/hair_banner.jpg">
+				</div>
+			</div>
+		</c:when>
+	</c:choose>
     <div class="container-fluid">
 	    <div class="container mt-5">
 	        <!-- 필터 섹션 -->

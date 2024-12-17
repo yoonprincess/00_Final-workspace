@@ -6,7 +6,6 @@
     height: 30vh;
     overflow: hidden; /* 이미지가 div 영역을 벗어나지 않도록 */
     z-index: 1;
-    background-color: #C4EFF8; /* 배너 배경 색상 */
     display: flex;
     align-items: center; /* 세로 가운데 정렬 */
     justify-content: center; /* 가로 가운데 정렬 */
