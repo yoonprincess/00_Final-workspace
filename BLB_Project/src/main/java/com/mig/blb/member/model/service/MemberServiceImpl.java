@@ -111,6 +111,11 @@ public class MemberServiceImpl implements MemberService {
 	public String findMemberId(Member m) {
 		return memberDao.findMemberId(sqlSession,m);
 	}
+	@Override
+	public Member checkMember(String ckMemberId) {
+	
+		return memberDao.checkMember(sqlSession,ckMemberId);
+	}
 
 }
 

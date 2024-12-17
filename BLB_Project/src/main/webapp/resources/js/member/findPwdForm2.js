@@ -121,52 +121,7 @@
    });
    
    
-    /* 비번 조건체크*/ 
-	 $(function(){
-	      const $pwdInput = $("#newPwdForm input[name=newPwd]");
-	 	
-	      $pwdInput.blur(function(){
-	        
-	        let newPwd=$(this).val();
-	        let validate = /^(?=(.*[A-Za-z].*[0-9]))(?=(.*[0-9].*[!@#$%^&*-_]))(?=(.*[A-Za-z].*[!@#$%^&*-_])).{8,16}$/
-	        
-		if(newPwd.length >= 8){		
-	     
-	        if(validate.test(newPwd)){
-	         
-	         $("#validatePwd").show()
-	         				  .css({
-							    "color": "#71C9CE",
-							    "font-size": "12px",
-							    "font-weight": "600"
-								}).text("사용가능한 비밀번호입니다!");
-								
-			$("#newPwd").css("border","2px solid #71C9CE");  
-			$("#newPwdForm button[type=submit]").attr("disabled", false);					
-	          
-	        }else{
-
-	        	$("#validatePwd").show()
-	        					.css({
-					                "color": "orangered", // 색상 수정
-					                "font-size": "12px",
-					                "font-weight": "600"
-					            }).text("8~16자의 영문 대/소문자, 숫자, 특수문자 중 2가지 이상 조합해서 사용해 주세요.");    
-				$("#newPwd").css("border","1px solid orangered");  
-				$("#newPwdForm button[type=submit]").attr("disabled", true);  
-				$("#noticePwd").show();       	   				
-	        }
-	        
-	   }else{
-	   		  $("#newPwd").css("border", "1px solid #ccc"); // 기본 테두리 색상으로 초기화
-	          $("#newPwdForm button[type=submit]").attr("disabled",true);
-	          $("#validatePwd").hide();  
-	          $("#noticePwd").show();               	   				
-	   	
-	   }     
-	        
-	  	 }); 
-	});
+  
 	
 	// 새로운 비번 설정
 	$(function(){
@@ -177,7 +132,7 @@
 	        let newPwd=$(this).val();
 	        let validate = /^(?=(.*[A-Za-z].*[0-9]))(?=(.*[0-9].*[!@#$%^&*-_]))(?=(.*[A-Za-z].*[!@#$%^&*-_])).{8,16}$/
 	        
-		if(newPwd.length >= 8){		
+		if(newPwd.length >=1){		
 	     
 	        if(validate.test(newPwd)){
 	        

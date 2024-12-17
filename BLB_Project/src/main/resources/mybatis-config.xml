@@ -24,6 +24,7 @@
 	 	<typeAlias type="com.mig.blb.member.model.vo.Delivery" alias="delivery" />
 	 	<typeAlias type="com.mig.blb.member.model.vo.CertEmail" alias="certemail" />
 	 	<typeAlias type="com.mig.blb.order.model.vo.Order" alias="order" />
+	 	<typeAlias type="com.mig.blb.order.model.vo.ProductOrder" alias="productOrder" />
 	 	<typeAlias type="com.mig.blb.option.model.vo.Option" alias="option" />
 	 </typeAliases>
 	 

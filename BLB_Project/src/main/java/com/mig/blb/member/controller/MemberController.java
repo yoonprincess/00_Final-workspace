@@ -328,27 +328,36 @@ public class MemberController {
 	public ModelAndView validatePwd(ModelAndView mv,
 						String newPwd,
 						String ckMemberId,
-						Member m,
 						HttpSession session) {
 		
-
-		String encPwd = bcryptPasswordEncoder.encode(newPwd);
-		m.setMemberPwd(encPwd);
-		m.setMemberId(ckMemberId);
-		System.out.println(m);
-		int result = memberService.updateMember(m);
 		
-		if(result>0) {
+		// 기존 회원 정보 불러오기 
+		//System.out.println(ckMemberId);
+		Member checkMember = memberService.checkMember(ckMemberId);
+		//System.out.println(checkMember);
+		if(checkMember != null) {
 			
-			session.setAttribute("alertMsg", "비밀번호 변경되었습니다.");
-			mv.setViewName("/main");
+			String encPwd = bcryptPasswordEncoder.encode(newPwd);
+			checkMember.setMemberPwd(encPwd);
+			System.out.println(checkMember);
+			int result = memberService.updateMember(checkMember);
 			
-		
+			if(result>0) {
+				
+				session.setAttribute("alertMsg", "비밀번호 변경되었습니다.");
+				mv.setViewName("/main");
+				
+			
+			}else {
+				session.setAttribute("alertMsg", "비밀번호 변경실패..");
+				System.out.println(newPwd);
+				mv.setViewName("/member/findPwdForm2");
+			}
 		}else {
-			session.setAttribute("alertMsg", "비밀번호 변경실패..");
-			System.out.println(newPwd);
-			mv.setViewName("/member/findPwdForm2");
+			session.setAttribute("alertMsg", "기존회원못찾음");
+			  mv.setViewName("/member/findPwdForm2");
 		}
+		
 		
 		return mv;
 	}

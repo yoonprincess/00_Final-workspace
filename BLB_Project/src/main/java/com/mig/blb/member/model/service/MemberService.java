@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.mig.blb.member.model.vo.CertEmail;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
+import com.mig.blb.order.model.vo.Order;
 
 public interface MemberService {
 
@@ -50,6 +51,8 @@ public interface MemberService {
 	// 아이디찾기용 회원정보확인
 	String findMemberId(Member m);
 	
+	// 비번변경용 회원조회용
+	Member checkMember(String ckMemberId);
 	
 	
 }

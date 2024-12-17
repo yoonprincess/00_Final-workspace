@@ -1,6 +1,7 @@
 package com.mig.blb.order.model.vo;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,4 +49,7 @@ public class Order {
     private Date refundDate;           // 환불 날짜
     private String refundReason;       // 환불 사유
     private String memberId;           // 회원 ID
+    
+    // 마이바티스에서 collection 연결용
+    private ArrayList<ProductOrder> productOrder; 
 }

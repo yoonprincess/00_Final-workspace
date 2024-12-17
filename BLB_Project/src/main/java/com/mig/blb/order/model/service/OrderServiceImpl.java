@@ -1,5 +1,7 @@
 package com.mig.blb.order.model.service;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,4 +23,12 @@ public class OrderServiceImpl implements OrderService {
 		return orderDao.insertOrder(sqlSession, o);
 	}
 
+	
+	@Override
+	public ArrayList<Order> selectMyOrderList(String memberId) {
+		
+		return orderDao.selectMyOrderList(sqlSession, memberId);
+	}
+
+	
 }

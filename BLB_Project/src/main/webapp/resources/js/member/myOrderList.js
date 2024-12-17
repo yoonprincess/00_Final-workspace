@@ -2,30 +2,37 @@
 // 오늘 날짜로 option 태그 선택되게 설정하기 
 $(document).ready(function() {
 	
+	// 기본날짜
 	const today = new Date();
 	const year = today.getFullYear();
 	const month = today.getMonth() + 1;
 	const day = today.getDate();
 	
 	$('select[name="year1"]').val(year);
-    $('select[name="month1"]' ).val(month);
+    $('select[name="month1"]').val(month);
     $('select[name="day1"]').val(day);
 	
 	
+	// 선택된 날짜 기준으로 계산 	
 	function beforeDate(monthAgo){
-		const beforeDate = new Date();
-		beforeDate.setMonth(today.getMonth() - monthAgo);
+	
+		const selectedYear = parseInt($('select[name="year1"]').val(), 10);
+		const selectedMonth = parseInt($('select[name="month1"]').val(), 10) - 1;
+		const selectedDay = parseInt($('select[name="day1"]').val(), 10);
+		 
+		const selectDate = new Date(selectedYear, selectedMonth, selectedDay);
+		selectDate.setMonth(selectDate.getMonth() - monthAgo);
 
-		const beforeYear = beforeDate.getFullYear();
-		const beforeMonth = beforeDate.getMonth()+1;
-		const beforeDay = beforeDate.getDate();
+		const beforeYear = selectDate.getFullYear();
+		const beforeMonth = selectDate.getMonth()+1;
+		const beforeDay = selectDate.getDate();
 
 		$('select[name="year"]').val(beforeYear);
    		$('select[name="month"]' ).val(beforeMonth);
     	$('select[name="day"]').val(beforeDay);
 	}
 	
-	beforeDate(1);	
+	
 	
 	// 기간설정 버튼 효과 + 기간설정
 	var $one = $('#one');
@@ -39,6 +46,8 @@ $(document).ready(function() {
 				 .removeClass('active');
 	}	
 	
+	beforeDate(1);
+	handleActiveClass($one);
 	
 	$one.on('click', function(){
 	 	

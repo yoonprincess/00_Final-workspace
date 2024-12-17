@@ -24,7 +24,7 @@
 <body  class="body-offset" id="custom">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 			<br><br><br><br>
-            <div class="container-fluid" id="check-page"  >    
+            <div class="container-fluid" id="check-page"  style="display : none;">    
              	<h4 align="center"><b>비밀번호찾기</b></h4>
               
 	              <div class="div-container outer" id="findPwd">
@@ -57,7 +57,7 @@
             </div>
               
              <div class="page-wrapper">
-           		<div class="container-fluid" id="result-page" style="display:none;">
+           		<div class="container-fluid" id="result-page" >
 		        <h4><b>비밀번호 재설정</b></h4>
 		        <div class="container">
 		        <form action="newPwd.me" method="post" id="newPwdForm">

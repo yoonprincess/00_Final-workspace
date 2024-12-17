@@ -1,6 +1,9 @@
 package com.mig.blb.member.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,12 +22,18 @@ import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.member.model.service.MemberService;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
+import com.mig.blb.order.model.service.OrderService;
+import com.mig.blb.order.model.vo.Order;
+import com.mig.blb.product.model.vo.Product;
 
 @Controller
 public class MyPageController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private OrderService orderService;
 	
 	@Autowired
 	private InquiryService inquiryService;
@@ -39,9 +48,9 @@ public class MyPageController {
 			
 			Member loginUser =(Member)session.getAttribute("loginUser");
 			
-			String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
 			if( loginUser != null) {
 				
+				String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
 				
 				ArrayList<Inquiry> list = inquiryService.selectInquiryListTop4(memberId);
 				
@@ -192,11 +201,30 @@ public class MyPageController {
 		
 	// 내 주문,배송조회 페이지 요청 
 	@GetMapping("orderList.me")
-	public ModelAndView myOrderList(ModelAndView mv, HttpSession session) {
+	public ModelAndView myOrderList(ModelAndView mv
+									, HttpSession session
+									,Member m) {
 		
 		Member loginUser =(Member)session.getAttribute("loginUser");
 		
 		if( loginUser != null) {
+			String memberId = loginUser.getMemberId();
+			ArrayList<Order> myOrder = orderService.selectMyOrderList(memberId); 
+			
+			HashMap<String, ArrayList<Order>> myListbyDate = new HashMap<>();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			for (Order order : myOrder) {
+				String orderDate = dateFormat.format(order.getOrderDate());
+				myListbyDate.putIfAbsent(orderDate, new ArrayList<>());
+				myListbyDate.get(orderDate).add(order);
+			}
+			
+			//System.out.println(myListbyDate);
+			//System.out.println(myOrder);
+			
+			
+			mv.addObject("myOrder",myOrder);
+			mv.addObject("myListbyDate",myListbyDate);
 			mv.setViewName("member/myOrderList");
 		
 		}else {
@@ -205,6 +233,7 @@ public class MyPageController {
 		}
 		return mv;
 	}
+	
 	
 	// 내 배송지조회 페이지 요청 
 		@GetMapping("deliveryList.me")
@@ -224,3 +253,5 @@ public class MyPageController {
 				
 	
 }
+
+

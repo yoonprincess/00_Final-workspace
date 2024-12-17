@@ -69,7 +69,7 @@ public class InquiryDao {
 	}
 
 	public ArrayList<Inquiry> selectInquiryListTop4(SqlSessionTemplate sqlSession, String memberId) {
-		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectInquiryListTop4", memberId);
+		return (ArrayList)sqlSession.selectList("memberMapper.selectInquiryListTop4", memberId);
 	}
 
 	

@@ -1,5 +1,10 @@
 package com.mig.blb.option.model.vo;
 
+import java.util.ArrayList;
+
+import com.mig.blb.order.model.vo.ProductOrder;
+import com.mig.blb.product.model.vo.Product;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,4 +24,7 @@ public class Option {
     private int optAddPrice; 	// OPT_ADD_PRICE NUMBER
     private int remainQty; 		// REMAIN_QTY NUMBER
     private int prodNo; 		// PROD_NO NUMBER
+    
+    // 마이바티스에서 collection 연결용
+    private ArrayList<Product> product; 
 }

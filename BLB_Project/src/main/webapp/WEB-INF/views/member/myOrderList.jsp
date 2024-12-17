@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -207,44 +208,49 @@
             
             <table class="order-table">
                 <thead>
-                    <tr>
+                    <tr >
                         <th>주문일자</th>
-                        <th>상품</th>
+                        <th >상품</th>
                         <th>수량</th>
                         <th>주문금액</th>
                         <th>상태</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="date-row">
-                        <td class="date" rowspan="2">2024.11.06</td>
-                        <td class="product">
-                            <img src="https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017427236ko.jpg?l=ko" alt="페리페라무드글로이밤">
-                            <div class="product-info">
-                                <div class="name">페리페라 무드 글로이 밤</div>
-                                <div class="seller">페리페라</div>
-                            </div>
-                        </td>
-                        <td class="quantity">1</td>
-                        <td class="price">10,400원</td>
-                        <td class="status">
-                            <span class="delivery-complete">배송완료</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="product">
-                            <img src="https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0018/A00000018677926ko.jpg?l=ko" alt="바세린 립테라피">
-                            <div class="product-info">
-                                <div class="name">바세린 립테라피</div>
-                                <div class="seller">바세린</div>
-                            </div>
-                        </td>
-                        <td class="quantity">1</td>
-                        <td class="price">15,000원</td>
-                        <td class="status">
-                            <span class="delivery-complete">배송완료</span>
-                        </td>
-                    </tr>
+                   <c:forEach var="entry" items="${myListbyDate}">
+	                 <c:set var="myOrderList" value="${entry.value}"/>
+	                 <c:set var="orderDate" value="${entry.key}"/>
+	                 <c:set var="orderCount" value="${fn:length(myOrderList)}"/>
+	                <tr class="date-row" > 
+		              <td class="date" rowspan="${orderCount}">${orderDate}</td>
+		               <td colspan="4">
+		                 <c:forEach var="myOrder" items="${myOrderList}">  
+                      		<div class="order-item">
+                      		 <c:forEach var="productOrder" items="${myOrder.productOrder}">
+                      		 <c:forEach var="option" items="${productOrder.option}">
+		             		  <c:forEach var="product" items="${option.product}">
+		             		  <div class="product">
+		                            <img src="${request.contextPath}/${product.thumbImg}" alt="${product.prodName}">
+		                            <div class="product-info">
+		                                <div class="name">${product.prodName}</div>
+		                                <div class="option">${option.optName}</div>
+		                            </div>
+		                       	   
+			                        <div class="quantity" style="text-align: right" >${productOrder.orderQty}</div>
+			                        <div class="price" >${productOrder.totalAmt}</div>
+			                        <div class="status">
+		                            	<span class="delivery-complete">${myOrder.dlvrStatus}</span>
+		                        	</div>
+	                          </div>
+	                  		 </c:forEach>
+	                  		 </c:forEach>
+	              	  		</c:forEach>  
+	              	      </div>
+	              	    </c:forEach>
+	              	 </td> 
+	              	</tr>
+	              </c:forEach>
+
                     <tr class="date-row">
                         <td class="date" rowspan="1">2024.11.05</td>
                         <td class="product">
@@ -259,56 +265,51 @@
                         <td class="status">
                             <span class="delivery-complete">배송완료</span>
                         </td>
-	                    </tr>
+	                </tr>
 	                </tbody>
 	            </table>
-	            
 	            <br><br>
-	            
-	             <!-- 페이지네이션 -->
+ <!-- 페이지네이션 -->
 			<nav>
-			    <ul class="pagination">
-			        <c:choose>
-			            <c:when test="${ requestScope.pi.currentPage ne 1 }">
-			                <li class="page-item">
-			                    <a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ requestScope.pi.currentPage - 1 }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-			                        ＜
-			                    </a>
-			                </li>
-			            </c:when>
-			        </c:choose>
-			        
-			        <c:forEach var="p" begin="${ requestScope.pi.startPage }" end="${ requestScope.pi.endPage }" step="1">
-			            <c:choose>
-			                <c:when test="${ p ne requestScope.pi.currentPage }">
-			                    <li class="page-item">
-			                        <a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-			                            ${ p }
-			                        </a>
-			                    </li>
-			                </c:when>
-			                <c:otherwise>
-			                    <li class="page-item">
-			                        <a class="active" href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-			                            ${ p }
-			                        </a>
-			                    </li>
-			                </c:otherwise>
-			            </c:choose>
-			        </c:forEach>
-			        
-			        <c:choose>
-			            <c:when test="${ requestScope.pi.currentPage ne requestScope.pi.maxPage }">
-			                <li class="page-item">
-			                    <a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ requestScope.pi.currentPage + 1 }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-			                        ＞
-			                    </a>
-			                </li>
-			            </c:when>
-			        </c:choose>
-			    </ul>
+				<ul class="pagination">
+					<!-- 이전 페이지 그룹 -->
+					<c:if test="${ pi.startPage > 1 }">
+						<li class="page-item">
+							<a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage - pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+								＜
+							</a>
+						</li>
+					</c:if>
+					
+					<!-- 페이지 번호 -->
+					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }" step="1">
+						<c:if test="${ p == pi.currentPage }">
+							<li class="page-item">
+								<a class="active" href="#">
+									${ p }
+								</a>
+							</li>
+						</c:if>
+						<c:if test="${ p != pi.currentPage }">
+							<li class="page-item">
+								<a href="#">
+									${ p }
+								</a>
+							</li>
+						</c:if>
+					</c:forEach>
+					
+					<!-- 다음 페이지 그룹 -->
+					<c:if test="${ pi.endPage < pi.maxPage }">
+						<li class="page-item">
+							<a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage + pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+								＞
+							</a>
+						</li>
+					</c:if>
+				</ul>
 			</nav>
-	        <!-- 페이지네이션 end -->
+			<!-- 페이지네이션 end -->
 	        </div>
 	      </div>
 	    </div>

@@ -1,32 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
 <mapper namespace="memberMapper">
-<resultMap id="memberResultSet"	type="member">
- 		<id column="MEMBER_ID" property="memberId"/>
- 		<result column="MEMBER_PWD" property="memberPwd" />
- 		<result column="MEMBER_NAME" property="memberName" />
- 		<result column="PHONE" property="phone" />
- 		<result column="EMAIL" property="email" />
- 		<result column="BIRTHDATE" property="birthdate" /> 		
- 		<result column="CREATE_DATE" property="createDate" />
- 		<result column="DELETE_DATE" property="deleteDate" />
- 		<result column="STATUS" property="status" />
- 		<result column="TOTAL_POINTS" property="totalPoints" />
- 		<result column="CURRENT_POINTS" property="currentPoints" />
- 		<result column="GRADE_NAME" property="gradeName" />
-</resultMap>
 
-<resultMap id="deliveryResultSet" type="delivery">
- 		<id column="DELI_CODE" property="deliCode"/>
- 		<result column="DELI_NAME" property="deliName" />
- 		<result column="DELI_PHONE" property="deliPhone" />
- 		<result column="DELI_ADDRESS" property="deliAddress" />
- 		<result column="DELI_DEFAULT" property="deliDefault" />
- 		<result column="DELI_COMMENT" property="deliComment" />
- 		<result column="POSTCODE" property="postcode" />
- 		<result column="DETAIL_ADDRESS" property="detailAddress" />
- 		<result column="MEMBER_ID" property="memberId" />
-</resultMap>
+	<resultMap id="memberResultSet"	type="member">
+	 		<id column="MEMBER_ID" property="memberId"/>
+	 		<result column="MEMBER_PWD" property="memberPwd" />
+	 		<result column="MEMBER_NAME" property="memberName" />
+	 		<result column="PHONE" property="phone" />
+	 		<result column="EMAIL" property="email" />
+	 		<result column="BIRTHDATE" property="birthdate" /> 		
+	 		<result column="CREATE_DATE" property="createDate" />
+	 		<result column="DELETE_DATE" property="deleteDate" />
+	 		<result column="STATUS" property="status" />
+	 		<result column="TOTAL_POINTS" property="totalPoints" />
+	 		<result column="CURRENT_POINTS" property="currentPoints" />
+	 		<result column="GRADE_NAME" property="gradeName" />
+	</resultMap>
+	
+	<resultMap id="deliveryResultSet" type="delivery">
+	 		<id column="DELI_CODE" property="deliCode"/>
+	 		<result column="DELI_NAME" property="deliName" />
+	 		<result column="DELI_PHONE" property="deliPhone" />
+	 		<result column="DELI_ADDRESS" property="deliAddress" />
+	 		<result column="DELI_DEFAULT" property="deliDefault" />
+	 		<result column="DELI_COMMENT" property="deliComment" />
+	 		<result column="POSTCODE" property="postcode" />
+	 		<result column="DETAIL_ADDRESS" property="detailAddress" />
+	 		<result column="MEMBER_ID" property="memberId" />
+	</resultMap>
+
+
+	<resultMap id="orderResultSet" type="order">
+	    	<id column="ORDER_NO" property="orderNo" />
+			<result column="RCVR_NAME" property="rcvrName" />
+		    <result column="RCVR_PHONE" property="rcvrPhone" />
+		    <result column="RCVR_ADDRESS" property="rcvrAddress" />
+		    <result column="DLVR_REQ_MESSAGE" property="dlvrReqMessage" />
+		    <result column="DLVR_STATUS" property="dlvrStatus" />
+		    <result column="DLVR_FEE" property="dlvrFee" />
+		    <result column="DLVR_COMPANY" property="dlvrCompany" />
+		    <result column="DISPATCH_DATE" property="dispatchDate" />
+		    <result column="COMPLETE_DATE" property="completeDate" />
+		    <result column="ORDER_TOTAL_AMT" property="orderTotalAmt" />
+		    <result column="PAYMENT_CODE" property="paymentCode" />
+		    <result column="PAYMENT_METHOD" property="paymentMethod" />
+		    <result column="ORDER_DATE" property="orderDate" />
+		    <result column="REFUND_DATE" property="refundDate" />
+		    <result column="REFUND_REASON" property="refundReason" />
+		    <result column="MEMBER_ID" property="memberId" />
+		    
+		    <collection property="productOrder" ofType="productOrder" resultMap="productOrderResultSet"/>
+		</resultMap>
+	
+	<resultMap id="productOrderResultSet" type="productOrder">
+    	<id column="SERIAL_NO" property="serialNo" />
+		<result column="ORDER_QTy" property="orderQty" />
+	    <result column="TOTAL_AMT" property="totalAmt" />
+	    <result column="ORDER_NO" property="orderNo" />
+	    <result column="OPT_NO" property="optNo" />
+	    
+	    <collection property="option" ofType="option" resultMap="optionResultSet"/>
+	</resultMap>
+
+   <resultMap id="optionResultSet" type="option">
+		<id column="OPT_NO" property="optNo" />
+		<result column="OPT_NAME" property="optName" />
+		<result column="OPT_VALUE" property="optValue" />
+		<result column="OPT_ADD_PRICE" property="optAddPrice" />
+		<result column="REMAIN_QTY" property="remainQty" />
+		<result column="PROD_NO" property="prodNo" />
+		
+		<collection property="product" ofType="product" resultMap="productResultSet"/>
+	</resultMap>
+
+	  <resultMap id="productResultSet" type="product">
+		<id column="PROD_NO" property="prodNo"/>
+		<result column="CATEGORY_NAME" property="categoryName"/>
+		<result column="SUBCATEGORY_NAME" property="subcategoryName"/>
+		<result column="PROD_NAME" property="prodName"/>
+		<result column="PROD_CONTENT" property="prodContent"/>
+		<result column="PROD_PRICE" property="prodPrice"/>
+		<result column="PROD_ORIGIN" property="prodOrigin"/>
+		<result column="PROD_CAUTION" property="prodCaution"/>
+		<result column="PROD_COUNT" property="prodCount"/>
+		<result column="PROD_ENROLL_DATE" property="prodEnrollDate"/>
+		<result column="PROD_STATUS" property="prodStatus"/>
+		<result column="THUMB_IMG" property="thumbImg"/>
+	</resultMap>	
+	
+	<resultMap id="inquiryResultSet" type="inquiry">
+		<id column="INQUIRY_NO" property="inquiryNo"/>
+		<result column="INQUIRY_CONTENT" property="inquiryContent"/>
+		<result column="INQUIRY_TYPE" property="inquiryType"/>
+		<result column="INQUIRY_CREATE_DATE" property="inquiryCreateDate"/>
+		<result column="INQUIRY_ANSWERED_YN" property="inquiryAnsweredYn"/>
+		<result column="INQUIRY_STATUS" property="inquiryStatus"/>
+		<result column="MEMBER_ID" property="memberId"/>
+		<result column="PROD_NAME" property="prodName"/>
+	</resultMap>
 	
 	<select id="loginMember"
 			parameterType="member"
@@ -154,4 +225,57 @@
 	       AND EMAIL = #{email}
 	       AND STATUS='Y'
 	</select>
+	
+	
+	<select id="checkMember"
+			parameterType="string"
+			resultMap="memberResultSet">
+		SELECT *
+		  FROM TB_MEMBER
+		  WHERE MEMBER_ID = #{ckMemberId}
+		   AND STATUS ='Y'
+	</select>
+	
+	<!-- 마이페이지용 내 주문배송조회 -->
+	<select id="selectMyOrderList" parameterType="string" resultMap="orderResultSet">
+		SELECT O.ORDER_NO,
+	           TO_CHAR(O.ORDER_DATE,'YYYY-MM-DD') AS "ORDER_DATE",
+	           SUM(O.ORDER_TOTAL_AMT) AS "ORDER_TOTAL_AMT",
+               PO.TOTAL_AMT,
+	           O.DLVR_STATUS,
+	           P.PROD_NAME,
+	           SUM(PO.ORDER_QTY)AS "ORDER_QTY",
+	           OP.OPT_NAME,
+               OP.OPT_NO,
+	           'blb'|| PA.THUMB_PATH || SAVE_FILE_NAME AS "THUMB_IMG"
+	   FROM TB_ORDER O
+	   JOIN TB_PRODUCT_ORDER PO ON PO.ORDER_NO = O.ORDER_NO
+	   JOIN TB_OPTION OP ON OP.OPT_NO = PO.OPT_NO
+	   JOIN TB_PRODUCT P ON P.PROD_NO = OP.PROD_NO
+	   JOIN TB_PRODUCT_ATTACHMENT PA ON PA.PROD_NO = P.PROD_NO
+	   WHERE MEMBER_ID = #{memberId}
+	   AND PA.THUMB_PATH IS NOT NULL
+	    GROUP BY O.ORDER_NO, O.ORDER_DATE, O.DLVR_STATUS, PO.TOTAL_AMT,P.PROD_NAME, OP.OPT_NAME, PA.THUMB_PATH, PA.SAVE_FILE_NAME,OP.OPT_NO
+	    
+	</select>
+	
+	<select id="selectInquiryListTop4" resultMap="inquiryResultSet" parameterType="string">
+		SELECT *
+		   FROM ( 
+		        SELECT ROWNUM AS RNUM, A.* 
+		        FROM ( 
+		                SELECT INQUIRY_NO 
+		                , INQUIRY_ANSWERED_YN 
+		                , INQUIRY_CONTENT
+		                , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD') AS "INQUIRY_CREATE_DATE"
+		                , INQUIRY_TYPE
+		                FROM TB_INQUIRY I
+		                WHERE INQUIRY_STATUS = 'Y'
+		                 AND MEMBER_ID = #{memberId}
+		                ORDER BY INQUIRY_NO DESC
+		            ) A 
+		   )
+		    WHERE RNUM &lt;= 4 
+	</select>
+	
 </mapper>
