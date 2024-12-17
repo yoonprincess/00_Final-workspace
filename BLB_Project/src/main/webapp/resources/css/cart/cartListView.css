@@ -29,6 +29,7 @@ table {
     line-height: 2; /* 줄 간격을 늘려 위아래 공백 추가 */
 }
 
+
 #cart-product td {
     border-top: 1px solid #F4F4F9;
 }
@@ -166,8 +167,4 @@ tr>img {
 
 .btn-delete:hover {
     color: #4A628A; /* 호버 시 더 어두운 색상 */
-}
-
-#total-price {
-    color : red;
 }

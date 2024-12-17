@@ -1,5 +1,8 @@
 $(function() {
 
+    // 페이지 로드 시 총 상품 가격 계산
+    updateTotalPrice();
+
     // 체크박스 클릭 이벤트
     // 전체 선택 체크/해제
     $("#check-all").on("change", function() {
@@ -22,20 +25,93 @@ $(function() {
     $('.quantity-increase').on('click', function() {
 
         let $input = $(this).siblings('.quantity-input'); // input 요소 선택
-        let currentValue = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기
+        let currentQty = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기
+        let prodPrice = parseInt($(this).data("prod-price"));   /// 상품 단가
+        let cartNo = parseInt($(this).data("cart-no")); // 장바구니 번호
         
-        $input.val(currentValue + 1);
+        // 수량 증가 시 총 가격 계산
+        let updatedQty = currentQty + 1;  // 수량 1 증가
+        let updatedPrice = updatedQty * prodPrice;   // 총 가격 계산
+
+        // ajax로 장바구니 테이블에 적용
+        $.ajax({
+            url: "updateQty.ct",
+            method: "POST",
+            data: {
+                cartNo : cartNo,
+                updatedQty: updatedQty,
+                updatedPrice: updatedPrice
+                // currentQty: currentQty, // 현재 수량 전달
+                // change: change  // -1(감소), 1(증가) 값 전달
+            },
+            success: function(response) {
+                if(response.success) {
+
+                   // 업데이트된 수량, 가격 담기
+                   $input.val(updatedQty); // 업데이트된 수량 input 요소에 담기
+                   $(".product-quantity-"  + cartNo).text(`수량: ${updatedQty.toLocaleString()}`); // 업데이트된 수량 출력하기
+                   $("#updated-price-" + cartNo).text(`${updatedPrice.toLocaleString()}원`); // 수량에 따른 총 가격
+
+                   updateTotalPrice(); // 총 가격 업데이트 호출
+
+                } else {
+                    alert(response.message || "수량 변경에 실패하였습니다.");
+                }
+            },
+            error: function() {
+                alert("서버 오류가 발생했습니다. 다시 시도해 주세요.");
+            }
+        });
+
     });
 
     // 수량 감소 버튼 클릭 이벤트
     $('.quantity-decrease').on('click', function() {
 
-        let $input = $(this).siblings('.quantity-input');
-        let currentValue = parseInt($input.val(), 10);
+        let $input = $(this).siblings('.quantity-input'); // input 요소 선택
+        let currentQty = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기
+        let prodPrice = parseInt($(this).data("prod-price"));   /// 상품 단가
+        let cartNo = parseInt($(this).data("cart-no")); // 장바구니 번호
 
-        if (currentValue > 1) {	// 1 이상으로만
-            $input.val(currentValue - 1);
+        if (currentQty < 2) {	// 1 이하로 내려가지 않게
+
+            alert("수량은 1개 이상이어야 합니다.");
+            return;
         }
+
+        // 수량 감소 시 총 가격 계산
+        let updatedQty = currentQty - 1;  // 수량 1 감소
+        let updatedPrice = updatedQty * prodPrice;   // 총 가격 계산
+        
+        // ajax로 장바구니 테이블에 적용
+        $.ajax({
+            url: "updateQty.ct",
+            method: "POST",
+            data: {
+                cartNo : cartNo,
+                updatedQty: updatedQty,
+                updatedPrice: updatedPrice
+                // currentQty: currentQty, // 현재 수량 전달
+                // change: change  // -1(감소), 1(증가) 값 전달
+            },
+            success: function(response) {
+                if(response.success) {
+                    
+                    // 업데이트된 수량, 가격 담기
+                    $input.val(updatedQty); // 업데이트된 수량 input 요소에 담기
+                    $(".product-quantity-"  + cartNo).text(`수량: ${updatedQty.toLocaleString()}`); // 업데이트된 수량 출력하기
+                    $("#updated-price-" + cartNo).text(`${updatedPrice.toLocaleString()}원`); // 수량에 따른 총 가격
+
+                    updateTotalPrice(); // 총 가격 업데이트 호출
+                    
+                } else {
+                    alert(response.message || "수량 변경에 실패하였습니다.");
+                }
+            },
+            error: function() {
+                alert("서버 오류가 발생했습니다. 다시 시도해 주세요.");
+            }
+        });
     });
 
 });
@@ -106,68 +182,14 @@ function checkDelete() {
 // }
 
 
-// 장바구니 수량 변경
-function updateQty(cartNo, currentQty, prodPrice, change) {
 
-    // 수정된 수량 계산
-    const updatedQty = currentQty + change;
-
-    // 수량이 1개 이하로 내려가지 않게
-    if (updatedQty <= 0) {
-        alert("수량은 1개 이상이어야 합니다.");
-        return;
-    }
-    
-    // 수량에 따른 가격 계산
-    const updatedPrice = prodPrice * updatedQty;
-
-    $.ajax({
-        url: "updateQty.ct",
-        method: "POST",
-        data: {
-            cartNo : cartNo,
-            updatedQty: updatedQty,
-            updatedPrice: updatedPrice
-            // currentQty: currentQty, // 현재 수량 전달
-            // change: change  // -1(감소), 1(증가) 값 전달
-        },
-        success: function(response) {
-            if(response.success) {
-
-                // alert("수량이 변경되었습니다."); // 수량 변경 확인용
-                // alert(updatedPrice); // 가격 변경 확인용
-
-                // 수량 및 가격 업데이트
-                // DOM 업데이트
-                // var index = -1;
-                // for(var i = 0; i < response.data.length; i++) {
-                //     if(response.data[i] == cartNo) {
-                //         index = i;
-                //     }
-                // }
-                $('#update-price-' + cartNo).text(`${updatedPrice.toLocaleString()}원`); // 가격 업데이트
-                // $("#update-price-"+cartNo).text(response.data[index].updatedPrice+"원");
-
-                // location.reload();  // 페이지 새로고침
-            } else {
-                alert(response.message || "수량 변경에 실패하였습니다.");
-            }
-        },
-        error: function() {
-            alert("서버 오류가 발생했습니다. 다시 시도해 주세요.");
-        }
-    });
-}
-
-
-// 전체 장바구니 금액 계산
-/*
 function updateTotalPrice() {
 
     let totalPrice = 0;
 
-    $(".product-price #update-price").each(function() {
-        const priceText = $(this).text().replace(/,/g, '').replace('원', '');
+    // 모든 상품의 가격 합산
+    $(".product-price span").each(function () { // 수량에 따라 업데이트된 상품 가격
+        const priceText = $(this).text().replace(/,/g, "").replace("원", ""); // 쉼표 및 '원' 제거
         const price = parseInt(priceText, 10);
 
         if (!isNaN(price)) {
@@ -175,7 +197,21 @@ function updateTotalPrice() {
         }
     });
 
-    // 전체 금액 DOM 업데이트
-    $("#total-price").text(`${totalPrice.toLocaleString()}원`);
+    // 총 상품 가격 업데이트
+    $("#total-prod-price").text(`${totalPrice.toLocaleString()}원`);
+
+    // 배송비
+    let dlvrFee = totalPrice <= 50000 ? 3000 : 0;
+    $("#dlvr-fee").text(`${dlvrFee.toLocaleString()}원`);
+
+    console.log(dlvrFee);
+    console.log(totalPrice);
+
+
+    // 결제 예상 금액
+    let finalTotal = totalPrice + dlvrFee;
+    console.log(finalTotal);
+
+    $('#final-total').text(`${finalTotal.toLocaleString()}원`);
+
 }
-*/

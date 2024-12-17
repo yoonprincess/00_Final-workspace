@@ -65,7 +65,7 @@
 	                        <div class="product-detail">
 	                            <p class="product-title">${ ct.prodName }</p>
 	                            <p class="product-option">[옵션: ${ ct.optName }]</p>
-	                            <p class="product-quantity">수량: ${ ct.cartQty }</p>
+	                            <p class="product-quantity-${ct.cartNo}">수량: ${ ct.cartQty }</p>
 	                            <p class="product-price">
 	                            	<fmt:formatNumber pattern="###,###,###" value="${ ct.prodPrice }" />원
 	                            </p>
@@ -91,14 +91,20 @@
 	                    <td>
 							<!-- 수량 증감 -->
 	                        <div class="item-quantity">
-	                            <span class="quantity-decrease" onclick="updateQty(${ ct.cartNo }, ${ ct.cartQty }, ${ ct.prodPrice }, -1)">-</span>
+	                            <span class="quantity-decrease"
+									  data-prod-price="${ct.prodPrice}"
+									  data-cart-no="${ct.cartNo}">-</span>
+
 	                            <input type="text" value="${ ct.cartQty }" class="quantity-input" readonly>
-	                            <span class="quantity-increase" onclick="updateQty(${ ct.cartNo }, ${ ct.cartQty }, ${ ct.prodPrice }, 1)">+</span>
+	                            <span class="quantity-increase"
+									  data-prod-price="${ct.prodPrice}"
+									  data-cart-no="${ct.cartNo}">+</span>
 	                        </div>
 	                    </td>
+
 	                    <td class="product-price">
-							<span id="update-price-${ct.cartNo}">
-								<fmt:formatNumber pattern="###,###,###" value="${ct.prodPrice}" />원
+							<span id="updated-price-${ct.cartNo}">
+								<fmt:formatNumber pattern="###,###,###" value="${ ct.prodPrice * ct.cartQty }" />원
 							</span>
 						</td>
 	                    <td class="delete-btn-td">
@@ -120,23 +126,30 @@
                 <tr>
                     <th>총 상품 금액</th>
                     <th></th>
-                    <th>총 배송비</th>
+                    <th>배송비</th>
                     <th></th>
-                    <th style="font-weight: bold;">결제 예정 금액</th>
+                    <th style="font-weight: bold;">결제 예상 금액</th>
                 </tr>
             </thead>
             <tbody>
 				<!-- 장바구니 총 가격 -->
                 <tr>
-                    <td>97,600원</td>
+                    <td id="total-prod-price">
+						<!-- 총 상품 가격 -->
+					</td>
                     <td>+</td>
-                    <td>0원</td>
+                    <td id="dlvr-fee">
+						<!-- 배송비 -->
+					</td>
                     <td>=</td>
-                    <td id="total-price">97,600원</td>
+                    <td id="final-total"
+						style="color: red;">
+						<!-- 결제 예상 금액 -->
+					</td>
                 </tr>
             </tbody>
         </table>
-
+		
     </div>
 
 <!-- JS 파일 -->
