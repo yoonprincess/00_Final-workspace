@@ -21,13 +21,13 @@ public class InquiryReplyServiceImpl implements InquiryReplyService {
 	
 	@Override
 	public ArrayList<InquiryReply> selectInquiryReplyList(int ino) {
-		return inquiryReplyDao.selectReplyList(sqlSession, ino);
+		return inquiryReplyDao.selectInquiryReplyList(sqlSession, ino);
 	}
 
 	@Override
 	@Transactional
 	public int insertInquiryReply(InquiryReply r) {
-		return inquiryReplyDao.insertReply(sqlSession, r);
+		return inquiryReplyDao.insertInquiryReply(sqlSession, r);
 	}
 	
 }

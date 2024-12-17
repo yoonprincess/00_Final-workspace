@@ -225,28 +225,28 @@ public class InquiryController {
 		
 		
 	// 댓글 목록 조회 요청 (ajax)
-		@ResponseBody
-		@GetMapping(value="rlist.io",
-					produces="application/json; charset=UTF-8")
-		public String selectInquiryReplyList(@RequestParam(required = false) Integer ino) {
-			
-			ArrayList<InquiryReply> list = inquiryReplyService.selectInquiryReplyList(ino);
-			
-			System.out.println(ino);
-			
-			return new Gson().toJson(list);
-		}
+	@ResponseBody
+	@GetMapping(value="rlist.io",
+				produces="application/json; charset=UTF-8")
+	public String selectInquiryReplyList(int ino) {
 		
-		// 댓글 작성용 요청
-		@ResponseBody
-		@PostMapping(value="rinsert.io",
-					 produces="text/html; charset=UTF-8")
-		public String insertInquiryReply(InquiryReply r) {
-			
-			int result = inquiryReplyService.insertInquiryReply(r);
-			
-			return (result > 0) ? "success" : "fail";
-		}
+		ArrayList<InquiryReply> list = inquiryReplyService.selectInquiryReplyList(ino);						
+		
+		System.out.println(list);
+		
+		return new Gson().toJson(list);
+	}
+	
+	// 댓글 작성용 요청
+	@ResponseBody
+	@PostMapping(value="rinsert.io",
+				 produces="text/html; charset=UTF-8")
+	public String insertInquiryReply(InquiryReply r) {
+		
+		int result = inquiryReplyService.insertInquiryReply(r);
+		
+		return (result > 0) ? "success" : "fail";
+	}
 	
 	// 첨부파일을 위한 메소드
 	public String saveFile(MultipartFile upfile,

@@ -236,14 +236,13 @@
 		<result column="MEMBER_ID" property="memberId"/>
 	</resultMap>
 	
-	<select id="selectInquiryReplyList" parameterType="_int"
-								 resultMap="inquiryReplyResultSet">
+	<select id="selectInquiryReplyList" parameterType="_int" resultMap="inquiryReplyResultSet">
 		SELECT INQUIRY_REPLY_NO
 		     , INQUIRY_REPLY_CONTENT
-		     , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD HH:mm:ss') AS "INQUIRY_CREATE_DATE"
+		     , TO_CHAR(INQUIRY_REPLY_CREATE_DATE, 'YYYY-MM-DD HH:mm:ss') AS "INQUIRY_REPLY_CREATE_DATE"
 		  FROM TB_INQUIRY_REPLY
 		 WHERE INQUIRY_NO = #{inquiryNo}
-		   AND INQUIRY_STATUS = 'Y'
+		   AND INQUIRY_REPLY_STATUS = 'Y'
 	  ORDER BY INQUIRY_REPLY_NO DESC
 	</select>
 	
@@ -251,11 +250,13 @@
 		INSERT INTO TB_INQUIRY_REPLY(INQUIRY_REPLY_NO
 		                , INQUIRY_REPLY_CONTENT
 		                , INQUIRY_NO
-		                , MEMBER_ID)
+		                , MEMBER_ID
+		                , INQUIRY_REPLY_YN)
 		           VALUES(SEQ_INQUIRY_REPLY_NO.NEXTVAL
 		                , #{inquiryReplyContent}
 		                , #{inquiryNo}
-		                , #{memberId})
+		                , #{memberId}
+		                , 'Y')
 	</insert>
 	
 </mapper>

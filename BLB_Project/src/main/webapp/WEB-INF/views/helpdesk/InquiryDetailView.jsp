@@ -28,7 +28,7 @@
             <p><strong>문의번호:</strong> ${requestScope.i.inquiryNo}</p>
             <p><strong>문의자:</strong> ${requestScope.i.memberId}</p>
             <p><strong>문의일:</strong> ${requestScope.i.inquiryCreateDate}</p>
-            <p><strong>내용:</strong> ${requestScope.i.inquiryContent}</p>
+            <p><strong>내용:</strong></p>
             
             <div class="text-content">
                 <p>${ requestScope.i.inquiryContent }</p>
@@ -60,7 +60,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="ir" items="${requestScope.ir.inquiryReply}">
+                    <c:forEach var="ir" items="${requestScope.inquiryReply}">
                         <tr>
                             <td>${ir.inquiryReplyNo}</td>
                             <td>${ir.inquiryReplyContent}</td>
@@ -75,7 +75,7 @@
                     <tr>
                     
                     	<c:choose>
-                    		<c:when test="${ sessionScope.loginUser eq 'admin' }">
+                    		<c:when test="${ empty sessionScope.loginUser}">
                     			<!-- 로그인 전 : 댓글 작성 막기 -->
 		                        <th colspan="2">
 		                            <textarea class="form-control" cols="55" rows="2" 
@@ -85,6 +85,9 @@
                     		</c:when>
                     		<c:otherwise>
                     			<!-- 로그인 후 : 댓글 작성 풀기 -->
+                    			<tr>
+			                        <td colspan="3">댓글(<span id="rcount">0</span>)</td>
+			                    </tr>
                     			<th colspan="2">
 		                            <textarea class="form-control" id="inquiryReplyContent" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
 		                        </th>
@@ -92,15 +95,12 @@
 		                        	<button class="btn btn-secondary" onclick="addReply();">
 		                        		등록하기
 		                        	</button>
-		                        	<input type="hidden" value="${requestScope.ir.inquiryReplyNo }">
-		                        	<input type="hidden" value="${requestScope.ir.memberId }">
+		                        	<input type="hidden" name="ino" value="${requestScope.ir.inquiryNo}">
+		                        	<input type="hidden" name="inquiryReplyNo" value="${requestScope.ir.inquiryReplyNo }">
+		                        	<input type="hidden" name="memberId" value="${requestScope.ir.memberId }">
 		                        </th>
                     		</c:otherwise>
                     	</c:choose>
-                    
-                    </tr>
-                    <tr>
-                        <td colspan="3">댓글(<span id="rcount">0</span>)</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -136,8 +136,8 @@
    				url : "../rinsert.io",
    				type : "post",
    				data : {
-   					inquiryReplyContent : inquiryReplyContent,
-   					memeberId : "${ sessionScope.loginUser.memberId }",
+   					inquiryReplyContent : replyContent,
+   					memberId : "${ sessionScope.loginUser.memberId}",
    					inquiryNo : ${ requestScope.i.inquiryNo }
    				},
    				success : function(result) {
@@ -174,7 +174,7 @@
    			url : "../rlist.io",
    			type : "get",
    			data : {
-   				bno : ${ requestScope.i.inquiryNo }
+   				ino : ${ requestScope.i.inquiryNo }
    			},
    			success : function(result) {
    				
