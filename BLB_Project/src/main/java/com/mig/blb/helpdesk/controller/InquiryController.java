@@ -232,8 +232,6 @@ public class InquiryController {
 		
 		ArrayList<InquiryReply> list = inquiryReplyService.selectInquiryReplyList(ino);						
 		
-		System.out.println(list);
-		
 		return new Gson().toJson(list);
 	}
 	

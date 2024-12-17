@@ -166,14 +166,16 @@
 	</select>
 
 	<select id="selectInquiryList" resultMap="inquiryResultSet">
-		SELECT INQUIRY_NO
-		     , INQUIRY_CONTENT
-		     , INQUIRY_TYPE
-		     , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD HH:mm:ss') AS "INQUIRY_CREATE_DATE"
-		  FROM TB_INQUIRY
-		 WHERE INQUIRY_STATUS = 'Y'
-		   AND MEMBER_ID = #{memberId}
-	  ORDER BY INQUIRY_NO DESC
+		SELECT I.INQUIRY_NO
+		     , I.INQUIRY_CONTENT
+		     , I.INQUIRY_TYPE
+		     , TO_CHAR(I.INQUIRY_CREATE_DATE, 'YYYY-MM-DD HH:mm:ss') AS "INQUIRY_CREATE_DATE"
+		     , IR.INQUIRY_REPLY_YN AS INQUIRY_ANSWERED_YN
+		  FROM TB_INQUIRY I
+     LEFT JOIN TB_INQUIRY_REPLY IR ON (I.INQUIRY_NO = IR.INQUIRY_NO) 
+		 WHERE I.INQUIRY_STATUS = 'Y'
+		   AND I.MEMBER_ID = #{memberId}
+	  ORDER BY I.INQUIRY_NO DESC
 	</select>
 	
 	<select id="selectInquiry" parameterType="_int" resultMap="inquiryResultSet">
@@ -240,10 +242,11 @@
 		SELECT INQUIRY_REPLY_NO
 		     , INQUIRY_REPLY_CONTENT
 		     , TO_CHAR(INQUIRY_REPLY_CREATE_DATE, 'YYYY-MM-DD HH:mm:ss') AS "INQUIRY_REPLY_CREATE_DATE"
+		     , MEMBER_ID
 		  FROM TB_INQUIRY_REPLY
 		 WHERE INQUIRY_NO = #{inquiryNo}
 		   AND INQUIRY_REPLY_STATUS = 'Y'
-	  ORDER BY INQUIRY_REPLY_NO DESC
+	  ORDER BY INQUIRY_REPLY_NO
 	</select>
 	
 	<insert id="insertInquiryReply" parameterType="inquiryReply">

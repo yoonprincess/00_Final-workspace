@@ -53,11 +53,6 @@
             <!-- 댓글 목록 -->
             <table id="commentsTable">
                 <thead>
-                    <tr>
-                        <th>작성자</th>
-                        <th>내용</th>
-                        <th>작성일</th>
-                    </tr>
                 </thead>
                 <tbody>
                     <c:forEach var="ir" items="${requestScope.inquiryReply}">
@@ -69,11 +64,11 @@
                     </c:forEach>
                 </tbody>
             </table>
-
+			
+			<!-- 댓글 작성  -->
             <table id="replyArea" class="table" align="center">
                 <thead>
                     <tr>
-                    
                     	<c:choose>
                     		<c:when test="${ empty sessionScope.loginUser}">
                     			<!-- 로그인 전 : 댓글 작성 막기 -->
@@ -87,6 +82,11 @@
                     			<!-- 로그인 후 : 댓글 작성 풀기 -->
                     			<tr>
 			                        <td colspan="3">댓글(<span id="rcount">0</span>)</td>
+			                    </tr>
+			                    <tr>
+			                        <th>작성자</th>
+			                        <th>내용</th>
+			                        <th>작성일</th>
 			                    </tr>
                     			<th colspan="2">
 		                            <textarea class="form-control" id="inquiryReplyContent" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
