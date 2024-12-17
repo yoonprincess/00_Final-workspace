@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항 등록</title>
-<link rel="stylesheet" href="../resources/css/helpdesk/NoticeEnrollForm.css"> <!-- 스타일 시트 링크 -->
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/helpdesk/NoticeEnrollForm.css"> <!-- 스타일 시트 링크 -->
 </head>
 <body>
         
@@ -73,7 +73,7 @@
 
     </div>
     
-    <script src="../resources/js/helpdesk/Notice.js"></script> <!-- JS 파일 경로 -->
+    <script src="${ pageContext.request.contextPath }/resources/js/helpdesk/Notice.js"></script> <!-- JS 파일 경로 -->
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

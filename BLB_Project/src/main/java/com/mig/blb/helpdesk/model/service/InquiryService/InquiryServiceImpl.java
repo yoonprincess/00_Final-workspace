@@ -40,7 +40,7 @@ public class InquiryServiceImpl implements InquiryService {
 		int result1 = inquiryDao.insertInquiry(sqlSession, i);
 		int result2 = inquiryDao.insertInquiryAtt(sqlSession, inquiryAtt);
 		
-		return result1 * result2;
+		return result1 + result2;
 	}
 
 	@Override

@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공지사항</title>
-    <link rel="stylesheet" href="resources/css/helpdesk/Notice.css">
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/helpdesk/Notice.css">
 </head>
 <body class="body-offset">
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -105,7 +105,7 @@
 			<!-- 페이지네이션 end -->
     </div>
     </div>
-    <script src="resources/js/helpdesk/Notice.js"></script> <!-- JS 파일 경로 -->
+    <script src="${ pageContext.request.contextPath }/resources/js/helpdesk/Notice.js"></script> <!-- JS 파일 경로 -->
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

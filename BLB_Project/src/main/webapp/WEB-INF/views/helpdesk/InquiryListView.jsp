@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1:1 문의내역</title>
-    <link rel="stylesheet" href="resources/css/helpdesk/InquiryListView.css">
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/helpdesk/InquiryListView.css">
 </head>
 <body class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -74,7 +74,7 @@
         </c:if>
     </div>
     </div>
-<script src="resources/js/helpdesk/Inquiry.js"></script> <!-- JS 파일 경로 -->
+<script src="${ pageContext.request.contextPath }/resources/js/helpdesk/Inquiry.js"></script> <!-- JS 파일 경로 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

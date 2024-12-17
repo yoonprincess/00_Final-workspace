@@ -39,7 +39,7 @@ public class NoticeServiceImpl implements NoticeService{
 		int result1 = noticeDao.insertNotice(sqlSession, n);
 		int result2 = noticeDao.insertNoticeAtt(sqlSession, noticeAttList);
 		
-		return result1 * result2;
+		return result1 + result2;
 	}
 	
 	@Override

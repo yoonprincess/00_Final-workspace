@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CONTACT</title>
-    <link rel="stylesheet" href="resources/css/helpdesk/FAQ.css">
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/helpdesk/FAQ.css">
 </head>
 <body class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -79,7 +79,7 @@
         </div>
     </div>
 
-    <script src="resources/js/helpdesk/FAQ.js"></script>
+    <script src="${ pageContext.request.contextPath }/resources/js/helpdesk/FAQ.js"></script>
     </div>
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

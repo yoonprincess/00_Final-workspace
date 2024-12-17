@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1:1 문의하기</title>
-    <link rel="stylesheet" href="resources/css/helpdesk/Inquiry.css">
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/helpdesk/Inquiry.css">
 </head>
 <body class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -26,7 +26,7 @@
         	 <input type="hidden" value="${ sessionScope.loginUser.memberId }" name="memberId" >
             <div class="form-group">
                 <label for="inquiryType">문의유형</label>
-                <select id="inquiryType">
+                <select id="inquiryType" name="inquiryType">
                     <option value="">카테고리를 선택해주세요</option>
                     <option value="상품">상품</option>
                     <option value="배송">배송</option>
@@ -112,7 +112,7 @@
 			</nav>
 			<!-- 페이지네이션 end -->
     </div>
-    <script src="resources/js/helpdesk/Inquiry.js"></script> <!-- JS 파일 경로 -->
+    <script src="${ pageContext.request.contextPath }/resources/js/helpdesk/Inquiry.js"></script> <!-- JS 파일 경로 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

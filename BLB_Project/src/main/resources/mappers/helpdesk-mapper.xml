@@ -118,15 +118,11 @@
 			   NOTICE_ATT_STATUS = 'N'
 		 WHERE NOTICE_ATT_NO = #{noticeAttNo}
 		   AND NOTICE_NO = #{noticeNo};
-	</update>
-	
-	
-	
+	</update>	
 	
 													<!-- 1:1 문의 관련 매퍼 -->
 	<resultMap id="inquiryResultSet" type="inquiry">
 		<id column="INQUIRY_NO" property="inquiryNo"/>
-		<result column="INQUIRY_TITLE" property="inquiryTitle"/>
 		<result column="INQUIRY_CONTENT" property="inquiryContent"/>
 		<result column="INQUIRY_TYPE" property="inquiryType"/>
 		<result column="INQUIRY_CREATE_DATE" property="inquiryCreateDate"/>
@@ -138,13 +134,13 @@
 	
 	<insert id="insertInquiry" parameterType="inquiry">
 	    INSERT INTO TB_INQUIRY(INQUIRY_NO
+	    					, INQUIRY_TYPE
 	                        , INQUIRY_CONTENT
-	                        , INQUIRY_TYPE
 	                        , MEMBER_ID
 	                        , PROD_NO)
 	                   VALUES(SEQ_INQUIRY_NO.NEXTVAL
+	                   		, #{inquiryType}
 	                        , #{inquiryContent}
-	                        , #{inquiryType}
 	                        , #{memberId}
 	                        , <if test="prodNo == 0">null</if>
 	                        <if test="prodNo != 0">#{prodNo}</if>)
@@ -173,7 +169,7 @@
 		SELECT INQUIRY_NO
 		     , INQUIRY_CONTENT
 		     , INQUIRY_TYPE
-		     , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD') AS "INQUIRY_CREATE_DATE"
+		     , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD HH:mm:ss') AS "INQUIRY_CREATE_DATE"
 		  FROM TB_INQUIRY
 		 WHERE INQUIRY_STATUS = 'Y'
 		   AND MEMBER_ID = #{memberId}
@@ -184,9 +180,10 @@
 	    SELECT INQUIRY_NO
 	         , INQUIRY_TYPE
 	         , INQUIRY_CONTENT
-	         , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD') AS "INQUIRY_CREATE_DATE"
+	         , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD HH:mm:ss') AS "INQUIRY_CREATE_DATE"
 	         , MEMBER_ID
 	         , PROD_NAME
+	         , PROD_NO
 	      FROM TB_INQUIRY 
 	      LEFT JOIN TB_PRODUCT USING(PROD_NO)
 	     WHERE INQUIRY_NO = #{inquiryNo}
@@ -235,50 +232,30 @@
 		<result column="INQUIRY_REPLY_CREATE_DATE" property="inquiryReplyCreateDate"/>
 		<result column="INQUIRY_REPLY_YN" property="inquiryReplyYn"/>
 		<result column="INQUIRY_REPLY_STATUS" property="inquiryReplyStatus"/>
+		<result column="INQUIRY_NO" property="inquiryNo"/>
+		<result column="MEMBER_ID" property="memberId"/>
 	</resultMap>
 	
 	<select id="selectInquiryReplyList" parameterType="_int"
 								 resultMap="inquiryReplyResultSet">
 		SELECT INQUIRY_REPLY_NO
 		     , INQUIRY_REPLY_CONTENT
-		     , MEMBER_ID
-		     , TO_CHAR(INQUIRY_REPLY_CREATE_DATE, 'YYYY-MM-DD') AS "INQUIRY_REPLY_CREATE_DATE"
+		     , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD HH:mm:ss') AS "INQUIRY_CREATE_DATE"
 		  FROM TB_INQUIRY_REPLY
-		  JOIN TB_MEMBER USING(MEMBER_ID)
-		 WHERE INQUIRY_NO = #{inquiryReplyNo}
-		   AND INQUIRY_REPLY_STATUS = 'Y'
-      ORDER BY INQUIRY_REPLY_NO DESC
+		 WHERE INQUIRY_NO = #{inquiryNo}
+		   AND INQUIRY_STATUS = 'Y'
+	  ORDER BY INQUIRY_REPLY_NO DESC
 	</select>
 	
 	<insert id="insertInquiryReply" parameterType="inquiryReply">
 		INSERT INTO TB_INQUIRY_REPLY(INQUIRY_REPLY_NO
-						, MEMBER_ID
 		                , INQUIRY_REPLY_CONTENT
 		                , INQUIRY_NO
-		                , PROD_NAME)
-		           VALUES(SEQ_RNO.NEXTVAL
-		           		, #{memberId}
+		                , MEMBER_ID)
+		           VALUES(SEQ_INQUIRY_REPLY_NO.NEXTVAL
 		                , #{inquiryReplyContent}
 		                , #{inquiryNo}
-		                , #{prodName})
+		                , #{memberId})
 	</insert>
 	
-	<select id="selectInquiryListTop4" resultMap="inquiryResultSet" parameterType="string">
-		SELECT *
-   FROM ( 
-        SELECT ROWNUM AS RNUM, A.* 
-        FROM ( 
-                SELECT INQUIRY_NO 
-                , INQUIRY_ANSWERED_YN 
-                , INQUIRY_CONTENT
-                , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD') AS "INQUIRY_CREATE_DATE"
-                , INQUIRY_TYPE
-                FROM TB_INQUIRY I
-                WHERE INQUIRY_STATUS = 'Y'
-                 AND MEMBER_ID = #{memberId}
-                ORDER BY INQUIRY_NO DESC
-            ) A 
-   )
-    WHERE RNUM &lt;= 4 
-	</select>
 </mapper>

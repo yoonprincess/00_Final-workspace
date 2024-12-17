@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.common.template.Pagination;
+import com.mig.blb.helpdesk.model.service.InquiryReplyService.InquiryReplyService;
 import com.mig.blb.helpdesk.model.service.InquiryService.InquiryService;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.helpdesk.model.vo.InquiryAtt;
@@ -35,6 +36,11 @@ public class InquiryController {
 	// InquiryService 객체 생성
 	@Autowired
 	private InquiryService inquiryService;
+	
+	// InquiryService 객체 생성
+	@Autowired
+	private InquiryReplyService inquiryReplyService;
+		
 	
 	// 문의 목록 조회 요청
 	@GetMapping("list.io")
@@ -219,28 +225,28 @@ public class InquiryController {
 		
 		
 	// 댓글 목록 조회 요청 (ajax)
-	@ResponseBody
-	@GetMapping(value="rlist.io",
-				produces="application/json; charset=UTF-8")
-	public String SelectInquiryReplyList(int ino) {
+		@ResponseBody
+		@GetMapping(value="rlist.io",
+					produces="application/json; charset=UTF-8")
+		public String selectInquiryReplyList(@RequestParam(required = false) Integer ino) {
+			
+			ArrayList<InquiryReply> list = inquiryReplyService.selectInquiryReplyList(ino);
+			
+			System.out.println(ino);
+			
+			return new Gson().toJson(list);
+		}
 		
-		ArrayList<InquiryReply> list = inquiryService.selectInquiryReplyList(ino);
-		
-		return new Gson().toJson(list);
-	}	
-		
-	// 댓글 작성용 요청
-	@ResponseBody
-	@PostMapping(value="rinsert.io",
-				 produces="text/html; charset=UTF-8")
-	public String InsertInquiryReply(InquiryReply ir) {
-		
-		int result = inquiryService.insertInquiryReply(ir);
-		
-		System.out.println(result);
-		
-		return (result > 0) ? "success" : "fail";
-	}
+		// 댓글 작성용 요청
+		@ResponseBody
+		@PostMapping(value="rinsert.io",
+					 produces="text/html; charset=UTF-8")
+		public String insertInquiryReply(InquiryReply r) {
+			
+			int result = inquiryReplyService.insertInquiryReply(r);
+			
+			return (result > 0) ? "success" : "fail";
+		}
 	
 	// 첨부파일을 위한 메소드
 	public String saveFile(MultipartFile upfile,

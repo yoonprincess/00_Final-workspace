@@ -70,12 +70,42 @@
                 </tbody>
             </table>
 
-            <!-- 댓글 작성 폼 -->
-            <form id="commentForm">
-                <input type="hidden" name="inquiryNo" value="${requestScope.i.inquiryNo}">
-                <textarea id="commentContent" name="commentContent" rows="3" placeholder="댓글을 남기세요"></textarea><br>
-                <button type="button" id="submitComment">댓글 등록</button>
-            </form>
+            <table id="replyArea" class="table" align="center">
+                <thead>
+                    <tr>
+                    
+                    	<c:choose>
+                    		<c:when test="${ sessionScope.loginUser eq 'admin' }">
+                    			<!-- 로그인 전 : 댓글 작성 막기 -->
+		                        <th colspan="2">
+		                            <textarea class="form-control" cols="55" rows="2" 
+		                            		  style="resize:none; width:100%;" readonly>로그인한 사용자만 이용 가능한 서비스입니다. 로그인 후 이용 바랍니다.</textarea>
+		                        </th>
+		                        <th style="vertical-align:middle"><button class="btn btn-secondary" disabled>등록하기</button></th>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<!-- 로그인 후 : 댓글 작성 풀기 -->
+                    			<th colspan="2">
+		                            <textarea class="form-control" id="inquiryReplyContent" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
+		                        </th>
+		                        <th style="vertical-align:middle">
+		                        	<button class="btn btn-secondary" onclick="addReply();">
+		                        		등록하기
+		                        	</button>
+		                        	<input type="hidden" value="${requestScope.ir.inquiryReplyNo }">
+		                        	<input type="hidden" value="${requestScope.ir.memberId }">
+		                        </th>
+                    		</c:otherwise>
+                    	</c:choose>
+                    
+                    </tr>
+                    <tr>
+                        <td colspan="3">댓글(<span id="rcount">0</span>)</td>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
     	<form action="${ pageContext.request.contextPath }/InquiryUpdateForm.io" method="post">
@@ -87,6 +117,90 @@
         	<button type="submit">삭제</button>                	
         </form>
 	</div>
+	
+	<script>
+   	$(function() {
+   		
+   		selectReplyList();
+   		
+   		// 실시간 댓글 등록 효과
+   		setInterval(selectReplyList, 1000);
+   	});
+   	
+   	// 댓글 작성용 함수
+   	function addReply() {
+   		let replyContent = $("#inquiryReplyContent").val();
+   		if(replyContent.trim().length != 0) {
+   			
+   			$.ajax({
+   				url : "../rinsert.io",
+   				type : "post",
+   				data : {
+   					inquiryReplyContent : inquiryReplyContent,
+   					memeberId : "${ sessionScope.loginUser.memberId }",
+   					inquiryNo : ${ requestScope.i.inquiryNo }
+   				},
+   				success : function(result) {
+   					
+   					if(result == "success") {
+   						
+   						selectReplyList();
+   						$("#inquiryReplyContent").val("");
+   						
+   					} else {
+   						
+   						alertify.alert("Alert", "댓글 작성 실패");
+   						$("#inquiryReplyContent").val("");
+   					}
+   					
+   				},
+   				error : function() {
+   					console.log("댓글 작성용 ajax 통신 실패!");
+   				}
+   			});
+   			
+   		} else {
+   			// 댓글 내용이 없는 경우
+   			// > alert 로 알려주기
+   			
+   			alertify.alert("Alert", "댓글 작성 후 등록해주세요.");
+   		}
+   	}
+   	
+   	// 댓글 목록 조회용 함수
+   	function selectReplyList() {
+   		
+   		$.ajax({
+   			url : "../rlist.io",
+   			type : "get",
+   			data : {
+   				bno : ${ requestScope.i.inquiryNo }
+   			},
+   			success : function(result) {
+   				
+   				let resultStr = "";
+   				
+   				for(let r = 0; r < result.length; r++) {
+   					
+   					resultStr += "<tr>"
+   									+ "<th>" + result[r].memberId + "</th>"
+   									+ "<td>" + result[r].inquiryReplyContent + "</td>"
+   									+ "<td>" + result[r].inquiryReplyCreateDate + "</td>"
+   							   + "</tr>";
+   				}
+   				
+   				$("#replyArea>tbody").html(resultStr);
+   				$("#rcount").text(result.length);
+   				
+   			},
+   			error : function() {
+   				console.log("댓글리스트 조회용 ajax 통신 실패!");
+   			}
+   		});
+   	}
+    </script>
+	
+	
     <script src="${pageContext.request.contextPath}/resources/js/helpdesk/Inquiry.js"></script> <!-- JS 파일 경로 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

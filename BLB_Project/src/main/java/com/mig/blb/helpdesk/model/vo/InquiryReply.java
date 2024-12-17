@@ -18,5 +18,7 @@ public class InquiryReply {
 	private String inquiryReplyCreateDate;
 	private String inquiryReplyYn;
 	private String inquiryReplyStatus;
+	private String inquiryNo;
+	private String memberId;
 	
 }
