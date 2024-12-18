@@ -53,13 +53,21 @@
                     <p class="text-muted">${ requestScope.p.prodContent }</p>
                     <div class="mb-3">
                         <span class="review-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
+                            <c:forEach begin="1" end="5" var="i">
+							    <c:choose>
+							        <c:when test="${i <= reviewStats.AVG_RATING}"><!-- 가득 찬 별 -->
+							            <i class="fas fa-star"></i>
+							        </c:when>
+							        <c:when test="${i - 0.5 < reviewStats.AVG_RATING && i > reviewStats.AVG_RATING}"><!-- 반 개 별 -->
+							            <i class="fas fa-star-half-alt"></i>
+							        </c:when>
+							        <c:otherwise><!-- 빈 별 -->
+							            <i class="far fa-star"></i>
+							        </c:otherwise>
+							    </c:choose>
+							</c:forEach>
                         </span>
-                        <span class="ml-2 font-weight-bold">4.9</span>
+                        <span class="ml-2 font-weight-bold">${reviewStats.AVG_RATING}</span>
                     </div>
                     <h2 class="mb-3">
                         <fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /><small>원</small>
@@ -70,15 +78,24 @@
                     <p>적립금: L.POINT 1,000원 / 롯데카드 5% 추가</p>
                     
                     <form id="productForm">
-                        <div class="form-group">
-                            <label for="product-option">옵션 선택</label>
-                            <select class="form-control" id="product-option">
-                                <option value="">선택하세요</option>
-                                <option value="1" data-name="기본 옵션" data-price="0" data-stock="30">기본 옵션 (재고: 30)</option>
-                                <option value="2" data-name="프리미엄 옵션 (+5,000원)" data-price="5000" data-stock="8">프리미엄 옵션 (+5,000원) (재고: 8)</option>
-                                <option value="3" data-name="스페셜 옵션 (+8,000원)" data-price="8000" data-stock="5">스페셜 옵션 (+8,000원) (재고: 5)</option>
-                            </select>
-                        </div>
+	                    <div class="form-group">
+						    <label for="product-option">옵션 선택</label>
+						    <select class="form-control" id="product-option">
+						        <!-- 기본 선택 옵션 -->
+						        <option value="">선택하세요</option>
+						        <!-- 옵션 리스트 출력 -->
+						        <c:forEach var="opt" items="${optList}">
+						            <option value="${opt.optNo}" 
+						                    data-name="${opt.optName}" 
+						                    data-price="${opt.optAddPrice}" 
+						                    data-stock="${opt.remainQty}">
+						                ${opt.optName} 
+						                <c:if test="${opt.optAddPrice > 0}">(+<fmt:formatNumber value="${opt.optAddPrice}" type="number" pattern="#,###"/>원)</c:if>
+						                (재고: ${opt.remainQty})
+						            </option>
+						        </c:forEach>
+						    </select>
+						</div>
                         <div id="selectedOptions"></div>
                         <div class="form-group">
                             <label>총 상품금액</label>
@@ -144,43 +161,86 @@
                     <h2>상품리뷰</h2>
                     <button class="btn btn-primary">리뷰작성</button>
                 </div>
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="d-flex align-items-center mb-2">
-                            <span class="h2 font-weight-bold mr-2">4.9</span>
-                            <div class="review-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                        <div class="progress mb-2" style="height: 20px;">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">5점 (90%)</div>
-                        </div>
-                        <div class="progress mb-2" style="height: 20px;">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: 7%;" aria-valuenow="7" aria-valuemin="0" aria-valuemax="100">4점 (7%)</div>
-                        </div>
-                        <div class="progress mb-2" style="height: 20px;">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: 2%;" aria-valuenow="2" aria-valuemin="0" aria-valuemax="100">3점 (2%)</div>
-                        </div>
-                        <div class="progress mb-2" style="height: 20px;">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: 1%;" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100">2점 (1%)</div>
-                        </div>
-                        <div class="progress mb-2" style="height: 20px;">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">1점 (0%)</div>
-                        </div>
-                    </div>
-                </div>
-                <div id="reviewList">
-                    <c:choose>
-                        <c:when test="${empty qnaList}">
+                <c:choose>
+                        <c:when test="${empty revList}">
                             <div class="text-center">
                                 <p>등록된 리뷰가 없습니다.</p>
                             </div>
                         </c:when>
                         <c:otherwise>
+			                <div class="row mb-4">
+			                    <div class="col-md-6">
+			                        <div class="d-flex align-items-center mb-2">
+			                            <span class="h2 font-weight-bold mr-2">${reviewStats.AVG_RATING}</span>
+			                            <div class="review-stars">
+			                                <c:forEach begin="1" end="5" var="i">
+											    <c:choose>
+											        <c:when test="${i <= reviewStats.AVG_RATING}"><!-- 가득 찬 별 -->
+											            <i class="fas fa-star"></i>
+											        </c:when>
+											        <c:when test="${i - 0.5 < reviewStats.AVG_RATING && i > reviewStats.AVG_RATING}"><!-- 반 개 별 -->
+											            <i class="fas fa-star-half-alt"></i>
+											        </c:when>
+											        <c:otherwise><!-- 빈 별 -->
+											            <i class="far fa-star"></i>
+											        </c:otherwise>
+											    </c:choose>
+											</c:forEach>
+			                            </div>
+			                        </div>
+			                        <!-- 별점 분포 -->
+			                        <!-- 5점 -->
+								    <div class="progress mb-2" style="height: 20px;">
+								        <div class="progress-bar bg-warning" role="progressbar"
+								             style="width: <fmt:formatNumber value="${(reviewStats.RATING_5 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+								             aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_5 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+								             aria-valuemin="0" aria-valuemax="100">
+								             5점 (<fmt:formatNumber value="${(reviewStats.RATING_5 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+								        </div>
+								    </div>
+								
+								    <!-- 4점 -->
+								    <div class="progress mb-2" style="height: 20px;">
+								        <div class="progress-bar bg-warning" role="progressbar"
+								             style="width: <fmt:formatNumber value="${(reviewStats.RATING_4 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+								             aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_4 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+								             aria-valuemin="0" aria-valuemax="100">
+								             4점 (<fmt:formatNumber value="${(reviewStats.RATING_4 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+								        </div>
+								    </div>
+								
+								    <!-- 3점 -->
+								    <div class="progress mb-2" style="height: 20px;">
+								        <div class="progress-bar bg-warning" role="progressbar"
+								             style="width: <fmt:formatNumber value="${(reviewStats.RATING_3 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+								             aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_3 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+								             aria-valuemin="0" aria-valuemax="100">
+								             3점 (<fmt:formatNumber value="${(reviewStats.RATING_3 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+								        </div>
+								    </div>
+								
+								    <!-- 2점 -->
+								    <div class="progress mb-2" style="height: 20px;">
+								        <div class="progress-bar bg-warning" role="progressbar"
+								             style="width: <fmt:formatNumber value="${(reviewStats.RATING_2 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+								             aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_2 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+								             aria-valuemin="0" aria-valuemax="100">
+								             2점 (<fmt:formatNumber value="${(reviewStats.RATING_2 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+								        </div>
+								    </div>
+								
+								    <!-- 1점 -->
+								    <div class="progress mb-2" style="height: 20px;">
+								        <div class="progress-bar bg-warning" role="progressbar"
+								             style="width: <fmt:formatNumber value="${(reviewStats.RATING_1 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+								             aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_1 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+								             aria-valuemin="0" aria-valuemax="100">
+								             1점 (<fmt:formatNumber value="${(reviewStats.RATING_1 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+								        </div>
+								    </div>
+			                    </div>
+			                </div>
+			                <div id="reviewList">
                             <c:forEach var="review" items="${revList}">
                                 <div class="card mb-3">
                                     <div class="card-body">
@@ -200,7 +260,7 @@
                                                 <fmt:formatDate value="${review.revEnrollDate}" pattern="yyyy-MM-dd hh:mm" />
                                             </small>
                                         </div>
-                                        <p class="card-text">${review.revContent}</p>
+                                        <p class="card-text">${review.revNo}${review.revContent}</p>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -259,7 +319,7 @@
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <!-- 문의글 -->
-                                        <h5>${qna.inquiryContent}</h5>
+                                        <p>${qna.inquiryContent}</p>
                                         <p class="text-muted">
                                             작성자: ${qna.memberId} | 작성일: ${qna.inquiryCreateDate} | ${qna.inquiryNo}
                                         </p>
@@ -267,8 +327,12 @@
                                         <!-- 답변 -->
                                         <c:if test="${not empty qna.replyList}">
                                             <div class="mt-3 p-3 bg-light">
-                                                <c:forEach var="reply" items="${qna.replyList}">
-                                                    <strong>답변:</strong>
+                                                <c:forEach var="reply" items="${qna.replyList}" varStatus="status">
+                                                    <!-- 첫 번째 답변이 아닌 경우에만 <hr> 출력 -->
+                                                    <c:if test="${!status.first}">
+                                                        <hr>
+                                                    </c:if>
+                                                    <strong>답변:</strong> ${reply.inquiryReplyNo}
                                                     <p>${reply.inquiryReplyContent}</p>
                                                     <small class="text-muted">
                                                         작성자: ${reply.memberId} | 작성일: ${reply.inquiryReplyCreateDate}

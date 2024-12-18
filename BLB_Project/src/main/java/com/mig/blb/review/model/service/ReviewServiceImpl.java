@@ -1,6 +1,7 @@
 package com.mig.blb.review.model.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,9 @@ public class ReviewServiceImpl implements ReviewService {
 	public ArrayList<Review> selectReviewList(PageInfo revPi, int prodNo) {
 		return reviewDao.selectReviewList(sqlSession, revPi, prodNo);
 	}
-	
-	
 
+	@Override
+	public Map<String, Object> selectReviewStats(int prodNo) {
+		return reviewDao.selectReviewStats(sqlSession, prodNo);
+	}
 }

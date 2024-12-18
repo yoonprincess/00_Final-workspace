@@ -17,6 +17,7 @@
 			resultMap="optionResultSet">
 		SELECT OPT_NO
 		     , OPT_NAME
+		     , OPT_VALUE
 		     , OPT_ADD_PRICE
 		     , REMAIN_QTY
 		  FROM TB_OPTION

@@ -1169,6 +1169,45 @@ INSERT INTO TB_PRODUCT_ORDER(SERIAL_NO,
                     1,
                     14900,
                     2,
-                    57);              
+                    57);   
+                    
+-- 리뷰 샘플 데이터 생성
+DECLARE
+    v_member_ids SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST('admin', 'user01', 'user02', 'user03');
+    v_review_content SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST(
+        '이 제품 정말 좋아요!',
+        '효과가 만족스럽습니다.',
+        '배송이 빨랐어요.',
+        '기대 이상입니다. 추천합니다!',
+        '디자인이 마음에 들어요.'
+    );
+    v_index NUMBER := 0; -- 작성자 순환용 인덱스
+BEGIN
+    -- TB_PRODUCT_ORDER의 SERIAL_NO마다 리뷰 생성
+    FOR rec IN (SELECT SERIAL_NO FROM TB_PRODUCT_ORDER) LOOP
+        -- 작성자 순환
+        v_index := v_index + 1;
+
+        -- 리뷰 데이터 삽입
+        INSERT INTO TB_REVIEW (
+            REV_NO,
+            REV_CONTENT,
+            REV_RATING,
+            REV_STATUS,
+            SERIAL_NO,
+            MEMBER_ID
+        ) VALUES (
+            SEQ_REV_NO.NEXTVAL, -- 리뷰 번호 시퀀스
+            v_review_content(MOD(v_index, 5) + 1), -- 랜덤 리뷰 내용
+            TRUNC(DBMS_RANDOM.VALUE(3, 6)), -- 랜덤 별점 (3~5)
+            'Y', -- 리뷰 상태 활성화
+            rec.SERIAL_NO, -- SERIAL_NO
+            v_member_ids(MOD(v_index, 4) + 1) -- 작성자 순환: admin, user01, user02, user03
+        );
+    END LOOP;
+
+    COMMIT;
+END;
+/
 
 COMMIT;

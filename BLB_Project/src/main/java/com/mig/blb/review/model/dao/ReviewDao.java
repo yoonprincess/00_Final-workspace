@@ -1,6 +1,7 @@
 package com.mig.blb.review.model.dao;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -24,6 +25,10 @@ public class ReviewDao {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
 		return (ArrayList)sqlSession.selectList("reviewMapper.selectReviewList", prodNo, rowBounds);
+	}
+
+	public Map<String, Object> selectReviewStats(SqlSessionTemplate sqlSession, int prodNo) {
+		return sqlSession.selectOne("reviewMapper.selectReviewStats", prodNo);
 	}
 
 }

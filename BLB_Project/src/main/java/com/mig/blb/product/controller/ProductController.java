@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.common.template.Pagination;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
+import com.mig.blb.option.model.service.OptionService;
+import com.mig.blb.option.model.vo.Option;
 import com.mig.blb.product.model.service.ProductService;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
@@ -28,6 +30,9 @@ public class ProductController {
 	
 	@Autowired
 	private ReviewService reviewService;
+	
+	@Autowired
+	private OptionService optionService;
 
 	// 상품 목록보기 요청
 	@GetMapping("list.pr")
@@ -77,6 +82,11 @@ public class ProductController {
 			
 			// 상품 첨부이미지 조회
 			ArrayList<ProductAtt> paList = productService.selectProductAtt(prodNo);
+			// 상품 옵션 조회
+			ArrayList<Option> optList = optionService.selectCartOption(prodNo);
+			
+			// 리뷰 통계 데이터 가져오기
+		    Map<String, Object> reviewStats = reviewService.selectReviewStats(prodNo);
 			
 			// 리뷰 목록조회
 			int revListCount = reviewService.selectReviewCount(prodNo);
@@ -90,7 +100,7 @@ public class ProductController {
 			int qnaListCount = productService.selectProdInquiryCount(prodNo);
 			int qnaPageLimit = 5;
 			int qnaBoardLimit = 10;
-			PageInfo qnaPi = Pagination.getPageInfo(qnaListCount, revPage, 
+			PageInfo qnaPi = Pagination.getPageInfo(qnaListCount, qnaPage, 
 												 qnaPageLimit, qnaBoardLimit);
 			ArrayList<Inquiry> qnaList = productService.selectProdInquiryList(qnaPi, prodNo);
 			
@@ -98,6 +108,8 @@ public class ProductController {
 			// requestScope에 객체 전달
 			model.addAttribute("p", p);
 			model.addAttribute("paList", paList);
+			model.addAttribute("optList", optList);
+			model.addAttribute("reviewStats", reviewStats);
 			model.addAttribute("revList", revList);
 			model.addAttribute("revPi", revPi);
 			model.addAttribute("qnaList", qnaList);

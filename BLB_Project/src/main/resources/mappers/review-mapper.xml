@@ -9,8 +9,9 @@
 		<result column="REV_ENROLL_DATE" property="revEnrollDate"/>
 		<result column="REV_RATING" property="revRating"/>
 		<result column="REV_STATUS" property="revStatus"/>
-		<result column="ORDER_NO" property="orderNo"/>
+		<result column="SERIAL_NO" property="serialNo"/>
 		<result column="MEMBER_ID" property="memberId"/>
+		<result column="OPT_NO" property="optNo"/>
 		<result column="OPT_NAME" property="optName"/>
 		<result column="OPT_VALUE" property="optValue"/>
 	</resultMap>
@@ -19,10 +20,10 @@
 			resultType="_int">
 		SELECT COUNT(*) AS COUNT
 		  FROM TB_REVIEW R
-		  LEFT JOIN TB_PRODUCT_ORDER PO ON (R.ORDER_NO = PO.ORDER_NO)
-		  LEFT JOIN TB_OPTION OPT ON (PO.OPT_NO = OPT.OPT_NO)
+		  LEFT JOIN TB_PRODUCT_ORDER PO ON R.SERIAL_NO = PO.SERIAL_NO
+		  LEFT JOIN TB_OPTION OPT ON PO.OPT_NO = OPT.OPT_NO
 		 WHERE OPT.PROD_NO = #{prodNo}
-		   AND REV_STATUS = 'Y'
+		   AND R.REV_STATUS = 'Y'
 	</select>
 	
 	<select id="selectReviewList" parameterType="_int"
@@ -32,13 +33,31 @@
 		     , R.REV_ENROLL_DATE
 		     , R.REV_RATING
 		     , R.MEMBER_ID
+		     , R.SERIAL_NO
+		     , PO.OPT_NO
 		     , OPT.OPT_NAME
 		     , OPT.OPT_VALUE
 		  FROM TB_REVIEW R
-		  LEFT JOIN TB_PRODUCT_ORDER PO ON (R.ORDER_NO = PO.ORDER_NO)
-		  LEFT JOIN TB_OPTION OPT ON (PO.OPT_NO = OPT.OPT_NO)
+		  LEFT JOIN TB_PRODUCT_ORDER PO ON R.SERIAL_NO = PO.SERIAL_NO
+		  LEFT JOIN TB_OPTION OPT ON PO.OPT_NO = OPT.OPT_NO
 		 WHERE OPT.PROD_NO = #{prodNo}
-		 ORDER BY REV_NO DESC
+		   AND R.REV_STATUS = 'Y'
+		ORDER BY R.REV_NO DESC
 	</select>
+	
+	<select id="selectReviewStats" parameterType="int" resultType="map">
+    SELECT ROUND(AVG(R.REV_RATING), 1) AS AVG_RATING,
+           COUNT(*) AS TOTAL_REVIEWS,
+           SUM(CASE WHEN R.REV_RATING = 5 THEN 1 ELSE 0 END) AS RATING_5,
+           SUM(CASE WHEN R.REV_RATING = 4 THEN 1 ELSE 0 END) AS RATING_4,
+           SUM(CASE WHEN R.REV_RATING = 3 THEN 1 ELSE 0 END) AS RATING_3,
+           SUM(CASE WHEN R.REV_RATING = 2 THEN 1 ELSE 0 END) AS RATING_2,
+           SUM(CASE WHEN R.REV_RATING = 1 THEN 1 ELSE 0 END) AS RATING_1
+    FROM TB_REVIEW R
+    JOIN TB_PRODUCT_ORDER PO ON R.SERIAL_NO = PO.SERIAL_NO
+    JOIN TB_OPTION OPT ON PO.OPT_NO = OPT.OPT_NO
+    WHERE OPT.PROD_NO = #{prod_no}
+      AND R.REV_STATUS = 'Y'
+</select>
 	
 </mapper>

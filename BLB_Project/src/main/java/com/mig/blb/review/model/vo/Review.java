@@ -21,8 +21,9 @@ public class Review {
 	private Timestamp revEnrollDate;	//	REV_ENROLL_DATE	DATE
 	private int revRating; 				//	REV_RATING	NUMBER
 	private String revStatus;			//	REV_STATUS	CHAR(1 BYTE)
-	private String orderNo;				//	ORDER_NO	VARCHAR2(50 BYTE)
+	private String serialNo;			//	SERIAL_NO	VARCHAR2(30 BYTE)
 	private String memberId;			//	MEMBER_ID	VARCHAR2(20 BYTE)
+	private int optNo;					//	OPT_NO	NUMBER
 	private String optName;				//	OPT_NAME	VARCHAR2(90 BYTE)
 	private String optValue;			//	OPT_VALUE	VARCHAR2(90 BYTE)
 		

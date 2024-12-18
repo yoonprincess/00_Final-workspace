@@ -29,5 +29,4 @@ public interface ProductService {
 	int selectProdInquiryCount(int prodNo);
 	// 문의 목록(상세, 댓글포함)조회
 	ArrayList<Inquiry> selectProdInquiryList(PageInfo qnaPi, int prodNo);
-
 }
