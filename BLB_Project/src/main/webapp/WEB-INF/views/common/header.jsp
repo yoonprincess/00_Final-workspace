@@ -54,7 +54,13 @@
                         <span class="material-symbols-outlined menu-icon">search</span>
                     </a>
                 </div>
-
+                
+                <a class="menu-btn" href="#">
+                    <span class="material-symbols-outlined menu-icon">
+						notifications
+					</span>
+                </a>
+               
                 <!-- 찜 -->
                 <a class="menu-btn" href="#">
                     <span class="material-symbols-outlined menu-icon">
