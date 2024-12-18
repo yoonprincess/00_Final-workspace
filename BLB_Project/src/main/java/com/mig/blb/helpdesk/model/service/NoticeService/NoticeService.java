@@ -26,5 +26,7 @@ public interface NoticeService {
 	int deleteNoticeAtt(int noticeAttNo);
 
 	int updateNotice(Notice n);
+
+	ArrayList<Notice> selectSearchNoticeList(String searchKeywrod, PageInfo pi);
 	
 }

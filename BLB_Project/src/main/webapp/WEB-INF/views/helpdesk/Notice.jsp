@@ -32,16 +32,12 @@
 	    </c:if>
         <h1>공지사항</h1>
         <div class="notice-search">
-            <div>
-                <select>
-                    <option>전체</option>
-                    <option>제목</option>
-                    <option>내용</option>
-                </select>
-                <input type="text" placeholder="검색어를 입력하세요">
-                <button>찾기</button>
-            </div>
-        </div>
+		    <form action="flist.no" method="get">
+		        <input type="text" name="searchKeyword" placeholder="검색어를 입력하세요" value="${ param.searchKeyword }">
+		        <button type="submit">찾기</button>
+		    </form>
+		</div>
+
         <table id="noticeList">
             <thead>
                 <tr>

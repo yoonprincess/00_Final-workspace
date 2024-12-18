@@ -50,7 +50,7 @@
                             <td>${i.inquiryCreateDate}</td>
                             <td>
                                 <c:choose>
-                                    <c:when test="${i.inquiryAnsweredYn == 'Y'}">답변 완료</c:when>
+                                    <c:when test="${inquiryAnsweredYn}">답변 완료</c:when>
                                     <c:otherwise>미답변</c:otherwise>
                                 </c:choose>
                             </td>

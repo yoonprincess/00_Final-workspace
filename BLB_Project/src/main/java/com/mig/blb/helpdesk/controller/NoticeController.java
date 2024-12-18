@@ -244,6 +244,28 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 		    return mv;
 		}
 		
+		@GetMapping("flist.no")
+		public String selectSearchNoticeList(@RequestParam(value="searchKeyword") String searchKeyword,
+											 @RequestParam(value="cpage", defaultValue="1")int currentPage,
+						                                                                 Model model) {
+		//System.out.println(searchKeyword);
+			
+		int listCount = noticeService.selectListCount();
+		
+		int pageLimit = 5;
+		int boardLimit = 5;
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		ArrayList<Notice> list = noticeService.selectSearchNoticeList(searchKeyword,pi);
+		
+		model.addAttribute("list",list);
+		model.addAttribute("pi",pi);
+		
+		
+		return "helpdesk/Notice";
+		
+		} 
+		
 		// 첨부파일을 위한 메소드
 		public String saveFile(MultipartFile upfile, HttpSession session) {
 		    String originName = upfile.getOriginalFilename();

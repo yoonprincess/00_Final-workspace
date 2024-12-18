@@ -55,7 +55,7 @@
                     </a>
                 </div>
                 
-                <a class="menu-btn" href="#">
+                <a class="menu-btn" href="${ pageContext.request.contextPath }/notification.blb">
                     <span class="material-symbols-outlined menu-icon">
 						notifications
 					</span>

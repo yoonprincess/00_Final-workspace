@@ -61,4 +61,14 @@ public class NoticeDao {
 		return sqlSession.delete("helpdeskMapper.deleteNoticeAtt", noticeAttNo);
 	}
 
+	public ArrayList<Notice> selectSearchNoticeList(SqlSessionTemplate sqlSession, String searchKeyword, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		//System.out.println(searchKeyword);
+		
+		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectSearchNoticeList", searchKeyword, rowBounds);
+	}
+
 }
