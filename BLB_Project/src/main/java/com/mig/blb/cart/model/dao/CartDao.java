@@ -33,11 +33,17 @@ public class CartDao {
 		Map<String, Integer> params = new HashMap<>();
 	    params.put("cartNo", cartNo);
 	    params.put("updatedQty", updatedQty);
+	    
 	    return sqlSession.update("cartMapper.updateCartQuantity", params);
 	}
 
-//	public int updateCartOption(SqlSessionTemplate sqlSession, Map<String, Integer> params) {
-//		return sqlSession.update("cartMapper.updateCartOption", params);
-//	}
+	public int updateCartOption(SqlSessionTemplate sqlSession, int cartNo, int updatedOptNo) {
+		
+		Map<String, Integer> params = new HashMap<>();
+		params.put("cartNo", cartNo);
+		params.put("updatedOptNo", updatedOptNo);
+		
+		return sqlSession.update("cartMapper.updateCartOption", params);
+	}
 
 }

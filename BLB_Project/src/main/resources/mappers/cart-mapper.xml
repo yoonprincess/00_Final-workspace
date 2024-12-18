@@ -11,6 +11,8 @@
 		
 		<result column="PROD_NAME" property="prodName" />
 		<result column="OPT_NAME" property="optName" />
+		<result column="OPT_ADD_PRICE" property="optAddPrice" />
+		<result column="REMAIN_QTY" property="remainQty" />
 		<result column="PROD_PRICE" property="prodPrice" />
 
 	</resultMap>
@@ -22,12 +24,15 @@
 		SELECT C.CART_NO
 			 , P.PROD_NO
 		     , P.PROD_NAME
+		     , C.OPT_NO
 		     , O.OPT_NAME
+		     , O.OPT_ADD_PRICE
+		     , O.REMAIN_QTY
 		     , C.CART_QTY
 		     , P.PROD_PRICE
 		  FROM TB_CART C
 		  LEFT JOIN TB_PRODUCT P ON (C.PROD_NO = P.PROD_NO)
-		  LEFT JOIN TB_OPTION O USING(OPT_NO)
+		  LEFT JOIN TB_OPTION O ON C.OPT_NO = O.OPT_NO
 		 WHERE MEMBER_ID = #{memberId}
 		 ORDER BY CART_NO DESC
 	</select>
@@ -49,20 +54,19 @@
 	</delete>
 	
 	<!-- 장바구니 수량 변경 -->
-	<update id="updateCartQuantity" parameterType="map">
+	<update id="updateCartQuantity"
+			parameterType="map">
 	    UPDATE TB_CART
 		   SET CART_QTY = #{updatedQty}
 		 WHERE CART_NO = #{cartNo}
 	</update>
 	
 	<!-- 장바구니 상품 선택 옵션 변경 -->
-	<!-- 
 	<update id="updateCartOption"
 			parameterType="map">
 		UPDATE TB_CART
-		  SET OPT_NO = #{optNo}
+		  SET OPT_NO = #{updatedOptNo}
 		WHERE CART_NO = #{cartNo}
 	</update>
-	-->
 	 
 </mapper>

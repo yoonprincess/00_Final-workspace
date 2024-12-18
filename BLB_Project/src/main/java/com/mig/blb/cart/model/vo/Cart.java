@@ -25,6 +25,8 @@ public class Cart {
 	
 	private String prodName;
 	private String optName;
+	private int optAddPrice;
+	private int remainQty;
 	private int prodPrice;
 	
     private ArrayList<Option> optionList;

@@ -3,6 +3,25 @@ $(function() {
     // 페이지 로드 시 총 상품 가격 계산
     updateTotalPrice();
 
+    // 모든 select 요소에 대해 처리
+    $(".prod-opt").each(function() {
+        const $select = $(this); // 현재 select 요소
+        const cartOptNo = parseInt($select.data("cart-optno")); // select에 저장된 cart-optno 값
+    
+        // select 내부의 모든 option 요소 탐색
+        $select.find("option").each(function() {
+            const $option = $(this); // 현재 option 요소
+            const optionValue = parseInt($option.val()); // option의 value 값
+    
+            // cart-optno와 option의 value가 같으면 selected 속성 추가
+            if (cartOptNo === optionValue) {
+                $option.prop("selected", true); // 선택 처리
+                $option.css("background-color", "#e0e0e0")
+
+            }
+        });
+    });
+
     // 체크박스 클릭 이벤트
     // 전체 선택 체크/해제
     $("#check-all").on("change", function() {
@@ -24,14 +43,19 @@ $(function() {
     // 수량 증가 버튼 클릭 이벤트
     $('.quantity-increase').on('click', function() {
 
-        let $input = $(this).siblings('.quantity-input'); // input 요소 선택
+        let $input = $(this).siblings('.quantity-input'); // 형제인 input 요소 선택
         let currentQty = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기
         let prodPrice = parseInt($(this).data("prod-price"));   /// 상품 단가
         let cartNo = parseInt($(this).data("cart-no")); // 장바구니 번호
         
         // 수량 증가 시 총 가격 계산
         let updatedQty = currentQty + 1;  // 수량 1 증가
-        let updatedPrice = updatedQty * prodPrice;   // 총 가격 계산
+
+        const optPrice = parseInt($("#prod-opt-" + cartNo).find("option:selected").data("price")) || 0;
+
+        console.log(optPrice);
+
+        const updatedPrice = (prodPrice + optPrice) * updatedQty;   // 총 가격 계산
 
         // ajax로 장바구니 테이블에 적용
         $.ajax({
@@ -68,10 +92,10 @@ $(function() {
     // 수량 감소 버튼 클릭 이벤트
     $('.quantity-decrease').on('click', function() {
 
-        let $input = $(this).siblings('.quantity-input'); // input 요소 선택
-        let currentQty = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기
-        let prodPrice = parseInt($(this).data("prod-price"));   /// 상품 단가
-        let cartNo = parseInt($(this).data("cart-no")); // 장바구니 번호
+        const $input = $(this).siblings('.quantity-input'); // input 요소 선택
+        const currentQty = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기
+        const prodPrice = parseInt($(this).data("prod-price"));   /// 상품 단가
+        const cartNo = parseInt($(this).data("cart-no")); // 장바구니 번호
 
         if (currentQty < 2) {	// 1 이하로 내려가지 않게
 
@@ -80,8 +104,12 @@ $(function() {
         }
 
         // 수량 감소 시 총 가격 계산
-        let updatedQty = currentQty - 1;  // 수량 1 감소
-        let updatedPrice = updatedQty * prodPrice;   // 총 가격 계산
+        const updatedQty = currentQty - 1;  // 수량 1 감소
+        const optPrice = parseInt($("#prod-opt-" + cartNo).find("option:selected").data("price")) || 0;
+
+        console.log(optPrice);
+
+        const updatedPrice = (prodPrice + optPrice) * updatedQty;   // 총 가격 계산
         
         // ajax로 장바구니 테이블에 적용
         $.ajax({
@@ -113,6 +141,68 @@ $(function() {
             }
         });
     });
+
+    // 옵션 선택 시 옵션 목록에 추가
+    $(".prod-opt").change(function() {
+
+        const updatedOptNo = parseInt($(this).val());    // 선택된 옵션 번호
+
+        const $selectedOption = $(this).find("option:selected");    // 선택된 옵션 요소
+
+        // 옵션 선택용 변수
+        const optName =  $selectedOption.data("name");
+        const optPrice = parseInt($selectedOption.data("price")) || 0;
+        const remainQty = parseInt($selectedOption.data("remainqty")) || 0;
+        const cartNo = parseInt($selectedOption.data("cart-no"));
+
+        // 가격 계산용 변수
+        const prodPrice = parseInt($selectedOption.closest("tr").find(".quantity-increase").data("prod-price"));
+        const quantity = parseInt($selectedOption.closest("tr").find(".quantity-input").val(), 10);
+
+        const updatedPrice = (prodPrice + optPrice) * quantity;
+
+        // 유효성 검사: -1 또는 잘못된 값 선택 시 경고 후 종료
+        if (updatedOptNo === -1 || isNaN(updatedOptNo)) {
+            alert("옵션을 선택해 주세요.");
+            return;
+        }
+
+        // 모든 옵션의 배경색 초기화
+        $(this).find("option").css("background-color", "");
+
+        $.ajax({
+            url: "updateOption.ct",
+            method: "POST",
+            data: {
+                cartNo: cartNo,
+                updatedOptNo: updatedOptNo
+            },
+            success: function(response) {
+                if(response.success) {
+
+                    $(".product-option-"  + cartNo).text(`[옵션: ${optName.toLocaleString()} (+ ${optPrice.toLocaleString()}원)]`);
+                    
+                    // 선택된 항목에 배경색, selected 속성 부여
+                    $selectedOption.css("background-color", "#e0e0e0")
+                                   .prop("selected", true);
+
+                    // 상품 총 가격 업데이트
+                    $("#updated-price-" + cartNo).text(`${updatedPrice.toLocaleString()}원`);
+
+                    updateTotalPrice(); // 총 가격 업데이트 호출
+                } else {
+
+                    alert(response.message || "옵션 변경에 실패하였습니다.");
+                }
+            },
+            error: function() {
+                alert("서버 오류가 발생했습니다. 다시 시도해 주세요.");
+            }
+        });
+
+    });
+
+
 
 });
 
@@ -152,44 +242,15 @@ function checkDelete() {
     $checkDeleteForm.submit();
 }
 
-// 옵션 변경 셀렉트박스
-// function updateCartOption() {
-
-//     // select box Name로 접근하여 선택된 값 읽기
-//     const $selectedForm = ("#sel-opt-form");
-//     const $selectedOpt = $(".sel-opt:selected");
-
-//     $selectedOpt.each(function() {
-
-//         console.log("옵션 값:", $(this).val()); // 현재 요소의 값
-        
-//     })
-
-//     // form에 hidden input으로 값 추가
-//     if ($("#hiddenNewOptNo").length === 0) {
-//         $("<input>")
-//             .attr({
-//                 type: "hidden",
-//                 id: "hiddenNewOptNo",
-//                 name: "newOptNo",
-//                 value: newOptNo
-//             })
-//             .appendTo("#selectNewOpt");
-//     } else {
-//         $("#hiddenNewOptNo").val(newOptNo);
-//     }
-//     $("#selectNewOpt").submit();
-// }
-
-
-
+// 결제 예상 금액 계산
 function updateTotalPrice() {
 
     let totalPrice = 0;
 
     // 모든 상품의 가격 합산
     $(".product-price span").each(function () { // 수량에 따라 업데이트된 상품 가격
-        const priceText = $(this).text().replace(/,/g, "").replace("원", ""); // 쉼표 및 '원' 제거
+
+        const priceText = $(this).text().replace(/,/g, "").replace("원", ""); // ',' 및 '원' 제거
         const price = parseInt(priceText, 10);
 
         if (!isNaN(price)) {
@@ -204,14 +265,11 @@ function updateTotalPrice() {
     let dlvrFee = totalPrice <= 50000 ? 3000 : 0;
     $("#dlvr-fee").text(`${dlvrFee.toLocaleString()}원`);
 
-    console.log(dlvrFee);
-    console.log(totalPrice);
-
-
     // 결제 예상 금액
     let finalTotal = totalPrice + dlvrFee;
-    console.log(finalTotal);
 
     $('#final-total').text(`${finalTotal.toLocaleString()}원`);
 
 }
+
+

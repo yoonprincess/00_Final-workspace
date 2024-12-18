@@ -55,6 +55,8 @@ DELETE
 -- 5. 장바구니 상품 옵션 조회
 SELECT OPT_NO
      , OPT_NAME
+     , OPT_ADD_PRICE
+     , REMAIN_QTY
   FROM TB_OPTION
  WHERE PROD_NO = #{prodNo}
  ORDER BY OPT_NO DESC
@@ -90,4 +92,19 @@ BEGIN
     COMMIT;
 END;
 /
+
+SELECT C.CART_NO
+			 , P.PROD_NO
+		     , P.PROD_NAME
+		     , C.OPT_NO
+		     , O.OPT_NAME
+		     , O.OPT_ADD_PRICE
+		     , O.REMAIN_QTY
+		     , C.CART_QTY
+		     , P.PROD_PRICE
+		  FROM TB_CART C
+		  LEFT JOIN TB_PRODUCT P ON (C.PROD_NO = P.PROD_NO)
+		  LEFT JOIN TB_OPTION O ON C.OPT_NO = O.OPT_NO
+		 WHERE MEMBER_ID = 'admin'
+		 ORDER BY CART_NO DESC
 

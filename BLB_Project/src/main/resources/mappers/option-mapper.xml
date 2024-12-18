@@ -15,7 +15,10 @@
 	<select id="selectCartOption"
 			parameterType="_int"
 			resultMap="optionResultSet">
-		SELECT OPT_NAME
+		SELECT OPT_NO
+		     , OPT_NAME
+		     , OPT_ADD_PRICE
+		     , REMAIN_QTY
 		  FROM TB_OPTION
 		 WHERE PROD_NO = #{prodNo}
 		 ORDER BY OPT_NO DESC

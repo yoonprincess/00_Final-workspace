@@ -61,6 +61,7 @@ public class CartController {
 	    		int prodNo = cart.getProdNo();
 //	    		System.out.println(prodNo);
 	    		
+	    		// 옵션 리스트
 	    		ArrayList<Option> optionList = optionService.selectCartOption(prodNo);
 	    		cart.setOptionList(optionList);
 	    		
@@ -139,50 +140,19 @@ public class CartController {
 		return "redirect:/list.ct";
 	}
 	
-	// 장바구니 상품 옵션 변경
-	/*
-	@PostMapping("updateOption.ct")
-	public String updateCartOption(int cartNo,
-								   int optNo,
-								   HttpSession session) {
-		
-		System.out.println("옵션 바꾼 장바구니 번호 : " + cartNo);
-		System.out.println("바꿀 옵션 번호 : " + optNo);
-		
-		if (optNo == -1) {	// 옵션이 선택되지 않았을 때
-
-			session.setAttribute("errorMsg", "옵션을 선택해 주세요.");
-		    return "redirect:/list.ct";
-		 }
-		//> 나중에 js로 구현하기
-		
-		Map<String, Integer> params = new HashMap<>();
-		params.put("cartNo", cartNo);
-		params.put("newOptNo", optNo);
-		
-		int result = cartService.updateCartOption(params);
-		
-		if(result > 0) {
-			
-			session.setAttribute("alertMsg", "해당 상품의 옵션이 성공적으로 변경되었습니다.");
-			
-		} else {
-			
-			session.setAttribute("errorMsg", "해당 상품 옵션 변경에 실패하였습니다.");
-		}
-		
-		return "redirect:/list.ct";
-	}
-	*/
-	
-	// 장바구니 수량 변경
+	/**
+	 * 장바구니 수량 변경
+	 * @param cartNo
+	 * @param updatedQty
+	 * @return
+	 */
 	@PostMapping("updateQty.ct")
 	@ResponseBody
 	public Map<String, Object> updateCartQty(@RequestParam("cartNo") int cartNo,
 											 @RequestParam("updatedQty") int updatedQty) {
 		
-		System.out.println(cartNo);
-		System.out.println(updatedQty);
+//		System.out.println(cartNo);
+//		System.out.println(updatedQty);
 //		System.out.println(currentQty);
 //		System.out.println(change);
 		
@@ -193,9 +163,28 @@ public class CartController {
 		if(result > 0) {
 			
 			response.put("success", true);
-			response.put("updqteQty", updatedQty);
+			response.put("updateQty", updatedQty);
 		}
 
+		return response;
+	}
+	
+	// 장바구니 상품 옵션 변경
+	@PostMapping("updateOption.ct")
+	@ResponseBody
+	public Map<String, Object> updateCartOption(@RequestParam("cartNo") int cartNo,
+								   				@RequestParam("updatedOptNo") int updatedOptNo) {
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		int result = cartService.updateCartOption(cartNo, updatedOptNo);
+		
+		if(result > 0) {
+			
+			response.put("success", true);
+			response.put("updateOptNo", updatedOptNo);
+		}
+		
 		return response;
 	}
 	

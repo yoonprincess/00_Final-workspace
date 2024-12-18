@@ -64,28 +64,34 @@
 	                    <td class="product-info">
 	                        <div class="product-detail">
 	                            <p class="product-title">${ ct.prodName }</p>
-	                            <p class="product-option">[옵션: ${ ct.optName }]</p>
+	                            <p class="product-option-${ct.cartNo}">[옵션: ${ ct.optName } (+ 
+									<fmt:formatNumber pattern="###,###,###" value="${ct.optAddPrice}" />원)]</p>
 	                            <p class="product-quantity-${ct.cartNo}">수량: ${ ct.cartQty }</p>
 	                            <p class="product-price">
 	                            	<fmt:formatNumber pattern="###,###,###" value="${ ct.prodPrice }" />원
 	                            </p>
 	                        </div>
 
-							<!-- 옵션 선택 -->
-							<form id="sel-opt-form"
-								  action="${ pageContext.request.contextPath }/updateOption.ct"
-								  method="post">
-								<input type="hidden" name="cartNo" value="${ ct.cartNo }">
+							<select id="prod-opt-${ct.cartNo}"
+									class="prod-opt"
+									data-cart-optno="${ct.optNo}">
 
-								  <select class="sel-prod-opt"
-										  name="newOptNo">
-									  <option value="-1">- [필수] 옵션을 선택해 주세요. -</option>
-									  <c:forEach var="opt" items="${ ct.optionList }">
-										  <option class="sel-opt" value="${ opt.optNo }">${ opt.optName }</option>
-									  </c:forEach>
-								  </select>
+								<option value="-1">- [필수] 옵션을 선택해 주세요. -</option>
 
-							</form>
+								<c:forEach var="opt" items="${ ct.optionList }">
+									<option class="sel-opt"
+											value="${opt.optNo}"
+											data-name="${opt.optName}"
+											data-price="${opt.optAddPrice}"
+											data-remainqty="${opt.remainQty}"
+											data-cart-no="${ct.cartNo}">
+										${opt.optName} (+ 
+										<fmt:formatNumber pattern="###,###,###" value="${opt.optAddPrice}" />원)
+										(재고: ${opt.remainQty})
+									</option>
+								</c:forEach>
+
+							</select>
 
 	                    </td>
 	                    <td>
@@ -120,7 +126,7 @@
 		    <input type="hidden" name="cartNo" id="delCartNo">
 		</form>
 
-        <!-- 장바구니 결제 예정 금액 영역 -->
+        <!-- 장바구니 결제 예상 금액 영역 -->
         <table id="cart-price">
             <thead>
                 <tr>

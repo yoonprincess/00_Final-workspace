@@ -43,9 +43,10 @@ public class CartServiceImpl implements CartService {
 		return cartDao.updateCartQty(sqlSession, cartNo, updatedQty);
 	}
 
-//	@Override
-//	public int updateCartOption(Map<String, Integer> params) {
-//		return cartDao.updateCartOption(sqlSession, params);
-//	}
+	@Override
+	public int updateCartOption(int cartNo, int updatedOptNo) {
+		
+		return cartDao.updateCartOption(sqlSession, cartNo, updatedOptNo);
+	}
 
 }

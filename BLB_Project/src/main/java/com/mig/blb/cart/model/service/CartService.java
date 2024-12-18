@@ -23,7 +23,7 @@ public interface CartService {
 	int updateCartQty(int cartNo, int updatedQty);
 
 	// 장바구니 선택 옵션 변경
-//	int updateCartOption(Map<String, Integer> params);
+	int updateCartOption(int cartNo, int updatedOptNo);
 
 	
 }
