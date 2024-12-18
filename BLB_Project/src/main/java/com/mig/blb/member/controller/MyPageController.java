@@ -118,6 +118,7 @@ public class MyPageController {
 					
 					int result = memberService.updateMember(m);
 					int result2 = updateDelivery(d,m);
+					
 					if(result > 0 && result2>0) { 
 					
 						session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
@@ -153,6 +154,7 @@ public class MyPageController {
 			} else {
 				// 비번변경없을 경우
 				
+				//System.out.println(m);
 				int result = memberService.updateMember(m);
 				
 				int result2 = updateDelivery(d,m);
@@ -192,6 +194,8 @@ public class MyPageController {
 				d.setDeliPhone(m.getPhone()); // FK 연결
 				d.setDeliName(m.getMemberName()); // FK 연결
 				d.setMemberId(m.getMemberId());
+				d.setDeliNickname(d.getDeliName());
+				d.setDeliDefault("Y");
 				
 				result = memberService.updateDelivery(d);
 			}
@@ -414,6 +418,8 @@ public class MyPageController {
 				
 				d.setDeliNickname(d.getDeliName());
 			}
+			
+			d.setHomeAddressYN("N");
 			
 			//System.out.println(d);
 			

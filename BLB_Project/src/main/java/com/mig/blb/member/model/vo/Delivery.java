@@ -22,6 +22,7 @@ public class Delivery {
 	private String postcode;
 	private String detailAddress;
 	private String deliNickname;
+	private String homeAddressYN;
 	
 }
 

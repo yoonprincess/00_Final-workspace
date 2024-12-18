@@ -28,6 +28,7 @@
 	 		<result column="DETAIL_ADDRESS" property="detailAddress" />
 	 		<result column="MEMBER_ID" property="memberId" />
 	 		<result column="DELI_NICKNAME" property="deliNickname" />
+	 		<result column="HOME_ADDRESS_YN" property="homeAddressYN" />
 	</resultMap>
 
 
@@ -141,7 +142,8 @@
 							    DETAIL_ADDRESS,
 							    DELI_COMMENT,
 							    MEMBER_ID,
-							    DELI_NICKNAME
+							    DELI_NICKNAME,
+							    HOME_ADDRESS_YN
 							)
 							VALUES (
 							    SEQ_DELI_CODE.NEXTVAL,
@@ -153,7 +155,8 @@
 							    #{detailAddress},
 							    #{deliComment},
 							    #{memberId},
-							    #{deliNickname}
+							    #{deliNickname},
+							     NVL(#{homeAddressYN}, 'Y')
 			)       
   	</insert>
 	
@@ -197,7 +200,7 @@
 		SELECT POSTCODE, DELI_ADDRESS, DETAIL_ADDRESS
 			FROM TB_DELIVERY		  
 	      WHERE MEMBER_ID = #{memberId} 
-	      	AND DELI_DEFAULT = 'Y'
+	      	AND HOME_ADDRESS_YN = 'Y'
 	                
 	</select>
 	
@@ -207,7 +210,7 @@
 	            DELI_ADDRESS = #{deliAddress},
 	            DETAIL_ADDRESS = #{detailAddress}
 	      WHERE MEMBER_ID = #{memberId}
-	       AND DELI_DEFAULT = 'Y'
+	       AND HOME_ADDRESS_YN = 'Y'
 	</update>
 	
 	<update id="deleteMember" parameterType="member">
