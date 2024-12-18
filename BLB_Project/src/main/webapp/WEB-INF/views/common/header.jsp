@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>뷰라밸 - 헤더</title>
+<title>뷰라밸 (Beauty Life Balance)</title>
     <!-- jQuery 3.7.1 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -54,42 +54,45 @@
                         <span class="material-symbols-outlined menu-icon">search</span>
                     </a>
                 </div>
-                
-                <a class="menu-btn" href="${ pageContext.request.contextPath }/notification.blb">
-                    <span class="material-symbols-outlined menu-icon">
-						notifications
-					</span>
-                </a>
-               
-                <!-- 찜 -->
-                <a class="menu-btn" href="#">
-                    <span class="material-symbols-outlined menu-icon">
-                        favorite
-                    </span>
-                </a>
-                
-                <!-- 장바구니 -->
-                <a class="menu-btn" href="${ pageContext.request.contextPath }/list.ct">
-                    <span class="material-symbols-outlined menu-icon">
-                        shopping_bag
-                    </span>
-                </a>
-                
-                <!-- 로그인/마이페이지 -->
+                <!-- 로그인 체크 -->
                 <c:choose>
 	                <c:when test="${ empty sessionScope.loginUser }">
+                        <!-- 로그인 -->
 		                <a class="menu-btn" href="${ pageContext.request.contextPath }/loginForm.me">
 		                    <span class="material-symbols-outlined menu-icon">
 		                        person
 		                    </span>
 		                </a>
 	           		</c:when>
+
 	                <c:otherwise>
+                        <!-- 알림 -->
+                        <a class="menu-btn" href="${ pageContext.request.contextPath }/notification.blb">
+                            <span class="material-symbols-outlined menu-icon">
+                                notifications
+                            </span>
+                        </a>
+                        <!-- 찜 -->
+                        <a class="menu-btn" href="#">
+                            <span class="material-symbols-outlined menu-icon">
+                                favorite
+                            </span>
+                        </a>
+                        
+                        <!-- 장바구니 -->
+                        <a class="menu-btn" href="${ pageContext.request.contextPath }/list.ct">
+                            <span class="material-symbols-outlined menu-icon">
+                                shopping_bag
+                            </span>
+                        </a>
+                        
+                        <!-- 마이페이지 -->
 	                	<a class="menu-btn" href="${ pageContext.request.contextPath }/myPage.me">
 		                    <span class="material-symbols-outlined menu-icon">
 		                        person_check
 		                    </span>
 		                </a>	
+                        <!-- 로그아웃 -->
 	               	 	<a class="menu-btn" href="${ pageContext.request.contextPath }/logout.me">
 		                    <span class="material-symbols-outlined menu-icon">
 		                        Logout
