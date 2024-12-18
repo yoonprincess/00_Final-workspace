@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mig.blb.member.model.service.KakaoApi;
 import com.mig.blb.member.model.service.MemberService;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
@@ -33,6 +34,9 @@ public class MemberController {
 	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
+    @Autowired
+    private KakaoApi kakaoApi;
 		
 	
 	// 로그인 페이지 요청 
@@ -49,6 +53,8 @@ public class MemberController {
 			
 			session.setAttribute("beforePage", redirectURL);
 		}
+			mv.addObject("kakaoApiKey", kakaoApi.getKakaoApiKey());
+			mv.addObject("redirectUri", kakaoApi.getKakaoRedirectUri());
 			
 			mv.setViewName("member/loginForm");
 		
