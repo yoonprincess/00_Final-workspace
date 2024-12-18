@@ -10,9 +10,9 @@
  <!-- jQuery 라이브러리 -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-<link rel="stylesheet" href="resources/css/member/enrollDelivery.css">
+<link rel="stylesheet" href="resources/css/member/updateDelivery.css">
 
-<script src="resources/js/member/enrollDelivery.js" defer></script>   
+<script src="resources/js/member/updateDelivery.js" defer></script>   
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
@@ -31,6 +31,8 @@
    
 	<!-- daum 지도검색 api -->
    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+   <script> var deliPhone = "${d.deliPhone}"</script>
+    <script> var deliComment = "${d.deliComment}"</script>
 </head>
 <body class="body-offset">
     <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -43,24 +45,24 @@
             <button class="tab active">배송지</button>
         </div>
 
-        <form action="addDelivery.me" method="post" id="enrollDeliForm">
+        <form action="updateMemberDelivery.me" method="post" id="updateDeliForm">
             <div class="form-section">
-                <h2 class="section-title">배송지 등록</h2>
+                <h2 class="section-title">배송지 수정</h2>
                 
                 <div class="form-group">
                     <label class="form-label">배송지명</label>
                     <div class="form-input">
-                        <input type="text" placeholder="최대 10자" name="deliNickname">
-                        <input type="checkbox" id="default-address" name="deliDefault" value="Y">
+                        <input type="text" placeholder="최대 10자" name="deliNickname" value="${d.deliNickname}">
+                        <input type="checkbox" id="default-address" name="deliDefault" value="${d.deliDefault}">
                         <label for="default-address">기본배송지설정</label>
-                        <input type="hidden" name="deliDefault" value="N">
+                       
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required">받는분</label>
                     <div class="form-input">
-                        <input type="text" placeholder="최대 10자" name="deliName" id="deliName">
+                        <input type="text" placeholder="최대 10자" name="deliName" id="deliName" value="${d.deliName}">
                     </div>
                 </div>
 
@@ -81,14 +83,14 @@
                     <div class="form-input">
                      <div class="form-input-addr" >
                        <div class="zipcode-row " >
-                        	<input type="text" class="input-field address-field"  id="sample4_postcode" placeholder="우편번호" name="postcode" >
+                        	<input type="text" class="input-field address-field"  id="sample4_postcode" placeholder="우편번호" name="postcode" value="${d.postcode}">
                        		 <input type="button" class="btn-sm btn-outline-info" onclick="sample4_execDaumPostcode()" value="우편번호"><br>
 		               </div>
 	                   <div class="address-row ">
 	                        <textarea class="input-field address-field" id="sample4_roadAddress" 
-	                                placeholder="도로명주소" name="deliAddress"></textarea><br>
+	                                placeholder="도로명주소" name="deliAddress" >${d.deliAddress}</textarea><br>
 	                        <input type="text"  class="input-field address-field" 
-	                                id="sample4_detailAddress" placeholder="상세주소" name="detailAddress">
+	                                id="sample4_detailAddress" placeholder="상세주소" name="detailAddress" value="${d.detailAddress}">
 	                   </div>
 	                 </div>
                     </div>
@@ -102,7 +104,7 @@
                     <label class="form-label required">공동현관 출입방법</label>
                     <div class="form-input radio-group">
                         <label class="radio-label">
-                            <input type="radio" name="entry" value="비밀번호" checked >
+                            <input type="radio" name="entry" value="비밀번호"  >
                             비밀번호
                         </label>
                         <label class="radio-label">
@@ -125,10 +127,10 @@
                     <div class="form-input">
                         <input type="text" class="address-input" 
                         id="additionalInfo" placeholder="공동현관 비밀번호를 입력하세요"
-                        style="width:300px;">
+                        style="width:300px;" value="${d.deliComment}">
                     </div>
                 </div>
-                <input type="hidden" name="deliComment" id="deliComment">
+                
             </div>
 
             <div class="notice">
@@ -146,7 +148,7 @@
             </div>
 
             <div class="button-group">
-                <button type="submit" class="button button-confirm" id="confirmBtn">확인</button>
+                <button type="submit" class="button button-confirm" id="updateBtn">수정</button>
                 <button type="button" class="button button-cancel">취소</button>
             </div>
         </form>

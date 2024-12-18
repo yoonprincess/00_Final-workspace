@@ -1,6 +1,7 @@
 package com.mig.blb.order.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -16,8 +17,13 @@ public class OrderDao {
 	}
 	
 	
-	public ArrayList<Order> selectMyOrderList(SqlSessionTemplate sqlSession, String memberId) {
+	public ArrayList<Order> selectMyOrderList(SqlSessionTemplate sqlSession, HashMap<String, String> dateMap) {
 		
-		return (ArrayList)sqlSession.selectList("memberMapper.selectMyOrderList", memberId);
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMyOrderList", dateMap);
+	}
+
+
+	public ArrayList<Order> searchMyOrderList(SqlSessionTemplate sqlSession, HashMap<String, String> searchMap) {
+		return (ArrayList)sqlSession.selectList("memberMapper.searchMyOrderList", searchMap);
 	}
 }

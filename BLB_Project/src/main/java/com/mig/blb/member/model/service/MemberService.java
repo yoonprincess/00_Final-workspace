@@ -39,10 +39,10 @@ public interface MemberService {
 	// 발송한 인증데이터 삭제용
 	int deleteCertEmail(CertEmail validate);
 	
-	// 기본 주소 변경 
+	// 기본주소 변경 
 	int updateDelivery(Delivery d);
 
-	// 기본주소 조회
+	// 회원주소 조회
 	Delivery selectDefaultDelivery(String memberId);
 	
 	// 비번찾기용 회원정보 확인 
@@ -53,6 +53,15 @@ public interface MemberService {
 	
 	// 비번변경용 회원조회용
 	Member checkMember(String ckMemberId);
+
+	// 내 배송지 목록조회용
+	ArrayList<Delivery> selectDeliveryList(String memberId);
+	
+	// 내 배송지 삭제
+	int deleteDelivery(String deliCode);
+	
+	// 수정할 내 배송지 조회
+	Delivery selectMemberDelivery(String deliCode);
 	
 	
 }

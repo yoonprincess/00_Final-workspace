@@ -21,6 +21,7 @@ public class Delivery {
 	private String memberId;	//	MEMBER_ID	VARCHAR2(20 BYTE)
 	private String postcode;
 	private String detailAddress;
+	private String deliNickname;
 	
 }
 

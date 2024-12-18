@@ -116,6 +116,22 @@ public class MemberServiceImpl implements MemberService {
 	
 		return memberDao.checkMember(sqlSession,ckMemberId);
 	}
+	@Override
+	public ArrayList<Delivery> selectDeliveryList(String memberId) {
+		
+		return memberDao.selectDeliveryList(sqlSession,memberId);
+	}
+	@Override
+	public int deleteDelivery(String deliCode) {
+		
+		return memberDao.deleteDelivery(sqlSession,deliCode);
+	}
+	
+	@Override
+	public Delivery selectMemberDelivery(String deliCode) {
+		
+		return memberDao.selectMemberDelivery(sqlSession,deliCode);
+	}
 
 }
 

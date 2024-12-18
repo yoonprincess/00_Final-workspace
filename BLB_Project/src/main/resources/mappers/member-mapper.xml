@@ -27,6 +27,7 @@
 	 		<result column="POSTCODE" property="postcode" />
 	 		<result column="DETAIL_ADDRESS" property="detailAddress" />
 	 		<result column="MEMBER_ID" property="memberId" />
+	 		<result column="DELI_NICKNAME" property="deliNickname" />
 	</resultMap>
 
 
@@ -135,18 +136,24 @@
 							    DELI_NAME,
 							    DELI_PHONE,
 							    POSTCODE,
+							    DELI_DEFAULT,
 							    DELI_ADDRESS,
 							    DETAIL_ADDRESS,
-							    MEMBER_ID
+							    DELI_COMMENT,
+							    MEMBER_ID,
+							    DELI_NICKNAME
 							)
 							VALUES (
 							    SEQ_DELI_CODE.NEXTVAL,
 							    #{deliName},
 							    #{deliPhone},
 							    #{postcode},
+							    #{deliDefault},
 							    #{deliAddress},
 							    #{detailAddress},
-							    #{memberId}
+							    #{deliComment},
+							    #{memberId},
+							    #{deliNickname}
 			)       
   	</insert>
 	
@@ -190,6 +197,7 @@
 		SELECT POSTCODE, DELI_ADDRESS, DETAIL_ADDRESS
 			FROM TB_DELIVERY		  
 	      WHERE MEMBER_ID = #{memberId} 
+	      	AND DELI_DEFAULT = 'Y'
 	                
 	</select>
 	
@@ -237,7 +245,31 @@
 	</select>
 	
 	<!-- 마이페이지용 내 주문배송조회 -->
-	<select id="selectMyOrderList" parameterType="string" resultMap="orderResultSet">
+	<select id="selectMyOrderList" parameterType="hashmap" resultMap="orderResultSet">
+		SELECT O.ORDER_NO,
+	           TO_CHAR(O.ORDER_DATE,'YYYY-MM-DD') AS "ORDER_DATE",
+	           SUM(O.ORDER_TOTAL_AMT) AS "ORDER_TOTAL_AMT",
+               PO.TOTAL_AMT,
+	           O.DLVR_STATUS,
+	           P.PROD_NAME,
+	           SUM(PO.ORDER_QTY)AS "ORDER_QTY",
+	           OP.OPT_NAME,
+               OP.OPT_NO,
+	           'blb'|| PA.THUMB_PATH || SAVE_FILE_NAME AS "THUMB_IMG"
+	   FROM TB_ORDER O
+	   JOIN TB_PRODUCT_ORDER PO ON PO.ORDER_NO = O.ORDER_NO
+	   JOIN TB_OPTION OP ON OP.OPT_NO = PO.OPT_NO
+	   JOIN TB_PRODUCT P ON P.PROD_NO = OP.PROD_NO
+	   JOIN TB_PRODUCT_ATTACHMENT PA ON PA.PROD_NO = P.PROD_NO
+	   WHERE MEMBER_ID = #{memberId}
+	   AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
+	   AND PA.THUMB_PATH IS NOT NULL
+	    GROUP BY O.ORDER_NO, O.ORDER_DATE, O.DLVR_STATUS, PO.TOTAL_AMT,P.PROD_NAME, OP.OPT_NAME, PA.THUMB_PATH, PA.SAVE_FILE_NAME,OP.OPT_NO
+	    
+	</select>
+	
+	<!-- 마이페이지용 내 주문배송 검색 -->
+	<select id="searchMyOrderList" parameterType="hashmap" resultMap="orderResultSet">
 		SELECT O.ORDER_NO,
 	           TO_CHAR(O.ORDER_DATE,'YYYY-MM-DD') AS "ORDER_DATE",
 	           SUM(O.ORDER_TOTAL_AMT) AS "ORDER_TOTAL_AMT",
@@ -255,6 +287,7 @@
 	   JOIN TB_PRODUCT_ATTACHMENT PA ON PA.PROD_NO = P.PROD_NO
 	   WHERE MEMBER_ID = #{memberId}
 	   AND PA.THUMB_PATH IS NOT NULL
+	   AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
 	    GROUP BY O.ORDER_NO, O.ORDER_DATE, O.DLVR_STATUS, PO.TOTAL_AMT,P.PROD_NAME, OP.OPT_NAME, PA.THUMB_PATH, PA.SAVE_FILE_NAME,OP.OPT_NO
 	    
 	</select>
@@ -278,4 +311,21 @@
 		    WHERE RNUM &lt;= 4 
 	</select>
 	
+	<select id="selectDeliveryList" parameterType="string" resultMap="deliveryResultSet">
+	SELECT *
+	  FROM TB_DELIVERY
+	 WHERE MEMBER_ID = #{memberId}	
+	</select>
+	
+	<select id="deleteDelivery" parameterType="string" resultMap="deliveryResultSet">
+		DELETE 
+		  FROM TB_DELIVERY
+		 WHERE DELI_CODE = #{deliCode}	
+	</select>
+	
+	<select id="selectMemberDelivery" parameterType="string" resultMap="deliveryResultSet">
+		SELECT *
+			FROM TB_DELIVERY		  
+	      WHERE DELI_CODE = #{deliCode} 
+	</select>
 </mapper>

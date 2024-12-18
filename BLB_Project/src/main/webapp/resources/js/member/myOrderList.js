@@ -30,6 +30,41 @@ $(document).ready(function() {
 		$('select[name="year"]').val(beforeYear);
    		$('select[name="month"]' ).val(beforeMonth);
     	$('select[name="day"]').val(beforeDay);
+    	
+    	 return {
+            beforeYear: beforeYear,
+            beforeMonth: beforeMonth,
+            beforeDay: beforeDay,
+            year: year,
+            month: month,
+            day: day
+        };
+	}
+	
+	function date(){
+		
+		const dates = beforeDate(1); 
+
+        $.ajax({
+            url: 'orderList.me', 
+            type: 'GET',
+            data: {
+                year: dates.beforeYear,
+                month: dates.beforeMonth,
+                Day: dates.beforeDay,
+                year1: dates.year,
+                month1: dates.month,
+                day1: dates.day
+            },
+            success: function(response) {
+                // 서버에서 받은 데이터 처리
+                console.log(response);
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+	
 	}
 	
 	

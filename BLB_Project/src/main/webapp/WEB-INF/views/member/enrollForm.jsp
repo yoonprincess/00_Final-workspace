@@ -153,6 +153,7 @@
                                 id="sample4_detailAddress" placeholder="상세주소" name="detailAddress">
                     </div>
                 </div>
+                <input type="hidden" name="deliDefault" value="Y">
             </div>
         </div>   
                

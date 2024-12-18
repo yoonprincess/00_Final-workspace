@@ -97,6 +97,22 @@ public class MemberDao {
 		return sqlSession.selectOne("memberMapper.checkMember", ckMemberId);
 	}
 
+	public ArrayList<Delivery> selectDeliveryList(SqlSessionTemplate sqlSession, String memberId) {
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.selectDeliveryList",memberId);
+	}
+
+	public int deleteDelivery(SqlSessionTemplate sqlSession, String deliCode) {
+		
+		return sqlSession.delete("memberMapper.deleteDelivery", deliCode);
+	
+	}
+
+	public Delivery selectMemberDelivery(SqlSessionTemplate sqlSession, String deliCode) {
+		
+		return sqlSession.selectOne("memberMapper.selectMemberDelivery", deliCode);
+	}
+
 	
 
 }

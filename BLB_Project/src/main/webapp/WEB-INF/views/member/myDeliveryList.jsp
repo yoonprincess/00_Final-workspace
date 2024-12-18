@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>내 배송목록 |  뷰라밸 (Beauty Life Balance)</title>
+<title>배송지 관리 |  뷰라밸 (Beauty Life Balance)</title>
 
  <!-- jQuery 라이브러리 -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -31,20 +31,19 @@
     
 </head>
 <body class="body-offset">
-    <%@ include file="/WEB-INF/views/common/header.jsp" %>
-    <div class="outer container-fluid">
-        <div id="main">
-             <%@ include file="/WEB-INF/views/member/menubar.jsp" %>
-             <div class="container">
-              
-                <div class="container">
-        <div class="tabs">
+ <%@ include file="/WEB-INF/views/common/header.jsp" %>
+ <div class="outer container-fluid">
+  <div id="main">
+    <%@ include file="/WEB-INF/views/member/menubar.jsp" %>
+      <div class="outer">
+       
+       
+        <div class="container">
+         <div class="tabs">
             <button class="tab active">배송지</button>
-            <button class="tab">환불계좌</button>
-        </div>
-
-        <p class="notice">배송지는 최대 <span class="highlight">20</span>개까지 등록 가능합니다.</p>
-
+         </div>
+      	 <p class="notice">배송지는 최대 <span class="highlight">10</span>개까지 등록 가능합니다.</p>
+		
         <table>
             <thead>
                 <tr>
@@ -56,89 +55,82 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        <span class="badge">기본배송지</span>
-                        오늘드림
-                    </td>
-                    <td>정희수</td>
-                    <td>
-                        <div>(07964)</div>
-                        <div>서울 양천구 목동중앙서로 37 (목동, 목동금호어울림아파트) 102동 201호</div>
-                    </td>
-                    <td>010-****-5572</td>
-                    <td>
-                        <div class="button-group">
-                            <button class="button">수정</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>오늘드림</td>
-                    <td>정희수</td>
-                    <td>
-                        <div>(07209)</div>
-                        <div>서울 영등포구 선유로 243 (양평동4가, 영등포세무서 어린이집) 테스트용</div>
-                    </td>
-                    <td>010-****-5572</td>
-                    <td>
-                        <div class="button-group">
-                            <button class="button">삭제</button>
-                            <button class="button">수정</button>
-                        </div>
-                    </td>
-                </tr>
+           		<c:forEach var="d" items="${dlist}">
+	                <tr class="result">
+	                    <td>${d.deliNickname}</td>
+	                    <td>${d.deliName}</td>
+	                    <td>
+	                    	<div class="badge">${d.deliDefault}</div>
+	                        <div>(${d.postcode})</div>
+	                        <div>${d.deliAddress}</div>
+	                        <div>${d.detailAddress}</div>
+	                        <hr>
+	                        <div>공동현관 출입방법</div>
+	                        <div>${d.deliComment}</div>
+	                    </td>
+	                    <td id="deliPhone">${d.deliPhone}</td>
+	                    <td>
+	                        <div class="button-group">
+	                            <button class="button" onclick="updateDelivery('${d.deliCode}');">수정</button>
+	                            <button class="button" onclick="deleteDelivery('${d.deliCode}');">삭제</button>
+	                        </div>
+	                        <c:if test="${d.deliDefault != '기본배송지'}">
+	                        <div class="button-group">
+	                            <button class="button" style="font-size:13px;">기본배송지설정</button>
+	                        </div>
+	                        </c:if>
+	                    </td>
+	                </tr>
+                </c:forEach>
+              
             </tbody>
         </table>
-
-        <button class="register-button">배송지 등록</button>
-    </div>
+        <button class="register-button" onclick="goEnrollForm();">배송지 등록</button>
+   	 </div>
+   
 	            <br><br>
 	            
-	             <!-- 페이지네이션 -->
+<!-- 페이지네이션 -->
 			<nav>
-			    <ul class="pagination">
-			        <c:choose>
-			            <c:when test="${ requestScope.pi.currentPage ne 1 }">
-			                <li class="page-item">
-			                    <a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ requestScope.pi.currentPage - 1 }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-			                        ＜
-			                    </a>
-			                </li>
-			            </c:when>
-			        </c:choose>
-			        
-			        <c:forEach var="p" begin="${ requestScope.pi.startPage }" end="${ requestScope.pi.endPage }" step="1">
-			            <c:choose>
-			                <c:when test="${ p ne requestScope.pi.currentPage }">
-			                    <li class="page-item">
-			                        <a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-			                            ${ p }
-			                        </a>
-			                    </li>
-			                </c:when>
-			                <c:otherwise>
-			                    <li class="page-item">
-			                        <a class="active" href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-			                            ${ p }
-			                        </a>
-			                    </li>
-			                </c:otherwise>
-			            </c:choose>
-			        </c:forEach>
-			        
-			        <c:choose>
-			            <c:when test="${ requestScope.pi.currentPage ne requestScope.pi.maxPage }">
-			                <li class="page-item">
-			                    <a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ requestScope.pi.currentPage + 1 }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-			                        ＞
-			                    </a>
-			                </li>
-			            </c:when>
-			        </c:choose>
-			    </ul>
+				<ul class="pagination">
+					<!-- 이전 페이지 그룹 -->
+					<c:if test="${ pi.startPage > 1 }">
+						<li class="page-item">
+							<a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage - pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+								＜
+							</a>
+						</li>
+					</c:if>
+					
+					<!-- 페이지 번호 -->
+					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }" step="1">
+						<c:if test="${ p == pi.currentPage }">
+							<li class="page-item">
+								<a class="active" href="#">
+									${ p }
+								</a>
+							</li>
+						</c:if>
+						<c:if test="${ p != pi.currentPage }">
+							<li class="page-item">
+								<a href="#">
+									${ p }
+								</a>
+							</li>
+						</c:if>
+					</c:forEach>
+					
+					<!-- 다음 페이지 그룹 -->
+					<c:if test="${ pi.endPage < pi.maxPage }">
+						<li class="page-item">
+							<a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage + pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+								＞
+							</a>
+						</li>
+					</c:if>
+				</ul>
 			</nav>
-	        <!-- 페이지네이션 end -->
+			<!-- 페이지네이션 end -->
 	        </div>
 	      </div>
 	    </div>

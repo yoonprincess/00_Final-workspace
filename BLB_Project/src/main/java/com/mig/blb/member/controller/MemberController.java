@@ -164,12 +164,12 @@ public class MemberController {
 			
 		int result2 = 0; // Delivery 결과 초기화
 		
-		if(!d.getPostcode().isEmpty()) {
+		if(!d.getPostcode().isEmpty() ) {
 				
 			d.setMemberId(m.getMemberId()); // FK 연결
 			d.setDeliPhone(m.getPhone()); // FK 연결
 			d.setDeliName(m.getMemberName()); // FK 연결
-			
+			d.setDeliNickname(m.getMemberName());
 			result2 = memberService.insertDelivery(d);
 		}
 		

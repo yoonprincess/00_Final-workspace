@@ -1,6 +1,7 @@
 package com.mig.blb.order.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,15 @@ public class OrderServiceImpl implements OrderService {
 
 	
 	@Override
-	public ArrayList<Order> selectMyOrderList(String memberId) {
+	public ArrayList<Order> selectMyOrderList(HashMap<String, String> dateMap) {
 		
-		return orderDao.selectMyOrderList(sqlSession, memberId);
+		return orderDao.selectMyOrderList(sqlSession, dateMap);
+	}
+
+
+	@Override
+	public ArrayList<Order> searchMyOrderList(HashMap<String, String> searchMap) {
+		return orderDao.searchMyOrderList(sqlSession, searchMap);
 	}
 
 	

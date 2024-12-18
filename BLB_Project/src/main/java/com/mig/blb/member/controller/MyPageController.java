@@ -2,6 +2,7 @@ package com.mig.blb.member.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -10,14 +11,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mig.blb.common.model.vo.PageInfo;
-import com.mig.blb.common.template.Pagination;
 import com.mig.blb.helpdesk.model.service.InquiryService.InquiryService;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.member.model.service.MemberService;
@@ -25,7 +23,8 @@ import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
 import com.mig.blb.order.model.service.OrderService;
 import com.mig.blb.order.model.vo.Order;
-import com.mig.blb.product.model.vo.Product;
+
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 public class MyPageController {
@@ -202,16 +201,61 @@ public class MyPageController {
 		
 	// 내 주문,배송조회 페이지 요청 
 	@GetMapping("orderList.me")
-	public ModelAndView myOrderList(ModelAndView mv
-									, HttpSession session
-									,Member m) {
+	public ModelAndView myOrderList(ModelAndView mv,
+									HttpSession session,
+									Member m,
+					   			 	@RequestParam(value = "year", required = false) String year,
+		                            @RequestParam(value = "month", required = false) String month,
+		                            @RequestParam(value = "day", required = false) String day,
+		                            @RequestParam(value = "year1", required = false) String year1,
+		                            @RequestParam(value = "month1", required = false) String month1,
+		                            @RequestParam(value = "day1", required = false) String day1) {
 		
 		Member loginUser =(Member)session.getAttribute("loginUser");
 		
+	    if (year == null || month == null || day == null || year1 == null || month1 == null || day1 == null) {
+
+	    	Date today = new Date();
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	        String defaultDate = sdf.format(today);
+	        
+	        //System.out.println(defaultDate);
+	        
+	        String[] dateParts = defaultDate.split("-");
+	        year1 = dateParts[0];
+	        month1 = dateParts[1];
+	        day1 = dateParts[2];
+
+	        // 1개월 전 날짜 계산
+	        Calendar calendar = Calendar.getInstance();
+	        calendar.add(Calendar.MONTH, -1);
+	        String startDate = sdf.format(calendar.getTime());
+	        
+	        //System.out.println(startDate);
+	        
+	        dateParts = startDate.split("-");
+	        year = dateParts[0];
+	        month = dateParts[1];
+	        day = dateParts[2];
+	    }		
+	    
+		HashMap<String, String> dateMap = new HashMap<>();
+	    dateMap.put("year", year);
+	    dateMap.put("month", month);
+	    dateMap.put("day", day);
+	    dateMap.put("year1", year1);
+	    dateMap.put("month1", month1);
+	    dateMap.put("day1", day1);
+	    
+	    dateMap.put("startDate",  String.format("%s-%s-%s", year, month, day));
+	    dateMap.put("endDate",  String.format("%s-%s-%s", year1, month1, day1));
+	    
 		if( loginUser != null) {
 			String memberId = loginUser.getMemberId();
-			ArrayList<Order> myOrder = orderService.selectMyOrderList(memberId); 
+			dateMap.put("memberId", memberId);
 			
+			ArrayList<Order> myOrder = orderService.selectMyOrderList(dateMap); 
+		    
 			HashMap<String, ArrayList<Order>> myListbyDate = new HashMap<>();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 			for (Order order : myOrder) {
@@ -219,10 +263,6 @@ public class MyPageController {
 				myListbyDate.putIfAbsent(orderDate, new ArrayList<>());
 				myListbyDate.get(orderDate).add(order);
 			}
-			
-			//System.out.println(myListbyDate);
-			//System.out.println(myOrder);
-			
 			
 			mv.addObject("myOrder",myOrder);
 			mv.addObject("myListbyDate",myListbyDate);
@@ -236,26 +276,46 @@ public class MyPageController {
 	}
 	
 	// 내 주문,배송조회 기간별 검색요청 
-		@GetMapping("searchOrderList.me")
-		public ModelAndView myOrderList(ModelAndView mv,
-										 HttpSession session,
-										 @RequestParam("year") String year,
-		                                 @RequestParam("month") String month,
-		                                 @RequestParam("day") String day,
-		                                 @RequestParam("year1") String year1,
-		                                 @RequestParam("month1") String month1,
-		                                 @RequestParam("day1") String day1) {
-			
-			HashMap<String, String> dateMap = new HashMap<>();
-		    dateMap.put("year", year);
-		    dateMap.put("month", month);
-		    dateMap.put("day", day);
-		    dateMap.put("year1", year1);
-		    dateMap.put("month1", month1);
-		    dateMap.put("day1", day1);
-		    
+	/*
+	@GetMapping("searchOrderList.me")
+	public ModelAndView myOrderList(ModelAndView mv,
+									 HttpSession session,
+									 @RequestParam("year") String year,
+	                                 @RequestParam("month") String month,
+	                                 @RequestParam("day") String day,
+	                                 @RequestParam("year1") String year1,
+	                                 @RequestParam("month1") String month1,
+	                                 @RequestParam("day1") String day1) {
+		
+		HashMap<String, String> searchMap = new HashMap<>();
+	    searchMap.put("year", year);
+	    searchMap.put("month", month);
+	    searchMap.put("day", day);
+	    searchMap.put("year1", year1);
+	    searchMap.put("month1", month1);
+	    searchMap.put("day1", day1);
+	    
+	    searchMap.put("startDate",  String.format("%s-%s-%s", year, month, day));
+	    searchMap.put("endDate",  String.format("%s-%s-%s", year1, month1, day1));
 
+	    Member loginUser =(Member)session.getAttribute("loginUser");
+	  
+	    if( loginUser != null) {
+	   
+	    	String memberId = loginUser.getMemberId();
+	    	searchMap.put("memberId", memberId);
+	    	
+	    	ArrayList<Order> myOrder = orderService.searchMyOrderList(searchMap); 
+	    	// System.out.println(myOrder);
+	    	
+	    	HashMap<String, ArrayList<Order>> myListbyDate = new HashMap<>();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 			
+			for (Order order : myOrder) {
+				String orderDate = dateFormat.format(order.getOrderDate());
+				myListbyDate.putIfAbsent(orderDate, new ArrayList<>());
+				myListbyDate.get(orderDate).add(order);
+			}
 			mv.addObject("year", year);
 		    mv.addObject("month", month);
 		    mv.addObject("day", day);
@@ -263,29 +323,184 @@ public class MyPageController {
 		    mv.addObject("month1", month1);
 		    mv.addObject("day1", day1);				
 			
+		    mv.addObject("myOrder",myOrder);
+			mv.addObject("myListbyDate",myListbyDate);
 			mv.setViewName("member/mySearchOrderList");
-			
-			
-			return mv;
+	    }else {
+			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+			mv.setViewName("/main");
 		}
+		
+		return mv;
+	}
 	
+	*/
 	// 내 배송지조회 페이지 요청 
-		@GetMapping("deliveryList.me")
-		public ModelAndView myDeliveryList(ModelAndView mv, HttpSession session) {
+	@GetMapping("deliveryList.me")
+	public ModelAndView myDeliveryList(ModelAndView mv, HttpSession session) {
+		
+		Member loginUser =(Member)session.getAttribute("loginUser");
+		
+		if( loginUser != null) {
 			
-			Member loginUser =(Member)session.getAttribute("loginUser");
+			String memberId = loginUser.getMemberId();
+			ArrayList<Delivery> dlist =  memberService.selectDeliveryList(memberId);
 			
-			if( loginUser != null) {
-				mv.setViewName("member/myDeliveryList");
+			for(Delivery d : dlist) {
+				String maskingPhone = masking(d.getDeliPhone());
+				d.setDeliPhone(maskingPhone);
+				
+				if(d.getDeliDefault().equals("Y")) {
+					d.setDeliDefault("기본배송지");
+				}else {
+					d.setDeliDefault("");
+				}
+			}
+			
+			mv.addObject("dlist",dlist);
+			mv.setViewName("member/myDeliveryList");
+			
+			
+		
+		}else {
+			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+			mv.setViewName("/main");
+		}
+		return mv;
+	}
+	
+	// 전화번호 마스킹 함수 
+	public String masking(String phoneNumber) {
+		if (phoneNumber == null || phoneNumber.length()<10) {
+			return phoneNumber;
+		}
+		String maskingPhone = phoneNumber.substring(0,3)+"-****-"+phoneNumber.substring(phoneNumber.length() - 4);
+		return maskingPhone;
+	}
+	
+	// 추가 배송지 등록 페이지 요청
+	@GetMapping("enrollDeliveryForm.me")			
+	public ModelAndView enrollDeliveryForm(ModelAndView mv
+									, HttpSession session) {
+		Member loginUser =(Member)session.getAttribute("loginUser");
+			
+		if( loginUser != null) {
+
+			mv.setViewName("member/enrollDelivery");
+		
+		}else {
+			
+			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+			mv.setViewName("/main");
+		}
+			
+		return mv;
+	}
+	
+	// 추가 배송지 등록 
+	@PostMapping("addDelivery.me")
+	public ModelAndView addDelivery(ModelAndView mv
+									, HttpSession session
+									, Delivery d) {
+		
+		Member loginUser =(Member)session.getAttribute("loginUser");
+		
+		if( loginUser != null) {
+			
+			d.setMemberId(loginUser.getMemberId());
+			
+			
+			if(d.getDeliNickname() == null || d.getDeliNickname().isEmpty()) {
+				
+				d.setDeliNickname(d.getDeliName());
+			}
+			
+			//System.out.println(d);
+			
+			int result = memberService.insertDelivery(d);
+			
+			if (result>0) {
+				session.setAttribute("alertMsg", "배송지등록 성공!");
+				mv.setViewName("redirect:/deliveryList.me");
 			
 			}else {
+				session.setAttribute("alertMsg", "배송지등록 실패");
+				mv.setViewName("member/enrollDelivery");
+				
+			}
+			
+		}else {
+			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+			mv.setViewName("/main");
+		}
+			
+		return mv;	
+	}
+	
+	// 내 배송지 수정 페이지 요청
+		@GetMapping("updateDeliveryForm.me")			
+		public ModelAndView updateDeliveryForm(ModelAndView mv
+										, HttpSession session
+										, @RequestParam("deliCode") String deliCode) {
+			Member loginUser =(Member)session.getAttribute("loginUser");
+				
+			if( loginUser != null) {
+				
+				Delivery d = memberService.selectMemberDelivery(deliCode);
+				//System.out.println(d);
+				mv.addObject("d",d);
+				mv.setViewName("member/updateDelivery");
+			
+			}else {
+				
 				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
 				mv.setViewName("/main");
 			}
+				
 			return mv;
 		}
+		
+	// 내 배송지 수정 요청 
+		
+		
+		
+		
+	// 배송지 삭제 요청 
+	@PostMapping("deleteDelivery.me")
+	public ModelAndView deleteDelivery(ModelAndView mv
+									, HttpSession session
+									, String deliCode){
+		
+		Member loginUser =(Member)session.getAttribute("loginUser");
+		
+		if( loginUser != null) {
+			
+			
+			//System.out.println(deliCode);
+			
+			int result = memberService.deleteDelivery(deliCode);
+			
+			if (result>0) {
 				
-	
+				session.setAttribute("alertMsg", "배송지 삭제!");
+				mv.setViewName("member/myDeliveryList");
+			
+			}else {
+				session.setAttribute("alertMsg", "배송지등록 실패");
+				mv.setViewName("member/myDeliveryList");
+				
+			}
+			
+		}else {
+			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+			mv.setViewName("/main");
+		}
+			
+		
+		
+		
+		return mv;
+	}
 }
 
 

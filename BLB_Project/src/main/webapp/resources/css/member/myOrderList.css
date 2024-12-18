@@ -95,7 +95,7 @@ body {
 }
 
 
-.search-filters button[type="submit"] {
+#submitBtn{
     background: #4A628A;
     color: white;
     border: none;

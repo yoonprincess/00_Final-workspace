@@ -75,15 +75,15 @@
       
               
               <!-- search-filter -->
-             <form action="searchOrderList.me" method="get">
+             <form action="orderList.me" method="get" id="searchForm">
               <div class="search-filters">
               <div class="search-filters-content">
                <p style="padding-left:5px;">구매기간</p>
                 <div class="tabs">
-                    <button type="button" class="tab active" id="one">1개월</button>
-                    <button type="button" class="tab" id="three">3개월</button>
-                    <button type="button" class="tab" id="six">6개월</button>
-                    <button type="button" class="tab" id="twelve">12개월</button>
+                    <button type="submit" class="tab active" id="one">1개월</button>
+                    <button type="submit" class="tab" id="three">3개월</button>
+                    <button type="submit" class="tab" id="six">6개월</button>
+                    <button type="submit" class="tab" id="twelve">12개월</button>
                 </div>
                 
                 <div class="date-selector">
@@ -206,7 +206,7 @@
                     </select><span>일</span>
                 </div>
             </div>
-            <button type="submit"> 조회</button>
+            <button type="submit" id="submitBtn"> 조회</button>
          </div>
         </form>
             
@@ -256,22 +256,6 @@
 	              	 </td> 
 	              	</tr>
 	              </c:forEach>
-
-                    <tr class="date-row">
-                        <td class="date" rowspan="1">2024.11.05</td>
-                        <td class="product">
-                            <img src="https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0012/A00000012374104ko.jpg?l=ko" alt="아베다로즈메리샴푸">
-                            <div class="product-info">
-                                <div class="name">아베다 로즈메리 민트 샴푸</div>
-                                <div class="seller">아베다</div>
-                            </div>
-                        </td>
-                        <td class="quantity">1</td>
-                        <td class="price">9,900원</td>
-                        <td class="status">
-                            <span class="delivery-complete">배송완료</span>
-                        </td>
-	                </tr>
 	                </tbody>
 	            </table>
 	            <br><br>
