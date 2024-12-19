@@ -1,4 +1,3 @@
-
   /* 입력받은 폰번호 하나로 합치기*/
    document.getElementById('enrollDeliForm').addEventListener('submit', function(event) {
        
@@ -52,6 +51,7 @@ $(document).ready(function() {
 
     });
 		
+		
 	 /* DAUM 지도검색 API */
 	 
 	 function sample4_execDaumPostcode() {
@@ -96,7 +96,8 @@ $(document).ready(function() {
             }
         }).open();
     }
-    
+
+// 약관동의 체크박스 관련    
      $(document).ready(function() {  
    $('#confirmBtn').on('click', function(e){
 		   if(!$('#agree').prop('checked')){

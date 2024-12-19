@@ -210,71 +210,57 @@
          </div>
         </form>
             
-       
-        <table class="order-table">
-            <thead>
-                <tr>
-                    <th>주문일자</th>
-                    <th>상품</th>
-                    <th>수량</th>
-                    <th>주문금액</th>
-                    <th>상태</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="entry" items="${myListbyDate}">
-                    <c:set var="orderDate" value="${entry.key}"/>
-                    <c:set var="myOrderList" value="${entry.value}"/>
-                    <c:set var="totalRowspan" value="0"/>
-                    
-                    <c:forEach var="myOrder" items="${myOrderList}">
-                        <c:forEach var="productOrder" items="${myOrder.productOrder}">
-                            <c:forEach var="option" items="${productOrder.option}">
-                                <c:forEach var="product" items="${option.product}">
-                                    <c:set var="totalRowspan" value="${totalRowspan + 1}"/>
-                                </c:forEach>
-                            </c:forEach>
-                        </c:forEach>
-                    </c:forEach>
-        
-                    <c:set var="isFirstRow" value="true"/>
+            <table class="order-table">
+                <thead>
+                    <tr >
+                        <th>주문일자</th>
+                        <th >상품</th>
+                        <th>수량</th>
+                        <th>주문금액</th>
+                        <th>상태</th>
+                    </tr>
+                </thead>
+                <tbody>
                     <c:forEach var="entry" items="${myListbyDate}">
-                        <c:set var="prevOrderNo" value="" />
-                        <c:set var="totalRowspan" value="0"/>
-                        <c:set var="currentOrderNo" value="" />
-                        <c:forEach var="myOrder" items="${myOrderList}">
-                            <c:if test="${!myOrder.orderNo.equals(currentOrderNo)}">
-                                <c:set var="currentOrderNo" value="${myOrder.orderNo}" />
-                                <c:set var="orderRowspan" value="0" />
-                                <c:forEach var="productOrder" items="${myOrder.productOrder}">
-                                    <c:forEach var="option" items="${productOrder.option}">
+                        <c:set var="myOrderList" value="${entry.value}"/>
+                        <c:set var="orderDate" value="${entry.key}"/>
+                        <c:set var="orderCount" value="${fn:length(myOrderList)}"/>
+
+                        <tr class="date-row" > 
+                            <td class="date" rowspan="${orderCount}">${orderDate}</td>
+                            <td >
+                                <c:forEach var="myOrder" items="${myOrderList}">  
+                                    <div class="order-item">
+                                        <c:forEach var="productOrder" items="${myOrder.productOrder}">
+                                        <c:forEach var="option" items="${productOrder.option}">
                                         <c:forEach var="product" items="${option.product}">
-                                            <c:set var="orderRowspan" value="${orderRowspan + 1}"/>
+                                            <div class="product">
+                                                <img src="${request.contextPath}/${product.thumbImg}" alt="${product.prodName}">
+                                                <div class="product-info">
+                                                    <div class="name">${product.prodName}</div>
+                                                    <div class="option">${option.optName}</div>
+                                                </div>
+
+                                                <div class="quantity" >${productOrder.orderQty}</div>
+                                                <div class="price" >
+                                                    <fmt:formatNumber value="${productOrder.totalAmt}" type="number" /> 원
+                                                </div>
+                                                <div class="status">
+                                                    <span class="delivery-complete">${myOrder.dlvrStatus}</span>
+                                                </div>
+                                            </div>
                                         </c:forEach>
-                                    </c:forEach>
+                                        </c:forEach>
+                                        </c:forEach>  
+                                    </div>
                                 </c:forEach>
-                                <c:set var="totalRowspan" value="${totalRowspan + 1}"/>
-                            </c:if>
-                        </c:forEach>
-                    
-                        <c:if test="${isFirstRow || !myOrder.orderNo.equals(prevOrderNo)}">
-                            <td class="date" rowspan="${totalRowspan}">
-                                ${orderDate}<br>
-                                <span class="order-no">(orderNo. ${myOrder.orderNo})</span>
-                            </td>
-                            <c:set var="isFirstRow" value="false"/>
-                            <c:set var="prevOrderNo" value="${myOrder.orderNo}" />
-                        </c:if>
-                    
-                        <div class="product-info">
-                            <div class="name">${product.prodName}</div>
-                            <div class="option">${option.optName}</div>
-                        </div>
+                            </td> 
+                        </tr>
+
+
                     </c:forEach>
-                </c:forEach>
-            </tbody>
-        </table>
-        
+                </tbody>
+            </table>
 	            <br><br>
  <!-- 페이지네이션 -->
 			<nav>

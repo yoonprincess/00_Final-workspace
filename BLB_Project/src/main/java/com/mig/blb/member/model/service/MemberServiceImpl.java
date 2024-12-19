@@ -122,15 +122,35 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectDeliveryList(sqlSession,memberId);
 	}
 	@Override
-	public int deleteDelivery(String deliCode) {
+	public int deleteDelivery(int deliCode) {
 		
 		return memberDao.deleteDelivery(sqlSession,deliCode);
 	}
 	
 	@Override
-	public Delivery selectMemberDelivery(String deliCode) {
+	public Delivery selectMemberDelivery(int deliCode) {
 		
 		return memberDao.selectMemberDelivery(sqlSession,deliCode);
+	}
+
+	@Override
+	@Transactional
+	public int updateMyDelivery(Delivery d) {
+		
+		return memberDao.updateMyDelivery(sqlSession,d);
+	}
+	
+	@Override
+	@Transactional
+	public int updateDeliDefault(Delivery d) {
+		int result1 = memberDao.updateDeliDefault1(sqlSession,d);
+		int result2 = memberDao.updateDeliDefault2(sqlSession,d);
+		
+		if (result1 > 0 && result2 > 0) {
+	        return 1;  
+	    } else {
+	        return 0; 
+	    }
 	}
 
 }

@@ -45,20 +45,22 @@
             <button class="tab active">배송지</button>
         </div>
 
-        <form action="updateMemberDelivery.me" method="post" id="updateDeliForm">
+        <form action="updateMyDelivery.me" method="post" id="updateDeliForm">
             <div class="form-section">
                 <h2 class="section-title">배송지 수정</h2>
-                
                 <div class="form-group">
                     <label class="form-label">배송지명</label>
                     <div class="form-input">
                         <input type="text" placeholder="최대 10자" name="deliNickname" value="${d.deliNickname}">
-                        <input type="checkbox" id="default-address" name="deliDefault" value="${d.deliDefault}">
-                        <label for="default-address">기본배송지설정</label>
-                       
+                        <input type="hidden" name="deliDefault" value="N">
                     </div>
                 </div>
-
+                
+				<!-- Hidden field for deliCode -->
+				<input type="hidden" name="deliCode" value="${d.deliCode}">
+				<!-- Hidden field for homeAddressYN -->
+				<input type="hidden" name="homeAddressYN" value="${d.homeAddressYN != null ? d.homeAddressYN : 'N'}">
+				
                 <div class="form-group">
                     <label class="form-label required">받는분</label>
                     <div class="form-input">
@@ -130,7 +132,7 @@
                         style="width:300px;" value="${d.deliComment}">
                     </div>
                 </div>
-                
+                 <input type="hidden" name="deliComment" id="deliComment">
             </div>
 
             <div class="notice">

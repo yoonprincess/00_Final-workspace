@@ -58,10 +58,16 @@ public interface MemberService {
 	ArrayList<Delivery> selectDeliveryList(String memberId);
 	
 	// 내 배송지 삭제
-	int deleteDelivery(String deliCode);
+	int deleteDelivery(int deliCode);
 	
 	// 수정할 내 배송지 조회
-	Delivery selectMemberDelivery(String deliCode);
+	Delivery selectMemberDelivery(int deliCode);
+	
+	// 내 배송지 정보 수정
+	int updateMyDelivery(Delivery d);
+	
+	// 기본배송지로 설정
+	int updateDeliDefault(Delivery d);
 	
 	
 }

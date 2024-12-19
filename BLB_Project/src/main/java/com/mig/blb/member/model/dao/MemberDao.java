@@ -102,16 +102,34 @@ public class MemberDao {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectDeliveryList",memberId);
 	}
 
-	public int deleteDelivery(SqlSessionTemplate sqlSession, String deliCode) {
+	public int deleteDelivery(SqlSessionTemplate sqlSession, int deliCode) {
 		
 		return sqlSession.delete("memberMapper.deleteDelivery", deliCode);
 	
 	}
 
-	public Delivery selectMemberDelivery(SqlSessionTemplate sqlSession, String deliCode) {
+	public Delivery selectMemberDelivery(SqlSessionTemplate sqlSession, int deliCode) {
 		
 		return sqlSession.selectOne("memberMapper.selectMemberDelivery", deliCode);
 	}
+
+	public int updateMyDelivery(SqlSessionTemplate sqlSession, Delivery d) {
+		
+	  return sqlSession.update("memberMapper.updateMyDelivery", d);
+	}
+
+	public int updateDeliDefault1(SqlSessionTemplate sqlSession,Delivery d) {
+		
+			return sqlSession.update("memberMapper.updateDeliDefault1", d);
+	}
+	
+	public int updateDeliDefault2(SqlSessionTemplate sqlSession,Delivery d) {
+	
+		return sqlSession.update("memberMapper.updateDeliDefault2", d);
+	
+	}
+
+	
 
 	
 

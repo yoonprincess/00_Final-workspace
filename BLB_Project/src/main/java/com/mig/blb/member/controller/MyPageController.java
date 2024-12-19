@@ -6,16 +6,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mig.blb.common.model.vo.PageInfo;
+import com.mig.blb.common.template.Pagination;
 import com.mig.blb.helpdesk.model.service.InquiryService.InquiryService;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.member.model.service.MemberService;
@@ -53,6 +57,11 @@ public class MyPageController {
 				String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
 				
 				ArrayList<Inquiry> list = inquiryService.selectInquiryListTop4(memberId);
+				
+				HashMap<String, Integer> myOrderCounts = orderService.myOrderCounts(memberId);
+				
+				mv.addObject("myOrderComplete", myOrderCounts.get("COMPLETE"));
+				mv.addObject("myOrderWait", myOrderCounts.get("WAIT"));
 				
 				mv.addObject("list", list);
 				//System.out.println(list);
@@ -213,7 +222,8 @@ public class MyPageController {
 		                            @RequestParam(value = "day", required = false) String day,
 		                            @RequestParam(value = "year1", required = false) String year1,
 		                            @RequestParam(value = "month1", required = false) String month1,
-		                            @RequestParam(value = "day1", required = false) String day1) {
+		                            @RequestParam(value = "day1", required = false) String day1,
+		                            @RequestParam(value="ppage", defaultValue="1")int currentPage) {
 		
 		Member loginUser =(Member)session.getAttribute("loginUser");
 		
@@ -258,16 +268,38 @@ public class MyPageController {
 			String memberId = loginUser.getMemberId();
 			dateMap.put("memberId", memberId);
 			
-			ArrayList<Order> myOrder = orderService.selectMyOrderList(dateMap); 
-		    
+			// 페이징처리
+			int boardLimit = 10;
+			
+			// 한 번에 보여줄 페이지 수
+			int pageLimit = 5;
+			int listCount = orderService.myOrderListCount(dateMap);
+			System.out.println(listCount);
+			
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
+						 pageLimit, boardLimit);
+			
+			ArrayList<Order> myOrder = orderService.selectMyOrderList(dateMap,pi); 
+		    System.out.println(myOrder);
 			HashMap<String, ArrayList<Order>> myListbyDate = new HashMap<>();
+			HashMap<String, ArrayList<String>> orderNosByDate = new HashMap<>();
+			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 			for (Order order : myOrder) {
 				String orderDate = dateFormat.format(order.getOrderDate());
 				myListbyDate.putIfAbsent(orderDate, new ArrayList<>());
 				myListbyDate.get(orderDate).add(order);
+				
+				orderNosByDate.putIfAbsent(orderDate, new ArrayList<>());
+				orderNosByDate.get(orderDate).add(order.getOrderNo());
 			}
 			
+			HashMap<String, Integer> myOrderCounts = orderService.myOrderCounts(memberId);
+			
+			mv.addObject("myOrderComplete", myOrderCounts.get("COMPLETE"));
+			mv.addObject("myOrderWait", myOrderCounts.get("WAIT"));
+			
+			mv.addObject("pi",pi);
 			mv.addObject("myOrder",myOrder);
 			mv.addObject("myListbyDate",myListbyDate);
 			mv.setViewName("member/myOrderList");
@@ -447,13 +479,13 @@ public class MyPageController {
 		@GetMapping("updateDeliveryForm.me")			
 		public ModelAndView updateDeliveryForm(ModelAndView mv
 										, HttpSession session
-										, @RequestParam("deliCode") String deliCode) {
+										, @RequestParam("deliCode") int deliCode) {
+			
 			Member loginUser =(Member)session.getAttribute("loginUser");
 				
 			if( loginUser != null) {
 				
 				Delivery d = memberService.selectMemberDelivery(deliCode);
-				//System.out.println(d);
 				mv.addObject("d",d);
 				mv.setViewName("member/updateDelivery");
 			
@@ -467,15 +499,69 @@ public class MyPageController {
 		}
 		
 	// 내 배송지 수정 요청 
+		@PostMapping("updateMyDelivery.me")
+		public ModelAndView updateDelivery(ModelAndView mv,
+											HttpSession session,
+											Delivery d,
+											String deliDefault) {
+			
+			Member loginUser =(Member)session.getAttribute("loginUser");
+	
+			d.setMemberId(loginUser.getMemberId());
+			d.setDeliDefault(deliDefault);
+			
+			int result = memberService.updateMyDelivery(d);
+			
+			if(result>0) {
+				int deliCode = d.getDeliCode();
+				Delivery updateDelivery = memberService.selectMemberDelivery(deliCode);
+				mv.addObject("d",updateDelivery);
+				session.setAttribute("alertMsg", "배송지 정보가 수정되었습니다.");
+				mv.setViewName("member/updateDelivery");
+			
+			}else {
+				
+				session.setAttribute("alertMsg", "배송지수정실패");
+				mv.setViewName("member/myDeliveryList");
+			}
+			return mv;
+		}
 		
-		
+		// 기본 배송지로 설정하기
+		@PostMapping("updateDeliDefault.me")
+		public ModelAndView updateDeliDefault(ModelAndView mv,
+										HttpSession session,
+										int deliCode) {
+			Member loginUser = (Member)session.getAttribute("loginUser");
+			if( loginUser != null) {
+				
+				Delivery d = new Delivery();
+		        d.setMemberId(loginUser.getMemberId());
+		        d.setDeliCode(deliCode);
+				
+				int result = memberService.updateDeliDefault(d);
+				
+				if(result>0) {
+					
+					mv.addObject("deliDefault", "Y"); 
+					mv.setViewName("member/myDeliveryList");
+				}else {
+					
+					session.setAttribute("alertMsg", "배송지등록 실패");
+					mv.addObject("deliDefault", "N"); 
+					mv.setViewName("member/myDeliveryList");
+				}
+			}
+			
+			return mv;
+		}
 		
 		
 	// 배송지 삭제 요청 
 	@PostMapping("deleteDelivery.me")
 	public ModelAndView deleteDelivery(ModelAndView mv
 									, HttpSession session
-									, String deliCode){
+									, int deliCode){
 		
 		Member loginUser =(Member)session.getAttribute("loginUser");
 		
@@ -502,9 +588,6 @@ public class MyPageController {
 			mv.setViewName("/main");
 		}
 			
-		
-		
-		
 		return mv;
 	}
 }

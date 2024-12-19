@@ -51,8 +51,6 @@
                     <label class="form-label">배송지명</label>
                     <div class="form-input">
                         <input type="text" placeholder="최대 10자" name="deliNickname">
-                        <input type="checkbox" id="default-address" name="deliDefault" value="Y">
-                        <label for="default-address">기본배송지설정</label>
                         <input type="hidden" name="deliDefault" value="N">
                     </div>
                 </div>

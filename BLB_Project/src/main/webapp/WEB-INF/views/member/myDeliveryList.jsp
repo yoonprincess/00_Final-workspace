@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="resources/css/member/myDeliveryList.css">
 
-<script src="resources/js/member/myDeliveryList.js" defer></script>   
+<script src="resources/js/member/myDeliveryList.js" ></script>   
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
@@ -76,7 +76,7 @@
 	                        </div>
 	                        <c:if test="${d.deliDefault != '기본배송지'}">
 	                        <div class="button-group">
-	                            <button class="button" style="font-size:13px;">기본배송지설정</button>
+	                            <button class="button" style="font-size:13px;" onclick="setDefaultDelivery('${d.deliCode}');">기본배송지설정</button>
 	                        </div>
 	                        </c:if>
 	                    </td>

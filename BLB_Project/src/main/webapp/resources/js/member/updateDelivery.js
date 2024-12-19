@@ -14,14 +14,6 @@
 	    }
 	});
 	
-	// 저장된 배송지 요청사항 나누기 
-	$(document).ready(function(){
-		$('#additionalInfo').val(deliComment.split('/')[1]);
-	    var selectedEntry = deliComment.split('/')[0];
-	    
-	   $('input[name="entry"][value="' + selectedEntry + '"]').prop("checked", true);
-	});
-
 
   /* 입력받은 폰번호 하나로 합치기*/
    document.getElementById('updateDeliForm').addEventListener('submit', function(event) {
@@ -37,6 +29,14 @@
         
 
     });
+    
+    // 저장된 배송지 요청사항 나누기 
+	$(document).ready(function(){
+		$('#additionalInfo').val(deliComment.split('/')[1]);
+	    var selectedEntry = deliComment.split('/')[0];
+	    
+	   $('input[name="entry"][value="' + selectedEntry + '"]').prop("checked", true);
+	});
 
 /* 배송지 추가요청사항 placeholder */	
 $(document).ready(function() {
@@ -66,6 +66,7 @@ $(document).ready(function() {
  
     document.getElementById('updateDeliForm').addEventListener('submit', function(event) {
        
+       console.log("수정요청버튼클릭됨");
         var entryInfo1 =$('input[name="entry"]:checked').val();
         var entryInfo2 = document.getElementById('additionalInfo').value;
        

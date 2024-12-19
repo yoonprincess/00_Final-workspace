@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.order.model.vo.Order;
 
 @Repository
@@ -17,13 +19,28 @@ public class OrderDao {
 	}
 	
 	
-	public ArrayList<Order> selectMyOrderList(SqlSessionTemplate sqlSession, HashMap<String, String> dateMap) {
+	public ArrayList<Order> selectMyOrderList(SqlSessionTemplate sqlSession, HashMap<String, String> dateMap, PageInfo pi ) {
 		
-		return (ArrayList)sqlSession.selectList("memberMapper.selectMyOrderList", dateMap);
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMyOrderList", dateMap, rowBounds);
 	}
 
 
 	public ArrayList<Order> searchMyOrderList(SqlSessionTemplate sqlSession, HashMap<String, String> searchMap) {
 		return (ArrayList)sqlSession.selectList("memberMapper.searchMyOrderList", searchMap);
+	}
+
+	public HashMap<String, Integer> myOrderCounts(SqlSessionTemplate sqlSession, String memberId) {
+		
+		return sqlSession.selectOne("memberMapper.myOrderCounts", memberId);
+	}
+
+
+	public int myOrderListCount(SqlSessionTemplate sqlSession, HashMap<String, String> dateMap) {
+		return sqlSession.selectOne("memberMapper.myOrderListCount", dateMap);
 	}
 }

@@ -268,7 +268,7 @@
 	   AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
 	   AND PA.THUMB_PATH IS NOT NULL
 	    GROUP BY O.ORDER_NO, O.ORDER_DATE, O.DLVR_STATUS, PO.TOTAL_AMT,P.PROD_NAME, OP.OPT_NAME, PA.THUMB_PATH, PA.SAVE_FILE_NAME,OP.OPT_NO
-	    
+	  
 	</select>
 	
 	<!-- 마이페이지용 내 주문배송 검색 -->
@@ -292,7 +292,7 @@
 	   AND PA.THUMB_PATH IS NOT NULL
 	   AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
 	    GROUP BY O.ORDER_NO, O.ORDER_DATE, O.DLVR_STATUS, PO.TOTAL_AMT,P.PROD_NAME, OP.OPT_NAME, PA.THUMB_PATH, PA.SAVE_FILE_NAME,OP.OPT_NO
-	    
+	    ORDER BY O.ORDER_DATE DESC
 	</select>
 	
 	<select id="selectInquiryListTop4" resultMap="inquiryResultSet" parameterType="string">
@@ -316,19 +316,66 @@
 	
 	<select id="selectDeliveryList" parameterType="string" resultMap="deliveryResultSet">
 	SELECT *
-	  FROM TB_DELIVERY
+	  FROM TB_DELIVERY 
 	 WHERE MEMBER_ID = #{memberId}	
 	</select>
 	
-	<select id="deleteDelivery" parameterType="string" resultMap="deliveryResultSet">
+	<select id="deleteDelivery" parameterType="int" resultMap="deliveryResultSet">
 		DELETE 
 		  FROM TB_DELIVERY
 		 WHERE DELI_CODE = #{deliCode}	
 	</select>
 	
-	<select id="selectMemberDelivery" parameterType="string" resultMap="deliveryResultSet">
+	<select id="selectMemberDelivery" parameterType="_int" resultMap="deliveryResultSet">
 		SELECT *
 			FROM TB_DELIVERY		  
 	      WHERE DELI_CODE = #{deliCode} 
+	</select>
+	
+	<update id="updateMyDelivery" parameterType="delivery">
+		UPDATE  TB_DELIVERY
+		   SET  DELI_NAME = #{deliName},
+		   		DELI_PHONE = #{deliPhone},
+		   		DELI_DEFAULT = #{deliDefault},
+		   		DELI_COMMENT = #{deliComment},
+		   		DELI_NICKNAME = #{deliNickname},		   		
+		   		POSTCODE = #{postcode},
+	            DELI_ADDRESS = #{deliAddress},
+	            DETAIL_ADDRESS = #{detailAddress},
+	            HOME_ADDRESS_YN = #{homeAddressYN}
+	      WHERE DELI_CODE = #{deliCode}
+	      
+	</update>
+	
+	<update id="updateDeliDefault1" parameterType="delivery">
+		
+		UPDATE  TB_DELIVERY
+		   SET  DELI_DEFAULT = 'N'
+	      WHERE MEMBER_ID = #{memberId}
+	       AND  DELI_DEFAULT = 'Y'
+	   
+	</update>
+	
+	<update id="updateDeliDefault2" parameterType="delivery">
+	
+		UPDATE  TB_DELIVERY
+		   SET  DELI_DEFAULT = 'Y'
+	      WHERE DELI_CODE = #{deliCode}
+	       AND  DELI_DEFAULT = 'N'
+	   
+	</update>
+	
+	<select id="myOrderCounts" parameterType="string" resultType="java.util.HashMap">
+		SELECT
+	        COUNT(CASE WHEN DLVR_STATUS = '배송대기' THEN 1 END) AS WAIT,
+	        COUNT(CASE WHEN DLVR_STATUS = '배송완료' THEN 1 END) AS COMPLETE
+	    FROM TB_ORDER
+	    WHERE MEMBER_ID = #{memberId}
+	</select>
+	
+	<select id="myOrderListCount" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*)
+	      FROM TB_ORDER
+	     WHERE ORDER_DATE BETWEEN #{startDate} AND #{endDate}
 	</select>
 </mapper>
