@@ -28,22 +28,15 @@ public class OrderServiceImpl implements OrderService {
 	
 	
 	@Override
-	public int myOrderListCount(HashMap<String, String> dateMap) {
+	public int myOrderListCount(HashMap<String, Object> dateMap) {
 		return orderDao.myOrderListCount(sqlSession, dateMap);
 	}
 	
 	@Override
-	public ArrayList<Order> selectMyOrderList(HashMap<String, String> dateMap,PageInfo pi ) {
+	public ArrayList<Order> selectMyOrderList(HashMap<String, Object> dateMap,PageInfo pi ) {
 		
 		return orderDao.selectMyOrderList(sqlSession, dateMap,pi);
 	}
-
-
-	@Override
-	public ArrayList<Order> searchMyOrderList(HashMap<String, String> searchMap) {
-		return orderDao.searchMyOrderList(sqlSession, searchMap);
-	}
-
 
 	@Override
 	public HashMap<String, Integer> myOrderCounts(String memberId) {

@@ -8,29 +8,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>뷰라밸 (Beauty Life Balance)</title>
-
- <!-- jQuery 라이브러리 -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<title>주문/배송조회 | 뷰라밸 (Beauty Life Balance)</title>
 
 <link rel="stylesheet" href="resources/css/member/myOrderList.css">
 
 <script src="resources/js/member/myOrderList.js" defer></script>   
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-
-    <!-- 간단한 동작을 정의해둔 js 파일 연동 -->
-    <!-- jQuery 온라인 방식 -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-    <!-- Popper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
 <body class="body-offset">
@@ -57,7 +41,7 @@
                       </div>
                       <div class="arrow"><i class="fas fa-chevron-right"></i></div>
                       <div class="status-item">
-                          <span class="status-count">${myOrderComplete}</span>
+                          <span class="status-count">${myOrderWait}</span>
                           <span class="status-label">배송준비중</span>
                       </div>
                       <div class="arrow"><i class="fas fa-chevron-right"></i></div>
@@ -67,7 +51,7 @@
                       </div>
                       <div class="arrow"><i class="fas fa-chevron-right"></i></div>
                       <div class="status-item completed">
-                          <span class="status-count">${myOrderWait}</span>
+                          <span class="status-count">${myOrderComplete}</span>
                           <span class="status-label">배송완료</span>
                       </div>
                   </div>
@@ -80,7 +64,7 @@
               <div class="search-filters-content">
                <p style="padding-left:5px;">구매기간</p>
                 <div class="tabs">
-                    <button type="submit" class="tab active" id="one">1개월</button>
+                    <button type="submit" class="tab" id="one">1개월</button>
                     <button type="submit" class="tab" id="three">3개월</button>
                     <button type="submit" class="tab" id="six">6개월</button>
                     <button type="submit" class="tab" id="twelve">12개월</button>
@@ -211,69 +195,79 @@
         </form>
             
        
-        <table class="order-table">
-            <thead>
-                <tr>
-                    <th>주문일자</th>
-                    <th>상품</th>
-                    <th>수량</th>
-                    <th>주문금액</th>
-                    <th>상태</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="entry" items="${myListbyDate}">
-                    <c:set var="orderDate" value="${entry.key}"/>
-                    <c:set var="myOrderList" value="${entry.value}"/>
-                    <c:set var="totalRowspan" value="0"/>
-                    
-                    <c:forEach var="myOrder" items="${myOrderList}">
-                        <c:forEach var="productOrder" items="${myOrder.productOrder}">
-                            <c:forEach var="option" items="${productOrder.option}">
-                                <c:forEach var="product" items="${option.product}">
-                                    <c:set var="totalRowspan" value="${totalRowspan + 1}"/>
-                                </c:forEach>
-                            </c:forEach>
+       
+<table class="order-table">
+    <thead>
+        <tr>
+            <th>주문일자</th>
+            <th>상품</th>
+            <th>수량</th>
+            <th>주문금액</th>
+            <th>상태</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="entry" items="${myListbyDate}">
+            <c:set var="orderDate" value="${entry.key}"/>
+            <c:set var="myOrderList" value="${entry.value}"/>
+            <c:set var="totalRowspan" value="0"/>
+            
+            <c:forEach var="myOrder" items="${myOrderList}">
+                <c:forEach var="productOrder" items="${myOrder.productOrder}">
+                    <c:forEach var="option" items="${productOrder.option}">
+                        <c:forEach var="product" items="${option.product}">
+                            <c:set var="totalRowspan" value="${totalRowspan + 1}"/>
                         </c:forEach>
-                    </c:forEach>
-        
-                    <c:set var="isFirstRow" value="true"/>
-                    <c:forEach var="entry" items="${myListbyDate}">
-                        <c:set var="prevOrderNo" value="" />
-                        <c:set var="totalRowspan" value="0"/>
-                        <c:set var="currentOrderNo" value="" />
-                        <c:forEach var="myOrder" items="${myOrderList}">
-                            <c:if test="${!myOrder.orderNo.equals(currentOrderNo)}">
-                                <c:set var="currentOrderNo" value="${myOrder.orderNo}" />
-                                <c:set var="orderRowspan" value="0" />
-                                <c:forEach var="productOrder" items="${myOrder.productOrder}">
-                                    <c:forEach var="option" items="${productOrder.option}">
-                                        <c:forEach var="product" items="${option.product}">
-                                            <c:set var="orderRowspan" value="${orderRowspan + 1}"/>
-                                        </c:forEach>
-                                    </c:forEach>
-                                </c:forEach>
-                                <c:set var="totalRowspan" value="${totalRowspan + 1}"/>
-                            </c:if>
-                        </c:forEach>
-                    
-                        <c:if test="${isFirstRow || !myOrder.orderNo.equals(prevOrderNo)}">
-                            <td class="date" rowspan="${totalRowspan}">
-                                ${orderDate}<br>
-                                <span class="order-no">(orderNo. ${myOrder.orderNo})</span>
-                            </td>
-                            <c:set var="isFirstRow" value="false"/>
-                            <c:set var="prevOrderNo" value="${myOrder.orderNo}" />
-                        </c:if>
-                    
-                        <div class="product-info">
-                            <div class="name">${product.prodName}</div>
-                            <div class="option">${option.optName}</div>
-                        </div>
                     </c:forEach>
                 </c:forEach>
-            </tbody>
-        </table>
+            </c:forEach>
+
+            <c:set var="isFirstRow" value="true"/>
+            <c:forEach var="myOrder" items="${myOrderList}">
+                <c:forEach var="productOrder" items="${myOrder.productOrder}">
+                    <c:forEach var="option" items="${productOrder.option}">
+                        <c:forEach var="product" items="${option.product}">
+                            <tr class="date-row">
+                                <c:if test="${isFirstRow}">
+                                    <td class="date" rowspan="${totalRowspan}" style="text-align :center;">
+	                                    <div>${orderDate}</div>
+	                                    <a href="#" style=" text-decoration: underline; color:#7AB2D3">상세보기</a>
+                                    </td>
+                                    <c:set var="isFirstRow" value="false"/>
+                                </c:if>
+                                <td>
+                                 <a href="detail.pr?pno=${product.prodNo}">
+                                    <div class="product">
+                                        <img src="${request.contextPath}/${product.thumbImg}" alt="${product.prodName}">
+                                        <div class="product-info">
+                                            <div class="name">${product.prodName}</div>
+                                            <div class="option"><span>옵션 | </span>${option.optName}</div>
+                                        </div>
+                                    </div>
+                                  </a>
+                                </td>
+                                <td>
+                                    <div class="quantity">${productOrder.orderQty}</div>
+                                </td>
+                                <td>
+                                    <div class="price">
+                                        <fmt:formatNumber value="${productOrder.totalAmt}" type="number" /> 원
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="status">
+                                        <span class="delivery-complete">${myOrder.dlvrStatus}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </c:forEach>
+                </c:forEach>
+            </c:forEach>
+        </c:forEach>
+    </tbody>
+</table>
+
         
 	            <br><br>
  <!-- 페이지네이션 -->

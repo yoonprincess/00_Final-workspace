@@ -45,7 +45,9 @@
        </a>
            
              
-             <div class="sub-menu-item" >리뷰 (3)</div>
+             <a class="sub-menu-link" href="${ pageContext.request.contextPath }/reviewList.me">
+           		  <div class="sub-menu-item" >리뷰 (${sessionScope.listCount})</div>
+             </a>
              <div class="sub-menu-item" >상품 Q&A 내역</div>
          </div>
          <br>

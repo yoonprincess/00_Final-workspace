@@ -1,6 +1,7 @@
 package com.mig.blb.review.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.mig.blb.common.model.vo.PageInfo;
@@ -14,5 +15,9 @@ public interface ReviewService {
 	ArrayList<Review> selectReviewList(PageInfo revPi, int prodNo);
 	// 리뷰 평균별점 처리
 	Map<String, Object> selectReviewStats(int prodNo);
+	// 마이페이지용 내 리뷰 갯수조회
+	int myReviewListCount(String memberId);
+	// 마이페이지용 내 리뷰 목록조회
+	List<Map<String, Object>> selectMyReviewList(String memberId, PageInfo pi);
 
 }

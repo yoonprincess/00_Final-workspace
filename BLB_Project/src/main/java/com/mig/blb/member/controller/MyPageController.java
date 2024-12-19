@@ -1,10 +1,14 @@
 package com.mig.blb.member.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,6 +31,8 @@ import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
 import com.mig.blb.order.model.service.OrderService;
 import com.mig.blb.order.model.vo.Order;
+import com.mig.blb.review.model.service.ReviewService;
+import com.mig.blb.review.model.vo.Review;
 
 import oracle.jdbc.proxy.annotation.Post;
 
@@ -41,6 +47,9 @@ public class MyPageController {
 	
 	@Autowired
 	private InquiryService inquiryService;
+	
+	@Autowired
+	private ReviewService reviewService;
 	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
@@ -60,12 +69,16 @@ public class MyPageController {
 				
 				HashMap<String, Integer> myOrderCounts = orderService.myOrderCounts(memberId);
 				
+				int listCount = reviewService.myReviewListCount(loginUser.getMemberId());
+				
+				
 				mv.addObject("myOrderComplete", myOrderCounts.get("COMPLETE"));
 				mv.addObject("myOrderWait", myOrderCounts.get("WAIT"));
 				
 				mv.addObject("list", list);
-				//System.out.println(list);
 				
+				session.setAttribute("listCount", listCount); // menubar.jsp 
+
 				mv.setViewName("member/myPage");
 			
 			}else {
@@ -223,17 +236,17 @@ public class MyPageController {
 		                            @RequestParam(value = "year1", required = false) String year1,
 		                            @RequestParam(value = "month1", required = false) String month1,
 		                            @RequestParam(value = "day1", required = false) String day1,
-		                            @RequestParam(value="ppage", defaultValue="1")int currentPage) {
+		                            @RequestParam(value="ppage", defaultValue="1")int currentPage) throws ParseException {
 		
 		Member loginUser =(Member)session.getAttribute("loginUser");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
 	    if (year == null || month == null || day == null || year1 == null || month1 == null || day1 == null) {
 
 	    	Date today = new Date();
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	        String defaultDate = sdf.format(today);
-	        
-	        //System.out.println(defaultDate);
+	       
+	    	String defaultDate = sdf.format(today);
 	        
 	        String[] dateParts = defaultDate.split("-");
 	        year1 = dateParts[0];
@@ -245,7 +258,6 @@ public class MyPageController {
 	        calendar.add(Calendar.MONTH, -1);
 	        String startDate = sdf.format(calendar.getTime());
 	        
-	        //System.out.println(startDate);
 	        
 	        dateParts = startDate.split("-");
 	        year = dateParts[0];
@@ -253,7 +265,8 @@ public class MyPageController {
 	        day = dateParts[2];
 	    }		
 	    
-		HashMap<String, String> dateMap = new HashMap<>();
+	   
+		HashMap<String, Object> dateMap = new HashMap<>();
 	    dateMap.put("year", year);
 	    dateMap.put("month", month);
 	    dateMap.put("day", day);
@@ -261,8 +274,11 @@ public class MyPageController {
 	    dateMap.put("month1", month1);
 	    dateMap.put("day1", day1);
 	    
-	    dateMap.put("startDate",  String.format("%s-%s-%s", year, month, day));
-	    dateMap.put("endDate",  String.format("%s-%s-%s", year1, month1, day1));
+	    Date startDate = sdf.parse(String.format("%s-%s-%s", year, month, day));
+	    Date endDate = sdf.parse(String.format("%s-%s-%s", year1, month1, day1));
+	    
+	    dateMap.put("startDate", startDate);
+	    dateMap.put("endDate", endDate);
 	    
 		if( loginUser != null) {
 			String memberId = loginUser.getMemberId();
@@ -274,15 +290,15 @@ public class MyPageController {
 			// 한 번에 보여줄 페이지 수
 			int pageLimit = 5;
 			int listCount = orderService.myOrderListCount(dateMap);
-			System.out.println(listCount);
+			System.out.println("listCount : " + listCount);
 			
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
 						 pageLimit, boardLimit);
 			
 			ArrayList<Order> myOrder = orderService.selectMyOrderList(dateMap,pi); 
 		    System.out.println(myOrder);
-			HashMap<String, ArrayList<Order>> myListbyDate = new HashMap<>();
-			HashMap<String, ArrayList<String>> orderNosByDate = new HashMap<>();
+			LinkedHashMap<String, ArrayList<Order>> myListbyDate = new LinkedHashMap<>();
+			
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 			for (Order order : myOrder) {
@@ -290,8 +306,6 @@ public class MyPageController {
 				myListbyDate.putIfAbsent(orderDate, new ArrayList<>());
 				myListbyDate.get(orderDate).add(order);
 				
-				orderNosByDate.putIfAbsent(orderDate, new ArrayList<>());
-				orderNosByDate.get(orderDate).add(order.getOrderNo());
 			}
 			
 			HashMap<String, Integer> myOrderCounts = orderService.myOrderCounts(memberId);
@@ -311,66 +325,7 @@ public class MyPageController {
 		return mv;
 	}
 	
-	// 내 주문,배송조회 기간별 검색요청 
-	/*
-	@GetMapping("searchOrderList.me")
-	public ModelAndView myOrderList(ModelAndView mv,
-									 HttpSession session,
-									 @RequestParam("year") String year,
-	                                 @RequestParam("month") String month,
-	                                 @RequestParam("day") String day,
-	                                 @RequestParam("year1") String year1,
-	                                 @RequestParam("month1") String month1,
-	                                 @RequestParam("day1") String day1) {
-		
-		HashMap<String, String> searchMap = new HashMap<>();
-	    searchMap.put("year", year);
-	    searchMap.put("month", month);
-	    searchMap.put("day", day);
-	    searchMap.put("year1", year1);
-	    searchMap.put("month1", month1);
-	    searchMap.put("day1", day1);
-	    
-	    searchMap.put("startDate",  String.format("%s-%s-%s", year, month, day));
-	    searchMap.put("endDate",  String.format("%s-%s-%s", year1, month1, day1));
-
-	    Member loginUser =(Member)session.getAttribute("loginUser");
-	  
-	    if( loginUser != null) {
-	   
-	    	String memberId = loginUser.getMemberId();
-	    	searchMap.put("memberId", memberId);
-	    	
-	    	ArrayList<Order> myOrder = orderService.searchMyOrderList(searchMap); 
-	    	// System.out.println(myOrder);
-	    	
-	    	HashMap<String, ArrayList<Order>> myListbyDate = new HashMap<>();
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-			
-			for (Order order : myOrder) {
-				String orderDate = dateFormat.format(order.getOrderDate());
-				myListbyDate.putIfAbsent(orderDate, new ArrayList<>());
-				myListbyDate.get(orderDate).add(order);
-			}
-			mv.addObject("year", year);
-		    mv.addObject("month", month);
-		    mv.addObject("day", day);
-		    mv.addObject("year1", year1);
-		    mv.addObject("month1", month1);
-		    mv.addObject("day1", day1);				
-			
-		    mv.addObject("myOrder",myOrder);
-			mv.addObject("myListbyDate",myListbyDate);
-			mv.setViewName("member/mySearchOrderList");
-	    }else {
-			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
-			mv.setViewName("/main");
-		}
-		
-		return mv;
-	}
 	
-	*/
 	// 내 배송지조회 페이지 요청 
 	@GetMapping("deliveryList.me")
 	public ModelAndView myDeliveryList(ModelAndView mv, HttpSession session) {
@@ -590,6 +545,48 @@ public class MyPageController {
 			
 		return mv;
 	}
+	
+	// 내 리뷰 목록 페이지요청 
+		@GetMapping("reviewList.me")
+		public ModelAndView myOrderList(ModelAndView mv,
+										HttpSession session,
+										Member m,						   			 
+			                            @RequestParam(value="ppage", defaultValue="1")int currentPage){
+			
+			Member loginUser =(Member)session.getAttribute("loginUser");
+			
+		    
+			if( loginUser != null) {
+				String memberId = loginUser.getMemberId();
+				
+				// 페이징처리
+				int boardLimit = 10;
+				
+				// 한 번에 보여줄 페이지 수
+				int pageLimit = 5;
+				int listCount = reviewService.myReviewListCount(loginUser.getMemberId());
+				System.out.println("리뷰갯수 :"  + listCount);
+				
+				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
+							 pageLimit, boardLimit);
+				
+				List<Map<String, Object>> rlist = reviewService.selectMyReviewList(loginUser.getMemberId(),pi); 
+			    System.out.println(rlist);
+				
+				mv.addObject("pi",pi);
+				mv.addObject("rlist",rlist);
+				mv.addObject("listCount",listCount);
+				
+				mv.setViewName("member/myReviewList");
+				
+			
+			}else {
+				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+				mv.setViewName("/main");
+			}
+			return mv;
+		}
+		 
 }
 
 

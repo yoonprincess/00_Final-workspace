@@ -19,19 +19,17 @@ public class OrderDao {
 	}
 	
 	
-	public ArrayList<Order> selectMyOrderList(SqlSessionTemplate sqlSession, HashMap<String, String> dateMap, PageInfo pi ) {
+	public ArrayList<Order> selectMyOrderList(SqlSessionTemplate sqlSession, HashMap<String, Object> dateMap, PageInfo pi ) {
 		
 		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		
+		System.out.println("offSet : " + offset);
+		System.out.println("limit : " + limit);
+		
 		RowBounds rowBounds = new RowBounds(offset,limit);
 		
 		return (ArrayList)sqlSession.selectList("memberMapper.selectMyOrderList", dateMap, rowBounds);
-	}
-
-
-	public ArrayList<Order> searchMyOrderList(SqlSessionTemplate sqlSession, HashMap<String, String> searchMap) {
-		return (ArrayList)sqlSession.selectList("memberMapper.searchMyOrderList", searchMap);
 	}
 
 	public HashMap<String, Integer> myOrderCounts(SqlSessionTemplate sqlSession, String memberId) {
@@ -40,7 +38,7 @@ public class OrderDao {
 	}
 
 
-	public int myOrderListCount(SqlSessionTemplate sqlSession, HashMap<String, String> dateMap) {
+	public int myOrderListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> dateMap) {
 		return sqlSession.selectOne("memberMapper.myOrderListCount", dateMap);
 	}
 }
