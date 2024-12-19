@@ -10,6 +10,12 @@
 <title>뷰라밸 - 제품상세보기</title>
 </head>
 <body class="body-offset">
+    <div id="reviewIframeContainer">
+        <div style="position: relative; width: 430px;"> <!-- 닫기 버튼을 포함하는 컨테이너 -->
+            <button class="close-btn review-enroll">&times;</button>
+            <iframe src=""></iframe>
+        </div>
+    </div>
 	<div class="container-fluid">
 	<div class="container mt-5">
         <div class="row">
@@ -159,7 +165,13 @@
             <div class="tab-pane fade" id="reviews" role="tabpanel">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>상품리뷰</h2>
-                    <button class="btn btn-primary">리뷰작성</button>
+                    <button 
+                        class="btn btn-primary" 
+                        id="writeReviewBtn" 
+                        data-prodno="${p.prodNo}" 
+                        data-memberid="${sessionScope.loginUser.memberId}">
+                        리뷰 작성하기
+                    </button>
                 </div>
                 <c:choose>
                     <c:when test="${empty revList}">

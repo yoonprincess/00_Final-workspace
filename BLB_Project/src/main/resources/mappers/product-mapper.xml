@@ -131,6 +131,18 @@
 	</select>
 	
 	
+	<!-- 구매 여부 확인 -->
+	<select id="checkPurchase" parameterType="map"
+			 resultType="_int">
+	    SELECT COUNT(*)
+	      FROM TB_PRODUCT_ORDER PO
+		  JOIN TB_ORDER O ON PO.ORDER_NO = O.ORDER_NO
+		  JOIN TB_OPTION OPT ON PO.OPT_NO = OPT.OPT_NO
+		 WHERE O.MEMBER_ID = #{memberId}
+		   AND OPT.PROD_NO = #{prodNo}
+	</select>
+	
+	
 	<!-- 1:1 문의 관련 매퍼 -->
     <!-- QnA와 답글 resultMap -->
     <resultMap id="inquiryResultMap" type="inquiry">

@@ -58,4 +58,9 @@ public class ProductServiceImpl implements ProductService {
 	public ArrayList<Inquiry> selectProdInquiryList(PageInfo qnaPi, int prodNo) {
 		return productDao.selectProdInquiryList(sqlSession, qnaPi, prodNo);
 	}
+
+	@Override
+	public boolean checkPurchase(int prodNo, String memberId) {
+		return productDao.checkPurchase(sqlSession, prodNo, memberId);
+	}
 }

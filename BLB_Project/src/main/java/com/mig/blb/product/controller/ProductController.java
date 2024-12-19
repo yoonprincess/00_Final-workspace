@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.common.template.Pagination;
@@ -126,4 +129,15 @@ public class ProductController {
 			return "common/errorPage";
 		}
 	}
+	
+	@ResponseBody
+	@PostMapping("checkPurchase.pr")
+    public ResponseEntity<Map<String, Boolean>> checkPurchase(@RequestParam int prodNo, @RequestParam String memberId) {
+		boolean isPurchased = productService.checkPurchase(prodNo, memberId);
+        
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("isPurchased", isPurchased);
+        
+		return ResponseEntity.ok(response);
+    }
 }

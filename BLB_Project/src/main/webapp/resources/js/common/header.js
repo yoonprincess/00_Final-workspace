@@ -167,4 +167,62 @@ $(function() {
         $('html, body').animate({ scrollTop: 0 }, 300);
         return false;
     });
+
+    // * 리뷰 작성하기
+    // iframe 크기 조정 함수
+    $('#reviewIframeContainer').hide(); // 초기에는 숨김
+    $('#writeReviewBtn').on('click', function () {
+        const prodNo = $(this).data('prodno'); // 상품 번호 가져오기
+        const memberId = $(this).data('memberid'); // 회원 ID 가져오기
+        const reviewIframeUrl = `${contextPath}/enrollForm.rv?prodNo=${prodNo}&memberId=${memberId}`;
+        const iframe = $('#reviewIframeContainer iframe');
+
+        if (!memberId) {
+            alert("로그인 후 리뷰를 작성할 수 있습니다.");
+            return;
+        }
+
+        // 구매 여부 확인 AJAX 요청
+        $.ajax({
+            url: `${contextPath}/checkPurchase.pr`, // 구매 여부 확인 API URL
+            type: 'POST',
+            data: {
+                prodNo: prodNo,
+                memberId: memberId
+            },
+            success: function (response) {
+                if (response.isPurchased) {
+                    // 서버 검증 후 iframe URL을 서버에서 제공
+                    $(iframe).attr('src', reviewIframeUrl);
+
+                    // iframe 로드 후 크기 조정
+                    iframe.on('load', function () {
+                        const iframeContent = this.contentWindow.document || this.contentDocument;
+                        if (iframeContent) {
+                            const iframeHeight = iframeContent.body.scrollHeight || iframeContent.documentElement.scrollHeight;
+                            const iframeWidth = iframeContent.body.scrollWidth || iframeContent.documentElement.scrollWidth;
+
+                            $(this).css({
+                                width: iframeWidth + 'px',
+                                height: iframeHeight + 'px',
+                            });
+                        }
+                    });
+
+                    // 모달 표시
+                    $('#reviewIframeContainer').fadeIn();
+                } else {
+                    alert("해당 상품을 구매한 고객만 리뷰를 작성할 수 있습니다.");
+                }
+            },
+            error: function () {
+                alert("구매 여부를 확인하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+            }
+        });
+    });
+    // 닫기 버튼 클릭 시
+    $('.close-btn').on('click', function () {
+        $('#reviewIframeContainer').fadeOut();
+        $('#reviewIframeContainer iframe').attr('src', ''); // iframe 초기화
+    });
 });

@@ -1,6 +1,7 @@
 package com.mig.blb.product.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
@@ -53,6 +54,15 @@ public class ProductDao {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
 		return (ArrayList)sqlSession.selectList("productMapper.selectProdInquiryList", prodNo, rowBounds);
+	}
+
+	public boolean checkPurchase(SqlSessionTemplate sqlSession, int prodNo, String memberId) {
+		
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("prodNo", prodNo);
+		paramMap.put("memberId", memberId);
+		
+		return (int)sqlSession.selectOne("productMapper.checkPurchase", paramMap) > 0;
 	}
 
 }
