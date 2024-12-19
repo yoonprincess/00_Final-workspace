@@ -41,84 +41,67 @@
             <h3>배송 정보 입력</h3>
             <hr class="custom-hr">
     
-            <table id="delivery-form">
-                <tr>
-                    <th>받는 사람 <span class="required">*</span></th>
-                    <td><input type="text" placeholder="받는 사람 이름을 입력하세요" required></td>
-                </tr>
-                <tr>
-                    <th>주소 <span class="required">*</span></th>
-                    <td>
-                        <div class="address-container">
-                            <input type="text" placeholder="우편번호" style="width: 120px;">
-                            <button type="button" class="btn-search">주소검색</button>
-                        </div>
-                        <input type="text" placeholder="기본주소" style="width: 100%; margin-top: 10px;">
-                        <input type="text" placeholder="나머지 주소" style="width: 100%; margin-top: 10px;">
-                    </td>
-                </tr>
-                <tr>
-                    <th>휴대전화 <span class="required">*</span></th>
-                    <td>
-                        <div class="phone-container">
-                            <select id="phone-prefix" name="phone-prefix">
-                                <option value="010">010</option>
-                                <option value="011">011</option>
-                                <option value="016">016</option>
-                                <option value="017">017</option>
-                                <option value="018">018</option>
-                                <option value="019">019</option>
-                            </select>
-                            <span>-</span>
-                            <input type="text" maxlength="4">
-                            <span>-</span>
-                            <input type="text" maxlength="4">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>배송 요청 사항</th>
-                    <td>
-                        <select name="delivery-message" id="delivery-message">
-                            <option value="default" selected>-- 메시지 선택 (선택사항) --</option>
-                            <option>배송 전에 미리 연락바랍니다.</option>
-                            <option>부재 시 경비실에 맡겨주세요.</option>
-                            <option>부재 시 문 앞에 놓아주세요.</option>
-                            <option>빠른 배송 부탁드립니다.</option>
-                            <option>택배함에 보관해 주세요.</option>
-                            <option value="custom">직접 입력</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th></th>
-                    <td>
-                        <!-- 직접 입력 선택 시 나타남 -->
-                        <textarea id="custom-comment" placeholder="상세 요청사항을 입력해 주세요."></textarea>
-    
-                        <script>
-                            $(function () {
+            <form name="payForm" method="post" action="payResult_utf.jsp">
 
-                                // 새로고침 시 기본 상태에서도 숨겨지게 설정
-                                if ($("#delivery-message").val() !== "custom") {
-                                    $("#custom-comment").hide(); // 기본 옵션 또는 다른 옵션 선택 시 textarea 숨김
-                                }
-                                
-                                // select 요소의 change 이벤트 처리
-                                $("#delivery-message").change(function () {
-                                    // 선택된 값이 "custom"인지 확인
-                                    if ($(this).val() === "custom") {
-                                        $("#custom-comment").show(); // 직접 입력 시 textarea 표시
-                                    } else {
-                                        $("#custom-comment").hide(); // 다른 옵션 선택 시 숨김
-                                    }
-                                });
-                            });
-                            </script>
-                    </td>
-                </tr>
-    
-            </table>
+                <table id="delivery-form">
+                    <tr>
+                        <th>받는 사람 <span class="required">*</span></th>
+                        <td><input type="text" placeholder="받는 사람 이름을 입력하세요" required></td>
+                    </tr>
+                    <tr>
+                        <th>주소 <span class="required">*</span></th>
+                        <td>
+                            <div class="address-container">
+                                <input type="text" placeholder="우편번호" style="width: 120px;">
+                                <button type="button" class="btn-search">주소검색</button>
+                            </div>
+                            <input type="text" placeholder="기본주소" style="width: 100%; margin-top: 10px;">
+                            <input type="text" placeholder="나머지 주소" style="width: 100%; margin-top: 10px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>휴대전화 <span class="required">*</span></th>
+                        <td>
+                            <div class="phone-container">
+                                <select id="phone-prefix" name="phone-prefix">
+                                    <option value="010">010</option>
+                                    <option value="011">011</option>
+                                    <option value="016">016</option>
+                                    <option value="017">017</option>
+                                    <option value="018">018</option>
+                                    <option value="019">019</option>
+                                </select>
+                                <span>-</span>
+                                <input type="text" maxlength="4">
+                                <span>-</span>
+                                <input type="text" maxlength="4">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>배송 요청 사항</th>
+                        <td>
+                            <select name="delivery-message" id="delivery-message">
+                                <option value="default" selected>-- 메시지 선택 (선택사항) --</option>
+                                <option>배송 전에 미리 연락바랍니다.</option>
+                                <option>부재 시 경비실에 맡겨주세요.</option>
+                                <option>부재 시 문 앞에 놓아주세요.</option>
+                                <option>빠른 배송 부탁드립니다.</option>
+                                <option>택배함에 보관해 주세요.</option>
+                                <option value="custom">직접 입력</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td>
+                            <!-- 직접 입력 선택 시 나타남 -->
+                            <textarea id="custom-comment" placeholder="상세 요청사항을 입력해 주세요."></textarea>
+                        </td>
+                    </tr>
+        
+                </table>
+            </form>
     
             <hr>
       
@@ -193,9 +176,9 @@
             <div class="payment-container">
                 <h3>결제수단 선택</h3>
                 <ul class="payment-options">
-                    <li class="payment-option" onclick="clickPay('무통장입금')">무통장입금</li>
-                    <li class="payment-option" onclick="clickPay('신용카드')">신용카드</li>
-                    <li class="payment-option" onclick="clickPay('카카오페이')">카카오페이</li>
+                    <li class="payment-option" data-value="무통장입금">무통장입금</li>
+                    <li class="payment-option" data-value="신용카드">신용카드</li>
+                    <li class="payment-option" data-value="카카오페이">카카오페이</li>
                 </ul>
                 <p id="payment-comment" class="payment-comment">
                     결제 수단을 선택해주세요.
@@ -213,35 +196,6 @@
                 </div>
             </div>
 
-            <script>
-                // 결제 옵션 클릭 이벤트
-                $(document).ready(function () {
-        
-                    $(".payment-option").on("click", function () {
-                        
-                        $(".payment-option").removeClass("selected");
-            
-                        $(this).addClass("selected");
-                    });
-                });
-        
-                function clickPay(method) {
-                    const payComment = {
-                        "무통장입금": "현금 영수증 발생 여부를 선택해 주세요.",
-                        "신용카드": "소액 결제의 경우 PG사 정책에 따라 결제 금액 제한이 있을 수 있습니다.",
-                        "카카오페이": "카카오톡 앱을 설치한 후, 최초 1회 카드정보를 등록하셔야 사용 가능합니다. <br> 인터넷 익스플로러는 8 이상에서만 결제 가능합니다. <br> 카카오머니로 결제 시, 현금영수증 발급은 ㈜카카오페이에서 발급 가능합니다."
-                    };
-        
-                    $("#payment-comment").html(payComment[method] || "결제 수단을 선택해주세요.");
-        
-                    if (method === "무통장입금") {
-                        $("#bank-info").show(); // 무통장입금 입력 필드 표시
-                    } else {
-                        $("#bank-info").hide(); // 무통장입금 입력 필드 숨기기
-                    }
-                }
-            </script>
-      
             <!-- 결제 동의 약관 영역 -->
             <div class="terms-container">
                 <div class="terms-header">
@@ -421,32 +375,13 @@
 
             <p>주문 내용을 확인하였으며 약관에 동의합니다.</p>
 
-            <script>
-                // 약관 동의 체크박스
-                $(document).ready(function () {
-                    
-                    // 모든 약관 동의
-                    $("#check-all").on("change", function () {
-                        const isChecked = $(this).is(":checked");
-                        $(".check-term").prop("checked", isChecked); // 모든 개별 체크박스 체크/해제
-                    });
-
-                    // 개별 약관 체크박스 클릭 이벤트
-                    $(".check-term").on("change", function () {
-                        const total = $(".check-term").length; // 전체 약관 개수
-                        const checked = $(".check-term:checked").length; // 체크된 약관 개수
-
-                        // 모든 약관이 체크되면 "모든 약관 동의"도 체크, 아니면 해제
-                        $("#check-all").prop("checked", total === checked);
-                    });
-                });
-            </script>
-
             <!-- 결제하기 버튼 -->
             <button type="submit" class="btn btn-primary payment-button">18,180원 결제하기</button>        
         </form>
 
     </div>
 
+<!-- js 파일 -->
+<script src="resources/js/order/orderEnrollForm.js"></script>    
 </body>
 </html>
