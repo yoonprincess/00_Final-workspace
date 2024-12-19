@@ -31,6 +31,12 @@
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
 	<!-- Semantic UI theme -->
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/semantic.min.css"/>
+
+	
+	<!-- 실시간 알림 관련 라이브러리 연동구문(CDN) -->
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+
 </head>
 <body>
 	<c:if test="${ not empty sessionScope.alertMsg }">
