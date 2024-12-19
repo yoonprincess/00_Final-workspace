@@ -38,13 +38,13 @@ table {
     display: flex;
     justify-content: center; /* 가로 방향 중앙 정렬 */
     align-items: center;    /* 세로 방향 중앙 정렬 */
-    width: 100%;            /* 부모 컨테이너의 너비 */
-    height: 100%;           /* 부모 컨테이너의 높이 */
+    width: 80px;
+    height: 80px;
 }
 
 tr>img {
-    max-width: 100%; /* 이미지 크기를 부모 컨테이너에 맞춤 */
-    max-height: 100%; /* 이미지 크기를 부모 컨테이너 높이에 맞춤 */
+    max-width: 80px; /* 이미지 크기를 부모 컨테이너에 맞춤 */
+    max-height: 80px; /* 이미지 크기를 부모 컨테이너 높이에 맞춤 */
     object-fit: contain; /* 이미지 비율 유지 */
 }
 
@@ -74,7 +74,7 @@ tr>img {
 }
 
 /* 옵션 선택 영역 */
-#optNo {
+.prod-opt {
     padding: 8px;
     font-size: 14px;
     border: 1px solid #ddd;

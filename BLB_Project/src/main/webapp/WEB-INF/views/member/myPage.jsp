@@ -77,7 +77,7 @@
                       </div>
                       <div class="arrow"><i class="fas fa-chevron-right"></i></div>
                       <div class="status-item">
-                          <span class="status-count">${myOrderComplete}</span>
+                          <span class="status-count">${myOrderWait}</span>
                           <span class="status-label">배송준비중</span>
                       </div>
                       <div class="arrow"><i class="fas fa-chevron-right"></i></div>
@@ -87,7 +87,7 @@
                       </div>
                       <div class="arrow"><i class="fas fa-chevron-right"></i></div>
                       <div class="status-item completed">
-                          <span class="status-count">${myOrderWait}</span>
+                          <span class="status-count">${myOrderComplete}</span>
                           <span class="status-label">배송완료</span>
                       </div>
                   </div>

@@ -1,10 +1,15 @@
 package com.mig.blb.order.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.mig.blb.cart.model.vo.Cart;
 import com.mig.blb.order.model.service.OrderService;
+import com.mig.blb.order.model.vo.ProductOrder;
 
 @Controller
 public class OrderController {
@@ -17,8 +22,18 @@ public class OrderController {
 	 * @return
 	 */
 	@PostMapping("orderEnrollForm.or")
-	public String orderEnrollForm() {
+	public String orderEnrollForm(@RequestParam("checkedCartNos") List<Integer> checkedCartNos) {
 		
+		System.out.println(checkedCartNos);
+		
+//		List<Cart> cartList = cart
+//		
+//		for(Cart cart : checkedCartNos) {
+//			
+//			ProductOrder order = new ProductOrder();
+//			
+//			
+//		}
 		return "order/orderEnrollForm";
 	}
 

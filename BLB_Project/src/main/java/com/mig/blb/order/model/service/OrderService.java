@@ -12,13 +12,10 @@ public interface OrderService {
 	int insertOrder(Order o);
 	
 	// 마이페이지용 주문, 배송 게시글 수
-	int myOrderListCount(HashMap<String, String> dateMap);
+	int myOrderListCount(HashMap<String, Object> dateMap);
 	
 	// 마이페이지용 주문,배송 목록 조회
-	ArrayList<Order> selectMyOrderList(HashMap<String, String> dateMap, PageInfo pi);
-	
-	// 마이페이지용 주문,배송 검색 조회
-	ArrayList<Order> searchMyOrderList(HashMap<String, String> searchMap);
+	ArrayList<Order> selectMyOrderList(HashMap<String, Object> dateMap, PageInfo pi);
 	
 	// 마이페이지용 주문,배송상태 갯수 조회
 	HashMap<String, Integer> myOrderCounts(String memberId);
