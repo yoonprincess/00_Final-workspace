@@ -67,11 +67,6 @@ UPDATE TB_CART
  WHERE CART_NO = #{cartNo}
  
 -- 옵션 변경
-UPDATE TB_CART
-  SET OPT_NO = ?
-WHERE CART_NO = ?
-
--- 장바구니 랜덤 부여 --
 BEGIN
     FOR cart_no IN 1..10 LOOP
         INSERT INTO TB_CART (
@@ -80,18 +75,29 @@ BEGIN
             PROD_NO, 
             OPT_NO, 
             CART_QTY
-        ) VALUES (
+        ) 
+        SELECT 
             SEQ_CART_NO.NEXTVAL, -- CART_NO는 시퀀스로 생성
-            'admin', -- MEMBER_ID는 항상 'admin'
-            TRUNC(DBMS_RANDOM.VALUE(1, 36)), -- PROD_NO (1부터 36 사이 랜덤 값)
+            'admin',             -- MEMBER_ID는 항상 'admin'
+            PROD_NO,             -- 썸네일이 존재하는 PROD_NO
             TRUNC(DBMS_RANDOM.VALUE(1, 72)), -- OPT_NO (1부터 72 사이 랜덤 값)
             TRUNC(DBMS_RANDOM.VALUE(1, 10)) -- CART_QTY (1부터 10 사이 랜덤 값)
-        );
+        FROM (
+            SELECT DISTINCT PROD_NO
+            FROM TB_PRODUCT_ATTACHMENT
+            WHERE THUMB_PATH IS NOT NULL -- 썸네일 경로가 존재하는 데이터만 선택
+              AND SAVE_FILE_NAME IS NOT NULL -- 저장된 파일 이름이 있는 데이터만 선택
+            ORDER BY DBMS_RANDOM.VALUE -- 랜덤 정렬
+        )
+        WHERE ROWNUM = 1; -- 한 번에 하나의 행만 삽입
     END LOOP;
 
     COMMIT;
 END;
 /
+
+
+
 
 SELECT C.CART_NO
 			 , P.PROD_NO
@@ -102,9 +108,21 @@ SELECT C.CART_NO
 		     , O.REMAIN_QTY
 		     , C.CART_QTY
 		     , P.PROD_PRICE
+             , PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
 		  FROM TB_CART C
 		  LEFT JOIN TB_PRODUCT P ON (C.PROD_NO = P.PROD_NO)
-		  LEFT JOIN TB_OPTION O ON C.OPT_NO = O.OPT_NO
+		  LEFT JOIN TB_OPTION O ON (C.OPT_NO = O.OPT_NO)
+          LEFT JOIN (
+		      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+		        FROM TB_PRODUCT_ATTACHMENT
+		       WHERE (PROD_NO, PROD_ATT_NO) IN (
+		           SELECT PROD_NO, MIN(PROD_ATT_NO)
+		             FROM TB_PRODUCT_ATTACHMENT
+		            WHERE PROD_ATT_STATUS = 'Y'
+		              AND THUMB_PATH IS NOT NULL
+		            GROUP BY PROD_NO
+		       )
+		  ) PA
 		 WHERE MEMBER_ID = 'admin'
 		 ORDER BY CART_NO DESC
 

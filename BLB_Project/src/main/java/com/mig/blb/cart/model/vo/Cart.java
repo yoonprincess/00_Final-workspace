@@ -28,6 +28,7 @@ public class Cart {
 	private int optAddPrice;
 	private int remainQty;
 	private int prodPrice;
+	private String thumbImg;
 	
     private ArrayList<Option> optionList;
 	

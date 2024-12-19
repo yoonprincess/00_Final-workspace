@@ -8,19 +8,21 @@ $(function() {
 
     // 모든 select 요소에 대해 처리
     $(".prod-opt").each(function() {
+
         const $select = $(this); // 현재 select 요소
         const cartOptNo = parseInt($select.data("cart-optno")); // select에 저장된 cart-optno 값
     
         // select 내부의 모든 option 요소 탐색
         $select.find("option").each(function() {
+
             const $option = $(this); // 현재 option 요소
             const optionValue = parseInt($option.val()); // option의 value 값
     
             // cart-optno와 option의 value가 같으면 selected 속성 추가
             if (cartOptNo === optionValue) {
+
                 $option.prop("selected", true); // 선택 처리
                 $option.css("background-color", "#e0e0e0")
-
             }
         });
     });
@@ -39,6 +41,7 @@ $(function() {
         // 체크된 상품의 수량 결제하기 버튼에 출력
         cartByeButton();
     });
+
     // 개별 상품 체크
     $(".check-one").on("change", function() {
 
@@ -101,7 +104,6 @@ $(function() {
                 alert("서버 오류가 발생했습니다. 다시 시도해 주세요.");
             }
         });
-
     });
 
     // 수량 감소 버튼 클릭 이벤트
@@ -143,7 +145,6 @@ $(function() {
 
                     // 수량 변경 시에도 총 가격 업데이트
                     checkedTotalPrice();
-
                     
                 } else {
                     alert(response.message || "수량 변경에 실패하였습니다.");
@@ -215,7 +216,6 @@ $(function() {
                 alert("서버 오류가 발생했습니다. 다시 시도해 주세요.");
             }
         });
-
     });
 
     // 결제하기 버튼 클릭 이벤트
@@ -229,23 +229,16 @@ $(function() {
             return;
         }
 
-        let checkedCartNos = "";    // 체크된 장바구니 번호를 담을 배열
+        const checkedCartNos = [];    // 체크된 장바구니 번호를 담을 배열
 
         $checkedProds.each(function() {
 
-            checkedCartNos += $(this).val() + ",";
+            checkedCartNos.push($(this).val());
         });
 
-        checkedCartNos = checkedCartNos.slice(0, -1);   // 마지막은 쉼표 빼기
-
-        console.log("checkedCartNos:", checkedCartNos);
-        console.log("Form Action URL:", $("#cartForm").attr("action"));
-
-
         // 결제하기 페이지로 form 전송
-        $("#checkedCartNos").val(checkedCartNos);
+        $("#checkedCartNos").val(checkedCartNos.join(","));
         $("#cartBuyForm").submit();
-
     });
 
 });
@@ -319,7 +312,6 @@ function checkedTotalPrice() {
     let finalTotal = totalCheckedPrice + dlvrFee;
 
     $('#final-total').text(`${finalTotal.toLocaleString()}원`);
-
 }
 
 // 결제하기 버튼에 결제할 상품 수량 담기
@@ -329,5 +321,4 @@ function cartByeButton() {
 
     // 체크된 상품 결제하기 버튼에 출력
     $("#checkedCartQty").text(`${checked.toLocaleString()}`);
-
 }

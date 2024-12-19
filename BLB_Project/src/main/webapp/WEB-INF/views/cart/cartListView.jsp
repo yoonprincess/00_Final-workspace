@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
@@ -19,6 +18,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body class="body-offset">
+
+	<%@ include file="/WEB-INF/views/common/header.jsp" %>
 
     <div class="container-fluid" align="center">
 
@@ -59,7 +60,9 @@
 				<c:forEach var="ct" items="${ requestScope.list }">
 	                <tr>
 	                    <td><input type="checkbox" class="check-one" name="check-one" value="${ct.cartNo}" checked></td>
-	                    <td><img src="" alt="${ct.prodName}" class="product-image"></td>
+	                    <td>
+							<img src="${ pageContext.request.contextPath }${ ct.thumbImg }" alt="${ct.prodName}" class="product-image">
+						</td>
 	                    <td class="product-info">
 	                        <div class="product-detail">
 	                            <p class="product-title">${ct.prodName}</p>
