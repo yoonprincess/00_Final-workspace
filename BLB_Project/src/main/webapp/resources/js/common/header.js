@@ -178,8 +178,12 @@ $(function() {
         const iframe = $('#reviewIframeContainer iframe');
 
         if (!memberId) {
-            alert("로그인 후 리뷰를 작성할 수 있습니다.");
-            return;
+            alertify.error("로그인 후 리뷰를 작성할 수 있습니다.");
+            // 페이지 이동
+            setTimeout(function() {
+                window.location.href = `${contextPath}/loginForm.me`;
+            }, 1500); // 2초 후 이동
+            return; // 실행 중단
         }
 
         // 구매 여부 확인 AJAX 요청
