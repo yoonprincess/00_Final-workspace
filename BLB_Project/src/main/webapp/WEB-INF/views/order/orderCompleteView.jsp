@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +11,6 @@
     <link rel="stylesheet" type="text/css" href="../../../resources/css/order/orderCompleteView.css">
 </head>
 <body class="body-offset">
-
-    <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
     <div class="container-fluid">
         <form action="orderComplete.or" method="post">
