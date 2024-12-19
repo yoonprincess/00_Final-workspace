@@ -1,8 +1,11 @@
 $(function() {
 
-    // 페이지 로드 시 체크된 상품의 총 가격 계산
+    // 페이지 로드 시
+    // 체크된 상품의 총 가격 계산
     checkedTotalPrice();
-    
+    // 체크된 상품의 수량 결제하기 버튼에 출력
+    cartByeButton();
+
     // 모든 select 요소에 대해 처리
     $(".prod-opt").each(function() {
         const $select = $(this); // 현재 select 요소
@@ -30,7 +33,11 @@ $(function() {
 
         $(".check-one").prop("checked", isChecked); // 선택 여부에 따른 요소의 속성을 가져옴
 
+        // 체크박스 동작 시에도 총 가격 업데이트
         checkedTotalPrice();
+
+        // 체크된 상품의 수량 결제하기 버튼에 출력
+        cartByeButton();
     });
     // 개별 상품 체크
     $(".check-one").on("change", function() {
@@ -41,11 +48,18 @@ $(function() {
         $("#check-all").prop("checked", total === checked);
         // 모든 상품이 체크되면 '전체 선택' 체크/해제
 
+        // 체크된 상품 결제하기 버튼에 출력
+        $("#checkedCartQty").text(`${checked.toLocaleString()}`);
+
+        // 체크박스 동작 시에도 총 가격 업데이트
         checkedTotalPrice();
+
+        // 체크된 상품의 수량 결제하기 버튼에 출력
+        cartByeButton();
     });
 
     // 수량 증가 버튼 클릭 이벤트
-    $('.quantity-increase').on('click', function() {
+    $('.quantity-increase').on("click", function() {
 
         let $input = $(this).siblings('.quantity-input'); // 형제인 input 요소 선택
         let currentQty = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기
@@ -76,7 +90,7 @@ $(function() {
                    $(".product-quantity-"  + cartNo).text(`수량: ${updatedQty.toLocaleString()}`); // 업데이트된 수량 출력하기
                    $("#updated-price-" + cartNo).text(`${updatedPrice.toLocaleString()}원`); // 수량에 따른 총 가격
 
-                    // updateTotalPrice(); // 총 가격 업데이트 호출
+                   // 수량 변경 시에도 총 가격 업데이트
                     checkedTotalPrice();
 
                 } else {
@@ -91,7 +105,7 @@ $(function() {
     });
 
     // 수량 감소 버튼 클릭 이벤트
-    $('.quantity-decrease').on('click', function() {
+    $('.quantity-decrease').on("click", function() {
 
         const $input = $(this).siblings('.quantity-input'); // input 요소 선택
         const currentQty = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기
@@ -127,7 +141,7 @@ $(function() {
                     $(".product-quantity-"  + cartNo).text(`수량: ${updatedQty.toLocaleString()}`); // 업데이트된 수량 출력하기
                     $("#updated-price-" + cartNo).text(`${updatedPrice.toLocaleString()}원`); // 수량에 따른 총 가격
 
-                    // updateTotalPrice(); // 총 가격 업데이트 호출
+                    // 수량 변경 시에도 총 가격 업데이트
                     checkedTotalPrice();
 
                     
@@ -142,7 +156,7 @@ $(function() {
     });
 
     // 옵션 선택 시 옵션 목록에 추가
-    $(".prod-opt").change(function() {
+    $(".prod-opt").on("change", function() {
 
         const updatedOptNo = parseInt($(this).val());    // 선택된 옵션 번호
 
@@ -189,7 +203,7 @@ $(function() {
                     // 상품 총 가격 업데이트
                     $("#updated-price-" + cartNo).text(`${updatedPrice.toLocaleString()}원`);
 
-                    // updateTotalPrice(); // 총 가격 업데이트 호출
+                    // 옵션 변경 시에도 총 가격 업데이트
                     checkedTotalPrice();
 
                 } else {
@@ -204,12 +218,43 @@ $(function() {
 
     });
 
+    // 결제하기 버튼 클릭 이벤트
+    $("#cartBuy").on("click", function() {
+
+        const $checkedProds = $(".check-one:checked");   // 체크된 상품
+
+        if($checkedProds.length === 0) { // 체크된 항목이 없을 때
+
+            alert("선택한 상품이 없습니다. 결제할 상품을 선택해 주세요.");
+            return;
+        }
+
+        let checkedCartNos = "";    // 체크된 장바구니 번호를 담을 배열
+
+        $checkedProds.each(function() {
+
+            checkedCartNos += $(this).val() + ",";
+        });
+
+        checkedCartNos = checkedCartNos.slice(0, -1);   // 마지막은 쉼표 빼기
+
+        console.log("checkedCartNos:", checkedCartNos);
+        console.log("Form Action URL:", $("#cartForm").attr("action"));
+
+
+        // 결제하기 페이지로 form 전송
+        $("#checkedCartNos").val(checkedCartNos);
+        $("#cartBuyForm").submit();
+
+    });
+
 });
 
 // X 버튼으로 장바구니 삭제
 function deleteCartItem(cartNo) {
 
     if (confirm("해당 상품을 장바구니에서 삭제하시겠습니까?")) {
+
         $("#delCartNo").val(cartNo);
         $("#deleteCart").submit();
     }
@@ -222,6 +267,7 @@ function checkDelete() {
     const $checkItems = $(".check-one:checked");
 
     if($checkItems.length === 0) {
+
         alert("선택한 상품이 없습니다.");
         return;
     }
@@ -229,13 +275,12 @@ function checkDelete() {
     let cartNos = "";
 
     $checkItems.each(function() {
+
         cartNos += $(this).val() + ",";
         // 연이어져 들어오기 때문에 쉼표로 구분
     });
 
     cartNos = cartNos.slice(0, -1); // 마지막은 쉼표 빼기
-
-    console.log(cartNos);
 
     $("#delCartNos").val(cartNos);
 
@@ -267,12 +312,22 @@ function checkedTotalPrice() {
     let dlvrFee = totalCheckedPrice === 0 
                     ? 0 
                     : (totalCheckedPrice <= 50000 ? 3000 : 0);
-                    
+
     $("#dlvr-fee").text(`${dlvrFee.toLocaleString()}원`);
 
     // 결제 예상 금액
     let finalTotal = totalCheckedPrice + dlvrFee;
 
     $('#final-total').text(`${finalTotal.toLocaleString()}원`);
+
+}
+
+// 결제하기 버튼에 결제할 상품 수량 담기
+function cartByeButton() {
+
+    const checked = $(".check-one:checked").length; // 체크된 상품 개수
+
+    // 체크된 상품 결제하기 버튼에 출력
+    $("#checkedCartQty").text(`${checked.toLocaleString()}`);
 
 }

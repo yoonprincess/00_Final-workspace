@@ -140,6 +140,12 @@ tr>img {
 }
 
 /* 장바구니 결제 예정 금액 영역 */
+#cart-price {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 고정된 열 너비 사용 */
+}
+
 #cart-price th {
     padding : 15px 0;
     border-bottom: 1px solid #F4F4F9;
@@ -167,4 +173,20 @@ tr>img {
 
 .btn-delete:hover {
     color: #4A628A; /* 호버 시 더 어두운 색상 */
+}
+
+/* 결제하기 버튼 */
+#cartBuy {
+    display: block;
+    width: 100%;
+    margin: 25px auto;
+    padding: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    background-color: #4A628A !important;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
 }

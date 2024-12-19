@@ -31,7 +31,7 @@ public class CartController {
 	
 	/**
 	 * 장바구니 목록 조회
-	 * - 예원 12/06
+	 * - 예원 24.12.06
 	 * @param model
 	 * @return
 	 */
@@ -39,8 +39,6 @@ public class CartController {
 	public String selectCartList(Model model,
 								 HttpSession session) {
 		
-//	    System.out.println(memberId);
-	    
 	    if (session.getAttribute("loginUser") == null) {	// 로그인 전
 	    	
 	    	session.setAttribute("alertMsg", "로그인 후 이용 가능한 서비스입니다.");
@@ -48,24 +46,20 @@ public class CartController {
 	        return "redirect:/loginForm.me";
 	        
 	    } else {
+	    	
 	    	// 로그인된 회원아이디 가져오기
 		    String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
 	    	
 	    	// 회원아이디로 장바구니 목록 조회
 	    	ArrayList<Cart> cartList = cartService.selectCartList(memberId);
 	    	
-//	    	System.out.println("장바구니 목록 : " + cartList);
-	    	
 	    	for(Cart cart : cartList) {
 	    		
 	    		int prodNo = cart.getProdNo();
-//	    		System.out.println(prodNo);
 	    		
 	    		// 옵션 리스트
 	    		ArrayList<Option> optionList = optionService.selectCartOption(prodNo);
 	    		cart.setOptionList(optionList);
-	    		
-//	    		System.out.println(optionList);
 	    	}
 	    	
 	    	// 장바구니 목록 조회 페이지를 포워딩
@@ -78,7 +72,7 @@ public class CartController {
 	
 	/**
 	 * 장바구니 X버튼으로 1개의 상품 삭제
-	 * - 예원 12/11
+	 * - 예원 24.12.11
 	 * @param cartNo
 	 * @param model
 	 * @param session
@@ -88,8 +82,6 @@ public class CartController {
 	public String deleteCartOne(int cartNo,
 							 	Model model,
 							 	HttpSession session) {
-		
-//		System.out.println("장바구니 번호 :" + cartNo);
 		
 		int result = cartService.deleteCartOne(cartNo);
 
@@ -107,6 +99,7 @@ public class CartController {
 	
 	/**
 	 * 장바구니 체크박스 선택 삭제
+	 * - 예원 24.12.13
 	 * @param cartNos
 	 * @param ct
 	 * @return
@@ -115,20 +108,6 @@ public class CartController {
 	public String deleteCheckItems(@RequestParam("cartNos") String cartNos,
 								   HttpSession session) {
 		
-//		System.out.println("Received cartNos: " + cartNos);
-		
-//        String[] cartNoArr = cartNos.split(","); // 문자열을 배열로 변환
-        
-        // 문자열 배열을 정수 리스트로 변환
-//        List<Integer> cartNoList = Arrays.stream(cartNoArr)
-//                                         .map(Integer::parseInt)
-//                                         .collect(Collectors.toList());
-//
-//        // 값 확인
-//        for (Integer cartNo : cartNoList) {
-//            System.out.println("삭제할 카트 번호: " + cartNo);
-//        }
-        
 		int result = cartService.deleteCheckItems(cartNos);
 		
 		if(result > 0) {
@@ -142,6 +121,7 @@ public class CartController {
 	
 	/**
 	 * 장바구니 수량 변경
+	 * - 예원 24.12.14
 	 * @param cartNo
 	 * @param updatedQty
 	 * @return
@@ -150,11 +130,6 @@ public class CartController {
 	@ResponseBody
 	public Map<String, Object> updateCartQty(@RequestParam("cartNo") int cartNo,
 											 @RequestParam("updatedQty") int updatedQty) {
-		
-//		System.out.println(cartNo);
-//		System.out.println(updatedQty);
-//		System.out.println(currentQty);
-//		System.out.println(change);
 		
 		Map<String, Object> response = new HashMap<>();
 		
@@ -169,7 +144,13 @@ public class CartController {
 		return response;
 	}
 	
-	// 장바구니 상품 옵션 변경
+	/**
+	 * 장바구니 상품 옵션 변경
+	 * - 예원 24.12.18
+	 * @param cartNo
+	 * @param updatedOptNo
+	 * @return
+	 */
 	@PostMapping("updateOption.ct")
 	@ResponseBody
 	public Map<String, Object> updateCartOption(@RequestParam("cartNo") int cartNo,

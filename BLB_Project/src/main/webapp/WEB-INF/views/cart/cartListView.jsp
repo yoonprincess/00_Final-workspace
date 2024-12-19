@@ -156,6 +156,16 @@
                 </tr>
             </tbody>
         </table>
+
+		<!-- 결제하기 버튼 -->
+		<form id="cartBuyForm"
+			  method="POST"
+			  action="${ pageContext.request.contextPath }/orderEnrollForm.or">
+			<input type="hidden" name="checkedCartNos" id="checkedCartNos">
+		</form>
+		<button type="button" class="btn btn-primary" id="cartBuy">
+			총 <span id="checkedCartQty"></span>개 상품 구매
+		</button>
 		
     </div>
 
