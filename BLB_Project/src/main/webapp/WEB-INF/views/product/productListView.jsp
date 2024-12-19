@@ -56,6 +56,9 @@
 				    <h4>${ category }</h4>
 				    <table class="table">
 				        <input type="hidden" name="category" value="${ category }">
+				        <c:if test="${ not empty keyword }">
+				        	<input type="hidden" name="keyword" value="${ keyword }">
+				        </c:if>
 				        <tbody>
 				            <c:choose>
 				                <c:when test="${ category eq '전체제품' }">
@@ -267,82 +270,107 @@
 					</select>
 	            </div>
 	        </div>
-	
-	        <!-- 상품 리스트 -->
-	        <div class="row" id="productList">
-	            <!-- 상품 카드 -->
-	            <c:forEach var="p" items="${ requestScope.pList }">
-		            <div class="col-md-3 col-sm-4 col-6 mb-4">
-		                <div class="card product-card position-relative" data-id="1" onclick="location.href='detail.pr?pno=${ p.prodNo }';">
-		                    <div class="card-img-container">
-		                        <img src="${ pageContext.request.contextPath }${ p.thumbImg }" class="card-img-top" alt="상품 이미지">
-		                        <div class="overlay">
-		                            <button class="btn btn-light btn-sm rounded-circle shadow add-cart" title="장바구니 추가" data-id="1">
-		                                <span class="material-symbols-outlined">
-		                                    shopping_bag
-		                                </span>
-		                            </button>
-		                            <button class="btn btn-light btn-sm rounded-circle shadow add-wishlist" title="찜하기" data-id="1">
-		                                <span class="material-symbols-outlined">
-		                                    favorite
-		                                </span>
-		                            </button>
-		                        </div>
-		                    </div>
-		                    <div class="card-body text-center">
-		                        <h5 class="card-title">${ p.prodName }</h5>
-		                        <p class="card-text text-muted">${ p.prodContent }</p>
-		                        
-		                        <p class="card-text font-weight-bold"><fmt:formatNumber value="${ p.prodPrice }" type="number" pattern="#,###" /><small>원</small>
-                    			<small class="text-danger">${product.discountRate}% 할인</small></p>
-		                        <p class="card-text text-warning">★ ★ ★ ★ ☆ (4.5)</p>
-		                    </div>
-		                </div>
-		            </div>
-	            </c:forEach>
-	            
-	        </div>
-	        <!-- 페이지네이션 -->
-			<nav>
-				<ul class="pagination">
-					<!-- 이전 페이지 그룹 -->
-					<c:if test="${ pi.startPage > 1 }">
-						<li class="page-item">
-							<a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage - pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-								＜
-							</a>
-						</li>
-					</c:if>
-					
-					<!-- 페이지 번호 -->
-					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }" step="1">
-						<c:if test="${ p == pi.currentPage }">
-							<li class="page-item">
-								<a class="active" href="#">
-									${ p }
-								</a>
-							</li>
-						</c:if>
-						<c:if test="${ p != pi.currentPage }">
-							<li class="page-item">
-								<a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-									${ p }
-								</a>
-							</li>
-						</c:if>
-					</c:forEach>
-					
-					<!-- 다음 페이지 그룹 -->
-					<c:if test="${ pi.endPage < pi.maxPage }">
-						<li class="page-item">
-							<a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage + pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
-								＞
-							</a>
-						</li>
-					</c:if>
-				</ul>
-			</nav>
-			<!-- 페이지네이션 end -->
+	        
+	        <c:choose>
+		        <c:when test="${empty pList}"><!-- 검색 결과가 없을 때 -->
+		            <p>상품이 없습니다.</p>
+		        </c:when>
+		        <c:otherwise><!-- 검색 결과가 있을 때 -->
+			        <!-- 상품 리스트 -->
+			        <div class="row" id="productList">
+			            <!-- 상품 카드 -->
+			            <c:forEach var="p" items="${ requestScope.pList }">
+				            <div class="col-md-3 col-sm-4 col-6 mb-4">
+				                <div class="card product-card position-relative" data-id="1" onclick="location.href='detail.pr?pno=${ p.prodNo }';">
+				                    <div class="card-img-container">
+				                        <img src="${ pageContext.request.contextPath }${ p.thumbImg }" class="card-img-top" alt="상품 이미지">
+				                        <div class="overlay">
+				                            <button class="btn btn-light btn-sm rounded-circle shadow add-cart" title="장바구니 추가" data-id="1">
+				                                <span class="material-symbols-outlined">
+				                                    shopping_bag
+				                                </span>
+				                            </button>
+				                            <button class="btn btn-light btn-sm rounded-circle shadow add-wishlist" title="찜하기" data-id="1">
+				                                <span class="material-symbols-outlined">
+				                                    favorite
+				                                </span>
+				                            </button>
+				                        </div>
+				                    </div>
+				                    <div class="card-body text-center">
+				                        <h5 class="card-title">${ p.prodName }</h5>
+				                        <p class="card-text text-muted">${ p.prodContent }</p>
+				                        
+				                        <p class="card-text font-weight-bold"><fmt:formatNumber value="${ p.prodPrice }" type="number" pattern="#,###" /><small>원</small>
+		                    			<small class="text-danger">${product.discountRate}% 할인</small></p>
+				                        <p class="card-text">
+											<span class="review-stars">
+		                                        <c:forEach begin="1" end="5" var="i">
+		                                            <c:choose>
+		                                                <c:when test="${i <= p.avgRating}"><!-- 가득 찬 별 -->
+		                                                    <i class="fas fa-star"></i>
+		                                                </c:when>
+		                                                <c:when test="${i - 0.5 < p.avgRating && i > p.avgRating}"><!-- 반 개 별 -->
+		                                                    <i class="fas fa-star-half-alt"></i>
+		                                                </c:when>
+		                                                <c:otherwise><!-- 빈 별 -->
+		                                                    <i class="far fa-star"></i>
+		                                                </c:otherwise>
+		                                            </c:choose>
+		                                        </c:forEach>
+											</span>
+											<span>${p.avgRating}</span>
+											<span class="text-muted small">(${p.reviewCount})</span>
+										</p>
+				                    </div>
+				                </div>
+				            </div>
+			            </c:forEach>
+			            
+			        </div>
+			        <!-- 페이지네이션 -->
+					<nav>
+						<ul class="pagination">
+							<!-- 이전 페이지 그룹 -->
+							<c:if test="${ pi.startPage > 1 }">
+								<li class="page-item">
+									<a href="list.pr?category=${ category }&keyword=${ keyword }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage - pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }</c:forEach>">
+										＜
+									</a>
+								</li>
+							</c:if>
+							
+							<!-- 페이지 번호 -->
+							<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }" step="1">
+								<c:if test="${ p == pi.currentPage }">
+									<li class="page-item">
+										<a class="active" href="#">
+											${ p }
+										</a>
+									</li>
+								</c:if>
+								<c:if test="${ p != pi.currentPage }">
+									<li class="page-item">
+										<a href="list.pr?category=${ category }&keyword=${ keyword }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }</c:forEach>">
+											${ p }
+										</a>
+									</li>
+								</c:if>
+							</c:forEach>
+							
+							<!-- 다음 페이지 그룹 -->
+							<c:if test="${ pi.endPage < pi.maxPage }">
+								<li class="page-item">
+									<a href="list.pr?category=${ category }&keyword=${ keyword }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage + pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }</c:forEach>">
+										＞
+									</a>
+								</li>
+							</c:if>
+						</ul>
+					</nav>
+					<!-- 페이지네이션 end -->
+				</c:otherwise>
+			</c:choose>
 	    </div>
 	</div>
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>

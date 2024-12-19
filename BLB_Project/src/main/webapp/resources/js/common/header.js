@@ -124,6 +124,10 @@ $(function() {
     });
 
     // * search 버튼 스크립트
+    // 검색창 초기 상태 설정: searchBox 값이 있으면 열기
+    if ($("#searchBox").val().trim() !== "") {
+        $("#searchBox").addClass("show"); // 검색창 열기
+    }
     $("#searchIcon").click(function () {
         const searchBox = $("#searchBox");
         searchBox.toggleClass("show"); // 검색창 확장/축소
@@ -131,6 +135,17 @@ $(function() {
             searchBox.focus(); // 입력창에 포커스
         } else {
             searchBox.blur(); // 포커스 해제
+        }
+    });
+    // search 인풋창 키워드 입력 스크립트
+    $("#searchBox").keypress(function (e) {
+        if (e.which === 13) { // Enter 키
+            const keyword = $(this).val().trim();
+            if (keyword) {
+                window.location.href = `${contextPath}/list.pr?keyword=${encodeURIComponent(keyword)}`;
+            } else {
+                alert("검색어를 입력하세요.");
+            }
         }
     });
 

@@ -36,9 +36,10 @@ public class ProductController {
 
 	// 상품 목록보기 요청
 	@GetMapping("list.pr")
-	public String selectProductList(@RequestParam(value="ppage", defaultValue="1")int currentPage,
-									@RequestParam(value="category", defaultValue="전체제품")String category,
+	public String selectProductList(@RequestParam(value="ppage", defaultValue="1") int currentPage,
+									@RequestParam(value="category", defaultValue="전체제품") String category,
 									@RequestParam(value="subcategories", required=false) List<String> subcategories,
+									@RequestParam(value="keyword", required=false) String keyword,
 									@RequestParam(value="sortBy", defaultValue="recent") String sortBy,
 							        @RequestParam(value="boardLimit", defaultValue="12") int boardLimit,
 									Model model) {
@@ -46,6 +47,7 @@ public class ProductController {
         Map<String, Object> params = new HashMap<>();
         params.put("category", category);
         params.put("subcategories", subcategories);
+        params.put("keyword", keyword);
 		
 		int listCount = productService.selectProductCount(params);
 		
@@ -60,6 +62,7 @@ public class ProductController {
 		model.addAttribute("pi", pi);
 		model.addAttribute("category", category);
 		model.addAttribute("subcategories", subcategories);
+		model.addAttribute("keyword", keyword);
 	    model.addAttribute("sortBy", sortBy);
 	    model.addAttribute("boardLimit", boardLimit);
 		
@@ -90,7 +93,7 @@ public class ProductController {
 			
 			// 리뷰 목록조회
 			int revListCount = reviewService.selectReviewCount(prodNo);
-			int revPageLimit = 5;
+			int revPageLimit = 3;
 			int revBoardLimit = 10;
 			PageInfo revPi = Pagination.getPageInfo(revListCount, revPage, 
 												 revPageLimit, revBoardLimit);
@@ -99,7 +102,7 @@ public class ProductController {
 			// 상품문의 목록(상세, 댓글포함)조회
 			int qnaListCount = productService.selectProdInquiryCount(prodNo);
 			int qnaPageLimit = 5;
-			int qnaBoardLimit = 10;
+			int qnaBoardLimit = 5;
 			PageInfo qnaPi = Pagination.getPageInfo(qnaListCount, qnaPage, 
 												 qnaPageLimit, qnaBoardLimit);
 			ArrayList<Inquiry> qnaList = productService.selectProdInquiryList(qnaPi, prodNo);

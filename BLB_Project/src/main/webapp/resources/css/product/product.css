@@ -107,6 +107,12 @@ td label {
 .product-image { height: 500px; object-fit: contain; }
 .thumbnail { width: 80px; height: 80px; object-fit: cover; cursor: pointer; }
 .active-thumbnail { border: 2px solid #007bff; }
+.top-review {
+    cursor: pointer;
+    display: inline-block; /* 내부 콘텐츠 크기에 맞게 div 크기 조정 */
+    padding: 0; /* 필요 시 여백 제거 */
+    margin: 0; /* 필요 시 외부 여백 제거 */
+}
 .review-stars { color: #ffc107; }
 .tab-content { padding-top: 20px; }
 .sticky-wrapper {

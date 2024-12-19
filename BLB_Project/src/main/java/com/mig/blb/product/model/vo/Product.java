@@ -27,5 +27,9 @@ public class Product {
 	private Timestamp prodEnrollDate;	//	PROD_ENROLL_DATE	DATE
 	private String prodStatus;			//	PROD_STATUS	CHAR(1 BYTE)
 	private String thumbImg;			//	PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
+	
+	// 추가된 필드
+    private float avgRating;    // AVG_RATING 평균 별점
+    private int reviewCount;     // REVIEW_COUNT 리뷰 개수
 		
 }

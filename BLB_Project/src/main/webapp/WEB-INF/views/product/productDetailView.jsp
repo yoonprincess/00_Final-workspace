@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 	<!-- product CSS -->
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/product/product.css">
 <title>뷰라밸 - 제품상세보기</title>
@@ -51,23 +50,24 @@
                 <div class="product-info">
                     <h1 class="mb-3">${ requestScope.p.prodName }</h1>
                     <p class="text-muted">${ requestScope.p.prodContent }</p>
-                    <div class="mb-3">
+                    <div class="mb-3 top-review">
                         <span class="review-stars">
                             <c:forEach begin="1" end="5" var="i">
-							    <c:choose>
-							        <c:when test="${i <= reviewStats.AVG_RATING}"><!-- 가득 찬 별 -->
-							            <i class="fas fa-star"></i>
-							        </c:when>
-							        <c:when test="${i - 0.5 < reviewStats.AVG_RATING && i > reviewStats.AVG_RATING}"><!-- 반 개 별 -->
-							            <i class="fas fa-star-half-alt"></i>
-							        </c:when>
-							        <c:otherwise><!-- 빈 별 -->
-							            <i class="far fa-star"></i>
-							        </c:otherwise>
-							    </c:choose>
-							</c:forEach>
+                                <c:choose>
+                                    <c:when test="${i <= reviewStats.AVG_RATING}"><!-- 가득 찬 별 -->
+                                        <i class="fas fa-star"></i>
+                                    </c:when>
+                                    <c:when test="${i - 0.5 < reviewStats.AVG_RATING && i > reviewStats.AVG_RATING}"><!-- 반 개 별 -->
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </c:when>
+                                    <c:otherwise><!-- 빈 별 -->
+                                        <i class="far fa-star"></i>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
                         </span>
-                        <span class="ml-2 font-weight-bold">${reviewStats.AVG_RATING}</span>
+                        <span class="ml-1 font-weight-bold">${reviewStats.AVG_RATING}</span>
+                        <span class="text-muted small">(${reviewStats.TOTAL_REVIEWS})</span>
                     </div>
                     <h2 class="mb-3">
                         <fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /><small>원</small>
@@ -162,85 +162,85 @@
                     <button class="btn btn-primary">리뷰작성</button>
                 </div>
                 <c:choose>
-                        <c:when test="${empty revList}">
-                            <div class="text-center">
-                                <p>등록된 리뷰가 없습니다.</p>
+                    <c:when test="${empty revList}">
+                        <div class="text-center">
+                            <p>등록된 리뷰가 없습니다.</p>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="h2 font-weight-bold mr-2">${reviewStats.AVG_RATING}</span>
+                                    <div class="review-stars">
+                                        <c:forEach begin="1" end="5" var="i">
+                                            <c:choose>
+                                                <c:when test="${i <= reviewStats.AVG_RATING}"><!-- 가득 찬 별 -->
+                                                    <i class="fas fa-star"></i>
+                                                </c:when>
+                                                <c:when test="${i - 0.5 < reviewStats.AVG_RATING && i > reviewStats.AVG_RATING}"><!-- 반 개 별 -->
+                                                    <i class="fas fa-star-half-alt"></i>
+                                                </c:when>
+                                                <c:otherwise><!-- 빈 별 -->
+                                                    <i class="far fa-star"></i>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                                <!-- 별점 분포 -->
+                                <!-- 5점 -->
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                            style="width: <fmt:formatNumber value="${(reviewStats.RATING_5 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_5 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                            aria-valuemin="0" aria-valuemax="100">
+                                            5점 (<fmt:formatNumber value="${(reviewStats.RATING_5 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+                                    </div>
+                                </div>
+                            
+                                <!-- 4점 -->
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                            style="width: <fmt:formatNumber value="${(reviewStats.RATING_4 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_4 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                            aria-valuemin="0" aria-valuemax="100">
+                                            4점 (<fmt:formatNumber value="${(reviewStats.RATING_4 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+                                    </div>
+                                </div>
+                            
+                                <!-- 3점 -->
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                            style="width: <fmt:formatNumber value="${(reviewStats.RATING_3 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_3 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                            aria-valuemin="0" aria-valuemax="100">
+                                            3점 (<fmt:formatNumber value="${(reviewStats.RATING_3 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+                                    </div>
+                                </div>
+                            
+                                <!-- 2점 -->
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                            style="width: <fmt:formatNumber value="${(reviewStats.RATING_2 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_2 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                            aria-valuemin="0" aria-valuemax="100">
+                                            2점 (<fmt:formatNumber value="${(reviewStats.RATING_2 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+                                    </div>
+                                </div>
+                            
+                                <!-- 1점 -->
+                                <div class="progress mb-2" style="height: 20px;">
+                                    <div class="progress-bar bg-warning" role="progressbar"
+                                            style="width: <fmt:formatNumber value="${(reviewStats.RATING_1 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_1 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                            aria-valuemin="0" aria-valuemax="100">
+                                            1점 (<fmt:formatNumber value="${(reviewStats.RATING_1 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+                                    </div>
+                                </div>
                             </div>
-                        </c:when>
-                        <c:otherwise>
-			                <div class="row mb-4">
-			                    <div class="col-md-6">
-			                        <div class="d-flex align-items-center mb-2">
-			                            <span class="h2 font-weight-bold mr-2">${reviewStats.AVG_RATING}</span>
-			                            <div class="review-stars">
-			                                <c:forEach begin="1" end="5" var="i">
-											    <c:choose>
-											        <c:when test="${i <= reviewStats.AVG_RATING}"><!-- 가득 찬 별 -->
-											            <i class="fas fa-star"></i>
-											        </c:when>
-											        <c:when test="${i - 0.5 < reviewStats.AVG_RATING && i > reviewStats.AVG_RATING}"><!-- 반 개 별 -->
-											            <i class="fas fa-star-half-alt"></i>
-											        </c:when>
-											        <c:otherwise><!-- 빈 별 -->
-											            <i class="far fa-star"></i>
-											        </c:otherwise>
-											    </c:choose>
-											</c:forEach>
-			                            </div>
-			                        </div>
-			                        <!-- 별점 분포 -->
-			                        <!-- 5점 -->
-								    <div class="progress mb-2" style="height: 20px;">
-								        <div class="progress-bar bg-warning" role="progressbar"
-								             style="width: <fmt:formatNumber value="${(reviewStats.RATING_5 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-								             aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_5 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
-								             aria-valuemin="0" aria-valuemax="100">
-								             5점 (<fmt:formatNumber value="${(reviewStats.RATING_5 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
-								        </div>
-								    </div>
-								
-								    <!-- 4점 -->
-								    <div class="progress mb-2" style="height: 20px;">
-								        <div class="progress-bar bg-warning" role="progressbar"
-								             style="width: <fmt:formatNumber value="${(reviewStats.RATING_4 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-								             aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_4 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
-								             aria-valuemin="0" aria-valuemax="100">
-								             4점 (<fmt:formatNumber value="${(reviewStats.RATING_4 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
-								        </div>
-								    </div>
-								
-								    <!-- 3점 -->
-								    <div class="progress mb-2" style="height: 20px;">
-								        <div class="progress-bar bg-warning" role="progressbar"
-								             style="width: <fmt:formatNumber value="${(reviewStats.RATING_3 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-								             aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_3 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
-								             aria-valuemin="0" aria-valuemax="100">
-								             3점 (<fmt:formatNumber value="${(reviewStats.RATING_3 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
-								        </div>
-								    </div>
-								
-								    <!-- 2점 -->
-								    <div class="progress mb-2" style="height: 20px;">
-								        <div class="progress-bar bg-warning" role="progressbar"
-								             style="width: <fmt:formatNumber value="${(reviewStats.RATING_2 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-								             aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_2 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
-								             aria-valuemin="0" aria-valuemax="100">
-								             2점 (<fmt:formatNumber value="${(reviewStats.RATING_2 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
-								        </div>
-								    </div>
-								
-								    <!-- 1점 -->
-								    <div class="progress mb-2" style="height: 20px;">
-								        <div class="progress-bar bg-warning" role="progressbar"
-								             style="width: <fmt:formatNumber value="${(reviewStats.RATING_1 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-								             aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_1 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
-								             aria-valuemin="0" aria-valuemax="100">
-								             1점 (<fmt:formatNumber value="${(reviewStats.RATING_1 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
-								        </div>
-								    </div>
-			                    </div>
-			                </div>
-			                <div id="reviewList">
+                        </div>
+                        <div id="reviewList">
                             <c:forEach var="review" items="${revList}">
                                 <div class="card mb-3">
                                     <div class="card-body">
@@ -254,50 +254,49 @@
                                                         <i class="far fa-star"></i>
                                                     </c:forEach>
                                                 </span>
-                                                <span class="ml-2">${review.memberId}</span>
+                                                <span class="ml-2">${review.memberId} | ${review.revNo}</span>
                                             </div>
                                             <small class="text-muted">
                                                 <fmt:formatDate value="${review.revEnrollDate}" pattern="yyyy-MM-dd hh:mm" />
                                             </small>
                                         </div>
-                                        <p class="card-text">${review.revNo}${review.revContent}</p>
+                                        <p class="card-text">${review.revContent}</p>
                                     </div>
                                 </div>
                             </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-                
-                <!-- 리뷰 페이지네이션 -->
-                <nav aria-label="Rev Page navigation">
-                    <ul class="pagination" id="rev-pagination">
-                        <!-- 이전 페이지 그룹 -->
-                        <c:if test="${ revPi.startPage > 1 }">
-                            <li class="page-item">
-                                <a data-url="detail.pr?pno=${ requestScope.p.prodNo }&rpage=${ revPi.startPage - revPi.pageLimit }">
-                                    ＜
-                                </a>
-                            </li>
-                        </c:if>
-                        <!-- 페이지 번호 -->
-                        <c:forEach var="rp" begin="${revPi.startPage}" end="${revPi.endPage}">
-                            <li class="page-item">
-                                <a class="${rp == revPi.currentPage ? 'active' : ''}" 
-                                   data-url="detail.pr?pno=${ requestScope.p.prodNo }&rpage=${rp}">
-                                   ${rp}
-                                </a>
-                            </li>
-                        </c:forEach>
-                        <!-- 다음 페이지 그룹 -->
-                        <c:if test="${ revPi.endPage < revPi.maxPage }">
-                            <li class="page-item">
-                                <a data-url="detail.pr?pno=${ requestScope.p.prodNo }&rpage=${ revPi.startPage + revPi.pageLimit }">
-                                    ＞
-                                </a>
-                            </li>
-                        </c:if>
-                    </ul>
-                </nav>
+                        </div>
+                        <!-- 리뷰 페이지네이션 -->
+                        <nav aria-label="Rev Page navigation">
+                            <ul class="pagination" id="rev-pagination">
+                                <!-- 이전 페이지 그룹 -->
+                                <c:if test="${ revPi.startPage > 1 }">
+                                    <li class="page-item">
+                                        <a data-url="detail.pr?pno=${ requestScope.p.prodNo }&rpage=${ revPi.startPage - revPi.pageLimit }">
+                                            ＜
+                                        </a>
+                                    </li>
+                                </c:if>
+                                <!-- 페이지 번호 -->
+                                <c:forEach var="rp" begin="${revPi.startPage}" end="${revPi.endPage}">
+                                    <li class="page-item">
+                                        <a class="${rp == revPi.currentPage ? 'active' : ''}" 
+                                            data-url="detail.pr?pno=${ requestScope.p.prodNo }&rpage=${rp}">
+                                            ${rp}
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                                <!-- 다음 페이지 그룹 -->
+                                <c:if test="${ revPi.endPage < revPi.maxPage }">
+                                    <li class="page-item">
+                                        <a data-url="detail.pr?pno=${ requestScope.p.prodNo }&rpage=${ revPi.startPage + revPi.pageLimit }">
+                                            ＞
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </nav>
+                    </c:otherwise>
+                </c:choose>
             </div>
 
 
@@ -307,14 +306,14 @@
                     <h2>상품문의</h2>
                     <button class="btn btn-primary">문의하기</button>
                 </div>
-                <div id="qnaList">
-                    <c:choose>
-                        <c:when test="${empty qnaList}">
-                            <div class="text-center">
-                                <p>등록된 문의글이 없습니다.</p>
-                            </div>
-                        </c:when>
-                        <c:otherwise>
+                <c:choose>
+                    <c:when test="${empty qnaList}">
+                        <div class="text-center">
+                            <p>등록된 문의글이 없습니다.</p>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div id="qnaList">
                             <c:forEach var="qna" items="${qnaList}">
                                 <div class="card mb-3">
                                     <div class="card-body">
@@ -343,37 +342,36 @@
                                     </div>
                                 </div>
                             </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-            
-                <!-- 상품문의 페이지네이션 -->
-                <nav aria-label="QnA Page navigation">
-                    <ul class="pagination" id="qna-pagination">
-                        <c:if test="${qnaPi.startPage > 1}">
-                            <li class="page-item">
-                                <a data-url="detail.pr?pno=${ requestScope.p.prodNo }&qpage=${qnaPi.startPage - qnaPi.pageLimit}">
-                                    ＜
-                                </a>
-                            </li>
-                        </c:if>
-                        <c:forEach var="qp" begin="${qnaPi.startPage}" end="${qnaPi.endPage}">
-                            <li class="page-item">
-                                <a class="${qp == qnaPi.currentPage ? 'active' : ''}" 
-                                   data-url="detail.pr?pno=${ requestScope.p.prodNo }&qpage=${qp}">
-                                   ${qp}
-                                </a>
-                            </li>
-                        </c:forEach>
-                        <c:if test="${qnaPi.endPage < qnaPi.maxPage}">
-                            <li class="page-item">
-                                <a data-url="detail.pr?pno=${ requestScope.p.prodNo }&qpage=${qnaPi.startPage + qnaPi.pageLimit}">
-                                    ＞
-                                </a>
-                            </li>
-                        </c:if>
-                    </ul>
-                </nav>
+                        </div>
+                        <!-- 상품문의 페이지네이션 -->
+                        <nav aria-label="QnA Page navigation">
+                            <ul class="pagination" id="qna-pagination">
+                                <c:if test="${qnaPi.startPage > 1}">
+                                    <li class="page-item">
+                                        <a data-url="detail.pr?pno=${ requestScope.p.prodNo }&qpage=${qnaPi.startPage - qnaPi.pageLimit}">
+                                            ＜
+                                        </a>
+                                    </li>
+                                </c:if>
+                                <c:forEach var="qp" begin="${qnaPi.startPage}" end="${qnaPi.endPage}">
+                                    <li class="page-item">
+                                        <a class="${qp == qnaPi.currentPage ? 'active' : ''}" 
+                                           data-url="detail.pr?pno=${ requestScope.p.prodNo }&qpage=${qp}">
+                                           ${qp}
+                                        </a>
+                                    </li>
+                                </c:forEach>
+                                <c:if test="${qnaPi.endPage < qnaPi.maxPage}">
+                                    <li class="page-item">
+                                        <a data-url="detail.pr?pno=${ requestScope.p.prodNo }&qpage=${qnaPi.startPage + qnaPi.pageLimit}">
+                                            ＞
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </nav>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>

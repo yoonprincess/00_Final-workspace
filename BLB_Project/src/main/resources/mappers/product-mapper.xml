@@ -15,6 +15,8 @@
 		<result column="PROD_ENROLL_DATE" property="prodEnrollDate"/>
 		<result column="PROD_STATUS" property="prodStatus"/>
 		<result column="THUMB_IMG" property="thumbImg"/>
+		<result column="AVG_RATING" property="avgRating"/>
+		<result column="REVIEW_COUNT" property="reviewCount"/>
 	</resultMap>
 	
 	<resultMap id="productAttResultSet" type="productAtt">
@@ -39,6 +41,10 @@
 	               #{subcategory}
 	           </foreach>
 	       </if>
+	       <if test="keyword != null and keyword != ''">
+           AND (PROD_NAME LIKE '%' || #{keyword} || '%'
+                OR PROD_CONTENT LIKE '%' || #{keyword} || '%')
+       	   </if>
 	</select>
 	
 	<select id="selectProductList" parameterType="map" 
@@ -52,6 +58,8 @@
 		     , P.PROD_COUNT
 		     , P.PROD_ENROLL_DATE
 		     , PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
+		     , NVL(ROUND(AVG(R.REV_RATING), 1), 0) AS AVG_RATING
+           	 , NVL(COUNT(R.REV_NO), 0) AS REVIEW_COUNT
 		  FROM TB_PRODUCT P
 		  LEFT JOIN (
 		      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
@@ -65,6 +73,9 @@
 		       )
 		  ) PA
 		    ON P.PROD_NO = PA.PROD_NO
+		  LEFT JOIN TB_OPTION OPT ON P.PROD_NO = OPT.PROD_NO
+		  LEFT JOIN TB_PRODUCT_ORDER PO ON OPT.OPT_NO = PO.OPT_NO
+ 		  LEFT JOIN TB_REVIEW R ON PO.SERIAL_NO = R.SERIAL_NO AND R.REV_STATUS = 'Y'
 		 WHERE P.PROD_STATUS = 'Y'
 		   AND (#{category} = '전체제품' OR CATEGORY_NAME = #{category})
 		   <if test="subcategories != null and subcategories.size() > 0">
@@ -73,6 +84,13 @@
 	               #{subcategory}
 	           </foreach>
 	       </if>
+	       <if test="keyword != null and keyword != ''">
+           AND (P.PROD_NAME LIKE '%' || #{keyword} || '%'
+                OR P.PROD_CONTENT LIKE '%' || #{keyword} || '%')
+           </if>
+	     GROUP BY P.PROD_NO, P.CATEGORY_NAME, P.SUBCATEGORY_NAME, P.PROD_NAME, 
+	     		  P.PROD_CONTENT, P.PROD_PRICE, P.PROD_COUNT, P.PROD_ENROLL_DATE, 
+	           	  PA.THUMB_PATH, PA.SAVE_FILE_NAME
 		 ORDER BY P.PROD_NO DESC
 	</select>
 	

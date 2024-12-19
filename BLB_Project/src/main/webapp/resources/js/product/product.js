@@ -132,6 +132,22 @@ $(document).ready(function () {
         alert('구매 페이지로 이동합니다.');
     });
 
+    $('.top-review').on('click', function (e) {
+
+        let tabsOffset = $('.origin-tab-location').offset().top || 0; // 탭 메뉴의 위치
+        // 부드러운 스크롤 이동
+        $('html, body').animate(
+            {
+                scrollTop: tabsOffset,
+            },
+            300 // 스크롤 이동 속도 (밀리초)
+        );
+        
+        // 탭 활성화 처리
+        $('#reviews-tab').tab('show');
+        
+    });
+
     
     // 탭 클릭 시 스크롤 이동
     $('#productTabs a').on('click', function (e) {
