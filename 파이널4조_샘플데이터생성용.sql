@@ -1014,71 +1014,56 @@ END;
 /
 
 
--- 상품별 50개의 문의글 및 답변 데이터 삽입
-DECLARE
-    v_inquiry_no NUMBER; -- 문의 번호 저장
-    v_max_product_no NUMBER; -- 최대 상품 번호
-    v_member_ids SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST('user01', 'user02', 'user03');
-    v_inquiry_content SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST(
-        '배송이 언제 되나요?',
-        '재고가 부족한가요?',
-        '상품 정보가 궁금합니다.',
-        '할인 이벤트는 없나요?',
-        '사용법이 복잡해요.'
-    );
-    v_reply_content SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST(
-        '오늘 발송 예정입니다.',
-        '현재 재고가 충분합니다.',
-        '상품 설명서를 참고해 주세요.',
-        '할인 이벤트는 다음 주에 시작됩니다.',
-        '자세한 사용법은 설명서를 확인해 주세요.'
-    );
+-- 상품 리뷰 샘플 데이터 --
 BEGIN
-    -- TB_PRODUCT의 최대 상품 번호 가져오기
-    SELECT MAX(PROD_NO) INTO v_max_product_no FROM TB_PRODUCT;
+    -- TB_ORDER에서 고유한 ORDER_NO 가져오기
+    FOR order_rec IN (SELECT DISTINCT ORDER_NO, MEMBER_ID FROM TB_ORDER) LOOP
+        -- 리뷰 생성: ORDER_NO당 하나만 생성
+        INSERT INTO TB_REVIEW VALUES(
+            SEQ_REV_NO.NEXTVAL,
+            '제품이 너무 좋아요! 재구매 의사 있습니다.',
+            SYSDATE,
+            5, -- 별점 정보
+            'Y', -- 리뷰 상태
+            order_rec.ORDER_NO, -- ORDER_NO
+            order_rec.MEMBER_ID -- MEMBER_ID
+        );
 
-    FOR p IN 1..v_max_product_no LOOP -- 모든 상품 반복
-        FOR i IN 1..50 LOOP -- 한 상품당 50개의 문의글 생성
-            -- 상품 문의글 삽입
-            INSERT INTO TB_INQUIRY (
-                INQUIRY_NO, 
-                INQUIRY_CONTENT, 
-                INQUIRY_TYPE, 
-                INQUIRY_ANSWERED_YN, 
-                INQUIRY_STATUS, 
-                MEMBER_ID, 
-                PROD_NO
-            ) VALUES (
-                SEQ_INQUIRY_NO.NEXTVAL,
-                v_inquiry_content(TRUNC(DBMS_RANDOM.VALUE(1, 6))), -- 랜덤 문의 내용
-                '상품', -- 문의 유형
-                'Y',    -- 답변 여부 (답변 있음)
-                DEFAULT, -- 상태값 (디폴트 'Y')
-                v_member_ids(MOD(i, 3) + 1), -- 작성자 순환: user01, user02, user03
-                p -- 상품 번호
-            )
-            RETURNING INQUIRY_NO INTO v_inquiry_no;
-
-            -- 답변 삽입
-            INSERT INTO TB_INQUIRY_REPLY (
-                INQUIRY_REPLY_NO,
-                INQUIRY_REPLY_CONTENT,
-                INQUIRY_REPLY_STATUS,
-                INQUIRY_NO,
-                MEMBER_ID
-            ) VALUES (
-                SEQ_INQUIRY_REPLY_NO.NEXTVAL,
-                v_reply_content(TRUNC(DBMS_RANDOM.VALUE(1, 6))), -- 랜덤 답변 내용
-                DEFAULT, -- 상태값 (디폴트 'Y')
-                v_inquiry_no, -- 삽입된 문의 번호
-                'admin' -- 답변 작성자
+        -- 상품 주문 생성: 하나의 ORDER_NO당 여러 옵션을 추가
+        FOR opt_no IN 50..72 LOOP
+            INSERT INTO TB_PRODUCT_ORDER VALUES(
+                SEQ_SERIAL_NO.NEXTVAL,
+                1, -- 주문 수량
+                38000, -- 총 금액
+                order_rec.ORDER_NO, -- ORDER_NO
+                opt_no -- OPT_NO
             );
         END LOOP;
     END LOOP;
 
-    COMMIT;
+    COMMIT; -- 변경 사항 저장
 END;
 /
+-- 상품 리뷰 별점 랜덤 부여 --
+BEGIN
+    FOR rev_no IN 1..100 LOOP
+        UPDATE TB_REVIEW
+        SET REV_RATING = TRUNC(DBMS_RANDOM.VALUE(1, 6)) -- 1부터 5까지의 랜덤값
+        WHERE REV_NO = rev_no;
+    END LOOP;
+
+    COMMIT; -- 변경 사항 저장
+END;
+-- 리뷰 내용에 번호 부여 --
+BEGIN
+    FOR rev_no IN 1..100 LOOP
+        UPDATE TB_REVIEW
+        SET REV_CONTENT = '제품이 너무 좋아요! 재구매 의사 있습니다.' || rev_no -- 1부터 5까지의 랜덤값
+        WHERE REV_NO = rev_no;
+    END LOOP;
+    COMMIT; -- 변경 사항 저장
+END;
+
 
 -- 마이페이지 조회용 order, product_order 샘플데이터----
 INSERT INTO TB_ORDER(ORDER_NO,
