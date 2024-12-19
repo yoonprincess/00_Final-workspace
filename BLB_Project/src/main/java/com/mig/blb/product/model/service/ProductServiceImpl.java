@@ -1,6 +1,7 @@
 package com.mig.blb.product.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -60,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public boolean checkPurchase(int prodNo, String memberId) {
-		return productDao.checkPurchase(sqlSession, prodNo, memberId);
+	public List<Map<String, Object>> getPurchaseInfo(String memberId, int prodNo) {
+		return productDao.getPurchaseInfo(sqlSession, memberId, prodNo);
 	}
 }

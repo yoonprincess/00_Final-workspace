@@ -1,6 +1,7 @@
 package com.mig.blb.product.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.mig.blb.common.model.vo.PageInfo;
@@ -30,6 +31,6 @@ public interface ProductService {
 	// 문의 목록(상세, 댓글포함)조회
 	ArrayList<Inquiry> selectProdInquiryList(PageInfo qnaPi, int prodNo);
 	
-	// 상품 구매여부 체크 서비스
-	boolean checkPurchase(int prodNo, String memberId);
+	// 상품 구매 여부 확인 및 정보 추출
+	List<Map<String, Object>> getPurchaseInfo(String memberId, int prodNo);
 }

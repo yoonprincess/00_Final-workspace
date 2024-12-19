@@ -125,7 +125,7 @@ $(function() {
 
     // * search 버튼 스크립트
     // 검색창 초기 상태 설정: searchBox 값이 있으면 열기
-    if ($("#searchBox").val().trim() !== "") {
+    if ($("#searchBox").val() !== "") {
         $("#searchBox").addClass("show"); // 검색창 열기
     }
     $("#searchIcon").click(function () {
@@ -174,7 +174,7 @@ $(function() {
     $('#writeReviewBtn').on('click', function () {
         const prodNo = $(this).data('prodno'); // 상품 번호 가져오기
         const memberId = $(this).data('memberid'); // 회원 ID 가져오기
-        const reviewIframeUrl = `${contextPath}/enrollForm.rv?prodNo=${prodNo}&memberId=${memberId}`;
+        
         const iframe = $('#reviewIframeContainer iframe');
 
         if (!memberId) {
@@ -191,7 +191,15 @@ $(function() {
                 memberId: memberId
             },
             success: function (response) {
-                if (response.isPurchased) {
+                if(response.status == "no_purchase") {
+                    alertify.warning("해당 상품을 구매한 고객만 리뷰를 작성할 수 있습니다.");
+                }
+                if(response.status == "review_exists") {
+                    alertify.warning("이미 리뷰를 작성하셨습니다.");
+                }
+
+                if (response.status == "ok") {
+                    const reviewIframeUrl = `${contextPath}/enrollForm.rv?prodNo=${prodNo}&memberId=${memberId}`;
                     // 서버 검증 후 iframe URL을 서버에서 제공
                     $(iframe).attr('src', reviewIframeUrl);
 
@@ -211,12 +219,10 @@ $(function() {
 
                     // 모달 표시
                     $('#reviewIframeContainer').fadeIn();
-                } else {
-                    alert("해당 상품을 구매한 고객만 리뷰를 작성할 수 있습니다.");
                 }
             },
             error: function () {
-                alert("구매 여부를 확인하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                alertify.error("구매 여부를 확인하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
             }
         });
     });

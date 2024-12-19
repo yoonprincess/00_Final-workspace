@@ -1,14 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
     <title>리뷰 작성</title>
-    <!-- header CSS -->
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/common/header.css">
     <!-- jQuery 3.7.1 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- header CSS -->
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/common/header.css">
     <!-- Bootstrap 4.6.2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <!-- Google Fonts NotoSansKR -->
@@ -18,11 +18,28 @@
     <!-- awesome Icon -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
+    <!--  Alertify 라이브러리 연동구문 (CDN) -->
+	<!-- JavaScript -->
+	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+	<!-- CSS -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+	<!-- Default theme -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
+	<!-- Semantic UI theme -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/semantic.min.css"/>
+
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+        }
         /* 컨테이너 스타일 */
         .review-container {
-            max-width: 600px;
-            margin: auto;
+            width: 100%; /* 부모의 크기를 기준으로 조정 */
+            margin: 0 auto; /* 중앙 정렬 */
             border: 1px solid #ddd;
             border-radius: 10px;
             padding: 20px;
@@ -109,9 +126,10 @@
         }
 
         .image-preview img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: cover;
+            display: block !important;
+            width: 100% !important;
+            height: auto !important;
+            object-fit: cover !important;
         }
 
         .image-preview .remove-btn {
@@ -165,16 +183,19 @@
 <body>
     <div class="review-container">
         <!-- 리뷰 작성 폼 -->
-        <form id="reviewForm" action="insert.rev" method="post" enctype="multipart/form-data">
-            
+        <form id="reviewForm" action="insert.rv" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="serialNo" name="serialNo" value="${purchaseOne.serialNo}">
+            <input type="hidden" id="memberId" name="memberId" value="${memberId}">
+            <input type="hidden" id="prodNo" name="prodNo" value="${prodNo}">
             <!-- 상품 정보 -->
-            <div class="product-info" onclick="location.href='detail.pr?pno=${ p.prodNo }';">
+            <div class="product-info" onclick="window.open('detail.pr?pno=${prodNo}', '_blank');" style="cursor: pointer;">
                 <div class="product-thumbnail">
-                    <img src="${ pageContext.request.contextPath }/resources/images/sample-product.jpg" alt="상품 썸네일">
+                    <img src="${ pageContext.request.contextPath }${ purchaseOne.thumbOne }" alt="상품 썸네일">
                 </div>
                 <div class="product-details">
-                    <div class="product-name">[회원 전용] 울트라 홀드 스프레이 8,900원</div>
-                    <div class="product-options">+1+1 스프레이 2개 (+8900)</div>
+                    <div class="product-name">${purchaseOne.prodName}</div>
+                    <div class="product-options">${purchaseOne.optName}: ${purchaseOne.optValue}</div>
+                    <div class="product-options text-muted">구매 일자: <fmt:formatDate value="${purchaseOne.orderDate}" pattern="yyyy-MM-dd hh:mm" /></div>
                 </div>
             </div>
     
@@ -227,8 +248,8 @@
             // 글자 수 실시간 체크
             $('#revContent').on('input', function () {
                 const textLength = $(this).val().length;
-                $('#charCount').text(`${textLength} / ${maxChar}자`);
-
+                $('#charCount').text(textLength + " / " + maxChar+"자");
+                console.log(textLength);
                 // 글자 수 초과 경고
                 if (textLength > maxChar) {
                     $('#charCount').addClass('text-danger');
@@ -241,7 +262,7 @@
             $('#reviewForm').on('submit', function (e) {
                 const textLength = $('#revContent').val().length;
                 if (textLength < minChar || textLength > maxChar) {
-                    alert(`리뷰는 최소 ${minChar}자, 최대 ${maxChar}자까지 작성 가능합니다.`);
+                    alert("리뷰는 최소 "+minChar+"자, 최대 "+maxChar+"자까지 작성 가능합니다.");
                     e.preventDefault();
                 }
             });
@@ -275,18 +296,20 @@
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function (event) {
-                            const preview = $(`
-                                <div class="image-preview">
-                                    <img src="${event.target.result}" alt="첨부 이미지">
-                                    <button type="button" class="remove-btn">&times;</button>
-                                </div>
-                            `);
+                            // 미리보기 요소 생성
+                            const preview = $('<div class="image-preview"></div>');
+                            const img = $('<img alt="첨부 이미지">').attr('src', event.target.result); // src 설정
+                            const removeBtn = $('<button type="button" class="remove-btn">&times;</button>');
 
-                            preview.find('.remove-btn').click(function () {
+                            // Remove 버튼 동작 설정
+                            removeBtn.click(function () {
                                 preview.remove();
                                 fileInput.remove();
                                 $('#addImageButton').show();
                             });
+
+                            // 미리보기 요소에 이미지와 버튼 추가
+                            preview.append(img).append(removeBtn);
 
                             $('#addImageButton').before(preview);
 
@@ -294,15 +317,58 @@
                                 $('#addImageButton').hide();
                             }
                         };
-                        reader.readAsDataURL(file);
+                        reader.readAsDataURL(file); // 파일 읽기 시작
                     }
                 });
-
+                
                 imagePreviewContainer.append(fileInput);
+            });
+
+            // ajax 처리 후 창 닫기
+            $('#reviewForm').on('submit', function (e) {
+                e.preventDefault(); // 기본 폼 제출 방지
+
+                const formData = new FormData(this);
+
+                $.ajax({
+                    url: 'insert.rv',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response.success) {
+                            // 성공 메시지
+                            alertify.success(response.message);
+                            // 일정 시간 후 창 닫기
+                            setTimeout(function () {
+                                parent.$('#reviewIframeContainer').hide();
+                                parent.location.reload(); // 부모 페이지 새로고침
+                            }, 2000); // 2초 후 창 닫기
+                        } else {
+                            // 실패 메시지
+                            alertify.error(response.message);
+                            // 일정 시간 후 창 닫기
+                            setTimeout(function () {
+                                parent.$('#reviewIframeContainer').hide();
+                                parent.location.reload(); // 부모 페이지 새로고침
+                            }, 2000); // 2초 후 창 닫기
+                        }
+                    },
+                    error: function () {
+                        alertify.error("서버 오류가 발생했습니다. 다시 시도해주세요.");
+                        // 일정 시간 후 창 닫기
+                        setTimeout(function () {
+                                parent.$('#reviewIframeContainer').hide();
+                                parent.location.reload(); // 부모 페이지 새로고침
+                            }, 2000); // 2초 후 창 닫기
+                    }
+                });
             });
         });
     </script>
 
+    
     <!-- Popper JS -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 

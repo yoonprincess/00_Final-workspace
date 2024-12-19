@@ -11,7 +11,7 @@
 </head>
 <body class="body-offset">
     <div id="reviewIframeContainer">
-        <div style="position: relative; width: 430px;"> <!-- 닫기 버튼을 포함하는 컨테이너 -->
+        <div style="position: relative;"> <!-- 닫기 버튼을 포함하는 컨테이너 -->
             <button class="close-btn review-enroll">&times;</button>
             <iframe src=""></iframe>
         </div>
@@ -60,10 +60,10 @@
                         <span class="review-stars">
                             <c:forEach begin="1" end="5" var="i">
                                 <c:choose>
-                                    <c:when test="${i <= reviewStats.AVG_RATING}"><!-- 가득 찬 별 -->
+                                    <c:when test="${i <= reviewStats.avgRating}"><!-- 가득 찬 별 -->
                                         <i class="fas fa-star"></i>
                                     </c:when>
-                                    <c:when test="${i - 0.5 < reviewStats.AVG_RATING && i > reviewStats.AVG_RATING}"><!-- 반 개 별 -->
+                                    <c:when test="${i - 0.5 < reviewStats.avgRating && i > reviewStats.avgRating}"><!-- 반 개 별 -->
                                         <i class="fas fa-star-half-alt"></i>
                                     </c:when>
                                     <c:otherwise><!-- 빈 별 -->
@@ -72,8 +72,8 @@
                                 </c:choose>
                             </c:forEach>
                         </span>
-                        <span class="ml-1 font-weight-bold">${reviewStats.AVG_RATING}</span>
-                        <span class="text-muted small">(${reviewStats.TOTAL_REVIEWS})</span>
+                        <span class="ml-1 font-weight-bold">${reviewStats.avgRating}</span>
+                        <span class="text-muted small">(${reviewStats.totalReviews})</span>
                     </div>
                     <h2 class="mb-3">
                         <fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /><small>원</small>
@@ -183,14 +183,14 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <div class="d-flex align-items-center mb-2">
-                                    <span class="h2 font-weight-bold mr-2">${reviewStats.AVG_RATING}</span>
+                                    <span class="h2 font-weight-bold mr-2">${reviewStats.avgRating}</span>
                                     <div class="review-stars">
                                         <c:forEach begin="1" end="5" var="i">
                                             <c:choose>
-                                                <c:when test="${i <= reviewStats.AVG_RATING}"><!-- 가득 찬 별 -->
+                                                <c:when test="${i <= reviewStats.avgRating}"><!-- 가득 찬 별 -->
                                                     <i class="fas fa-star"></i>
                                                 </c:when>
-                                                <c:when test="${i - 0.5 < reviewStats.AVG_RATING && i > reviewStats.AVG_RATING}"><!-- 반 개 별 -->
+                                                <c:when test="${i - 0.5 < reviewStats.avgRating && i > reviewStats.avgRating}"><!-- 반 개 별 -->
                                                     <i class="fas fa-star-half-alt"></i>
                                                 </c:when>
                                                 <c:otherwise><!-- 빈 별 -->
@@ -204,50 +204,50 @@
                                 <!-- 5점 -->
                                 <div class="progress mb-2" style="height: 20px;">
                                     <div class="progress-bar bg-warning" role="progressbar"
-                                            style="width: <fmt:formatNumber value="${(reviewStats.RATING_5 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_5 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                            style="width: <fmt:formatNumber value="${(reviewStats.rating5 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating5 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
                                             aria-valuemin="0" aria-valuemax="100">
-                                            5점 (<fmt:formatNumber value="${(reviewStats.RATING_5 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+                                            5점 (<fmt:formatNumber value="${(reviewStats.rating5 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
                                     </div>
                                 </div>
                             
                                 <!-- 4점 -->
                                 <div class="progress mb-2" style="height: 20px;">
                                     <div class="progress-bar bg-warning" role="progressbar"
-                                            style="width: <fmt:formatNumber value="${(reviewStats.RATING_4 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_4 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                            style="width: <fmt:formatNumber value="${(reviewStats.rating4 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating4 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
                                             aria-valuemin="0" aria-valuemax="100">
-                                            4점 (<fmt:formatNumber value="${(reviewStats.RATING_4 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+                                            4점 (<fmt:formatNumber value="${(reviewStats.rating4 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
                                     </div>
                                 </div>
                             
                                 <!-- 3점 -->
                                 <div class="progress mb-2" style="height: 20px;">
                                     <div class="progress-bar bg-warning" role="progressbar"
-                                            style="width: <fmt:formatNumber value="${(reviewStats.RATING_3 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_3 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                            style="width: <fmt:formatNumber value="${(reviewStats.rating3 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating3 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
                                             aria-valuemin="0" aria-valuemax="100">
-                                            3점 (<fmt:formatNumber value="${(reviewStats.RATING_3 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+                                            3점 (<fmt:formatNumber value="${(reviewStats.rating3 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
                                     </div>
                                 </div>
                             
                                 <!-- 2점 -->
                                 <div class="progress mb-2" style="height: 20px;">
                                     <div class="progress-bar bg-warning" role="progressbar"
-                                            style="width: <fmt:formatNumber value="${(reviewStats.RATING_2 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_2 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                            style="width: <fmt:formatNumber value="${(reviewStats.rating2 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating2 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
                                             aria-valuemin="0" aria-valuemax="100">
-                                            2점 (<fmt:formatNumber value="${(reviewStats.RATING_2 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+                                            2점 (<fmt:formatNumber value="${(reviewStats.rating2 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
                                     </div>
                                 </div>
                             
                                 <!-- 1점 -->
                                 <div class="progress mb-2" style="height: 20px;">
                                     <div class="progress-bar bg-warning" role="progressbar"
-                                            style="width: <fmt:formatNumber value="${(reviewStats.RATING_1 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.RATING_1 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                            style="width: <fmt:formatNumber value="${(reviewStats.rating1 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
+                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating1 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
                                             aria-valuemin="0" aria-valuemax="100">
-                                            1점 (<fmt:formatNumber value="${(reviewStats.RATING_1 * 100) / reviewStats.TOTAL_REVIEWS}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+                                            1점 (<fmt:formatNumber value="${(reviewStats.rating1 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
                                     </div>
                                 </div>
                             </div>

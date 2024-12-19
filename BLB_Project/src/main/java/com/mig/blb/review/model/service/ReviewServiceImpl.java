@@ -47,4 +47,15 @@ public class ReviewServiceImpl implements ReviewService {
 
 		return reviewDao.selectMyReviewList(sqlSession,memberId,pi);
 	}
+	
+	@Override
+	public boolean isReviewWritten(int serialNo) {
+		return reviewDao.isReviewWritten(sqlSession, serialNo);
+	}
+	
+	@Override
+	public int insertReview(Review review) {
+		return reviewDao.insertReview(sqlSession, review);
+	}
+
 }

@@ -130,16 +130,39 @@
 		   AND PROD_ATT_STATUS = 'Y'
 	</select>
 	
+	<resultMap id="purchaseInfoSet" type="map">
+		<result column="SERIAL_NO" property="serialNo"/>
+		<result column="ORDER_DATE" property="orderDate"/>
+		<result column="OPT_NAME" property="optName"/>
+		<result column="OPT_VALUE" property="optValue"/>
+		<result column="PROD_NAME" property="prodName"/>
+		<result column="THUMB_ONE" property="thumbOne"/>
+	</resultMap>
 	
-	<!-- 구매 여부 확인 -->
-	<select id="checkPurchase" parameterType="map"
-			 resultType="_int">
-	    SELECT COUNT(*)
-	      FROM TB_PRODUCT_ORDER PO
+	<!-- 구매 여부 확인 및 정보 추출 -->
+	<select id="getPurchaseInfo" parameterType="map" 
+			resultMap="purchaseInfoSet">
+	    SELECT PO.SERIAL_NO,
+		       O.ORDER_DATE,
+		       OPT.OPT_NAME,
+		       OPT.OPT_VALUE,
+		       P.PROD_NAME,
+		       PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_ONE"
+		  FROM TB_PRODUCT_ORDER PO
 		  JOIN TB_ORDER O ON PO.ORDER_NO = O.ORDER_NO
 		  JOIN TB_OPTION OPT ON PO.OPT_NO = OPT.OPT_NO
-		 WHERE O.MEMBER_ID = #{memberId}
-		   AND OPT.PROD_NO = #{prodNo}
+		  JOIN TB_PRODUCT P ON OPT.PROD_NO = P.PROD_NO
+		  LEFT JOIN (
+		     SELECT PROD_NO, MIN(PROD_ATT_NO) AS MIN_PROD_ATT_NO
+		       FROM TB_PRODUCT_ATTACHMENT
+		      GROUP BY PROD_NO
+		) MPA ON P.PROD_NO = MPA.PROD_NO
+		LEFT JOIN TB_PRODUCT_ATTACHMENT PA 
+		       ON PA.PROD_NO = MPA.PROD_NO
+		      AND PA.PROD_ATT_NO = MPA.MIN_PROD_ATT_NO
+		WHERE O.MEMBER_ID = #{memberId}
+		  AND P.PROD_NO = #{prodNo}
+		ORDER BY TO_NUMBER(PO.SERIAL_NO) ASC
 	</select>
 	
 	

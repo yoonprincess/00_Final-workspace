@@ -32,6 +32,10 @@ public class ReviewDao {
 	public Map<String, Object> selectReviewStats(SqlSessionTemplate sqlSession, int prodNo) {
 		return sqlSession.selectOne("reviewMapper.selectReviewStats", prodNo);
 	}
+	
+	public boolean isReviewWritten(SqlSessionTemplate sqlSession, int serialNo) {
+		return (int)sqlSession.selectOne("reviewMapper.isReviewWritten", serialNo) > 0;
+	}
 
 	public int myReviewListCount(SqlSessionTemplate sqlSession, String memberId) {
 		
@@ -47,4 +51,9 @@ public class ReviewDao {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectMyReviewList", memberId, rowBounds);
 	}
 
+	public int insertReview(SqlSessionTemplate sqlSession, Review review) {
+		int result = sqlSession.insert("reviewMapper.insertReview", review);
+        
+        return result;
+	}
 }

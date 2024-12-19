@@ -132,12 +132,35 @@ public class ProductController {
 	
 	@ResponseBody
 	@PostMapping("checkPurchase.pr")
-    public ResponseEntity<Map<String, Boolean>> checkPurchase(@RequestParam int prodNo, @RequestParam String memberId) {
-		boolean isPurchased = productService.checkPurchase(prodNo, memberId);
-        
-		Map<String, Boolean> response = new HashMap<>();
-		response.put("isPurchased", isPurchased);
-        
-		return ResponseEntity.ok(response);
+    public Map<String, Object> checkReviewAvailability(@RequestParam int prodNo,
+													   @RequestParam String memberId) {
+		
+		Map<String, Object> result = new HashMap<>();
+
+	    // Step 1: 구매 여부 확인 및 정보 추출
+	    List<Map<String, Object>> purchaseInfo = productService.getPurchaseInfo(memberId, prodNo);
+	    // serialNo, orderDate, optName, optValue, prodName
+	    if (purchaseInfo.isEmpty()) {
+	        result.put("status", "no_purchase");
+	        return result; // 구매하지 않은 상태
+	    }
+
+	    // Step 2: 리뷰 작성 여부 확인
+	    // 리뷰되지 않은 SERIAL_NO 찾기
+	    for (Map<String, Object> purchaseOne : purchaseInfo) {
+	        int serialNo = Integer.parseInt((String) purchaseOne.get("serialNo"));
+
+	        // 리뷰 작성 여부 확인
+	        boolean isReviewWritten = reviewService.isReviewWritten(serialNo);
+
+	        if (!isReviewWritten) {
+	        	result.put("status", "ok");
+	        	result.put("purchaseOne", purchaseOne);
+	        	// serialNo, orderDate, optName, optValue, prodName
+	            return result;
+	        }
+	    }
+	    result.put("status", "review_exists");
+        return result; // 이미 리뷰 작성된 상태
     }
 }

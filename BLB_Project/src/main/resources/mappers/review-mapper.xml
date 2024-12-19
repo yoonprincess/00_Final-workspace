@@ -15,6 +15,15 @@
 		<result column="OPT_NAME" property="optName"/>
 		<result column="OPT_VALUE" property="optValue"/>
 	</resultMap>
+	<resultMap id="reviewStatsSet" type="map">
+		<result column="AVG_RATING" property="avgRating" />
+	    <result column="TOTAL_REVIEWS" property="totalReviews" />
+	    <result column="RATING_5" property="rating5" />
+	    <result column="RATING_4" property="rating4" />
+	    <result column="RATING_3" property="rating3" />
+	    <result column="RATING_2" property="rating2" />
+	    <result column="RATING_1" property="rating1" />
+	</resultMap>
 	
 	<select id="selectReviewCount" parameterType="_int" 
 			resultType="_int">
@@ -45,7 +54,7 @@
 		ORDER BY R.REV_NO DESC
 	</select>
 	
-	<select id="selectReviewStats" parameterType="int" resultType="map">
+	<select id="selectReviewStats" parameterType="int" resultMap="reviewStatsSet">
 	    SELECT ROUND(AVG(R.REV_RATING), 1) AS AVG_RATING,
 	           COUNT(*) AS TOTAL_REVIEWS,
 	           SUM(CASE WHEN R.REV_RATING = 5 THEN 1 ELSE 0 END) AS RATING_5,
@@ -59,5 +68,27 @@
 	    WHERE OPT.PROD_NO = #{prod_no}
 	      AND R.REV_STATUS = 'Y'
 	</select>
+	
+	<!-- 리뷰 작성 여부 확인 -->
+	<select id="isReviewWritten" parameterType="int" resultType="int">
+	    SELECT COUNT(*)
+	      FROM TB_REVIEW R
+	     WHERE R.SERIAL_NO = #{serialNo}
+	</select>
+	
+	<insert id="insertReview" parameterType="review">
+        INSERT INTO TB_REVIEW (REV_NO,
+                       REV_CONTENT, 
+                       REV_ENROLL_DATE,
+                       REV_RATING,
+                       SERIAL_NO, 
+                       MEMBER_ID)
+               VALUES (SEQ_REV_NO.NEXTVAL,
+                       #{revContent}, 
+                       SYSDATE,
+                       #{revRating},
+                       #{serialNo}, 
+                       #{memberId})
+    </insert>
 	
 </mapper>

@@ -1193,7 +1193,7 @@ END;
                     
 -- 리뷰 샘플 데이터 생성 (실제 주문당 1리뷰)
 DECLARE
-    v_member_ids SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST('admin', 'user01', 'user02', 'user03');
+    v_member_ids SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST('user01', 'user02', 'user03');
     v_review_content SYS.ODCIVARCHAR2LIST := SYS.ODCIVARCHAR2LIST(
         '이 제품 정말 좋아요!',
         '효과가 만족스럽습니다.',
@@ -1222,7 +1222,7 @@ BEGIN
             TRUNC(DBMS_RANDOM.VALUE(3, 6)), -- 랜덤 별점 (3~5)
             'Y', -- 리뷰 상태 활성화
             rec.SERIAL_NO, -- SERIAL_NO
-            v_member_ids(MOD(v_index, 4) + 1) -- 작성자 순환: admin, user01, user02, user03
+            v_member_ids(MOD(v_index, 3) + 1) -- 작성자 순환: user01, user02, user03
         );
     END LOOP;
 

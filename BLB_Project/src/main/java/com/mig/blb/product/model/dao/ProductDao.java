@@ -2,6 +2,7 @@ package com.mig.blb.product.model.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
@@ -63,6 +64,10 @@ public class ProductDao {
 		paramMap.put("memberId", memberId);
 		
 		return (int)sqlSession.selectOne("productMapper.checkPurchase", paramMap) > 0;
+	}
+
+	public List<Map<String, Object>> getPurchaseInfo(SqlSessionTemplate sqlSession, String memberId, int prodNo) {
+		return sqlSession.selectList("productMapper.getPurchaseInfo", Map.of("memberId", memberId, "prodNo", prodNo));
 	}
 
 }
