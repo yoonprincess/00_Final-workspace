@@ -1,8 +1,8 @@
 $(function() {
 
-    // 페이지 로드 시 총 상품 가격 계산
-    updateTotalPrice();
-
+    // 페이지 로드 시 체크된 상품의 총 가격 계산
+    checkedTotalPrice();
+    
     // 모든 select 요소에 대해 처리
     $(".prod-opt").each(function() {
         const $select = $(this); // 현재 select 요소
@@ -29,6 +29,8 @@ $(function() {
         const isChecked = $(this).is(":checked");   // 전체선택 체크박스 선택 여부
 
         $(".check-one").prop("checked", isChecked); // 선택 여부에 따른 요소의 속성을 가져옴
+
+        checkedTotalPrice();
     });
     // 개별 상품 체크
     $(".check-one").on("change", function() {
@@ -38,6 +40,8 @@ $(function() {
 
         $("#check-all").prop("checked", total === checked);
         // 모든 상품이 체크되면 '전체 선택' 체크/해제
+
+        checkedTotalPrice();
     });
 
     // 수량 증가 버튼 클릭 이벤트
@@ -53,8 +57,6 @@ $(function() {
 
         const optPrice = parseInt($("#prod-opt-" + cartNo).find("option:selected").data("price")) || 0;
 
-        console.log(optPrice);
-
         const updatedPrice = (prodPrice + optPrice) * updatedQty;   // 총 가격 계산
 
         // ajax로 장바구니 테이블에 적용
@@ -65,8 +67,6 @@ $(function() {
                 cartNo : cartNo,
                 updatedQty: updatedQty,
                 updatedPrice: updatedPrice
-                // currentQty: currentQty, // 현재 수량 전달
-                // change: change  // -1(감소), 1(증가) 값 전달
             },
             success: function(response) {
                 if(response.success) {
@@ -76,7 +76,8 @@ $(function() {
                    $(".product-quantity-"  + cartNo).text(`수량: ${updatedQty.toLocaleString()}`); // 업데이트된 수량 출력하기
                    $("#updated-price-" + cartNo).text(`${updatedPrice.toLocaleString()}원`); // 수량에 따른 총 가격
 
-                   updateTotalPrice(); // 총 가격 업데이트 호출
+                    // updateTotalPrice(); // 총 가격 업데이트 호출
+                    checkedTotalPrice();
 
                 } else {
                     alert(response.message || "수량 변경에 실패하였습니다.");
@@ -107,8 +108,6 @@ $(function() {
         const updatedQty = currentQty - 1;  // 수량 1 감소
         const optPrice = parseInt($("#prod-opt-" + cartNo).find("option:selected").data("price")) || 0;
 
-        console.log(optPrice);
-
         const updatedPrice = (prodPrice + optPrice) * updatedQty;   // 총 가격 계산
         
         // ajax로 장바구니 테이블에 적용
@@ -119,8 +118,6 @@ $(function() {
                 cartNo : cartNo,
                 updatedQty: updatedQty,
                 updatedPrice: updatedPrice
-                // currentQty: currentQty, // 현재 수량 전달
-                // change: change  // -1(감소), 1(증가) 값 전달
             },
             success: function(response) {
                 if(response.success) {
@@ -130,7 +127,9 @@ $(function() {
                     $(".product-quantity-"  + cartNo).text(`수량: ${updatedQty.toLocaleString()}`); // 업데이트된 수량 출력하기
                     $("#updated-price-" + cartNo).text(`${updatedPrice.toLocaleString()}원`); // 수량에 따른 총 가격
 
-                    updateTotalPrice(); // 총 가격 업데이트 호출
+                    // updateTotalPrice(); // 총 가격 업데이트 호출
+                    checkedTotalPrice();
+
                     
                 } else {
                     alert(response.message || "수량 변경에 실패하였습니다.");
@@ -151,6 +150,7 @@ $(function() {
 
         // 옵션 선택용 변수
         const optName =  $selectedOption.data("name");
+        const optValue = $selectedOption.data("opt-value");
         const optPrice = parseInt($selectedOption.data("price")) || 0;
         const remainQty = parseInt($selectedOption.data("remainqty")) || 0;
         const cartNo = parseInt($selectedOption.data("cart-no"));
@@ -180,7 +180,7 @@ $(function() {
             success: function(response) {
                 if(response.success) {
 
-                    $(".product-option-"  + cartNo).text(`[옵션: ${optName.toLocaleString()} (+ ${optPrice.toLocaleString()}원)]`);
+                    $(".product-option-"  + cartNo).text(`[옵션: ${optName.toLocaleString()} ${optValue.toLocaleString()} (+ ${optPrice.toLocaleString()}원)]`);
                     
                     // 선택된 항목에 배경색, selected 속성 부여
                     $selectedOption.css("background-color", "#e0e0e0")
@@ -189,7 +189,9 @@ $(function() {
                     // 상품 총 가격 업데이트
                     $("#updated-price-" + cartNo).text(`${updatedPrice.toLocaleString()}원`);
 
-                    updateTotalPrice(); // 총 가격 업데이트 호출
+                    // updateTotalPrice(); // 총 가격 업데이트 호출
+                    checkedTotalPrice();
+
                 } else {
 
                     alert(response.message || "옵션 변경에 실패하였습니다.");
@@ -201,8 +203,6 @@ $(function() {
         });
 
     });
-
-
 
 });
 
@@ -242,34 +242,37 @@ function checkDelete() {
     $checkDeleteForm.submit();
 }
 
-// 결제 예상 금액 계산
-function updateTotalPrice() {
+// 체크박스로 선택한 항목의 총 가격
+function checkedTotalPrice() {
 
-    let totalPrice = 0;
+    let totalCheckedPrice = 0;
+    // 재할당을 위해 let 으로 선언
 
-    // 모든 상품의 가격 합산
-    $(".product-price span").each(function () { // 수량에 따라 업데이트된 상품 가격
+    $(".check-one:checked").each(function() {
 
-        const priceText = $(this).text().replace(/,/g, "").replace("원", ""); // ',' 및 '원' 제거
-        const price = parseInt(priceText, 10);
+        const cartNo = $(this).val();
+        const priceText = $(`#updated-price-${cartNo}`).text().replace(/,/g, "").replace("원", ""); // ',' 및 '원' 제거
+        const price = parseInt(priceText, 10);  // 10진수로
 
-        if (!isNaN(price)) {
-            totalPrice += price;
+        if(!isNaN(price)) {
+
+            totalCheckedPrice += price;
         }
     });
 
-    // 총 상품 가격 업데이트
-    $("#total-prod-price").text(`${totalPrice.toLocaleString()}원`);
+    // 총 가격 DOM 업데이트
+    $("#total-prod-price").text(`${totalCheckedPrice.toLocaleString()}원`);
 
     // 배송비
-    let dlvrFee = totalPrice <= 50000 ? 3000 : 0;
+    let dlvrFee = totalCheckedPrice === 0 
+                    ? 0 
+                    : (totalCheckedPrice <= 50000 ? 3000 : 0);
+                    
     $("#dlvr-fee").text(`${dlvrFee.toLocaleString()}원`);
 
     // 결제 예상 금액
-    let finalTotal = totalPrice + dlvrFee;
+    let finalTotal = totalCheckedPrice + dlvrFee;
 
     $('#final-total').text(`${finalTotal.toLocaleString()}원`);
 
 }
-
-

@@ -59,16 +59,16 @@
 				</c:if>
 				<c:forEach var="ct" items="${ requestScope.list }">
 	                <tr>
-	                    <td><input type="checkbox" class="check-one" name="check-one" value="${ ct.cartNo }" checked></td>
-	                    <td><img src="" alt="${ ct.prodName }" class="product-image"></td>
+	                    <td><input type="checkbox" class="check-one" name="check-one" value="${ct.cartNo}" checked></td>
+	                    <td><img src="" alt="${ct.prodName}" class="product-image"></td>
 	                    <td class="product-info">
 	                        <div class="product-detail">
-	                            <p class="product-title">${ ct.prodName }</p>
-	                            <p class="product-option-${ct.cartNo}">[옵션: ${ ct.optName } (+ 
+	                            <p class="product-title">${ct.prodName}</p>
+	                            <p class="product-option-${ct.cartNo}">[옵션: ${ct.optName} ${opt.optValue} (+ 
 									<fmt:formatNumber pattern="###,###,###" value="${ct.optAddPrice}" />원)]</p>
 	                            <p class="product-quantity-${ct.cartNo}">수량: ${ ct.cartQty }</p>
 	                            <p class="product-price">
-	                            	<fmt:formatNumber pattern="###,###,###" value="${ ct.prodPrice }" />원
+	                            	<fmt:formatNumber pattern="###,###,###" value="${ct.prodPrice}" />원
 	                            </p>
 	                        </div>
 
@@ -82,10 +82,11 @@
 									<option class="sel-opt"
 											value="${opt.optNo}"
 											data-name="${opt.optName}"
+											data-opt-value="${opt.optValue}"
 											data-price="${opt.optAddPrice}"
 											data-remainqty="${opt.remainQty}"
 											data-cart-no="${ct.cartNo}">
-										${opt.optName} (+ 
+										${opt.optName} ${opt.optValue} (+ 
 										<fmt:formatNumber pattern="###,###,###" value="${opt.optAddPrice}" />원)
 										(재고: ${opt.remainQty})
 									</option>
