@@ -26,7 +26,7 @@
         	 <input type="hidden" value="${ sessionScope.loginUser.memberId }" name="memberId" >
             <div class="form-group">
                 <label for="inquiryType">문의유형</label>
-                <select id="inquiryType" name="inquiryType">
+                <select id="inquiryType" name="inquiryType" required>
                     <option value="">카테고리를 선택해주세요</option>
                     <option value="상품">상품</option>
                     <option value="배송">배송</option>
@@ -36,7 +36,7 @@
             </div>
             <div class="form-group">
                 <label for="inquiry-content">문의내용</label>
-                <textarea id="inquiryContent" name="inquiryContent" rows="10" placeholder="문의하실 내용을 입력해주세요 (2000자 이내)"></textarea>
+                <textarea id="inquiryContent" name="inquiryContent" rows="10" placeholder="문의하실 내용을 입력해주세요 (2000자 이내)" required></textarea>
             </div>
             <div class="form-group">
             	<label for="upfile">첨부파일</label>
