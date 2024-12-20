@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.review.model.vo.Review;
+import com.mig.blb.review.model.vo.ReviewAtt;
 
 public interface ReviewService {
 	
@@ -23,4 +24,8 @@ public interface ReviewService {
 	boolean isReviewWritten(int serialNo);
 	// 리뷰 글작성
 	int insertReview(Review review);
+	// 리뷰 첨부파일 등록
+	int insertReviewAtt(ReviewAtt ra);
+	// 상품에 포함된 전체 리뷰 이미지
+	List<ReviewAtt> getAllReviewAtt(int prodNo);
 }

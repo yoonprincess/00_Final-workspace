@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.review.model.vo.Review;
+import com.mig.blb.review.model.vo.ReviewAtt;
 
 @Repository
 public class ReviewDao {
@@ -52,8 +53,16 @@ public class ReviewDao {
 	}
 
 	public int insertReview(SqlSessionTemplate sqlSession, Review review) {
-		int result = sqlSession.insert("reviewMapper.insertReview", review);
         
-        return result;
+        return sqlSession.insert("reviewMapper.insertReview", review);
+	}
+
+	public int insertReviewAtt(SqlSessionTemplate sqlSession, ReviewAtt ra) {
+		
+		return sqlSession.insert("reviewMapper.insertReviewAtt", ra);
+	}
+
+	public List<ReviewAtt> getAllReviewAtt(SqlSessionTemplate sqlSession, int prodNo) {
+		return (List)sqlSession.selectList("reviewMapper.getAllReviewAtt", prodNo);
 	}
 }

@@ -14,7 +14,29 @@
 		<result column="OPT_NO" property="optNo"/>
 		<result column="OPT_NAME" property="optName"/>
 		<result column="OPT_VALUE" property="optValue"/>
+		
+		<!-- 첨부파일을 리스트로 포함 -->
+        <collection property="reviewAttList" ofType="reviewAtt">
+            <id column="REV_ATT_NO" property="revAttNo"/>
+			<result column="ORIG_FILE_NAME" property="origFileName"/>
+			<result column="SAVE_FILE_NAME" property="saveFileName"/>
+			<result column="SAVE_PATH" property="savePath"/>
+			<result column="THUMB_PATH" property="thumbPath"/>
+			<result column="REV_ATT_STATUS" property="revAttStatus"/>
+			<result column="ATT_REV_NO" property="revNo"/>
+        </collection>
 	</resultMap>
+	
+	<resultMap id="reviewAttResultSet" type="reviewAtt">
+		<id column="REV_ATT_NO" property="revAttNo"/>
+		<result column="ORIG_FILE_NAME" property="origFileName"/>
+		<result column="SAVE_FILE_NAME" property="saveFileName"/>
+		<result column="SAVE_PATH" property="savePath"/>
+		<result column="THUMB_PATH" property="thumbPath"/>
+		<result column="REV_ATT_STATUS" property="revAttStatus"/>
+		<result column="REV_NO" property="revNo"/>
+	</resultMap>
+	
 	<resultMap id="reviewStatsSet" type="map">
 		<result column="AVG_RATING" property="avgRating" />
 	    <result column="TOTAL_REVIEWS" property="totalReviews" />
@@ -46,9 +68,15 @@
 		     , PO.OPT_NO
 		     , OPT.OPT_NAME
 		     , OPT.OPT_VALUE
+		     , RA.REV_ATT_NO
+		     , RA.ORIG_FILE_NAME
+		     , RA.SAVE_FILE_NAME
+		     , RA.SAVE_PATH
+		     , RA.REV_NO AS ATT_REV_NO
 		  FROM TB_REVIEW R
 		  LEFT JOIN TB_PRODUCT_ORDER PO ON R.SERIAL_NO = PO.SERIAL_NO
 		  LEFT JOIN TB_OPTION OPT ON PO.OPT_NO = OPT.OPT_NO
+		  LEFT JOIN TB_REVIEW_ATTACHMENT RA ON R.REV_NO = RA.REV_NO
 		 WHERE OPT.PROD_NO = #{prodNo}
 		   AND R.REV_STATUS = 'Y'
 		ORDER BY R.REV_NO DESC
@@ -90,5 +118,37 @@
                        #{serialNo}, 
                        #{memberId})
     </insert>
+    
+    <insert id="insertReviewAtt" parameterType="reviewAtt">
+        INSERT INTO TB_REVIEW_ATTACHMENT(REV_ATT_NO,
+                                 ORIG_FILE_NAME,
+                                 SAVE_FILE_NAME,
+                                 SAVE_PATH,
+                                 REV_NO)
+                          VALUES(SEQ_REV_ATT_NO.NEXTVAL,
+                                 #{origFileName},
+                                 #{saveFileName},
+                                 #{savePath},
+                                 SEQ_REV_NO.CURRVAL)
+    </insert>
+    
+    <!-- 모든 리뷰 이미지 가져오기 -->
+	<select id="getAllReviewAtt" parameterType="int"
+			resultMap="reviewAttResultSet">
+	    SELECT ORIG_FILE_NAME,
+		       SAVE_FILE_NAME,
+		       SAVE_PATH,
+		       REV_NO
+		  FROM TB_REVIEW_ATTACHMENT
+		 WHERE REV_NO 
+		    IN (SELECT REV_NO FROM TB_REVIEW
+		         WHERE SERIAL_NO 
+		            IN (SELECT SERIAL_NO FROM TB_PRODUCT_ORDER PO
+		                  JOIN TB_OPTION O ON PO.OPT_NO = O.OPT_NO
+		                 WHERE O.PROD_NO = #{prod_no}
+			        )
+		    )
+		  AND REV_ATT_STATUS = 'Y'
+	</select>
 	
 </mapper>

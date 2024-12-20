@@ -220,5 +220,43 @@ $(document).ready(function () {
             }
         });
     });
+    
+});
 
+// * 리뷰 썸네일 기능
+// 더보기/접기 버튼 동작
+$(document).on('click', '.show-more-thumbnails-btn', function () {
+    const thumbnailsContainer = $(this).siblings('.review-thumbnails');
+    
+    if (thumbnailsContainer.hasClass('short-thumbnails')) {
+        thumbnailsContainer.removeClass('short-thumbnails').addClass('full-thumbnails');
+        $(this).text('접기');
+    } else {
+        thumbnailsContainer.removeClass('full-thumbnails').addClass('short-thumbnails');
+        $(this).text('더보기');
+    }
+});
+
+// 이미지 모달 열기
+function openThumbModal(imageSrc) {
+    $('#thumbModal').show();
+    $('#fullImage').attr('src', imageSrc);
+}
+
+// 이미지 모달 닫기
+function closeThumbModal() {
+    $('#thumbModal').hide();
+}
+
+// 전문 보기/접기 토글
+$(document).on('click', '.show-more-btn', function () {
+    const contentContainer = $(this).siblings('.review-content');
+    
+    if (contentContainer.hasClass('short-content')) {
+        contentContainer.removeClass('short-content');
+        $(this).text('접기');
+    } else {
+        contentContainer.addClass('short-content');
+        $(this).text('더보기');
+    }
 });

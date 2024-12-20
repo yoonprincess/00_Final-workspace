@@ -165,7 +165,7 @@
         /* 버튼 스타일 */
         .btn-submit {
             width: 100%;
-            background-color: #e74c3c;
+            background-color: #4A628A;
             color: white;
             border: none;
             padding: 10px 15px;
@@ -173,10 +173,6 @@
             font-weight: bold;
             border-radius: 5px;
             cursor: pointer;
-        }
-
-        .btn-submit:hover {
-            background-color: #c0392b;
         }
     </style>
 </head>

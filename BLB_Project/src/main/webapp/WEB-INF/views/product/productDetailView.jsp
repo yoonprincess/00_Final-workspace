@@ -108,10 +108,10 @@
                             <h2 id="totalPrice"><fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /><small>원</small></h2>
                         </div>
                         <div class="form-group">
-                            <button type="button" class="btn btn-outline-primary btn-lg mr-2" id="addToCart">
+                            <button type="button" class="btn btn-outline-primary btn-lg mr-2 blb-btn" id="addToCart">
                                 <i class="fas fa-shopping-cart mr-2"></i>장바구니
                             </button>
-                            <button type="button" class="btn btn-primary btn-lg" id="buyNow">바로구매</button>
+                            <button type="button" class="btn btn-primary btn-lg blb-btn" id="buyNow">바로구매</button>
                             <button class="btn btn-outline-danger"><span class="material-symbols-outlined">
                                 favorite
                             </span></button>
@@ -166,7 +166,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>상품리뷰</h2>
                     <button 
-                        class="btn btn-primary" 
+                        class="btn btn-primary blb-btn" 
                         id="writeReviewBtn" 
                         data-prodno="${p.prodNo}" 
                         data-memberid="${sessionScope.loginUser.memberId}">
@@ -180,7 +180,7 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="row mb-4">
+                        <div class="row mb-4 review-score-distribution">
                             <div class="col-md-6">
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="h2 font-weight-bold mr-2">${reviewStats.avgRating}</span>
@@ -251,6 +251,21 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- 모든 첨부파일 썸네일 -->
+                            <div class="col-md-6 all-thumbnails">
+                                <h5>첨부된 사진</h5>
+                                <div class="thumbnail-container short-thumbnails">
+                                    <c:forEach var="image" items="${allRevAttList}">
+                                        <img src="${ pageContext.request.contextPath }${image.savePath}${image.saveFileName}" alt="${iamge.origFileName}" class="thumbnail" onclick="openThumbModal('${ pageContext.request.contextPath }${image.savePath}${image.saveFileName}')">
+                                    </c:forEach>
+                                </div>
+                                <button class="show-more-thumbnails-btn">더보기</button>
+                            </div>
+                            <!-- 이미지 모달 -->
+                            <div id="thumbModal" class="modal">
+                                <span class="close-modal" onclick="closeThumbModal()">&times;</span>
+                                <img class="modal-content" id="fullImage">
+                            </div>
                         </div>
                         <div id="reviewList">
                             <c:forEach var="review" items="${revList}">
@@ -272,7 +287,25 @@
                                                 <fmt:formatDate value="${review.revEnrollDate}" pattern="yyyy-MM-dd hh:mm" />
                                             </small>
                                         </div>
-                                        <p class="card-text">${review.revContent}</p>
+                                        <!-- 리뷰 내용 -->
+                                        <div class="review-content-container">
+                                            <div class="card-text review-content short-content">
+                                                <p>${review.revContent}</p>
+                                            </div>
+                                            <button class="show-more-btn">더보기</button>
+                                        </div>
+                                        <!-- 리뷰 이미지 썸네일 -->
+                                        <div class="review-images">
+                                            <c:forEach var="image" items="${review.reviewAttList}">
+                                                <img src="${ pageContext.request.contextPath }${image.savePath}${image.saveFileName}" alt="리뷰 이미지" class="thumbnail" onclick="openThumbModal('${ pageContext.request.contextPath }${image.savePath}${image.saveFileName}')">
+                                            </c:forEach>
+                                        </div>
+                                        <!-- 좋아요 버튼 -->
+                                        <div class="review-actions">
+                                            <button class="like-btn" data-review-id="${review.revNo}" onclick="likeReview(${review.revNo})">
+                                                <i class="fas fa-thumbs-up"></i> 좋아요 <span>좋아요수</span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -316,7 +349,7 @@
             <div class="tab-pane fade" id="qna" role="tabpanel">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>상품문의</h2>
-                    <button class="btn btn-primary">문의하기</button>
+                    <button class="btn btn-primary blb-btn">문의하기</button>
                 </div>
                 <c:choose>
                     <c:when test="${empty qnaList}">

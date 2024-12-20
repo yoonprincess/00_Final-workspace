@@ -7,10 +7,12 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.review.model.dao.ReviewDao;
 import com.mig.blb.review.model.vo.Review;
+import com.mig.blb.review.model.vo.ReviewAtt;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -54,8 +56,20 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 	
 	@Override
+	@Transactional
 	public int insertReview(Review review) {
 		return reviewDao.insertReview(sqlSession, review);
+	}
+
+	@Override
+	@Transactional
+	public int insertReviewAtt(ReviewAtt ra) {
+		return reviewDao.insertReviewAtt(sqlSession, ra);
+	}
+
+	@Override
+	public List<ReviewAtt> getAllReviewAtt(int prodNo) {
+		return reviewDao.getAllReviewAtt(sqlSession, prodNo);
 	}
 
 }

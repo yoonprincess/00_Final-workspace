@@ -1,8 +1,14 @@
 package com.mig.blb.review.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,6 +27,7 @@ import com.mig.blb.option.model.service.OptionService;
 import com.mig.blb.product.model.service.ProductService;
 import com.mig.blb.review.model.service.ReviewService;
 import com.mig.blb.review.model.vo.Review;
+import com.mig.blb.review.model.vo.ReviewAtt;
 
 @Controller
 public class ReviewController {
@@ -81,23 +88,81 @@ public class ReviewController {
 	@PostMapping("insert.rv")
     public Map<String, Object> insertReview(Review review,
     						   @RequestParam("prodNo") int prodNo,
-                               @RequestParam(value = "reviewImages", required = false) MultipartFile[] reviewImages,
-                               HttpServletRequest request,
-                               Model model) {
+    						   @RequestParam(value = "reviewImages", required = false) List<MultipartFile> reviewImages,
+    						   HttpSession session) {
+		
 		Map<String, Object> resultMap = new HashMap<>();
-        int result = reviewService.insertReview(review);
-
-        if (result > 0) {
+		
+	    // 리뷰 저장
+	    int result = reviewService.insertReview(review);
+	    int attResult = 1;
+	    
+	    // 리뷰 저장 성공 시 첨부파일 처리 
+	    if(result > 0 && !reviewImages.isEmpty()) {
+			// 파일 저장 처리
+			List<ReviewAtt> raList = new ArrayList<>();
+			
+			// 첨부파일 데이터 리스트 생성
+			for(MultipartFile upfile : reviewImages) {
+				if(!upfile.isEmpty()) {
+					String origFileName = upfile.getOriginalFilename();
+					String saveFileName = saveFile(upfile, session);
+					
+					// 첨부파일 객체 생성
+					ReviewAtt ra = new ReviewAtt();
+					ra.setOrigFileName(origFileName);
+					ra.setSaveFileName(saveFileName);
+					ra.setSavePath("/resources/uploadFiles/review/");
+					
+					raList.add(ra);
+				}
+			}
+			
+			// 첨부파일 데이터 등록
+			for(ReviewAtt ra : raList) {
+				attResult = attResult * reviewService.insertReviewAtt(ra);
+			}
+			
+			if(attResult <= 0) {
+	        	resultMap.put("success", false);
+	            resultMap.put("message", "리뷰가 등록되었으나, 첨부파일 등록에 실패했습니다.");
+	        } else {
+	        	resultMap.put("success", true);
+	            resultMap.put("message", "리뷰가 성공적으로 등록되었습니다.");
+	        }
+			
+		} else if(result > 0) {
         	resultMap.put("success", true);
             resultMap.put("message", "리뷰가 성공적으로 등록되었습니다.");
-//        	model.addAttribute("alertMsg", "리뷰가 성공적으로 등록되었습니다.");
+            
         } else {
         	resultMap.put("success", false);
             resultMap.put("message", "리뷰 등록에 실패했습니다.");
-//        	model.addAttribute("alertMsg", "리뷰 등록에 실패했습니다.");
         }
 
         return resultMap;
     }
+	
+	// 첨부파일을 위한 메소드
+	public String saveFile(MultipartFile upfile, HttpSession session) {
+		
+	    String originName = upfile.getOriginalFilename();
+	    
+	    String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+	    String ext = originName.substring(originName.lastIndexOf("."));
+	    
+	    String changeName = currentTime + "_" + UUID.randomUUID() + ext;
+	    
+	    String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/review/");
+	    
+	    try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch (IllegalStateException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	    return changeName;
+	}
 	
 }

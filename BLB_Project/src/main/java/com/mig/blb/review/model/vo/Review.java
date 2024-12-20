@@ -1,6 +1,7 @@
 package com.mig.blb.review.model.vo;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,5 +27,8 @@ public class Review {
 	private int optNo;					//	OPT_NO	NUMBER
 	private String optName;				//	OPT_NAME	VARCHAR2(90 BYTE)
 	private String optValue;			//	OPT_VALUE	VARCHAR2(90 BYTE)
+	
+	// 리뷰 첨부파일 리스트
+	private List<ReviewAtt> reviewAttList;
 		
 }

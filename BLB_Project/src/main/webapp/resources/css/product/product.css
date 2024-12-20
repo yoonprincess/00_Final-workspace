@@ -113,7 +113,7 @@ td label {
     padding: 0; /* 필요 시 여백 제거 */
     margin: 0; /* 필요 시 외부 여백 제거 */
 }
-.review-stars { color: #ffc107; }
+.review-stars { color: #f39c12; }
 .tab-content { padding-top: 20px; }
 .sticky-wrapper {
     position: sticky;
@@ -166,4 +166,143 @@ td label {
     overflow-wrap: break-word; /* 단어가 길 경우 자동으로 줄바꿈 */
     word-break: break-word; /* 긴 단어에 대해 줄바꿈 */
 }
+
+/* 리뷰 점수 분포도 및 첨부파일 썸네일 */
+.review-score-distribution {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.thumbnail-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); /* 최소 너비 80px, 가변 크기 */
+    gap: 10px; /* 썸네일 간격 */
+    max-height: 150px; /* 기본 최대 높이 */
+    overflow: hidden; /* 숨김 처리 */
+}
+
+/* 전체 보기 시 확장 */
+.thumbnail-container.full-thumbnails {
+    max-height: none; /* 높이 제한 해제 */
+}
+
+.rev-thumbnail {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+}
+
+/* 더보기 버튼 */
+.show-more-thumbnails-btn {
+    background-color: transparent;
+    border: none;
+    color: #4A628A;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.show-more-thumbnails-btn:hover {
+    color: #7AB2D3;
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    max-width: 80%;
+    max-height: 80%;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+
+/* 리뷰 내용 컨테이너 */
+.review-content-container {
+    position: relative;
+}
+
+/* 기본적으로 3줄까지만 보이게 설정 */
+.review-content.short-content p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 최대 3줄 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 전문 보기 버튼 */
+.show-more-btn {
+    background-color: transparent;
+    border: none;
+    color: #4A628A;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+.show-more-btn:hover {
+    color: #7AB2D3;
+}
+
+/* 리뷰 항목 이미지 */
+.review-images {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.review-images .thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+/* 좋아요 버튼 */
+.like-btn {
+    background-color: transparent;
+    border: none;
+    color: #4A628A;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.like-btn:hover {
+    color: #7AB2D3;
+}
+
+
 

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +23,7 @@ import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
 import com.mig.blb.review.model.service.ReviewService;
 import com.mig.blb.review.model.vo.Review;
+import com.mig.blb.review.model.vo.ReviewAtt;
 
 @Controller
 public class ProductController {
@@ -101,6 +101,7 @@ public class ProductController {
 			PageInfo revPi = Pagination.getPageInfo(revListCount, revPage, 
 												 revPageLimit, revBoardLimit);
 			ArrayList<Review> revList = reviewService.selectReviewList(revPi, prodNo);
+			List<ReviewAtt> allRevAttList = reviewService.getAllReviewAtt(prodNo);
 			
 			// 상품문의 목록(상세, 댓글포함)조회
 			int qnaListCount = productService.selectProdInquiryCount(prodNo);
@@ -118,6 +119,7 @@ public class ProductController {
 			model.addAttribute("reviewStats", reviewStats);
 			model.addAttribute("revList", revList);
 			model.addAttribute("revPi", revPi);
+			model.addAttribute("allRevAttList", allRevAttList);
 			model.addAttribute("qnaList", qnaList);
 		    model.addAttribute("qnaPi", qnaPi);
 			
