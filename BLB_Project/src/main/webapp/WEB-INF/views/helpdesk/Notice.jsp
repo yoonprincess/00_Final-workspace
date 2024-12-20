@@ -32,7 +32,7 @@
 	    </c:if>
         <h1>공지사항</h1>
         <div class="notice-search">
-		    <form action="flist.no" method="get">
+		    <form action="list.no" method="get">
 		        <input type="text" name="searchKeyword" placeholder="검색어를 입력하세요" value="${ param.searchKeyword }">
 		        <button type="submit">찾기</button>
 		    </form>
@@ -42,7 +42,7 @@
             <thead>
                 <tr>
                     <th>글번호</th>
-                    <th></th>
+                    <th>제목</th>
                     <th>내용</th>
                     <th>등록일</th>
                 </tr>
@@ -51,7 +51,7 @@
                 <c:forEach var="n" items="${ requestScope.list }">
                     <tr>
                         <td class="nno">${ n.noticeNo }</td>
-                        <td></td>
+                        <td>${ n.noticeTitle }</td>
                         <td>${ n.noticeContent }</td>
                         <td>${ n.noticeRegDate }</td>
                     </tr>
@@ -64,7 +64,7 @@
 					<!-- 이전 페이지 그룹 -->
 					<c:if test="${ pi.startPage > 1 }">
 						<li class="page-item">
-							<a href="list.no?cpage=${ pi.startPage - pi.pageLimit }">
+							<a href="list.no?cpage=${ pi.startPage - pi.pageLimit }&searchKeyword=${searchKeyword}">
 								＜
 							</a>
 						</li>
@@ -81,7 +81,7 @@
 						</c:if>
 						<c:if test="${ p != pi.currentPage }">
 							<li class="page-item">
-								<a href="list.no?cpage=${ p }">
+								<a href="list.no?cpage=${ p }&searchKeyword=${searchKeyword}">
 									${ p }
 								</a>
 							</li>
@@ -91,7 +91,7 @@
 					<!-- 다음 페이지 그룹 -->
 					<c:if test="${ pi.endPage < pi.maxPage }">
 						<li class="page-item">
-							<a href="list.no?cpage=${ pi.startPage + pi.pageLimit }">
+							<a href="list.no?cpage=${ pi.startPage + pi.pageLimit }&searchKeyword=${searchKeyword}">
 								＞
 							</a>
 						</li>

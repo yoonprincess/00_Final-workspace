@@ -14,15 +14,15 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 @Repository
 public class NoticeDao {
 
-	public int selectListCount(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("helpdeskMapper.selectListCount");
+	public int selectListCount(SqlSessionTemplate sqlSession, String searchKeyword) {
+		return sqlSession.selectOne("helpdeskMapper.selectListCount", searchKeyword);
 	}
 
-	public ArrayList<Notice> selectList(SqlSessionTemplate sqlSession, PageInfo pi) {
+	public ArrayList<Notice> selectList(SqlSessionTemplate sqlSession, PageInfo pi, String searchKeyword) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
-		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectList", null, rowBounds);
+		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectList", searchKeyword, rowBounds);
 	}
 
 	public int insertNotice(SqlSessionTemplate sqlSession, Notice n) {

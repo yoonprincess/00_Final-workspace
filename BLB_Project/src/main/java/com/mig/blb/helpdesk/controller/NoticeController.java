@@ -35,17 +35,19 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 		// 공지사항 목록 조회 요청
 		@GetMapping("list.no")
 		public String selectList(@RequestParam(value="cpage", defaultValue="1")int currentPage,
+								 @RequestParam(value="searchKeyword", required=false) String searchKeyword,
 								 Model model) {
 			
-			int listCount = noticeService.selectListCount();
+			int listCount = noticeService.selectListCount(searchKeyword);
 			
 			int pageLimit = 5;
 			int boardLimit = 5;
 			
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-			ArrayList<Notice> list = noticeService.selectList(pi);
+			ArrayList<Notice> list = noticeService.selectList(pi,searchKeyword);
 			
 			model.addAttribute("list",list);
+			model.addAttribute("searchKeyword", searchKeyword);
 			model.addAttribute("pi",pi);
 			
 			
@@ -244,27 +246,6 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 		    return mv;
 		}
 		
-		@GetMapping("flist.no")
-		public String selectSearchNoticeList(@RequestParam(value="searchKeyword") String searchKeyword,
-											 @RequestParam(value="cpage", defaultValue="1")int currentPage,
-						                                                                 Model model) {
-		//System.out.println(searchKeyword);
-			
-		int listCount = noticeService.selectListCount();
-		
-		int pageLimit = 5;
-		int boardLimit = 5;
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-		ArrayList<Notice> list = noticeService.selectSearchNoticeList(searchKeyword,pi);
-		
-		model.addAttribute("list",list);
-		model.addAttribute("pi",pi);
-		
-		
-		return "helpdesk/Notice";
-		
-		} 
 		
 		// 첨부파일을 위한 메소드
 		public String saveFile(MultipartFile upfile, HttpSession session) {

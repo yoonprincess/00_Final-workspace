@@ -23,13 +23,13 @@ public class NoticeServiceImpl implements NoticeService{
 	private NoticeDao noticeDao;
 
 	@Override
-	public int selectListCount() {
-		return noticeDao.selectListCount(sqlSession);
+	public int selectListCount(String searchKeyword) {
+		return noticeDao.selectListCount(sqlSession, searchKeyword);
 	}
 
 	@Override
-	public ArrayList<Notice> selectList(PageInfo pi) {
-		return noticeDao.selectList(sqlSession, pi);
+	public ArrayList<Notice> selectList(PageInfo pi,String searchKeyword) {
+		return noticeDao.selectList(sqlSession, pi, searchKeyword);
 	}
 
 	@Override

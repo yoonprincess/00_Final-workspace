@@ -11,9 +11,9 @@ public interface NoticeService {
 
 	
 	
-	int selectListCount();
+	int selectListCount(String searchKeyword);
 
-	ArrayList<Notice> selectList(PageInfo pi);
+	ArrayList<Notice> selectList(PageInfo pi, String searchKeyword);
 
     int insertNotice(Notice n, List<NoticeAtt> noticeAttList);
 
