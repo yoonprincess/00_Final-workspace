@@ -3,6 +3,8 @@ package com.mig.blb.order.model.vo;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import com.mig.blb.product.model.vo.Product;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,4 +54,5 @@ public class Order {
     
     // 마이바티스에서 collection 연결용
     private ArrayList<ProductOrder> productOrder; 
+    
 }

@@ -236,8 +236,17 @@ $(function() {
             checkedCartNos.push($(this).val());
         });
 
+        // 결제 예상 금액 계산
+        const totalPriceText = $("#total-prod-price").text().replace(/,/g, "").replace("원", "");
+        const orderTotalAmt = parseInt(totalPriceText, 10); // 결제 예상 금액
+
         // 결제하기 페이지로 form 전송
-        $("#checkedCartNos").val(checkedCartNos.join(","));
+
+        // 체크된 장바구니 번호와 결제 예상 금액을 hidden input에 설정
+        $("#checkedCartNos").val(checkedCartNos.join(",")); // 장바구니 번호
+        $("#orderTotalAmt").val(orderTotalAmt); // 총 상품 가격(== 배송비 제외 가격)
+
+        // 폼 전송
         $("#cartBuyForm").submit();
     });
 

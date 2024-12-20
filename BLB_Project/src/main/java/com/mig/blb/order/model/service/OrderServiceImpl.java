@@ -2,6 +2,7 @@ package com.mig.blb.order.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.order.model.dao.OrderDao;
 import com.mig.blb.order.model.vo.Order;
+import com.mig.blb.order.model.vo.ProductOrder;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -24,8 +26,6 @@ public class OrderServiceImpl implements OrderService {
 	public int insertOrder(Order o) {
 		return orderDao.insertOrder(sqlSession, o);
 	}
-
-	
 	
 	@Override
 	public int myOrderListCount(HashMap<String, Object> dateMap) {
@@ -48,7 +48,24 @@ public class OrderServiceImpl implements OrderService {
 		
 		return orderDao.selectAllMyOrders(sqlSession, dateMap);
 	}
+	
+	public int selectOrderNo() {
+		return orderDao.selectOrderNo(sqlSession);
+	}
 
+	@Override
+	public int insertProductOrder(int orderNo, List<Integer> checkedCartNos) {
+		return orderDao.insertProductOrder(sqlSession, orderNo, checkedCartNos);
+	}
 
+	@Override
+	public Order selectOrder(int orderNo) {
+		return orderDao.selectOrder(sqlSession, orderNo);
+	}
+
+	@Override
+	public List<ProductOrder> selectProductOrderList(int orderNo) {
+		return orderDao.selectProductOrderList(sqlSession, orderNo);
+	}
 	
 }

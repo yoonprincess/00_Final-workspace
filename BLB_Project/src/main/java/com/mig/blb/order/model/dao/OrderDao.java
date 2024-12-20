@@ -3,6 +3,7 @@ package com.mig.blb.order.model.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.order.model.vo.Order;
+import com.mig.blb.order.model.vo.ProductOrder;
 
 @Repository
 public class OrderDao {
@@ -45,5 +47,28 @@ public class OrderDao {
 
 	public ArrayList<Order> selectAllMyOrders(SqlSessionTemplate sqlSession, HashMap<String, Object> dateMap) {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectAllMyOrders", dateMap);
+	}
+	
+	public int selectOrderNo(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("orderMapper.selectOrderNo");
+	}
+
+	public int insertProductOrder(SqlSessionTemplate sqlSession, int orderNo, List<Integer> checkedCartNos) {
+
+		Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("orderNo", orderNo);           // ORDER_NO 전달
+	    paramMap.put("checkedCartNos", checkedCartNos); // 장바구니 번호 리스트 전달
+
+	    return sqlSession.insert("orderMapper.insertProductOrder", paramMap);
+	}
+
+
+	public Order selectOrder(SqlSessionTemplate sqlSession, int orderNo) {
+		return sqlSession.selectOne("orderMapper.selectOrder", orderNo);
+	}
+
+
+	public List<ProductOrder> selectProductOrderList(SqlSessionTemplate sqlSession, int orderNo) {
+		return sqlSession.selectList("orderMapper.selectProductOrderList", orderNo);
 	}
 }

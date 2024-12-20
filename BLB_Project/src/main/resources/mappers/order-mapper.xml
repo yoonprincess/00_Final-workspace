@@ -22,8 +22,124 @@
 	    <result column="MEMBER_ID" property="memberId" />
 	</resultMap>
 	
-	<insert id="insertOrder">
-	
+	<!-- 주문(TB_ORDER) 정보 생성용 쿼리문 -->
+	<insert id="insertOrder"
+			parameterType="order">
+		INSERT INTO TB_ORDER(ORDER_NO
+		                   , RCVR_NAME
+		                   , RCVR_PHONE
+		                   , RCVR_ADDRESS
+		                   , DLVR_STATUS
+		                   , DLVR_FEE
+		                   , DLVR_COMPANY
+		                   , ORDER_TOTAL_AMT
+		                   , PAYMENT_METHOD
+		                   , ORDER_DATE
+		                   , MEMBER_ID)
+		              VALUES(SEQ_ORDER_NO.NEXTVAL
+		                   , '윤예원'
+		                   , '01099999999'
+		                   , '경기도 부천시 원미구'
+		                   , '배송대기'
+		                   , 0
+		                   , '대한통운'
+		                   , #{orderTotalAmt}
+		                   , '카카오페이'
+		                   , SYSDATE
+		                   , #{memberId})
 	</insert>
+	
+	<!-- 주문번호 조회용 쿼리문 -->
+	<select id="selectOrderNo"
+			resultType="int">
+		SELECT SEQ_ORDER_NO.CURRVAL
+		  FROM DUAL
+	</select>
+	
+	<!-- 상품/주문(TB_PRODUCT_ORDER) 정보 생성용 쿼리문 -->
+	<insert id="insertProductOrder"
+			parameterType="productOrder">
+		INSERT INTO TB_PRODUCT_ORDER (SERIAL_NO, ORDER_QTY, TOTAL_AMT, ORDER_NO, OPT_NO)
+		SELECT SEQ_PRODUCT_ORDER_NO.NEXTVAL, C.CART_QTY, (C.CART_QTY * (P.PROD_PRICE + O.OPT_ADD_PRICE)), #{orderNo}, C.OPT_NO
+		  FROM TB_CART C
+		  JOIN TB_OPTION O ON C.OPT_NO = O.OPT_NO
+		  JOIN TB_PRODUCT P ON C.PROD_NO = P.PROD_NO
+		 WHERE C.CART_NO IN 
+		<foreach collection="checkedCartNos" item="cartNo" open="(" separator="," close=")">
+		    #{cartNo}
+		</foreach>
+	</insert>
+	
+	<!-- 주문 정보(TB_ORDER) 조회용 쿼리문 -->
+    <select id="selectOrder" resultMap="orderResultSet">
+	    SELECT ORDER_NO,
+	           RCVR_NAME,
+	           RCVR_PHONE,
+	           RCVR_ADDRESS,
+	           DLVR_STATUS,
+	           DLVR_FEE,
+	           DLVR_COMPANY,
+	           ORDER_TOTAL_AMT,
+	           PAYMENT_METHOD,
+	           ORDER_DATE,
+	           MEMBER_ID
+	      FROM TB_ORDER
+	     WHERE ORDER_NO = CAST(#{orderNo} AS VARCHAR2(30))
+	</select>
+	
+	
+	<!-- 주문/결제 정보(TB_ORDER) 조회용 쿼리문 -->
+	<resultMap id="productOrderResultMap" type="productOrder">
+	    <result property="serialNo" column="SERIAL_NO" />
+	    <result property="orderQty" column="ORDER_QTY" />
+	    <result property="totalAmt" column="TOTAL_AMT" />
+	    <result property="orderNo" column="ORDER_NO" />
+	    <result property="optNo" column="OPT_NO" />
+	    
+	    <result column="PROD_NAME" property="prodName" />
+		<result column="OPT_NAME" property="optName" />
+		<result column="OPT_ADD_PRICE" property="optAddPrice" />
+		<result column="REMAIN_QTY" property="remainQty" />
+		<result column="PROD_PRICE" property="prodPrice" />
+		<result column="THUMB_IMG" property="thumbImg" />
+	</resultMap>
+
+	
+    <select id="selectProductOrderList"
+    		parameterType="int"
+    		resultMap="productOrderResultMap">
+	    SELECT PO.SERIAL_NO,
+	           PO.ORDER_QTY,
+	           PO.TOTAL_AMT,
+	           PO.ORDER_NO,
+	           PO.OPT_NO,
+	           P.PROD_NO,
+	           P.PROD_NAME,
+	           O.OPT_NAME,
+	           O.OPT_VALUE,
+	           O.OPT_ADD_PRICE,
+	           PA.THUMB_PATH || PA.SAVE_FILE_NAME AS THUMB_IMG,
+	           P.PROD_PRICE
+	      FROM TB_PRODUCT_ORDER PO
+	      LEFT JOIN TB_OPTION O ON PO.OPT_NO = O.OPT_NO
+	      LEFT JOIN TB_PRODUCT P ON O.PROD_NO = P.PROD_NO
+	      LEFT JOIN (
+		      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+		        FROM TB_PRODUCT_ATTACHMENT
+		       WHERE (PROD_NO, PROD_ATT_NO) IN (
+		           SELECT PROD_NO, MIN(PROD_ATT_NO)
+		             FROM TB_PRODUCT_ATTACHMENT
+		            WHERE PROD_ATT_STATUS = 'Y'
+		              AND THUMB_PATH IS NOT NULL
+		            GROUP BY PROD_NO
+		       )
+		  ) PA
+		    ON P.PROD_NO = PA.PROD_NO
+	     WHERE PO.ORDER_NO = CAST(#{orderNo} AS VARCHAR2(30))
+	     ORDER BY PO.SERIAL_NO ASC
+	</select>
+
+	
+
 
 </mapper>

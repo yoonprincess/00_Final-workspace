@@ -20,8 +20,8 @@
 
     <div class="container-fluid">
         <form id="order-form"
-              action="orderEnrollForm"
-              method="insert.or">
+              action="orderEnrollForm.or"
+              method="POST">
             
             <!-- 네비게이터 영역 -->
             <div class="navigator">
@@ -46,7 +46,12 @@
                 <table id="delivery-form">
                     <tr>
                         <th>받는 사람 <span class="required">*</span></th>
-                        <td><input type="text" placeholder="받는 사람 이름을 입력하세요" required></td>
+                        <td>
+                            <input type="text"
+                                   placeholder="받는 사람 이름을 입력하세요"
+                                   required
+                                   value="${order.rcvrName}">
+                        </td>
                     </tr>
                     <tr>
                         <th>주소 <span class="required">*</span></th>
@@ -55,13 +60,22 @@
                                 <input type="text" placeholder="우편번호" style="width: 120px;">
                                 <button type="button" class="btn-search">주소검색</button>
                             </div>
-                            <input type="text" placeholder="기본주소" style="width: 100%; margin-top: 10px;">
-                            <input type="text" placeholder="나머지 주소" style="width: 100%; margin-top: 10px;">
+                            <input type="text"
+                                   placeholder="기본 주소"
+                                   style="width: 100%; margin-top: 10px;"
+                                   value="${order.rcvrAddress}">
+                            <input type="text"
+                                   placeholder="상세 주소"
+                                   style="width: 100%; margin-top: 10px;"
+                                   value="">
                         </td>
                     </tr>
                     <tr>
                         <th>휴대전화 <span class="required">*</span></th>
                         <td>
+                            <!-- 전제 전화번호 숨기기기 -->
+                            <input type="hidden" id="hidden-phone-number" value="${order.rcvrPhone}">
+
                             <div class="phone-container">
                                 <select id="phone-prefix" name="phone-prefix">
                                     <option value="010">010</option>
@@ -72,10 +86,17 @@
                                     <option value="019">019</option>
                                 </select>
                                 <span>-</span>
-                                <input type="text" maxlength="4">
+                                <input type="text"
+                                       maxlength="4"
+                                       id="phone-middle"
+                                       value="">
                                 <span>-</span>
-                                <input type="text" maxlength="4">
+                                <input type="text"
+                                       maxlength="4"
+                                       id="phone-last"
+                                       value="">
                             </div>
+                            
                         </td>
                     </tr>
                     <tr>
@@ -110,31 +131,26 @@
     
                 <h3>주문 상품</h3>
                 <hr class="custom-hr">
-                <!-- 첫 번째 상품 -->
-                <div class="order-product">
-                    <img src="" alt="립밤 세트" class="product-image">
-                    <div class="product-detail">
-                        <p class="product-title">립밤 세트</p>
-                        <p class="product-option">[옵션: 내 맘대로 골라담기 SET (44%▼)/립밤 1+1개 ★27% 할인★/내추럴 레드 2개]</p>
-                        <p class="product-quantity">수량: 1개</p>
-                        <p class="product-price">21,800원</p>
-                    </div>
-                    <button class="delete-button" aria-label="상품 삭제">×</button>
-                </div>
-                <hr class="custom-hr">
-                <!-- 두 번째 상품 -->
-                <div class="order-product">
-                    <img src="" alt="기초 & 선라인 세트" class="product-image">
-                    <div class="product-detail">
-                        <p class="product-title">[한정수량] 기초&선라인 1+1SET 특가</p>
-                        <p class="product-option">[옵션: 01. 블랙티 스크럽밤 [44%▼]/[44%▼] 스크럽밤 3+3SET (+58,000)]</p>
-                        <p class="product-quantity">수량: 1개</p>
-                        <p class="product-price">75,800원</p>
-                    </div>
-                    <button class="delete-button" aria-label="상품 삭제">×</button>
-                </div>
-                <hr class="custom-hr">
 
+                <c:forEach var="productOrder" items="${productOrderList}">
+                        
+                    <div class="order-product">
+                        <img src="${ pageContext.request.contextPath }${productOrder.thumbImg}" alt="${productOrder.prodName}" style="width: 100px; height: 100px;">
+                        <div class="product-detail">
+                            <p class="product-title">${productOrder.prodName}</p>
+                            <p class="product-option">[옵션: ${productOrder.prodName} (+ 
+                                <fmt:formatNumber value="${productOrder.optAddPrice}" pattern="###,###,###"/> 원)]</p>
+                            <p class="product-quantity-${productOrder.cartNo}">수량: ${productOrder.orderQty}개</p>
+                            <p class="product-price">
+                            <fmt:formatNumber value="${productOrder.totalAmt}" />원
+                            </p>
+                        </div>
+                        <button class="delete-button" aria-label="상품 삭제">×</button>
+                    </div>
+                    <hr class="custom-hr">
+
+                </c:forEach>
+                
             </div>
       
             <!-- 결제 예상 금액 영역 -->
@@ -143,7 +159,9 @@
                     <tr>
                         <td>
                             <p>총 판매가</p>
-                            <p class="value">97,600원</p>
+                            <p class="value" id="total-amt">
+                                <fmt:formatNumber value="${orderTotalAmt}" pattern="###,###,###" />
+                            </p>
                         </td>
                         <td>-</td>
                         <td>
@@ -153,7 +171,7 @@
                         <td>+</td>
                         <td>
                             <p>배송비</p>
-                            <p class="value">2,500원</p>
+                            <p class="value" id="dlvr-fee"></p>
                         </td>
                     </tr>
                 </tbody>
@@ -161,10 +179,11 @@
                     <tr>
                         <td colspan="5" class="footer">
                             <p>배송비는 쿠폰 할인 금액 및 배송 옵션에 따라 변경될 수 있습니다.</p>
-                            <p class="total-price">
-                                총 결제 예상 금액 최소
+                            <p class="final-total">
+                                총 결제 예상 금액 최소 
                                 <span class="final-price">
-                                    <span style="font-size: 30px;">93,780</span>원
+                                    <span style="font-size: 30px; font-weight: bold;">
+                                    </span>원
                                 </span>
                             </p>
                         </td>
@@ -175,6 +194,11 @@
             <!-- 결제 수단 영역 -->
             <div class="payment-container">
                 <h3>결제수단 선택</h3>
+
+                <!-- 테스트용 -->
+                <p>결제 방법: ${order.paymentMethod}</p>
+                <p>주문 날짜: <fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd" /></p>
+
                 <ul class="payment-options">
                     <li class="payment-option" data-value="무통장입금">무통장입금</li>
                     <li class="payment-option" data-value="신용카드">신용카드</li>

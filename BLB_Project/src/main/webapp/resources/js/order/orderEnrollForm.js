@@ -8,6 +8,7 @@ $(function() {
     
     // select 요소의 change 이벤트 처리
     $("#delivery-message").on("change", function () {
+
         // 선택된 값이 "custom"인지 확인
         if ($(this).val() === "custom") {
             $("#custom-comment").show(); // 직접 입력 시 textarea 표시
@@ -57,5 +58,34 @@ $(function() {
         // 모든 약관이 체크되면 "모든 약관 동의"도 체크, 아니면 해제
         $("#check-all").prop("checked", total === checked);
     });
+
+    // 전화번호 분리해서 출력하기
+    // > 숨겨진 전체 전화번호에서 값 가져오기
+    const phoneNumber = $("#hidden-phone-number").val(); // 숨겨진 input에서 값 가져오기
+
+    if (phoneNumber) {
+        // 전화번호를 직접 분리
+        const phonePrefix = phoneNumber.substring(0, 3); // 앞자리
+        const middle = phoneNumber.substring(3, 7); // 중간 4자리
+        const last = phoneNumber.substring(7); // 마지막 4자리
+
+        // select 및 input 요소에 값 설정
+        $("#phone-prefix").val(phonePrefix); // 앞자리 설정
+        $("#phone-middle").val(middle); // 중간자리 설정
+        $("#phone-last").val(last); // 마지막자리 설정
+    }
+
+    // 배송비
+    let totalAmtText = $("#total-amt").text().replace(/,/g, "").replace("원", "");
+    let totalAmt = parseInt(totalAmtText, 10);
+
+    let dlvrFee = totalAmt <= 50000 ? 3000 : 0;
+
+    $("#dlvr-fee").text(`${dlvrFee.toLocaleString()}원`);
+
+    // 결제 예상 금액
+    let finalTotal = totalAmt + dlvrFee;
+
+    $('.final-price span').text(`${finalTotal.toLocaleString()}`);
 
 });

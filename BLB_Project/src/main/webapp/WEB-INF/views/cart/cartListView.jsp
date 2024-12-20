@@ -162,8 +162,10 @@
 		<!-- 결제하기 버튼 -->
 		<form id="cartBuyForm"
 			  method="POST"
-			  action="${ pageContext.request.contextPath }/orderEnrollForm.or">
-			<input type="hidden" name="checkedCartNos" id="checkedCartNos">
+			  action="${ pageContext.request.contextPath }/insert.or">
+			<!-- 체크된 장바구니 번호들이랑 결제 예상 금액 넘기기 -->
+			<input type="hidden" name="checkedCartNos" id="checkedCartNos" value="">
+			<input type="hidden" name="orderTotalAmt" id="orderTotalAmt" value="">
 		</form>
 		<button type="button" class="btn btn-primary" id="cartBuy">
 			총 <span id="checkedCartQty"></span>개 상품 구매
