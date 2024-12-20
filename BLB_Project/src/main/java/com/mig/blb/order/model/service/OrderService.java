@@ -20,5 +20,8 @@ public interface OrderService {
 	// 마이페이지용 주문,배송상태 갯수 조회
 	HashMap<String, Integer> myOrderCounts(String memberId);
 	
+	// 마이페이지용 목록조회 2 
+	ArrayList<Order> selectAllMyOrders(HashMap<String, Object> dateMap);
+	
 	
 }

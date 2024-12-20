@@ -41,4 +41,9 @@ public class OrderDao {
 	public int myOrderListCount(SqlSessionTemplate sqlSession, HashMap<String, Object> dateMap) {
 		return sqlSession.selectOne("memberMapper.myOrderListCount", dateMap);
 	}
+
+
+	public ArrayList<Order> selectAllMyOrders(SqlSessionTemplate sqlSession, HashMap<String, Object> dateMap) {
+		return (ArrayList)sqlSession.selectList("memberMapper.selectAllMyOrders", dateMap);
+	}
 }
