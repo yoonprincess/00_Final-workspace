@@ -60,17 +60,46 @@
         </table>
         <br><br>
     <!-- 페이지네이션 -->
-	        <nav>
-	            <ul class="pagination">
-	                <li><a href="#">«</a></li>
-	                <li><a href="#" class="active">1</a></li>
-	                <li><a href="#">2</a></li>
-	                <li><a href="#">3</a></li>
-	                <li><a href="#">4</a></li>
-	                <li><a href="#">5</a></li>
-	                <li><a href="#">»</a></li>
-	            </ul>
-	        </nav>
+			<nav>
+				<ul class="pagination">
+					<!-- 이전 페이지 그룹 -->
+					<c:if test="${ pi.startPage > 1 }">
+						<li class="page-item">
+							<a href="list.io?cpage=${ pi.startPage - pi.pageLimit }">
+								＜
+							</a>
+						</li>
+					</c:if>
+					
+					<!-- 페이지 번호 -->
+					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }" step="1">
+						<c:if test="${ p == pi.currentPage }">
+							<li class="page-item">
+								<a class="active" href="#">
+									${ p }
+								</a>
+							</li>
+						</c:if>
+						<c:if test="${ p != pi.currentPage }">
+							<li class="page-item">
+								<a href="list.io?cpage=${ p }">
+									${ p }
+								</a>
+							</li>
+						</c:if>
+					</c:forEach>
+					
+					<!-- 다음 페이지 그룹 -->
+					<c:if test="${ pi.endPage < pi.maxPage }">
+						<li class="page-item">
+							<a href="list.io?cpage=${ pi.startPage + pi.pageLimit }">
+								＞
+							</a>
+						</li>
+					</c:if>
+				</ul>
+			</nav>
+			<!-- 페이지네이션 end -->
         </c:if>
     </div>
     </div>

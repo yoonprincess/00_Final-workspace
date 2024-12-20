@@ -23,7 +23,7 @@
             <a href="list.no">공지사항</a>
         </nav>
     </header>
-	    <c:if test="${ not empty sessionScope.loginUser }">
+	    <c:if test="${ sessionScope.loginUser.memberId eq 'admin' }">
 	     	<!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
 	     	<a class="btn btn-secondary" style="float:right;" 
 	     								 href="NoticeEnrollForm.no">
@@ -64,7 +64,7 @@
 					<!-- 이전 페이지 그룹 -->
 					<c:if test="${ pi.startPage > 1 }">
 						<li class="page-item">
-							<a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage - pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+							<a href="list.no?cpage=${ pi.startPage - pi.pageLimit }">
 								＜
 							</a>
 						</li>
@@ -81,7 +81,7 @@
 						</c:if>
 						<c:if test="${ p != pi.currentPage }">
 							<li class="page-item">
-								<a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+								<a href="list.no?cpage=${ p }">
 									${ p }
 								</a>
 							</li>
@@ -91,7 +91,7 @@
 					<!-- 다음 페이지 그룹 -->
 					<c:if test="${ pi.endPage < pi.maxPage }">
 						<li class="page-item">
-							<a href="list.pr?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage + pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+							<a href="list.no?cpage=${ pi.startPage + pi.pageLimit }">
 								＞
 							</a>
 						</li>
