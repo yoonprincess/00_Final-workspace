@@ -1230,4 +1230,24 @@ BEGIN
 END;
 /
 
+-- 리뷰 작성용 상품 주문 데이터 생성 (34, 35, 36 상품에 주문정보 추가)
+BEGIN
+    -- ORDER_NO를 기준으로 상품 주문 데이터 삽입
+    FOR order_rec IN (SELECT DISTINCT ORDER_NO FROM TB_ORDER) LOOP
+        -- 상품 주문 생성: 하나의 ORDER_NO당 여러 옵션을 추가
+        FOR opt_no IN 34..36 LOOP
+            INSERT INTO TB_PRODUCT_ORDER VALUES(
+                SEQ_SERIAL_NO.NEXTVAL, -- SERIAL_NO
+                1,                     -- 주문 수량
+                38000,                 -- 총 금액
+                order_rec.ORDER_NO,    -- ORDER_NO
+                opt_no                 -- OPT_NO
+            );
+        END LOOP;
+    END LOOP;
+
+    COMMIT; -- 변경 사항 저장
+END;
+/
+
 COMMIT;
