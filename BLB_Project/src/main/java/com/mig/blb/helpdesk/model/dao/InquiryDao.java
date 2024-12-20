@@ -1,6 +1,9 @@
 package com.mig.blb.helpdesk.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -70,6 +73,20 @@ public class InquiryDao {
 
 	public ArrayList<Inquiry> selectInquiryListTop4(SqlSessionTemplate sqlSession, String memberId) {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectInquiryListTop4", memberId);
+	}
+
+	public int myProdQnaListCount(SqlSessionTemplate sqlSession, String memberId) {
+		return sqlSession.selectOne("memberMapper.myProdQnaListCount", memberId);
+	}
+
+	public List<Map<String, Object>> selectMyProdQnaList(SqlSessionTemplate sqlSession, String memberId, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMyProdQnaList", memberId, rowBounds);
 	}
 
 	

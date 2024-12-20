@@ -262,6 +262,45 @@
 		   AND STATUS ='Y'
 	</select>
 	
+	<!-- 마이페이지용 내 주문배송조회 (날짜별 생각말고 다뽑아오기)-->
+	<select id="selectAllMyOrders" parameterType="hashmap" resultMap="orderResultSet">
+		SELECT O.ORDER_NO,
+	           TO_CHAR(O.ORDER_DATE,'YYYY-MM-DD') AS "ORDER_DATE",
+	           SUM(O.ORDER_TOTAL_AMT) AS "ORDER_TOTAL_AMT",
+               PO.TOTAL_AMT,
+	           O.DLVR_STATUS,
+	           P.PROD_NAME,
+	           P.PROD_NO,
+	           SUM(PO.ORDER_QTY)AS "ORDER_QTY",
+	           OP.OPT_NAME,
+               OP.OPT_NO,
+	           'blb'|| PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
+	   FROM TB_ORDER O
+	   JOIN TB_PRODUCT_ORDER PO ON PO.ORDER_NO = O.ORDER_NO
+	   JOIN TB_OPTION OP ON OP.OPT_NO = PO.OPT_NO
+	   JOIN TB_PRODUCT P ON P.PROD_NO = OP.PROD_NO
+	 LEFT JOIN  (
+			      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+			        FROM TB_PRODUCT_ATTACHMENT
+			       WHERE (PROD_NO, PROD_ATT_NO) IN (
+			           SELECT PROD_NO, MIN(PROD_ATT_NO)
+			             FROM TB_PRODUCT_ATTACHMENT
+			            WHERE PROD_ATT_STATUS = 'Y'
+			              AND THUMB_PATH IS NOT NULL
+			            GROUP BY PROD_NO
+			       )
+			  ) PA ON PA.PROD_NO = P.PROD_NO
+	   WHERE MEMBER_ID = #{memberId}
+	   AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
+	   AND PA.THUMB_PATH IS NOT NULL
+	    GROUP BY O.ORDER_NO, O.ORDER_DATE, O.DLVR_STATUS, PO.TOTAL_AMT
+	    		,P.PROD_NAME, OP.OPT_NAME, PA.THUMB_PATH, PA.SAVE_FILE_NAME
+	    		,OP.OPT_NO,P.PROD_NO
+	  ORDER BY O.ORDER_DATE DESC
+	 
+	</select>
+	
+	
 	<!-- 마이페이지용 내 주문배송조회 -->
 	<select id="selectMyOrderList" parameterType="hashmap" resultMap="orderResultSet">
 		SELECT O.ORDER_NO,
@@ -274,12 +313,22 @@
 	           SUM(PO.ORDER_QTY)AS "ORDER_QTY",
 	           OP.OPT_NAME,
                OP.OPT_NO,
-	           'blb'|| PA.THUMB_PATH || SAVE_FILE_NAME AS "THUMB_IMG"
+	           'blb'|| PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
 	   FROM TB_ORDER O
 	   JOIN TB_PRODUCT_ORDER PO ON PO.ORDER_NO = O.ORDER_NO
 	   JOIN TB_OPTION OP ON OP.OPT_NO = PO.OPT_NO
 	   JOIN TB_PRODUCT P ON P.PROD_NO = OP.PROD_NO
-	   JOIN TB_PRODUCT_ATTACHMENT PA ON PA.PROD_NO = P.PROD_NO
+	 LEFT JOIN  (
+			      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+			        FROM TB_PRODUCT_ATTACHMENT
+			       WHERE (PROD_NO, PROD_ATT_NO) IN (
+			           SELECT PROD_NO, MIN(PROD_ATT_NO)
+			             FROM TB_PRODUCT_ATTACHMENT
+			            WHERE PROD_ATT_STATUS = 'Y'
+			              AND THUMB_PATH IS NOT NULL
+			            GROUP BY PROD_NO
+			       )
+			  ) PA ON PA.PROD_NO = P.PROD_NO
 	   WHERE MEMBER_ID = #{memberId}
 	   AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
 	   AND PA.THUMB_PATH IS NOT NULL
@@ -287,6 +336,7 @@
 	    		,P.PROD_NAME, OP.OPT_NAME, PA.THUMB_PATH, PA.SAVE_FILE_NAME
 	    		,OP.OPT_NO,P.PROD_NO
 	  ORDER BY O.ORDER_DATE DESC
+	  LIMT #{limit} OFFSET #{offset}
 	</select>
 	
 	
@@ -400,11 +450,53 @@
 		   JOIN TB_OPTION OP ON PO.OPT_NO = OP.OPT_NO
            JOIN TB_ORDER O ON PO.ORDER_NO = O.ORDER_NO
            JOIN TB_PRODUCT P ON P.PROD_NO = OP.PROD_NO
+      LEFT JOIN  (
+			      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+			        FROM TB_PRODUCT_ATTACHMENT
+			       WHERE (PROD_NO, PROD_ATT_NO) IN (
+			           SELECT PROD_NO, MIN(PROD_ATT_NO)
+			             FROM TB_PRODUCT_ATTACHMENT
+			            WHERE PROD_ATT_STATUS = 'Y'
+			              AND THUMB_PATH IS NOT NULL
+			            GROUP BY PROD_NO
+			       )
+		 ) PA ON PA.PROD_NO = P.PROD_NO
+           
+		 WHERE R.REV_STATUS = 'Y'
+           AND R.MEMBER_ID= #{memberId}
+           AND PA.THUMB_PATH IS NOT NULL
+		ORDER BY O.ORDER_DATE DESC
+	</select>
+	
+	<select id="myProdQnaListCount" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		      FROM TB_INQUIRY
+		     WHERE MEMBER_ID = #{memberId}
+		     AND INQUIRY_STATUS =  'Y'
+             AND INQUIRY_TYPE= '상품'
+	</select>
+	
+	<select id="selectMyProdQnaList" parameterType="string" resultType="java.util.HashMap">
+	SELECT R.REV_NO
+		     , R.REV_CONTENT
+		     , TO_CHAR(R.REV_ENROLL_DATE,'YYYY.MM.DD') AS "REV_ENROLL_DATE"
+		     , R.REV_RATING
+		     , R.MEMBER_ID
+		     , R.SERIAL_NO
+		     , P.PROD_NAME
+             ,P.PROD_NO
+		     , OP.OPT_NAME
+		     , TO_CHAR(O.ORDER_DATE,'YYYY.MM.DD') AS "ORDER_DATE",
+		     PA.THUMB_PATH || SAVE_FILE_NAME AS "THUMB_IMG"
+		  FROM TB_REVIEW R
+		   JOIN TB_PRODUCT_ORDER PO ON R.SERIAL_NO = PO.SERIAL_NO
+		   JOIN TB_OPTION OP ON PO.OPT_NO = OP.OPT_NO
+           JOIN TB_ORDER O ON PO.ORDER_NO = O.ORDER_NO
+           JOIN TB_PRODUCT P ON P.PROD_NO = OP.PROD_NO
            JOIN TB_PRODUCT_ATTACHMENT PA ON PA.PROD_NO = P.PROD_NO
 		 WHERE R.REV_STATUS = 'Y'
            AND R.MEMBER_ID= #{memberId}
            AND PA.THUMB_PATH IS NOT NULL
 		ORDER BY O.ORDER_DATE DESC
-	
 	</select>
 </mapper>

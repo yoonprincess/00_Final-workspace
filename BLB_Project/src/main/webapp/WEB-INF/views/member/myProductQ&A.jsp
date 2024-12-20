@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>주문/배송조회 | 뷰라밸 (Beauty Life Balance)</title>
+<title>상품 Q&A | 뷰라밸 (Beauty Life Balance)</title>
 
 <link rel="stylesheet" href="resources/css/member/myOrderList.css">
 
@@ -23,40 +23,10 @@
         <div id="main">
              <%@ include file="/WEB-INF/views/member/menubar.jsp" %>
              <div class="container">
-              <!-- Delivery Tracking -->
-              <div class="section delivery-tracking" style="border : none;">
-                  <div class="section-header">
-                      <h4>주문/배송 조회</h4>
-                  </div>
-                 
-                  <div class="tracking-status">
-                      <div class="status-item">
-                          <span class="status-count">0</span>
-                          <span class="status-label">주문접수</span>
-                      </div>
-                      <div class="arrow"><i class="fas fa-chevron-right"></i></div>
-                      <div class="status-item">
-                          <span class="status-count">0</span>
-                          <span class="status-label">결제완료</span>
-                      </div>
-                      <div class="arrow"><i class="fas fa-chevron-right"></i></div>
-                      <div class="status-item">
-                          <span class="status-count">${myOrderWait}</span>
-                          <span class="status-label">배송준비중</span>
-                      </div>
-                      <div class="arrow"><i class="fas fa-chevron-right"></i></div>
-                      <div class="status-item">
-                          <span class="status-count">0</span>
-                          <span class="status-label">배송중</span>
-                      </div>
-                      <div class="arrow"><i class="fas fa-chevron-right"></i></div>
-                      <div class="status-item completed">
-                          <span class="status-count">${myOrderComplete}</span>
-                          <span class="status-label">배송완료</span>
-                      </div>
-                  </div>
-              </div>
-      
+             
+             <div class="section-header">
+               <h4>상품Q&A</h4>
+             </div>
               
               <!-- search-filter -->
              <form action="orderList.me" method="get" id="searchForm">
@@ -194,91 +164,79 @@
          </div>
         </form>
             
-       
-       
 <table class="order-table">
     <thead>
         <tr>
             <th>주문일자</th>
             <th>상품</th>
-            <th>수량</th>
-            <th>주문금액</th>
-            <th>상태</th>
+            <th></th>
+            <th></th>
+            <th>답변상태</th>
         </tr>
     </thead>
-    <tbody>
-        <c:forEach var="entry" items="${myListbyDate}">
-            <c:set var="orderDate" value="${entry.key}"/>
-            <c:set var="myOrderList" value="${entry.value}"/>
-            <c:set var="totalRowspan" value="0"/>
-            
-            <c:forEach var="myOrder" items="${myOrderList}">
-                <c:forEach var="productOrder" items="${myOrder.productOrder}">
-                    <c:forEach var="option" items="${productOrder.option}">
-                        <c:forEach var="product" items="${option.product}">
-                            <c:set var="totalRowspan" value="${totalRowspan + 1}"/>
-                        </c:forEach>
-                    </c:forEach>
-                </c:forEach>
-            </c:forEach>
+     <tbody>
+        <c:if test="${empty qlist}">
+            <tr class="result">
+                <td colspan="3">
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <span class="material-symbols-outlined" style="font-size:40px;">error</span>
+                        <br>
+                        <div> 최근 1개월간 문의하신 내용이 없습니다.</div>
+                    </div>
+                </td>
+            </tr>
+        </c:if>
 
-            <c:set var="isFirstRow" value="true"/>
-            <c:forEach var="myOrder" items="${myOrderList}">
-                <c:forEach var="productOrder" items="${myOrder.productOrder}">
-                    <c:forEach var="option" items="${productOrder.option}">
-                        <c:forEach var="product" items="${option.product}">
-                            <tr class="date-row">
-                                <c:if test="${isFirstRow}">
-                                    <td class="date" rowspan="${totalRowspan}" style="text-align :center;">
-	                                    <div>${orderDate}</div>
-	                                    <a href="#" style=" text-decoration: underline; color:#7AB2D3">상세보기</a>
-                                    </td>
-                                    <c:set var="isFirstRow" value="false"/>
-                                </c:if>
-                                <td>
-                                 <a href="detail.pr?pno=${product.prodNo}">
-                                    <div class="product">
-                                        <img src="${request.contextPath}/${product.thumbImg}" alt="${product.prodName}">
-                                        <div class="product-info">
-                                            <div class="name">${product.prodName}</div>
-                                            <div class="option"><span>옵션 | </span>${option.optName}</div>
-                                        </div>
-                                    </div>
-                                  </a>
-                                </td>
-                                <td>
-                                    <div class="quantity">${productOrder.orderQty}</div>
-                                </td>
-                                <td>
-                                    <div class="price">
-                                        <fmt:formatNumber value="${productOrder.totalAmt}" type="number" /> 원
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="status">
-                                        <span class="delivery-complete">${myOrder.dlvrStatus}</span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </c:forEach>
-                </c:forEach>
+        <c:if test="${not empty qlist}">
+            <c:forEach var="q" items="${qlist}">
+                <tr class="result">
+                    <td>
+                        <a href="detail.pr?pno=${q.PROD_NO}">
+                            <div class="product">
+                                <img src="${pageContext.request.contextPath}/${r.THUMB_IMG}" alt="${r.PROD_NAME}" >
+                                <div class="product-info">
+                                    <div><span>구매일자</span> ${r.ORDER_DATE}</div>
+                                    <div>${r.PROD_NAME}</div>
+                                    <div><span>옵션 | </span>${r.OPT_NAME}</div>
+                                </div>
+                            </div>
+                        </a>  
+                    </td>
+                    <td>
+                        <div><span>작성일자</span> ${r.REV_ENROLL_DATE}</div>
+                        <div class="rating" style="color: #ffc107;">
+                            <span class="review-stars">
+                                <c:forEach var="i" begin="1" end="${r.REV_RATING}">
+                                    <i class="fas fa-star"></i>
+                                </c:forEach>
+                                <c:forEach var="i" begin="1" end="${5 - r.REV_RATING}">
+                                    <i class="far fa-star"></i>
+                                </c:forEach>
+                            </span>
+                        </div>
+                        <div>${r.REV_CONTENT}</div>
+                    </td>
+                    <td>
+                        <div class="button-group">
+                            <button class="button" onclick="updateReview('${r.REV_NO}');">수정하기</button>
+                        </div>
+                        <div class="button-group">
+                            <button class="button" onclick="updateReview('${r.REV_NO}');">리뷰보기</button>
+                        </div>
+                    </td>
+                </tr>
             </c:forEach>
-        </c:forEach>
+        </c:if>
     </tbody>
 </table>
-
-        
-	            <br><br>
+<br><br>
  <!-- 페이지네이션 -->
 			<nav>
 				<ul class="pagination">
 					<!-- 이전 페이지 그룹 -->
 					<c:if test="${ pi.startPage > 1 }">
 						<li class="page-item">
-							<a href="blb/orderList.me?ppage=${ pi.startPage - pi.pageLimit }
-												&year=${param.year}&month=${param.month}&day=${param.day}
-												&year1=${param.year1}&month1=${param.month1}&day1=${param.day1}">
+							<a href="orderList.me?ppage=${ pi.startPage - pi.pageLimit }">
 								＜
 							</a>
 						</li>
@@ -295,9 +253,7 @@
 						</c:if>
 						<c:if test="${ p != pi.currentPage }">
 							<li class="page-item">
-								<a href="blb/orderList.me?ppage=${ p }
-											&year=${param.year}&month=${param.month}&day=${param.day}
-											&year1=${param.year1}&month1=${param.month1}&day1=${param.day1}">
+								<a href="orderList.me?ppage=${ p }">
 									${ p }
 								</a>
 							</li>
@@ -307,9 +263,7 @@
 					<!-- 다음 페이지 그룹 -->
 					<c:if test="${ pi.endPage < pi.maxPage }">
 						<li class="page-item">
-							<a href="blb/orderList.me?ppage=${ pi.startPage + pi.pageLimit }
-												&year=${param.year}&month=${param.month}&day=${param.day}
-												&year1=${param.year1}&month1=${param.month1}&day1=${param.day1}">
+							<a href="orderList.me?ppage=${ pi.startPage + pi.pageLimit }">
 								＞
 							</a>
 						</li>

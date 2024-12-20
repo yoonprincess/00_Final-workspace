@@ -5,7 +5,6 @@ import com.mig.blb.member.model.vo.PageforOrders;
 public class PaginationOrders {
 
 	public static PageforOrders getPageforOrders(int currentPage,
-												
 												   int pageLimit,
 												   int boardLimit,
 												   int totalGroups) {

@@ -1,6 +1,9 @@
 package com.mig.blb.helpdesk.model.service.InquiryService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +79,18 @@ public class InquiryServiceImpl implements InquiryService {
 	@Override
 	public ArrayList<Inquiry> selectInquiryListTop4(String memberId) {
 		return inquiryDao.selectInquiryListTop4(sqlSession, memberId);
+	}
+
+	@Override
+	public int myProdQnaListCount(String memberId) {
+		
+		return inquiryDao.myProdQnaListCount(sqlSession,memberId);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectMyProdQnaList(String memberId, PageInfo pi) {
+		
+		return inquiryDao. selectMyProdQnaList(sqlSession,memberId,pi);
 	}
 
 	

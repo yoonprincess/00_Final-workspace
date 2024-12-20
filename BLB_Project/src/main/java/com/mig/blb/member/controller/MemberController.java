@@ -40,7 +40,7 @@ public class MemberController {
 		
 	
 	// 로그인 페이지 요청 
-	@RequestMapping("loginForm.me")
+	@GetMapping("loginForm.me")
 	public ModelAndView loginForm(ModelAndView mv,
 								HttpServletRequest request,
 								HttpSession session) {

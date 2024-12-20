@@ -41,14 +41,16 @@
          <div class="menu-section">
              <div class="menu-item">마이활동</div>
              <a class="sub-menu-link" href="${ pageContext.request.contextPath }/list.io">
-          <div  class="sub-menu-item" >1:1 문의내역</div>
-       </a>
+		       <div  class="sub-menu-item" >1:1 문의내역</div>
+		     </a>
            
              
              <a class="sub-menu-link" href="${ pageContext.request.contextPath }/reviewList.me">
            		  <div class="sub-menu-item" >리뷰 (${sessionScope.listCount})</div>
              </a>
-             <div class="sub-menu-item" >상품 Q&A 내역</div>
+             <a  class="sub-menu-link" href="${ pageContext.request.contextPath }/productQna.me">
+             	<div class="sub-menu-item" >상품 Q&A 내역</div>
+             </a>
          </div>
          <br>
          <hr class="custom-hr"> <hr class="custom-hr">

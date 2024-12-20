@@ -34,11 +34,11 @@
         <table>
             <thead>
                 <tr>
-                    <th>배송지명</th>
-                    <th>받는사람</th>
-                    <th>주소</th>
-                    <th>연락처</th>
-                    <th>관리</th>
+                    <th style="width:100px;">배송지명</th>
+                    <th style="width:100px;">받는사람</th>
+                    <th >주소</th>
+                    <th style="width:150px;">연락처</th>
+                    <th style="width:150px;">관리</th>
                 </tr>
             </thead>
             <tbody>
@@ -63,7 +63,7 @@
 	                        </div>
 	                        <c:if test="${d.deliDefault != '기본배송지'}">
 	                        <div class="button-group">
-	                            <button class="button" style="font-size:13px;" onclick="setDefaultDelivery('${d.deliCode}');">기본배송지설정</button>
+	                            <button class="button" style="font-size:14px;" onclick="setDefaultDelivery('${d.deliCode}');">기본배송지설정</button>
 	                        </div>
 	                        </c:if>
 	                    </td>

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.mig.blb.member.model.service.KakaoApi;
 
@@ -21,18 +22,22 @@ public class AuthLoginController {
 	private KakaoApi kakaoApi;
 	
 	// 로그인 페이지로 이동
-  @GetMapping("/login")
+  @GetMapping("/login.me")
   
-    public String loginForm(Model model) {
-        model.addAttribute("kakaoApiKey", kakaoApi.getKakaoApiKey());
-        model.addAttribute("redirectUri", kakaoApi.getKakaoRedirectUri());
-        return "member/loginForm"; 
+    public ModelAndView loginKakaoForm(ModelAndView mv) {
+        mv.addObject("kakaoApiKey", kakaoApi.getKakaoApiKey());
+        mv.addObject("redirectUri", kakaoApi.getKakaoRedirectUri());
+        
+       return mv;
     }
 
 	//  로그인 후 로직
-	@RequestMapping("/login/oauth2/kakao")
-	public String kakaoLogin(@RequestParam String code) {
+	@RequestMapping("loginKakao.me")
+	public String kakaoLogin(@RequestParam String code, Model model) {
 		
+		model.addAttribute("kakaoApiKey", kakaoApi.getKakaoApiKey());
+        model.addAttribute("redirectUri", kakaoApi.getKakaoRedirectUri());
+        
 		String accessToken = kakaoApi.getAccessToken(code);
 		
 		Map<String,Object> memberInfo = kakaoApi.getUserInfo(accessToken);

@@ -10,13 +10,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,12 +27,11 @@ import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.member.model.service.MemberService;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
+import com.mig.blb.member.model.vo.PageforOrders;
+import com.mig.blb.member.model.vo.PaginationOrders;
 import com.mig.blb.order.model.service.OrderService;
 import com.mig.blb.order.model.vo.Order;
 import com.mig.blb.review.model.service.ReviewService;
-import com.mig.blb.review.model.vo.Review;
-
-import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 public class MyPageController {
@@ -274,48 +271,59 @@ public class MyPageController {
 	    dateMap.put("month1", month1);
 	    dateMap.put("day1", day1);
 	    
-	    Date startDate = sdf.parse(String.format("%s-%s-%s", year, month, day));
-	    Date endDate = sdf.parse(String.format("%s-%s-%s", year1, month1, day1));
 	    
-	    dateMap.put("startDate", startDate);
-	    dateMap.put("endDate", endDate);
 	    
 		if( loginUser != null) {
 			String memberId = loginUser.getMemberId();
 			dateMap.put("memberId", memberId);
 			
-			// 페이징처리
-			int boardLimit = 10;
+			Date startDate = sdf.parse(String.format("%s-%s-%s", year, month, day));
+		    Date endDate = sdf.parse(String.format("%s-%s-%s", year1, month1, day1));
+		    
+		    dateMap.put("startDate", startDate);
+		    dateMap.put("endDate", endDate);
+			    
+			ArrayList<Order> myOrders = orderService.selectAllMyOrders(dateMap);
 			
-			// 한 번에 보여줄 페이지 수
-			int pageLimit = 5;
-			int listCount = orderService.myOrderListCount(dateMap);
-			System.out.println("listCount : " + listCount);
-			
-			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
-						 pageLimit, boardLimit);
-			
-			ArrayList<Order> myOrder = orderService.selectMyOrderList(dateMap,pi); 
-		    System.out.println(myOrder);
 			LinkedHashMap<String, ArrayList<Order>> myListbyDate = new LinkedHashMap<>();
-			
-			
+						
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-			for (Order order : myOrder) {
+			for (Order order : myOrders) {
 				String orderDate = dateFormat.format(order.getOrderDate());
 				myListbyDate.putIfAbsent(orderDate, new ArrayList<>());
 				myListbyDate.get(orderDate).add(order);
-				
 			}
 			
-			HashMap<String, Integer> myOrderCounts = orderService.myOrderCounts(memberId);
+			// 페이징처리
+			int boardLimit = 3;
+			// 한 번에 보여줄 페이지 수
+			int pageLimit = 5;
 			
-			mv.addObject("myOrderComplete", myOrderCounts.get("COMPLETE"));
+			int totalDateGroups = myListbyDate.size();
+			
+			// 현재페이지에 해당 날짜그룹만 
+			int startIndex = (currentPage - 1) * boardLimit;
+			int endIndex = Math.min(startIndex + boardLimit, totalDateGroups);
+			
+			LinkedHashMap<String, ArrayList<Order>> pagedOrdersByDate = new LinkedHashMap<>();
+		    List<String> dateKeys = new ArrayList<>(myListbyDate.keySet());
+		    
+		    for(int i = startIndex; i < endIndex; i++) {
+		        String date = dateKeys.get(i);
+		        pagedOrdersByDate.put(date, myListbyDate.get(date));
+		    }
+		    
+		    // PageInfo 객체 생성
+		    PageforOrders po = PaginationOrders.getPageforOrders(currentPage, pageLimit, boardLimit, totalDateGroups);
+		    
+		    // 주문 상태 카운트
+		    HashMap<String, Integer> myOrderCounts = orderService.myOrderCounts(memberId);
+
+		    mv.addObject("myOrderComplete", myOrderCounts.get("COMPLETE"));
 			mv.addObject("myOrderWait", myOrderCounts.get("WAIT"));
 			
-			mv.addObject("pi",pi);
-			mv.addObject("myOrder",myOrder);
-			mv.addObject("myListbyDate",myListbyDate);
+			mv.addObject("pi",po);
+			mv.addObject("myListbyDate",pagedOrdersByDate);
 			mv.setViewName("member/myOrderList");
 		
 		}else {
@@ -565,13 +573,13 @@ public class MyPageController {
 				// 한 번에 보여줄 페이지 수
 				int pageLimit = 5;
 				int listCount = reviewService.myReviewListCount(loginUser.getMemberId());
-				System.out.println("리뷰갯수 :"  + listCount);
+				//System.out.println("리뷰갯수 :"  + listCount);
 				
 				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
 							 pageLimit, boardLimit);
 				
 				List<Map<String, Object>> rlist = reviewService.selectMyReviewList(loginUser.getMemberId(),pi); 
-			    System.out.println(rlist);
+			    //System.out.println(rlist);
 				
 				mv.addObject("pi",pi);
 				mv.addObject("rlist",rlist);
@@ -586,6 +594,95 @@ public class MyPageController {
 			}
 			return mv;
 		}
+	
+		// 내 상품문의 페이지 요청 
+		@GetMapping("productQna.me")
+		public ModelAndView myProdQnaList(ModelAndView mv,
+										HttpSession session,
+										Member m,
+						   			 	@RequestParam(value = "year", required = false) String year,
+			                            @RequestParam(value = "month", required = false) String month,
+			                            @RequestParam(value = "day", required = false) String day,
+			                            @RequestParam(value = "year1", required = false) String year1,
+			                            @RequestParam(value = "month1", required = false) String month1,
+			                            @RequestParam(value = "day1", required = false) String day1,
+			                            @RequestParam(value="ppage", defaultValue="1")int currentPage) throws ParseException {
+			
+			Member loginUser =(Member)session.getAttribute("loginUser");
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+		    if (year == null || month == null || day == null || year1 == null || month1 == null || day1 == null) {
+
+		    	Date today = new Date();
+		       
+		    	String defaultDate = sdf.format(today);
+		        
+		        String[] dateParts = defaultDate.split("-");
+		        year1 = dateParts[0];
+		        month1 = dateParts[1];
+		        day1 = dateParts[2];
+
+		        // 1개월 전 날짜 계산
+		        Calendar calendar = Calendar.getInstance();
+		        calendar.add(Calendar.MONTH, -1);
+		        String startDate = sdf.format(calendar.getTime());
+		        
+		        
+		        dateParts = startDate.split("-");
+		        year = dateParts[0];
+		        month = dateParts[1];
+		        day = dateParts[2];
+		    }		
+		    
+		   
+			HashMap<String, Object> dateMap = new HashMap<>();
+		    dateMap.put("year", year);
+		    dateMap.put("month", month);
+		    dateMap.put("day", day);
+		    dateMap.put("year1", year1);
+		    dateMap.put("month1", month1);
+		    dateMap.put("day1", day1);
+		    
+		    Date startDate = sdf.parse(String.format("%s-%s-%s", year, month, day));
+		    Date endDate = sdf.parse(String.format("%s-%s-%s", year1, month1, day1));
+		    
+		    dateMap.put("startDate", startDate);
+		    dateMap.put("endDate", endDate);
+		    
+			if( loginUser != null) {
+				String memberId = loginUser.getMemberId();
+				dateMap.put("memberId", memberId);
+				System.out.println(dateMap);
+				
+				// 페이징처리
+				int boardLimit = 10;
+				
+				// 한 번에 보여줄 페이지 수
+				int pageLimit = 5;
+				
+				int listCount = inquiryService.myProdQnaListCount(loginUser.getMemberId());
+				
+				System.out.println("qlistCount : " + listCount);
+				
+				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
+							 pageLimit, boardLimit);
+				
+				List<Map<String, Object>> qlist = inquiryService.selectMyProdQnaList(loginUser.getMemberId(),pi); 
+			    System.out.println(qlist);
+				
+				mv.addObject("pi",pi);
+				mv.addObject("qlist",qlist);
+				mv.setViewName("member/myOrderList");
+			
+			}else {
+				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+				mv.setViewName("/main");
+			}
+			
+			return null;
+		}
+		
 		 
 }
 

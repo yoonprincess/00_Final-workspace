@@ -172,36 +172,74 @@
               <!-- Inquiry Sections -->
 	              <div class="inquiry-sections " >
 	                  <div class="section inquiry" >
-	                      <div class="section-header">
+	                        <div class="section-header">
 	                          <h4>1:1 문의내역</h4>
-	                          <button class="more-btn">더보기 &gt;</button>
-	                      </div>
-	                     <div class="qna-list">
-		                    <c:forEach var="list" items="${list}">
-		                        <div class="qna-item">
-		                          <div class="qna-details">
-		                          <c:choose>
-		                           <c:when test="${list.inquiryAnsweredYn == 'N'}">
-		                            <span class="answer-status">답변대기</span>
-		                            </c:when>
-		                            <c:otherwise>
-		                             <span class="answer-status">답변완료</span>
-		                            </c:otherwise>
-		                            </c:choose>
-		                          </div>
-		                            <div class="qna-title">${list.inquiryContent}</div>
-		                            <div class="qna-date">${list.inquiryCreateDate}</div>
-		                         </div>
-		                     </c:forEach>
-	                     </div>
+	                          	<button class="more-btn" onclick="location.href='${ pageContext.request.contextPath }/list.io'">
+	                          		더보기 &gt;
+	                          	</button>
+	                        </div>
+		                     <div class="qna-list">
+		                      <c:if  test="${not empty list}">
+			                    <c:forEach var="list" items="${list}">
+			                        <div class="qna-item">
+			                          <div class="qna-details">
+			                          <c:choose>
+			                           <c:when test="${list.inquiryAnsweredYn == 'N'}">
+			                            <span class="answer-status">답변대기</span>
+			                            </c:when>
+			                            <c:otherwise>
+			                             <span class="answer-status">답변완료</span>
+			                            </c:otherwise>
+			                            </c:choose>
+			                          </div>
+			                            <div class="qna-title">${list.inquiryContent}</div>
+			                            <div class="qna-date">${list.inquiryCreateDate}</div>
+			                         </div>
+			                     </c:forEach>
+			                    </c:if>
+			                    <c:if test="${empty list}">
+			                     	<div style="display: flex; flex-direction: column; align-items: center;">
+			                          <span class="material-symbols-outlined" style="font-size:40px;">error</span>
+			                           <br>
+			                          <div> 최근 1개월간 문의하신 내용이 없습니다.</div>
+			                        </div>
+			                    </c:if>
+			                  
+		                     </div>
 	                  </div>
 	                  <div class="section inquiry" style="border:none;">
 	                      <div class="section-header">
 	                          <h4>상품 Q&A내역</h4>
-	                          <button class="more-btn">더보기 &gt;</button>
+	                          <button class="more-btn" onclick="location.href='${ pageContext.request.contextPath }/productQna.me'">
+	                             더보기 &gt;
+	                          </button>
 	                      </div>
 	                      <div class="qna-list">
-	                     <p>문의하신 내역이 없습니다</p>
+	                     	 <c:if  test="${not empty list}">
+			                    <c:forEach var="list" items="${list}">
+			                        <div class="qna-item">
+			                          <div class="qna-details">
+			                          <c:choose>
+			                           <c:when test="${list.inquiryAnsweredYn == 'N'}">
+			                            <span class="answer-status">답변대기</span>
+			                            </c:when>
+			                            <c:otherwise>
+			                             <span class="answer-status">답변완료</span>
+			                            </c:otherwise>
+			                            </c:choose>
+			                          </div>
+			                            <div class="qna-title">${list.inquiryContent}</div>
+			                            <div class="qna-date">${list.inquiryCreateDate}</div>
+			                         </div>
+			                     </c:forEach>
+			                    </c:if>
+			                    <c:if test="${empty list}">
+			                     	<div  style="display: flex; flex-direction: column; align-items: center;">
+			                          <span class="material-symbols-outlined" style="font-size:40px;">error</span>
+			                          <br>
+			                          <div> 최근 1개월간 문의하신 내용이 없습니다.</div>
+			                        </div>
+			                    </c:if>
                         </div>
                     </div>
                   </div>

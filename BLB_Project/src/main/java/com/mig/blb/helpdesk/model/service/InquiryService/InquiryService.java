@@ -1,6 +1,9 @@
 package com.mig.blb.helpdesk.model.service.InquiryService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
@@ -28,6 +31,10 @@ public interface InquiryService {
 	int updateInquiry(Inquiry i);
 
 	ArrayList<Inquiry> selectInquiryListTop4(String memberId);
+	
+	int myProdQnaListCount(String memberId);
+
+	List<Map<String, Object>> selectMyProdQnaList(String memberId, PageInfo pi);
 
 	
 }

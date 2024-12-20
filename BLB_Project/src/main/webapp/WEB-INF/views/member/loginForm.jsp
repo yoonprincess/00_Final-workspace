@@ -61,7 +61,7 @@
                 <br>
                 <div class="social-login">
                     <div class="kakao-logo">
-                     <a href="https://kauth.kakao.com/oauth/authorize?client_id=d58c294c5294590311266a239d715ed4&redirect_uri=http://localhost/blb/login/oauth2/kakao&response_type=code">
+                     <a href="https://kauth.kakao.com/oauth/authorize?client_id=d58c294c5294590311266a239d715ed4&redirect_uri=http://localhost/blb/loginKakao.me&response_type=code">
 						<i class="fa fa-comment"></i>
    					 </a>
                     </div>
