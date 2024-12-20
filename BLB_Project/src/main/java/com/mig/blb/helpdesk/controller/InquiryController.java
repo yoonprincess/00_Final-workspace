@@ -221,8 +221,7 @@ public class InquiryController {
 			ar.addFlashAttribute("alertMsg", "문의글 수정에 실패했습니다.");
 			return "redirect:/list.io";
 		} 
-	}	
-		
+	}		
 		
 	// 댓글 목록 조회 요청 (ajax)
 	@ResponseBody

@@ -19,5 +19,4 @@ public class InquiryReplyDao {
 		// insert 문 : insert 메소드
 		return sqlSession.insert("helpdeskMapper.insertInquiryReply", r);
 	}
-	
 }
