@@ -73,12 +73,105 @@
 	           		</c:when>
 
 	                <c:otherwise>
+	                
+	                
                         <!-- 알림 -->
-                        <a class="menu-btn" href="${ pageContext.request.contextPath }/notification.blb">
-                            <span class="material-symbols-outlined menu-icon">
-                                notifications
-                            </span>
-                        </a>
+						<div class="menu-btn notification-system">
+						    <a id="notification-toggle" href="#" aria-label="알림 토글" aria-expanded="false">
+						        <span class="material-symbols-outlined menu-icon">
+						            notifications
+						        </span>
+						        <span class="notification-count">0</span>
+						    </a>
+						    <div class="notification-dropdown" aria-label="알림">
+						        <div class="notification-actions">
+						            <button class="action-btn" id="mark-all-read">모두 읽음</button>
+						            <button class="action-btn" id="delete-all">모두 삭제</button>
+						        </div>
+						        <ul class="notification-list">
+						            <!-- 알림 항목들이 여기에 동적으로 추가됩니다 -->
+						        </ul>
+						    </div>
+						</div>
+						<script>
+						document.addEventListener('DOMContentLoaded', function() {
+						    const notificationToggle = document.getElementById('notification-toggle');
+						    const notificationDropdown = document.querySelector('.notification-dropdown');
+						    const notificationCount = document.querySelector('.notification-count');
+						    const notificationList = document.querySelector('.notification-list');
+						    const markAllReadBtn = document.getElementById('mark-all-read');
+						    const deleteAllBtn = document.getElementById('delete-all');
+						
+						    // 알림 토글 기능
+						    notificationToggle.addEventListener('click', function(e) {
+						        e.preventDefault();
+						        const expanded = this.getAttribute('aria-expanded') === 'true' || false;
+						        this.setAttribute('aria-expanded', !expanded);
+						        notificationDropdown.style.display = expanded ? 'none' : 'block';
+						    });
+						
+						 	// 개별 알림 삭제 및 읽음 표시 기능
+						    notificationList.addEventListener('click', function(e) {
+						        const notificationItem = e.target.closest('.notification-item');
+						        if (!notificationItem) return; // 알림 항목 외의 클릭은 무시합니다
+
+						        if (e.target.closest('.delete-notification')) {
+						            notificationItem.remove();
+						            updateNotificationCount();
+						        } else if (e.target.closest('.read-notification')) {
+						            notificationItem.classList.add('read');
+						            updateNotificationCount();
+						        }
+						    });
+						
+						    // 모든 알림 읽기 기능
+						    markAllReadBtn.addEventListener('click', function() {
+						        const notifications = notificationList.querySelectorAll('.notification-item');
+						        notifications.forEach(notification => {
+						            notification.classList.add('read');
+						        });
+						        updateNotificationCount();
+						    });
+						
+						    // 모든 알림 삭제 기능
+						    deleteAllBtn.addEventListener('click', function() {
+						        notificationList.innerHTML = '';
+						        updateNotificationCount();
+						    });
+						
+						    // 알림 개수 업데이트 함수
+						    function updateNotificationCount() {
+						        const unreadCount = notificationList.querySelectorAll('.notification-item:not(.read)').length;
+						        notificationCount.textContent = unreadCount;
+						        notificationCount.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+						    }
+						
+						    // 초기 알림 개수 설정
+						    updateNotificationCount();
+						
+						    // 실시간 알림 시뮬레이션 (실제 구현 시 이 부분을 서버와의 통신으로 대체)
+						    setInterval(function() {
+						        const newNotification = document.createElement('li');
+						        newNotification.className = 'notification-item';
+						        newNotification.innerHTML = `
+						            <p class="notification-message">새로운 실시간 알림입니다.</p>
+						            <div class="notification-actions">
+						                <button class="read-notification" aria-label="알림 읽음">
+						                    <span class="material-symbols-outlined">done</span>
+						                </button>
+						                <button class="delete-notification" aria-label="알림 삭제">
+						                    <span class="material-symbols-outlined">close</span>
+						                </button>
+						            </div>
+						        `;
+						        notificationList.prepend(newNotification);
+						        updateNotificationCount();
+						    }, 10000); // 10초마다 새 알림 추가 (테스트용)
+						});
+						</script>
+						
+						
+                        
                         <!-- 찜 -->
                         <a class="menu-btn" href="#">
                             <span class="material-symbols-outlined menu-icon">
