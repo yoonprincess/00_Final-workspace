@@ -231,7 +231,7 @@
                                 <c:if test="${isFirstRow}">
                                     <td class="date" rowspan="${totalRowspan}" style="text-align :center;">
 	                                    <div>${orderDate}</div>
-	                                    <a href="#" style=" text-decoration: underline; color:#7AB2D3">상세보기</a>
+	                                    <a href="${ pageContext.request.contextPath }/orderDetail.me" style=" text-decoration: underline; color:#7AB2D3">상세보기</a>
                                     </td>
                                     <c:set var="isFirstRow" value="false"/>
                                 </c:if>

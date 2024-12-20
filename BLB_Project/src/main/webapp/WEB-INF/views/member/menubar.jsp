@@ -28,8 +28,6 @@
              	<div id="selected" class="sub-menu-item" >주문/배송 조회</div>
              </a>
             
-             <div class="sub-menu-item" >취소/반품/교환 내역</div>
-            
              <a  class="sub-menu-link" href="${ pageContext.request.contextPath }/list.ct">
              	 <div class="sub-menu-item" >장바구니</div>
             	</a>
@@ -47,9 +45,6 @@
              
              <a class="sub-menu-link" href="${ pageContext.request.contextPath }/reviewList.me">
            		  <div class="sub-menu-item" >리뷰 (${sessionScope.listCount})</div>
-             </a>
-             <a  class="sub-menu-link" href="${ pageContext.request.contextPath }/productQna.me">
-             	<div class="sub-menu-item" >상품 Q&A 내역</div>
              </a>
          </div>
          <br>
