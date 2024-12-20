@@ -85,142 +85,7 @@ public class MyPageController {
 			return mv;
 		}
 		
-		// 회원정보 수정 페이지 요청 
-		@GetMapping("updateForm.me")
-		public ModelAndView updateMemberForm(ModelAndView mv, HttpSession session) {
-			
-			Member loginUser =(Member)session.getAttribute("loginUser");
-			
-			if( loginUser != null) {
-				
-				Delivery d = memberService.selectDefaultDelivery(loginUser.getMemberId());
-				
-				session.setAttribute("d", d);
-				
-				mv.setViewName("member/updateMemberForm");
-				
-			}else {
-				
-				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
-				mv.setViewName("/main");
-			}
-					
-			return mv;
-		}
-		
-		// 회원정보 수정 요청( 주소정보 X) 
-		@PostMapping(value="update.me")	
-		public ModelAndView updateMember(ModelAndView mv,
-											Member m,
-											Delivery d,
-											HttpSession session,
-											String currentPwd,
-											String newPwd,
-											String ckPwd) {
-				
-			Member loginUser =(Member)session.getAttribute("loginUser");
-			//System.out.println(currentPwd);
-			//System.out.println(newPwd);
-			//System.out.println(ckPwd);
-			
-			if(currentPwd != null && !currentPwd.isEmpty() 
-								&& newPwd != null && !newPwd.isEmpty()
-								&& ckPwd != null &&  !ckPwd.isEmpty()) {
-				// 비번 변경이 있을 경우 
-				System.out.println(m);
-				if(bcryptPasswordEncoder.matches(currentPwd, loginUser.getMemberPwd())){
-					// 현재비번 매치되면 
-					//System.out.println("현재비번 잘 작성함!");
-					
-					String encPwd = bcryptPasswordEncoder.encode(newPwd);
-					m.setMemberPwd(encPwd);
-					
-					int result = memberService.updateMember(m);
-					int result2 = updateDelivery(d,m);
-					
-					if(result > 0 && result2>0) { 
-					
-						session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
-						
-						loginUser.setMemberPwd(encPwd); // 불러온 로그인 정보 비번에도 넣어주고 
-						session.setAttribute("loginUser", loginUser); // 갱신된 로그인정보 다시 세션에넣고
-						
-						Member newMember = memberService.loginMember(m);
-						Delivery delivery = memberService.selectDefaultDelivery(loginUser.getMemberId());
-						mv.addObject("d", delivery);
-						session.setAttribute("loginUser", newMember);
-						
-						mv.setViewName("member/updateMemberForm"); 
-						
-						//System.out.println("회원정보수정 비번변경포함 완");
-					
-					}else {
-						
-						//System.out.println("비번변경있는 회원정보수정실패?");
-						session.setAttribute("alertMsg", "회원정보 수정 실패..");
-						mv.setViewName("member/updateMemberForm");
-						
-					}
-				
-				} else{
-					// 현재 비번 잘못됨
-					
-					session.setAttribute("alertMsg", "현재 비밀번호가 잘못되었습니다.");
-					mv.setViewName("member/updateMemberForm");
-					//System.out.println("현재비번잘못?");
-				}	
-				
-			} else {
-				// 비번변경없을 경우
-				
-				//System.out.println(m);
-				int result = memberService.updateMember(m);
-				
-				int result2 = updateDelivery(d,m);
-				
-				if(result > 0 && result2>0) { 
-				
-					
-					Member newMember = memberService.loginMember(m);
-					session.setAttribute("loginUser", newMember);// 정보갱신 	
-					
-					Delivery delivery = memberService.selectDefaultDelivery(loginUser.getMemberId());
-					mv.addObject("d", delivery);
-					
-					session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
-					mv.setViewName("member/updateMemberForm");
-					
-				
-				}else {
-				
-					session.setAttribute("alertMsg", "회원정보 수정 실패..");
-					mv.setViewName("member/updateMemberForm");
-					//System.out.println(" 비번변경없이 회원정보수정실패?");
-				}
-			}
-			
-			return mv;
-		}
-			
-		// 기본주소 변경 메소드 
-		public int updateDelivery(Delivery d, Member m) {
-			
-			int result = 0;
-
-			 // 로그 추가: Delivery 객체의 값 확인
-			if(!d.getPostcode().isEmpty()) {
-
-				d.setDeliPhone(m.getPhone()); // FK 연결
-				d.setDeliName(m.getMemberName()); // FK 연결
-				d.setMemberId(m.getMemberId());
-				d.setDeliNickname(d.getDeliName());
-				d.setDeliDefault("Y");
-				
-				result = memberService.updateDelivery(d);
-			}
-			
-			return result;
-		}
+	
 		
 	// 내 주문,배송조회 페이지 요청 
 	@GetMapping("orderList.me")
@@ -330,6 +195,26 @@ public class MyPageController {
 			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
 			mv.setViewName("/main");
 		}
+		return mv;
+	}
+	
+	// 주문 상세페이지 요청 
+	@GetMapping("orderDetail.me")
+	public ModelAndView myOrderDetail(ModelAndView mv, HttpSession session) {
+		
+		Member loginUser =(Member)session.getAttribute("loginUser");
+		
+		if( loginUser != null) {
+			
+			
+			mv.setViewName("member/myOrderDetail");
+			
+		}else {
+			
+			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+			mv.setViewName("/main");
+		}
+				
 		return mv;
 	}
 	
@@ -653,7 +538,7 @@ public class MyPageController {
 			if( loginUser != null) {
 				String memberId = loginUser.getMemberId();
 				dateMap.put("memberId", memberId);
-				System.out.println(dateMap);
+				//System.out.println(dateMap);
 				
 				// 페이징처리
 				int boardLimit = 10;
@@ -663,13 +548,13 @@ public class MyPageController {
 				
 				int listCount = inquiryService.myProdQnaListCount(loginUser.getMemberId());
 				
-				System.out.println("qlistCount : " + listCount);
+				//System.out.println("qlistCount : " + listCount);
 				
 				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
 							 pageLimit, boardLimit);
 				
 				List<Map<String, Object>> qlist = inquiryService.selectMyProdQnaList(loginUser.getMemberId(),pi); 
-			    System.out.println(qlist);
+			    //System.out.println(qlist);
 				
 				mv.addObject("pi",pi);
 				mv.addObject("qlist",qlist);
