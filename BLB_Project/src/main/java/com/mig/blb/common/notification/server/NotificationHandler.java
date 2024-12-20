@@ -1,66 +1,60 @@
 package com.mig.blb.common.notification.server;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-@Repository
+import com.google.gson.Gson;
+import com.mig.blb.common.notification.dto.Message;
+
+
 public class NotificationHandler extends TextWebSocketHandler {
+	
+	// 로그인한 전체 회원을 담을 곳
+	private Set<WebSocketSession> sessions = new CopyOnWriteArraySet<>();
+	
+	// 클라이언트가 웹 소켓 생성
+	@Override
+	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+		
+		// 웹소켓이 생성될 때마다 리스트에 넣어줌
+		sessions.add(session);
+		
+//		System.out.println("접속 : " + session);
+//		System.out.println("세션의 속성들 : " + session.getAttributes());
+//		System.out.println("아이디 : " + session.getAttributes().get("loginUser"));
+	}
 
-    List<WebSocketSession> sessions = new ArrayList<>();
-    Map<String, WebSocketSession> memberSessions = new HashMap<>();
+	@Override
+	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+		String userId = (String)session.getAttributes().get("loginUser");
+		String msg = message.getPayload();
+		String sendTime 
+				= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+											.format(new Date());
+		
+		if(userId != null) {
+			Message m = new Message(userId, msg, sendTime);
+			String result = new Gson().toJson(m);
+			TextMessage newMessage = new TextMessage(result);
+			
+			for(WebSocketSession ws : sessions) {
+				
+				ws.sendMessage(newMessage);
+			}
+		}
+	}
 
-    @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        sessions.add(session);
-        String senderId = getId(session);
-        memberSessions.put(senderId,  session);
-    }
+	@Override
+	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+		sessions.remove(session);
+	}
 
-    @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String senderId = getId(session);
-        for (WebSocketSession sess : sessions) {
-            sess.sendMessage(new TextMessage("보낸 사람 " + senderId + " : " + message.getPayload()));
-            
-            // protocol: cmd, 댓글작성자, 게시글작성, bno (reply, user2, user1, 글번호)
-            String msg = message.getPayload();
-            if(!StringUtils.isEmpty(msg)) {
-            String[] strs = message.getPayload().split(",");
-            if(strs !=null && strs.length == 4) {
-            	String cmd = strs[0];
-            	String admin = strs[1];
-            	String inquiryWriter = strs[2];
-            	String ino = strs[3];
-            	
-            	WebSocketSession adminSession =  memberSessions.get(admin);
-            	if("reply".equals(cmd) && adminSession != null) {
-            		TextMessage tmpMsg = new TextMessage(ino + "번 문의글에 " + admin + "가 답변을 남겼습니다.");
-            		adminSession.sendMessage(tmpMsg);
-            	}
-            	}
-            } 
-        }
-    }
-
-    @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-    	sessions.remove(session);
-        
-    }
-
-    private String getId(WebSocketSession session) {
-        // WebSocketSession의 attributes에서 사용자 정보를 가져옴
-        Map<String, Object> attributes = session.getAttributes();
-        String loginUserId = (String) attributes.get("loginUserId"); // "loginUserId"는 세션에 저장된 키 이름
-        return loginUserId != null ? loginUserId : session.getId(); // 값이 없으면 WebSocketSession의 id 반환
-    }
+   
 }

@@ -33,9 +33,7 @@
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/semantic.min.css"/>
 
 	
-	<!-- 실시간 알림 관련 라이브러리 연동구문(CDN) -->
-	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-
+	
 
 </head>
 <body>
@@ -145,7 +143,7 @@
 						        notificationCount.textContent = unreadCount;
 						        notificationCount.style.display = unreadCount > 0 ? 'inline-block' : 'none';
 						    }
-						
+							
 						    // 초기 알림 개수 설정
 						    updateNotificationCount();
 						
@@ -168,6 +166,42 @@
 						        updateNotificationCount();
 						    }, 10000); // 10초마다 새 알림 추가 (테스트용)
 						});
+						
+					    
+						// 웹소켓 객체를 담을 전역변수
+						let socket2;
+						
+						$(function(){
+							connect2();
+						});
+						
+						// 접속용 함수
+						function connect2() {
+							
+							// 접속할 주소
+							let url = "ws://localhost:80/blb/noty.blb";
+							
+							socket2 = new WebSocket(url);
+							// > 객체가 생성된 동시에 채팅방에 입장됨!!
+							
+							socket2.onopen = function() {
+								console.log("연결 완료!");
+							};
+							
+							socket2.onclose = function() {
+								console.log("연결 종료!");
+							};
+							
+							socket2.onerror = function() {
+								console.log("에러 발생!");
+							};
+							
+							socket2.onmessage = function(e) {
+								
+								console.log("메세지 전송 완료");
+							};
+							
+						}
 						</script>
 						
 						
