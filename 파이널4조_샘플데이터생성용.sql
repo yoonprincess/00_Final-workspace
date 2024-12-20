@@ -939,7 +939,7 @@ END;
 
 -- 주문 샘플 데이터 --
 BEGIN
-    FOR order_no IN 1..100 LOOP
+    FOR order_no IN 1..15 LOOP
         INSERT INTO TB_ORDER (
             ORDER_NO, 
             RCVR_NAME, 
@@ -1080,103 +1080,13 @@ BEGIN
 END;
 /
 
--- 마이페이지 조회용 order, product_order 샘플데이터----
-INSERT INTO TB_ORDER(ORDER_NO,
-                     RCVR_NAME,
-                     RCVR_PHONE,
-                     RCVR_ADDRESS,
-                     DLVR_STATUS,
-                     DLVR_FEE,
-                     DLVR_COMPANY,
-                     ORDER_TOTAL_AMT,
-                     PAYMENT_METHOD,
-                     ORDER_DATE,
-                     MEMBER_ID)
-        VALUES(SEQ_ORDER_NO.NEXTVAL,
-               '홍길동',
-               '01088889999',
-               '선유도공원',
-               '배송완료',
-                0,
-               '우체국택배',
-                35800,
-                '신용카드',
-                TO_DATE('2024-11-11', 'YYYY-MM-DD'),
-                'user01' );
-                   
-INSERT INTO TB_ORDER(ORDER_NO,
-                     RCVR_NAME,
-                     RCVR_PHONE,
-                     RCVR_ADDRESS,
-                     DLVR_STATUS,
-                     DLVR_FEE,
-                     DLVR_COMPANY,
-                     ORDER_TOTAL_AMT,
-                     PAYMENT_METHOD,
-                     ORDER_DATE,
-                     MEMBER_ID)
-        VALUES(SEQ_ORDER_NO.NEXTVAL,
-                    '홍길동',
-                    '01088889999',
-                    '선유도공원',
-                    '배송완료',
-                     0,
-                    '우체국택배',
-                    63600,
-                   '신용카드',
-                   TO_DATE('2024-11-21', 'YYYY-MM-DD'),
-                   'user01' );
-    
-                   
- INSERT INTO TB_PRODUCT_ORDER(SERIAL_NO,
-                             ORDER_QTY,
-                             TOTAL_AMT,
-                             ORDER_NO,
-                             OPT_NO)
-        VALUES(SEQ_SERIAL_NO.NEXTVAL,
-                    2,
-                    35800,
-                    1,
-                    1 );    
-                    
-INSERT INTO TB_PRODUCT_ORDER(SERIAL_NO,
-                             ORDER_QTY,
-                             TOTAL_AMT,
-                             ORDER_NO,
-                             OPT_NO)
-        VALUES(SEQ_SERIAL_NO.NEXTVAL,
-                    1,
-                    12900,
-                    2,
-                    2 );  
-                    
-INSERT INTO TB_PRODUCT_ORDER(SERIAL_NO,
-                             ORDER_QTY,
-                             TOTAL_AMT,
-                             ORDER_NO,
-                             OPT_NO)
-        VALUES(SEQ_SERIAL_NO.NEXTVAL,
-                    2,
-                    35800,
-                    2,
-                    1 ); 
-INSERT INTO TB_PRODUCT_ORDER(SERIAL_NO,
-                             ORDER_QTY,
-                             TOTAL_AMT,
-                             ORDER_NO,
-                             OPT_NO)
-        VALUES(SEQ_SERIAL_NO.NEXTVAL,
-                    1,
-                    14900,
-                    2,
-                    57);   
-                    
+
 -- 상품 주문 데이터 생성 (ORDER_NO 기준 1옵션당 1주문)
 BEGIN
     -- ORDER_NO를 기준으로 상품 주문 데이터 삽입
     FOR order_rec IN (SELECT DISTINCT ORDER_NO FROM TB_ORDER) LOOP
         -- 상품 주문 생성: 하나의 ORDER_NO당 여러 옵션을 추가
-        FOR opt_no IN 50..72 LOOP
+        FOR opt_no IN 70..72 LOOP
             INSERT INTO TB_PRODUCT_ORDER VALUES(
                 SEQ_SERIAL_NO.NEXTVAL, -- SERIAL_NO
                 1,                     -- 주문 수량
@@ -1229,7 +1139,6 @@ BEGIN
     COMMIT;
 END;
 /
-
 -- 리뷰 작성용 상품 주문 데이터 생성 (34, 35, 36 상품에 주문정보 추가)
 BEGIN
     -- ORDER_NO를 기준으로 상품 주문 데이터 삽입
@@ -1249,5 +1158,6 @@ BEGIN
     COMMIT; -- 변경 사항 저장
 END;
 /
+
 
 COMMIT;
