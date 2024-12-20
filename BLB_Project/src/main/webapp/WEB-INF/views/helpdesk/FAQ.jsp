@@ -73,8 +73,9 @@
             </div>
             <div class="card-content">
                 <div class="faq-grid" id="faqGrid">
-                    <!-- FAQ items will be dynamically inserted here -->
-                </div>
+				    <!-- FAQ 항목이 JavaScript로 추가됩니다. -->
+				</div>
+
             </div>
         </div>
     </div>

@@ -21,38 +21,33 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // FAQ 항목 로드 함수
-    function loadFAQs(category) {
-        const faqs = {
-           product: [
-                { question: '상품의 색상은 어떻게 선택하나요?', answer: '상품 상세 페이지에서 색상 옵션을 선택할 수 있습니다.', category: 'product' },
-                { question: '상품의 사이즈는 어떻게 확인하나요?', answer: '사이즈 가이드를 참고하여 적절한 사이즈를 선택할 수 있습니다.', category: 'product' },
-                { question: '상품이 품절이면 어떻게 되나요?', answer: '품절된 상품은 재입고 알림을 신청하면 재입고 시 알림을 받으실 수 있습니다.', category: 'product' },
-                { question: '상품의 가격은 언제 변경되나요?', answer: '가격은 프로모션이나 할인에 따라 변동될 수 있습니다. 항상 상품 페이지에서 최신 가격을 확인해주세요.', category: 'product' },
-                { question: '상품을 교환할 수 있나요?', answer: '상품 수령 후 7일 이내에 교환이 가능합니다. 자세한 사항은 교환 정책을 참조해주세요.', category: 'product' }
-            ],
-            delivery: [
-                { question: '배송은 얼마나 걸리나요?', answer: '2-3일 소요됩니다.', category: 'delivery' },
-                { question: '배송 상태는 어떻게 확인하나요?', answer: '배송 추적 페이지에서 확인 가능합니다.', category: 'delivery' },
-                { question: '배송비는 얼마인가요?', answer: '주문 금액에 따라 달라집니다.', category: 'delivery' },
-                { question: '배송 중 주소 변경이 가능한가요?', answer: '배송 전까지 주소 변경이 가능합니다.', category: 'delivery' },
-                { question: '해외 배송이 가능한가요?', answer: '현재는 국내 배송만 가능합니다.', category: 'delivery' }
-            ],
-            order: [
-                { question: '반품 절차는 어떻게 되나요?', answer: '고객센터로 연락 주시면 안내 드립니다.', category: 'order' },
-                { question: '주문 상태는 어떻게 확인하나요?', answer: '주문 내역에서 확인 가능합니다.', category: 'order' },
-                { question: '주문을 취소하고 싶은데 어떻게 해야 하나요?', answer: '주문 후 30분 이내에 취소 가능합니다.', category: 'order' },
-                { question: '주문이 정상적으로 처리되지 않았습니다. 어떻게 해야 하나요?', answer: '고객센터로 문의 바랍니다.', category: 'order' },
-                { question: '배송 전 주소 변경이 가능한가요?', answer: '배송 전까지 주소 변경이 가능합니다.', category: 'order' }
-            ],
-            payment: [
-                { question: '결제 방법은 어떤 것이 있나요?', answer: '신용카드, 무통장입금, 간편결제 등이 가능합니다.', category: 'payment' },
-                { question: '결제 오류가 발생했습니다. 어떻게 해야 하나요?', answer: '결제 오류 발생 시 고객센터로 문의해주세요.', category: 'payment' },
-                { question: '결제 금액이 잘못되었습니다. 수정이 가능한가요?', answer: '고객센터로 문의주시면 확인 후 수정해드립니다.', category: 'payment' },
-                { question: '간편 결제 방법은 무엇인가요?', answer: '카카오페이, 네이버페이 등의 간편 결제 수단을 이용할 수 있습니다.', category: 'payment' },
-                { question: '결제 완료 후 영수증을 받을 수 있나요?', answer: '결제 후 영수증은 이메일로 발송됩니다.', category: 'payment' }
-            ]
-        };
+    const faqData = [
+    { question: "회원 가입은 어떻게 하나요?", answer: "상단 메뉴에서 '회원가입' 버튼을 클릭하여 필수 정보를 입력하면 회원 가입이 완료됩니다." },
+    { question: "비밀번호를 잊어버렸습니다. 어떻게 해야 하나요?", answer: "로그인 화면에서 '비밀번호 찾기'를 클릭하여 이메일 인증 후 비밀번호를 재설정할 수 있습니다." },
+    { question: "배송 기간은 얼마나 걸리나요?", answer: "보통 주문 후 2~3일 이내에 상품을 받아보실 수 있습니다. 지역에 따라 차이가 있을 수 있습니다." },
+    { question: "구매한 상품을 반품하고 싶어요.", answer: "고객센터로 연락하시거나 반품 신청 페이지를 통해 접수하시면 됩니다. 자세한 안내는 고객센터에서 확인하세요." },
+    { question: "환불은 얼마나 걸리나요?", answer: "환불 처리는 반품 확인 후 3~5일 이내에 완료됩니다. 결제 수단에 따라 차이가 있을 수 있습니다." },
+    { question: "포인트 사용은 어떻게 하나요?", answer: "결제 페이지에서 포인트 사용 옵션을 선택하여 보유 포인트를 사용할 수 있습니다." },
+    { question: "문의사항이 있습니다. 어떻게 연락하나요?", answer: "상단 'CONTACT' 메뉴에서 전화 문의 또는 이메일로 문의하실 수 있습니다." },
+    { question: "상품 품절 시 재입고 알림을 받을 수 있나요?", answer: "상품 페이지에서 '재입고 알림 신청' 버튼을 클릭하면 알림을 받을 수 있습니다." },
+    { question: "회원 탈퇴는 어떻게 하나요?", answer: "마이페이지에서 '회원 탈퇴'를 클릭하여 절차를 진행할 수 있습니다. 탈퇴 후에는 계정 복구가 불가능합니다." },
+    { question: "배송 주소를 변경하고 싶어요.", answer: "주문 완료 후 배송 주소 변경은 고객센터로 문의해 주시기 바랍니다." }
+];
+
+const faqGrid = document.getElementById('faqGrid');
+
+faqData.forEach(item => {
+    const faqItem = document.createElement('div');
+    faqItem.classList.add('faq-item');
+
+    faqItem.innerHTML = `
+        <h4 class="faq-question">Q. ${item.question}</h4>
+        <p class="faq-answer">${item.answer}</p>
+    `;
+
+    faqGrid.appendChild(faqItem);
+});
+    
 
         // FAQ 리스트 초기화
         faqList.innerHTML = '';
