@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,18 +24,18 @@
    <%@ include file="/WEB-INF/views/member/menubar.jsp" %>
     <div class="container">
       	<div class="tabs">
-            	<div class="tab">상품정보</div>
+            	<div class="tab">상세정보</div>
         </div>
         <div class="order-info">
-            <div class="order-date">구매일자 : <span>2024.09.14</span></div>
-            <div class="order-type">주문번호 : <span>1</span></div>
+            <div class="order-date">구매일자 : <span>${olist[0].orderDate}</span></div>
+            <div class="order-type">주문번호 : <span>${olist[0].orderNo}</span></div>
         </div>
 
         <section class="product-list">
             <table>
                 <thead>
                     <tr>
-                        <th>상품명</th>
+                        <th style="text-align : center;">상품명</th>
                         <th>판매가</th>
                         <th>수량</th>
                         <th>구매가</th>
@@ -42,21 +43,42 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="product-info">
-                            <div class="product-image">
-                                <img src="/placeholder.svg" alt="제품 이미지">
-                            </div>
-                            <div class="product-details">
-                                <p class="brand">웨이크메이크</p>
-                                <p class="name">[NEW] 웨이크메이크 워터 글로우 프릭틴트</p>
-                            </div>
-                        </td>
-                        <td>36,000원</td>
-                        <td>1</td>
-                        <td>25,200원</td>
-                        <td>매장구매위시</td>
-                    </tr>
+                
+                <c:forEach var="order" items="${olist}">
+                 <c:forEach var="productOrder" items="${order.productOrder}">
+            		<c:forEach var="option" items="${productOrder.option}">
+            		<c:forEach var ="product" items="${option.product}">
+	                    <tr>
+	                 
+	                        <td class="product-info">
+	                            <a href="detail.pr?pno=${product.prodNo}">
+	                            <div class="product">
+		                            <div class="product-image">
+										<img src="${request.contextPath}/${product.thumbImg}" alt="${product.prodName}">
+		                            </div>
+		                            <div class="product-details">
+		                                <p class="name">${product.prodName}</p>
+		                                <p class="option">옵션 | ${option.optName}</p>
+		                            </div>
+		                         </div>
+	                            </a>
+	                        </td>
+	                     
+	                        <td>
+	                        	<fmt:formatNumber value="${product.prodPrice}" type="number"/><span class="unit">원</span>
+	                        </td>
+	                        <td>${productOrder.orderQty}</td>
+	                        <td>
+	                        	<fmt:formatNumber value="${productOrder.totalAmt}" type="number"/><span class="unit">원</span>	
+	                        </td>
+	                        <td>
+	                        	<fmt:formatNumber value="${fn:substringBefore(Math.floor(productOrder.totalAmt * 0.01), '.')}" type="number" /> p
+	                        </td>
+	                    </tr>
+	                    </c:forEach>
+                     </c:forEach>
+                   </c:forEach>
+                  </c:forEach>
                 </tbody>
             </table>
         </section>
@@ -66,7 +88,9 @@
 		    <div class="payment-grid">
 		        <div class="payment-column">
 		            <div class="column-title">총상품금액</div>
-		            <div class="amount">25,200<span class="unit">원</span></div>
+		            <div class="amount">
+		            	<fmt:formatNumber value="${olist[0].orderTotalAmt}" type="number"/>	<span class="unit">원</span>
+		            </div>
 		        </div>
 		        <div class="payment-column">
 		            <div class="column-title">쿠폰할인금액</div>
@@ -74,7 +98,9 @@
 		        </div>
 		        <div class="payment-column">
 		            <div class="column-title">결제</div>
-		            <div class="amount">25,200<span class="unit">원</span></div>
+		            <div class="amount">
+		            	<fmt:formatNumber value="${olist[0].orderTotalAmt}" type="number"/>	<span class="unit">원</span>
+		            </div>
 		            <div class="payment-details">
 		                <div class="detail-row">
 		                    <span class="detail-label">└ 적립금</span>
@@ -91,14 +117,56 @@
 		<section class="total-payment">
 		    <div class="total-row">
 		        <span class="total-label">총 결제금액</span>
-		        <span class="total-amount">25,200<span class="unit">원</span></span>
+		        <span class="total-amount">
+		        	<fmt:formatNumber value="${olist[0].orderTotalAmt}" type="number"/>	<span class="unit">원</span>
+		        </span>
 		    </div>
 		</section>
-
+		<c:if test="${not empty olist[0].refundDate}">
+		<section class="payment-info">
+		    <h2>환불 정보</h2>
+		    <div class="payment-grid">
+		        <div class="payment-column">
+		            <div class="column-title">총상품금액</div>
+		            <div class="amount">
+		            	<fmt:formatNumber value="${olist[0].orderTotalAmt}" type="number"/>	<span class="unit">원</span>
+		            </div>
+		        </div>
+		        <div class="payment-column">
+		            <div class="column-title">쿠폰할인금액</div>
+		            <div class="amount">0<span class="unit">원</span></div>
+		        </div>
+		        <div class="payment-column">
+		            <div class="column-title">결제</div>
+		            <div class="amount">
+		            	<fmt:formatNumber value="${olist[0].orderTotalAmt}" type="number"/>	<span class="unit">원</span>
+		            </div>
+		            <div class="payment-details">
+		                <div class="detail-row">
+		                    <span class="detail-label">└ 적립금</span>
+		                    <span class="detail-amount">6,180원</span>
+		                </div>
+		                <div class="detail-row">
+		                    <span class="detail-label">└ 신용카드</span>
+		                    <span class="detail-amount">19,020원</span>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</section>
+		<section class="total-payment">
+		    <div class="total-row">
+		        <span class="total-label">총 환불금액</span>
+		        <span class="total-amount">
+		        	<fmt:formatNumber value="${olist[0].orderTotalAmt}" type="number"/>	<span class="unit">원</span>
+		        </span>
+		    </div>
+		</section>
+		</c:if>
         <p class="notice">* 매장에서 구매하신 상품의 교환 및 환불은 온라인 구매확인증으로 불가능합니다.</p>
 		
 		<div class="btn-container">
-			<button class="confirm-btn" >확인</button>
+			<button class="confirm-btn" onclick="history.back()" >확인</button>
 		</div>
         
       </div>

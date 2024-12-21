@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+
+
  // 기본 날짜 설정 함수
     function setDefaultParams() {
         const today = new Date();
@@ -186,3 +188,27 @@ $(document).ready(function() {
     
   
 });
+
+// 배송상태 필터링 
+function filterStatus() {
+        var filterValue = document.getElementById("statusFilter").value;
+        var rows = document.querySelectorAll("tr");  
+        
+        rows.forEach(function(row) {
+            var statusCell = row.querySelector(".status");  // 각 행의 .status 클래스 선택
+            if (statusCell) {
+                var statusText = statusCell.textContent.trim();  // 상태 텍스트 가져오기
+
+                if (filterValue === "all" || statusText.includes(filterValue)) {
+                    row.style.display = "";  // 상태가 일치하면 행을 표시
+                } else {
+                    row.style.display = "none";  // 일치하지 않으면 행을 숨김
+                }
+            }
+        });
+    }
+    
+    document.addEventListener("DOMContentLoaded", function() {
+     filterStatus();
+});
+

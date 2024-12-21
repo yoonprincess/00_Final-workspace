@@ -31,8 +31,9 @@
              <a  class="sub-menu-link" href="${ pageContext.request.contextPath }/list.ct">
              	 <div class="sub-menu-item" >장바구니</div>
             	</a>
-            	
-             <div class="sub-menu-item" >찜한리스트</div>
+             <a class="sub-menu-link" href="${ pageContext.request.contextPath }/wishList.me">	
+             	<div class="sub-menu-item" >찜한리스트</div>
+             </a>
          </div>
          <br>
          <hr class="custom-hr"> <hr class="custom-hr">

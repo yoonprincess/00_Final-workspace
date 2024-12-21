@@ -1,16 +1,20 @@
 package com.mig.blb.member.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.member.model.dao.MemberDao;
 import com.mig.blb.member.model.vo.CertEmail;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
+import com.mig.blb.product.model.vo.Product;
 
 //@Component
 @Service // Service 역할을 해주는 빈으로 등록할 것임을 명시한다!
@@ -151,6 +155,24 @@ public class MemberServiceImpl implements MemberService {
 	    } else {
 	        return 0; 
 	    }
+	}
+	@Override
+	public int myWishListCount(String memberId) {
+		
+		return memberDao.myWishListCount(sqlSession,memberId);
+	}
+	@Override
+	public ArrayList<Product> selectMyWishList(String memberId, PageInfo pi) {
+		return memberDao.selectMyWishList(sqlSession,memberId,pi);
+	}
+	@Override
+	public ArrayList<Product> selectMyWishTop4(String memberId) {
+		
+		return memberDao.selectMyWishTop4(sqlSession,memberId);
+	}
+	@Override
+	public int deleteWish(int prodNo) {
+		return memberDao.deleteWish(sqlSession,prodNo);
 	}
 
 }

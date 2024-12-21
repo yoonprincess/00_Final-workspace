@@ -16,11 +16,11 @@ public interface OrderService {
 	// 마이페이지용 주문, 배송 게시글 수
 	int myOrderListCount(HashMap<String, Object> dateMap);
 	
-	// 마이페이지용 주문,배송 목록 조회
-	ArrayList<Order> selectMyOrderList(HashMap<String, Object> dateMap, PageInfo pi);
-	
 	// 마이페이지용 주문,배송상태 갯수 조회
 	HashMap<String, Integer> myOrderCounts(String memberId);
+	
+	// 마이페이지용 내 주문,배송 목록조회 
+	ArrayList<Order> selectAllMyOrders(HashMap<String, Object> dateMap);
 
 	// TB_ORDER 테이블에서 채번한 ORDER_NO 조회
 	int selectOrderNo();
@@ -34,8 +34,8 @@ public interface OrderService {
 	// PRODUCT_ORDER
 	List<ProductOrder> selectProductOrderList(int orderNo);
 
-	// 마이페이지용 목록조회 2 
-	ArrayList<Order> selectAllMyOrders(HashMap<String, Object> dateMap);
+	// 내 주문,배송 상세조회
+	ArrayList<Order> selectMyOrder(String orderNo);
 	
 	
 }

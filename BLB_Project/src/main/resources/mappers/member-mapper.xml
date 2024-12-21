@@ -265,6 +265,7 @@
 	<!-- 마이페이지용 내 주문배송조회 (날짜별 생각말고 다뽑아오기)-->
 	<select id="selectAllMyOrders" parameterType="hashmap" resultMap="orderResultSet">
 		SELECT O.ORDER_NO,
+			   O.REFUND_DATE,
 	           TO_CHAR(O.ORDER_DATE,'YYYY-MM-DD') AS "ORDER_DATE",
 	           SUM(O.ORDER_TOTAL_AMT) AS "ORDER_TOTAL_AMT",
                PO.TOTAL_AMT,
@@ -293,53 +294,12 @@
 	   WHERE MEMBER_ID = #{memberId}
 	   AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
 	   AND PA.THUMB_PATH IS NOT NULL
-	    GROUP BY O.ORDER_NO, O.ORDER_DATE, O.DLVR_STATUS, PO.TOTAL_AMT
+	    GROUP BY O.ORDER_NO, O.REFUND_DATE,O.ORDER_DATE, O.DLVR_STATUS, PO.TOTAL_AMT
 	    		,P.PROD_NAME, OP.OPT_NAME, PA.THUMB_PATH, PA.SAVE_FILE_NAME
 	    		,OP.OPT_NO,P.PROD_NO
 	  ORDER BY O.ORDER_DATE DESC
 	 
 	</select>
-	
-	
-	<!-- 마이페이지용 내 주문배송조회 -->
-	<select id="selectMyOrderList" parameterType="hashmap" resultMap="orderResultSet">
-		SELECT O.ORDER_NO,
-	           TO_CHAR(O.ORDER_DATE,'YYYY-MM-DD') AS "ORDER_DATE",
-	           SUM(O.ORDER_TOTAL_AMT) AS "ORDER_TOTAL_AMT",
-               PO.TOTAL_AMT,
-	           O.DLVR_STATUS,
-	           P.PROD_NAME,
-	           P.PROD_NO,
-	           SUM(PO.ORDER_QTY)AS "ORDER_QTY",
-	           OP.OPT_NAME,
-               OP.OPT_NO,
-	           'blb'|| PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
-	   FROM TB_ORDER O
-	   JOIN TB_PRODUCT_ORDER PO ON PO.ORDER_NO = O.ORDER_NO
-	   JOIN TB_OPTION OP ON OP.OPT_NO = PO.OPT_NO
-	   JOIN TB_PRODUCT P ON P.PROD_NO = OP.PROD_NO
-	 LEFT JOIN  (
-			      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
-			        FROM TB_PRODUCT_ATTACHMENT
-			       WHERE (PROD_NO, PROD_ATT_NO) IN (
-			           SELECT PROD_NO, MIN(PROD_ATT_NO)
-			             FROM TB_PRODUCT_ATTACHMENT
-			            WHERE PROD_ATT_STATUS = 'Y'
-			              AND THUMB_PATH IS NOT NULL
-			            GROUP BY PROD_NO
-			       )
-			  ) PA ON PA.PROD_NO = P.PROD_NO
-	   WHERE MEMBER_ID = #{memberId}
-	   AND O.ORDER_DATE BETWEEN #{startDate} AND #{endDate}
-	   AND PA.THUMB_PATH IS NOT NULL
-	    GROUP BY O.ORDER_NO, O.ORDER_DATE, O.DLVR_STATUS, PO.TOTAL_AMT
-	    		,P.PROD_NAME, OP.OPT_NAME, PA.THUMB_PATH, PA.SAVE_FILE_NAME
-	    		,OP.OPT_NO,P.PROD_NO
-	  ORDER BY O.ORDER_DATE DESC
-	  LIMT #{limit} OFFSET #{offset}
-	</select>
-	
-	
 	
 	<select id="selectInquiryListTop4" resultMap="inquiryResultSet" parameterType="string">
 		SELECT *
@@ -354,10 +314,57 @@
 		                FROM TB_INQUIRY I
 		                WHERE INQUIRY_STATUS = 'Y'
 		                 AND MEMBER_ID = #{memberId}
+		                 AND INQUIRY_TYPE &lt;&gt; '상품'
 		                ORDER BY INQUIRY_NO DESC
 		            ) A 
 		   )
 		    WHERE RNUM &lt;= 4 
+	</select>
+	
+	<select id="selectProdQnaTop4" resultMap="inquiryResultSet" parameterType="string">
+		SELECT *
+		   FROM ( 
+		        SELECT ROWNUM AS RNUM, A.* 
+		        FROM ( 
+		                SELECT INQUIRY_NO 
+		                , INQUIRY_ANSWERED_YN 
+		                , INQUIRY_CONTENT
+		                , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD') AS "INQUIRY_CREATE_DATE"
+		                , INQUIRY_TYPE
+		                FROM TB_INQUIRY I
+		                WHERE INQUIRY_STATUS = 'Y'
+		                 AND MEMBER_ID = #{memberId}
+		                 AND INQUIRY_TYPE = '상품'
+		                ORDER BY INQUIRY_NO DESC
+		            ) A 
+		   )
+		    WHERE RNUM &lt;= 4 
+	</select>
+	
+	<select id="selectMyWishTop4" resultMap="productResultSet" parameterType="string">
+	SELECT * FROM (
+    SELECT P.PROD_NAME,
+           P.PROD_NO,
+           P.PROD_PRICE,
+           PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
+      FROM TB_WISHI W
+      JOIN TB_PRODUCT P ON P.PROD_NO = W.PROD_NO
+ LEFT JOIN (
+        SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+          FROM TB_PRODUCT_ATTACHMENT
+         WHERE (PROD_NO, PROD_ATT_NO) IN (
+            SELECT PROD_NO, MIN(PROD_ATT_NO)
+              FROM TB_PRODUCT_ATTACHMENT
+             WHERE PROD_ATT_STATUS = 'Y'
+               AND THUMB_PATH IS NOT NULL
+             GROUP BY PROD_NO
+            )
+         ) PA ON PA.PROD_NO = P.PROD_NO
+	    WHERE MEMBER_ID = #{memberId}
+	      AND PA.THUMB_PATH IS NOT NULL
+	    ORDER BY DBMS_RANDOM.VALUE
+	)
+	WHERE ROWNUM &lt;= 4
 	</select>
 	
 	<select id="selectDeliveryList" parameterType="string" resultMap="deliveryResultSet">
@@ -366,11 +373,11 @@
 	 WHERE MEMBER_ID = #{memberId}	
 	</select>
 	
-	<select id="deleteDelivery" parameterType="int" resultMap="deliveryResultSet">
+	<delete id="deleteDelivery" parameterType="int">
 		DELETE 
 		  FROM TB_DELIVERY
 		 WHERE DELI_CODE = #{deliCode}	
-	</select>
+	</delete>
 	
 	<select id="selectMemberDelivery" parameterType="_int" resultMap="deliveryResultSet">
 		SELECT *
@@ -414,7 +421,9 @@
 	<select id="myOrderCounts" parameterType="string" resultType="java.util.HashMap">
 		SELECT
 	        COUNT(CASE WHEN DLVR_STATUS = '배송대기' THEN 1 END) AS WAIT,
-	        COUNT(CASE WHEN DLVR_STATUS = '배송완료' THEN 1 END) AS COMPLETE
+	        COUNT(CASE WHEN DLVR_STATUS = '배송완료' THEN 1 END) AS COMPLETE,
+	        COUNT(CASE WHEN DLVR_STATUS = '배송중' THEN 1 END) AS DELIVERY,
+	        COUNT(CASE WHEN DLVR_STATUS = '배송취소' THEN 1 END) AS CANCEL
 	    FROM TB_ORDER
 	    WHERE MEMBER_ID = #{memberId}
 	</select>
@@ -465,7 +474,7 @@
 		 WHERE R.REV_STATUS = 'Y'
            AND R.MEMBER_ID= #{memberId}
            AND PA.THUMB_PATH IS NOT NULL
-		ORDER BY O.ORDER_DATE DESC
+		ORDER BY R.REV_ENROLL_DATE DESC
 	</select>
 	
 	<select id="myProdQnaListCount" parameterType="string" resultType="_int">
@@ -475,7 +484,7 @@
 		     AND INQUIRY_STATUS =  'Y'
              AND INQUIRY_TYPE= '상품'
 	</select>
-	
+	<!-- 
 	<select id="selectMyProdQnaList" parameterType="string" resultType="java.util.HashMap">
 	SELECT R.REV_NO
 		     , R.REV_CONTENT
@@ -499,4 +508,74 @@
            AND PA.THUMB_PATH IS NOT NULL
 		ORDER BY O.ORDER_DATE DESC
 	</select>
+	 -->
+	<select id="selectMyOrder" parameterType="string" resultMap="orderResultSet">
+		SELECT O.ORDER_NO,
+			   O.REFUND_DATE,
+		       O.ORDER_DATE,
+		       SUM(O.ORDER_TOTAL_AMT) AS "ORDER_TOTAL_AMT",
+	           PO.TOTAL_AMT,
+		       O.DLVR_STATUS,
+	           O.DLVR_FEE,
+	           O.PAYMENT_METHOD,
+		       P.PROD_NAME,
+		       P.PROD_NO,
+		       PO.ORDER_QTY,
+		       OP.OPT_NAME,
+		       P.PROD_PRICE,
+		       'blb'|| PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
+		   FROM TB_ORDER O
+	  LEFT JOIN TB_PRODUCT_ORDER PO ON PO.ORDER_NO = O.ORDER_NO
+	  LEFT JOIN TB_OPTION OP ON OP.OPT_NO = PO.OPT_NO
+	  LEFT JOIN TB_PRODUCT P ON P.PROD_NO = OP.PROD_NO
+	  LEFT JOIN  (
+			      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+			        FROM TB_PRODUCT_ATTACHMENT
+			       WHERE (PROD_NO, PROD_ATT_NO) IN (
+			           SELECT PROD_NO, MIN(PROD_ATT_NO)
+			             FROM TB_PRODUCT_ATTACHMENT
+			            WHERE PROD_ATT_STATUS = 'Y'
+			              AND THUMB_PATH IS NOT NULL
+			            GROUP BY PROD_NO
+			       		)
+				  ) PA ON PA.PROD_NO = P.PROD_NO
+	     WHERE O.ORDER_NO = #{orderNo}
+		   AND PA.THUMB_PATH IS NOT NULL
+		 GROUP BY  O.ORDER_NO, O.REFUND_DATE, O.ORDER_DATE, PO.TOTAL_AMT, O.DLVR_STATUS,
+         		   PO.ORDER_QTY, P.PROD_PRICE, P.PROD_NAME, P.PROD_NO, OP.OPT_NAME, 
+        		   PA.THUMB_PATH, PA.SAVE_FILE_NAME, O.DLVR_FEE, O.PAYMENT_METHOD
+	</select>
+	
+	<select id="myWishListCount" parameterType="string" resultType="int">
+		SELECT COUNT(*)
+		  FROM TB_WISHI
+		 WHERE MEMBER_ID = #{memberId}  
+	</select>
+	
+	<select id="selectMyWishList" parameterType="string" resultMap="productResultSet">
+	SELECT P.PROD_NAME,
+       	   P.PROD_NO,
+           P.PROD_PRICE,
+           PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
+	       FROM TB_WISHI W
+	   JOIN TB_PRODUCT P ON P.PROD_NO = W.PROD_NO
+  LEFT JOIN  (
+		      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+		        FROM TB_PRODUCT_ATTACHMENT
+		       WHERE (PROD_NO, PROD_ATT_NO) IN (
+			           SELECT PROD_NO, MIN(PROD_ATT_NO)
+			             FROM TB_PRODUCT_ATTACHMENT
+			            WHERE PROD_ATT_STATUS = 'Y'
+			              AND THUMB_PATH IS NOT NULL
+			            GROUP BY PROD_NO
+        	       )
+			  ) PA ON PA.PROD_NO = P.PROD_NO
+	   WHERE MEMBER_ID = #{memberId}
+	   AND PA.THUMB_PATH IS NOT NULL
+	</select>
+	<delete id="deleteWish" parameterType="_int">
+		DELETE 
+		  FROM TB_WISHI
+		 WHERE PROD_NO = #{prodNo}	
+	</delete>
 </mapper>

@@ -46,7 +46,7 @@
                       </div>
                       <div class="arrow"><i class="fas fa-chevron-right"></i></div>
                       <div class="status-item">
-                          <span class="status-count">0</span>
+                          <span class="status-count">${myOrderDelivery}</span>
                           <span class="status-label">배송중</span>
                       </div>
                       <div class="arrow"><i class="fas fa-chevron-right"></i></div>
@@ -203,7 +203,15 @@
             <th>상품</th>
             <th>수량</th>
             <th>주문금액</th>
-            <th>상태</th>
+            <th style:width=120px;>
+	            <select id="statusFilter" onchange="filterStatus()">
+				    <option value="all">상태</option>
+				    <option value="배송대기">배송대기</option>
+				    <option value="배송완료">배송완료</option>
+				    <option value="배송중">배송중</option>
+				    <option value="환불/취소">환불/취소</option>
+				</select>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -231,7 +239,9 @@
                                 <c:if test="${isFirstRow}">
                                     <td class="date" rowspan="${totalRowspan}" style="text-align :center;">
 	                                    <div>${orderDate}</div>
-	                                    <a href="${ pageContext.request.contextPath }/orderDetail.me" style=" text-decoration: underline; color:#7AB2D3">상세보기</a>
+	                                    <div>주문번호 | ${myOrder.orderNo}</div>
+	                                    <input name="orderNo" type="hidden" value="${myOrder.orderNo}">
+	                                    <a href="${ pageContext.request.contextPath }/orderDetail.me?orderNo=${myOrder.orderNo}" style=" text-decoration: underline; color:#7AB2D3">상세보기</a>
                                     </td>
                                     <c:set var="isFirstRow" value="false"/>
                                 </c:if>
@@ -239,10 +249,20 @@
                                  <a href="detail.pr?pno=${product.prodNo}">
                                     <div class="product">
                                         <img src="${request.contextPath}/${product.thumbImg}" alt="${product.prodName}">
-                                        <div class="product-info">
-                                            <div class="name">${product.prodName}</div>
-                                            <div class="option"><span>옵션 | </span>${option.optName}</div>
-                                        </div>
+                                       <c:choose>
+                                        <c:when test="${not empty myOrder.refundDate}">
+	                                        <div class="product-info" style="color:#ddd;">
+	                                            <div class="name">${product.prodName}</div>
+	                                            <div class="option" style="color:#ddd;"><span>옵션 | </span>${option.optName}</div>
+	                                        </div>
+                                    	</c:when>
+                                    	<c:otherwise>
+	                                    	<div class="product-info">
+	                                            <div class="name">${product.prodName}</div>
+	                                            <div class="option"><span>옵션 | </span>${option.optName}</div>
+		                                    </div>
+		                                </c:otherwise>
+	                                   </c:choose>
                                     </div>
                                   </a>
                                 </td>
@@ -256,7 +276,22 @@
                                 </td>
                                 <td>
                                     <div class="status">
-                                        <span class="delivery-complete">${myOrder.dlvrStatus}</span>
+                                     <c:if test="${not empty myOrder.refundDate}">
+                                      <span class="delivery-cancel" >환불/취소</span>
+									  <p >취소일</p>
+									  <span id="refund-date"> ${myOrder.refundDate}</span>
+									 </c:if>
+									 <c:if test="${empty myOrder.refundDate}">
+                                         <c:if test="${myOrder.dlvrStatus == '배송대기'}">
+									        <span class="delivery-waiting">${myOrder.dlvrStatus}</span>
+									    </c:if>
+									    <c:if test="${myOrder.dlvrStatus == '배송완료'}">
+									        <span class="delivery-complete">${myOrder.dlvrStatus}</span>
+									    </c:if>
+									    <c:if test="${myOrder.dlvrStatus == '배송중'}">
+									        <span class="delivery-other">${myOrder.dlvrStatus}</span>
+									    </c:if>
+									</c:if>
                                     </div>
                                 </td>
                             </tr>

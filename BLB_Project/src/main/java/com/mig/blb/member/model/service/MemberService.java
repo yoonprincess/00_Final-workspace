@@ -1,11 +1,15 @@
 package com.mig.blb.member.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.member.model.vo.CertEmail;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
 import com.mig.blb.order.model.vo.Order;
+import com.mig.blb.product.model.vo.Product;
 
 public interface MemberService {
 
@@ -68,6 +72,15 @@ public interface MemberService {
 	
 	// 기본배송지로 설정
 	int updateDeliDefault(Delivery d);
+	
+	// 찜한 제품 갯수조회용
+	int myWishListCount(String memberId);
+
+	ArrayList<Product> selectMyWishList(String memberId, PageInfo pi);
+
+	ArrayList<Product> selectMyWishTop4(String memberId);
+
+	int deleteWish(int prodNo);
 	
 	
 }

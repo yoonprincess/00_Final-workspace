@@ -33,22 +33,17 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public ArrayList<Order> selectMyOrderList(HashMap<String, Object> dateMap,PageInfo pi ) {
+	public ArrayList<Order> selectAllMyOrders(HashMap<String, Object> dateMap) {
 		
-		return orderDao.selectMyOrderList(sqlSession, dateMap,pi);
+		return orderDao.selectAllMyOrders(sqlSession, dateMap);
 	}
 
 	@Override
 	public HashMap<String, Integer> myOrderCounts(String memberId) {
 		return orderDao.myOrderCounts(sqlSession, memberId);
 	}
-
-	@Override
-	public ArrayList<Order> selectAllMyOrders(HashMap<String, Object> dateMap) {
-		
-		return orderDao.selectAllMyOrders(sqlSession, dateMap);
-	}
 	
+	@Override
 	public int selectOrderNo() {
 		return orderDao.selectOrderNo(sqlSession);
 	}
@@ -66,6 +61,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<ProductOrder> selectProductOrderList(int orderNo) {
 		return orderDao.selectProductOrderList(sqlSession, orderNo);
+	}
+
+	@Override
+	public ArrayList<Order> selectMyOrder(String orderNo) {
+		return orderDao.selectMyOrder(sqlSession, orderNo);
 	}
 	
 }

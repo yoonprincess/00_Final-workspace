@@ -31,6 +31,7 @@ import com.mig.blb.member.model.vo.PageforOrders;
 import com.mig.blb.member.model.vo.PaginationOrders;
 import com.mig.blb.order.model.service.OrderService;
 import com.mig.blb.order.model.vo.Order;
+import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.review.model.service.ReviewService;
 
 @Controller
@@ -63,6 +64,10 @@ public class MyPageController {
 				String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
 				
 				ArrayList<Inquiry> list = inquiryService.selectInquiryListTop4(memberId);
+				ArrayList<Inquiry> qlist = inquiryService.selectProdQnaTop4(memberId);
+				ArrayList<Product> wlist = memberService.selectMyWishTop4(memberId); 
+				
+				
 				
 				HashMap<String, Integer> myOrderCounts = orderService.myOrderCounts(memberId);
 				
@@ -70,9 +75,12 @@ public class MyPageController {
 				
 				
 				mv.addObject("myOrderComplete", myOrderCounts.get("COMPLETE"));
+				mv.addObject("myOrderDelivery", myOrderCounts.get("DELIVERY"));
 				mv.addObject("myOrderWait", myOrderCounts.get("WAIT"));
 				
 				mv.addObject("list", list);
+				mv.addObject("qlist", qlist);
+				mv.addObject("wlist",wlist);
 				
 				session.setAttribute("listCount", listCount); // menubar.jsp 
 
@@ -186,6 +194,7 @@ public class MyPageController {
 
 		    mv.addObject("myOrderComplete", myOrderCounts.get("COMPLETE"));
 			mv.addObject("myOrderWait", myOrderCounts.get("WAIT"));
+			mv.addObject("myOrderDelivery", myOrderCounts.get("DELIVERY"));
 			
 			mv.addObject("pi",po);
 			mv.addObject("myListbyDate",pagedOrdersByDate);
@@ -200,12 +209,20 @@ public class MyPageController {
 	
 	// 주문 상세페이지 요청 
 	@GetMapping("orderDetail.me")
-	public ModelAndView myOrderDetail(ModelAndView mv, HttpSession session) {
+	public ModelAndView myOrderDetail(ModelAndView mv
+								, HttpSession session,
+								@RequestParam(value = "orderNo", required = false) String orderNo) {
 		
 		Member loginUser =(Member)session.getAttribute("loginUser");
 		
 		if( loginUser != null) {
+			//System.out.println(orderNo);
 			
+			ArrayList<Order> olist = orderService.selectMyOrder(orderNo);
+			
+			mv.addObject("olist",olist);
+			
+			//System.out.println(olist);
 			
 			mv.setViewName("member/myOrderDetail");
 			
@@ -479,8 +496,78 @@ public class MyPageController {
 			}
 			return mv;
 		}
-	
-		// 내 상품문의 페이지 요청 
+		
+		// 내가 찜한 목록 페이지요청 
+		@GetMapping("wishList.me")
+		public ModelAndView myWishList(ModelAndView mv,
+										HttpSession session,
+										Member m,						   			 
+			                            @RequestParam(value="ppage", defaultValue="1")int currentPage){
+			
+			Member loginUser =(Member)session.getAttribute("loginUser");
+			
+		    
+			if( loginUser != null) {
+				String memberId = loginUser.getMemberId();
+				
+				// 페이징처리
+				int boardLimit = 10;
+				
+				// 한 번에 보여줄 페이지 수
+				int pageLimit = 5;
+				int listCount = memberService.myWishListCount(memberId);
+				
+				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+				
+				ArrayList<Product> wlist = memberService.selectMyWishList(loginUser.getMemberId(),pi); 
+				mv.addObject("pi",pi);
+				mv.addObject("wlist",wlist);
+				mv.addObject("listCount",listCount);
+				
+				mv.setViewName("member/myWishList");
+				
+			
+			}else {
+				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+				mv.setViewName("/main");
+			}
+			return mv;
+		}
+		
+		// 찜 해제 요청 
+		@PostMapping("deleteWish.me")
+		public ModelAndView deleteWish(ModelAndView mv
+										, HttpSession session
+										, int prodNo){
+			
+			Member loginUser =(Member)session.getAttribute("loginUser");
+			
+			if( loginUser != null) {
+				
+				int result = memberService.deleteWish(prodNo);
+				
+				if (result>0) {
+					
+					session.setAttribute("alertMsg", "찜 해제 !");
+					mv.setViewName("member/myWishList");
+				
+				}else {
+					
+					session.setAttribute("alertMsg", "찜 해제 실패");
+					mv.setViewName("member/myWishList");
+					
+				}
+				
+			}else {
+				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+				mv.setViewName("/main");
+			}
+				
+			return mv;
+		}		
+			
+			
+		/* 내 상품문의 페이지 요청 
 		@GetMapping("productQna.me")
 		public ModelAndView myProdQnaList(ModelAndView mv,
 										HttpSession session,
@@ -567,7 +654,7 @@ public class MyPageController {
 			
 			return null;
 		}
-		
+		*/
 		 
 }
 

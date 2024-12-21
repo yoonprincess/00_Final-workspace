@@ -89,6 +89,10 @@ public class InquiryDao {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectMyProdQnaList", memberId, rowBounds);
 	}
 
+	public ArrayList<Inquiry> selectProdQnaTop4(SqlSessionTemplate sqlSession, String memberId) {
+		return (ArrayList)sqlSession.selectList("memberMapper.selectProdQnaTop4", memberId);
+	}
+
 	
 
 	

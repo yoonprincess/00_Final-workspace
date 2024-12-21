@@ -1,13 +1,18 @@
 package com.mig.blb.member.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.member.model.vo.CertEmail;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
+import com.mig.blb.product.model.vo.Product;
 
 
 @Repository 
@@ -129,8 +134,28 @@ public class MemberDao {
 	
 	}
 
-	
+	public int myWishListCount(SqlSessionTemplate sqlSession, String memberId) {
+		
+		
+		return sqlSession.selectOne("memberMapper.myWishListCount",memberId);
+	}
 
-	
+	public ArrayList<Product> selectMyWishList(SqlSessionTemplate sqlSession, String memberId, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMyWishList",memberId,rowBounds);
+	}
+
+	public ArrayList<Product> selectMyWishTop4(SqlSessionTemplate sqlSession, String memberId) {
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMyWishTop4",memberId);
+	}
+
+	public int deleteWish(SqlSessionTemplate sqlSession, int prodNo) {
+		return sqlSession.delete("memberMapper.deleteWish",prodNo);
+	}
+
 
 }

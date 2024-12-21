@@ -62,7 +62,9 @@
               <div class="section delivery-tracking" style="border : none;">
                   <div class="section-header">
                       <h4>주문/배송 조회</h4>
-                      <button class="more-btn">더보기 &gt;</button>
+                      <button class="more-btn" onclick="location.href='${ pageContext.request.contextPath }/orderList.me'">
+                       더보기 &gt;
+                      </button>
                   </div>
                  
                   <div class="tracking-status">
@@ -97,75 +99,40 @@
               <div class="section likes" style="border : none;">
                   <div class="section-header">
                       <h4>찜한 상품</h4>
-                      <button class="more-btn">더보기 &gt;</button>
+                      	<button class="more-btn" 
+                      			onclick="location.href='${ pageContext.request.contextPath }/wishList.me'">더보기 &gt;</button>
                     </div>
                   <div class="product-grid">
-                      <div class="product-card">
-                          <div class="product-image">
-                              <img src="https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/400/10/0000/0020/A00000020401414ko.jpg?l=ko" alt="한율 어린쑥 클렌징">
-                              <button class="like-btn">♥</button>
-                          </div>
-                          <div class="product-info">
-                              <div class="product-tags">
-                                  <span class="tag">신상</span>
-                                  <span class="tag">베스트픽</span>
-                              </div>
-                              <h3 class="product-name">[시카보다 4배*강한]한율 어린쑥 수분진정 플루이드 125ml</h3>
-                              <div class="product-price">
-                                  <span class="current-price">24,900원</span>
-                                  <span class="original-price">32,000원</span>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="product-card">
-                          <div class="product-image">
-                              <img src="https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/400/10/0000/0018/A00000018374408ko.jpg?l=ko" alt="한율 어린쑥 수분진정 플루이드">
-                              <button class="like-btn">♥</button>
-                          </div>
-                          <div class="product-info">
-                              <div class="product-tags">
-                                  <span class="tag">특가</span>
-                                  <span class="tag">베스트픽</span>
-                              </div>
-                              <h3 class="product-name">[피지흡착] 한율 어린쑥 클렌징 쑥떡팩폼 (120ml+15ml)</h3>
-                              <div class="product-price">
-                                  <span class="current-price">28,500원</span>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0019/A00000019832102ko.jpg?l=ko" alt="에스트라아토베리어로션">
-                            <button class="like-btn">♥</button>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-tags">
-                                <span class="tag">신상</span>
-                                <span class="tag">오늘드림</span>
-                            </div>
-                            <h3 class="product-name">에스트라 아토베리어 365로션 150ml</h3>
-                            <div class="product-price">
-                                <span class="current-price">26,900원</span>
-                                <span class="original-price">33,000원</span>
-                            </div>
-                        </div>
+                  <c:if test="${empty wlist}">
+                   <div style="display: flex; flex-direction: column; align-items: center;">
+                        <span class="material-symbols-outlined" style="font-size:40px;">error</span>
+                        <br>
+                        <div> 찜한 상품이 없습니다. </div>
                     </div>
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0021/A00000021270307ko.jpg?l=ko" alt="풀리 비건 그린 토마토 팩">
-                            <button class="like-btn">♥</button>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-tags">
-                                <span class="tag">특가</span>
-                            </div>
-                            <h3 class="product-name">[단독기획] 풀리 비건 그린 토마토 클레이팩 클렌저 120ml</h3>
-                            <div class="product-price">
-                                <span class="current-price">13,500원</span>
-                                <span class="original-price">33,000원</span>
-                            </div>
-                        </div>
-                    </div>
+                  </c:if>
+                  <c:if test="${not empty wlist}">
+	                  <c:forEach var="wish" items="${wlist}">
+	                      <div class="product-card">
+	                          <div class="product-image">
+	                               <img src="${pageContext.request.contextPath}/${wish.thumbImg}" alt="${wish.prodName}" >
+	                              <button class="like-btn">♥</button>
+	                          </div>
+	                          <div class="product-info">
+	                              <div class="product-tags">
+	                                  <span class="tag">신상</span>
+	                                  <span class="tag">베스트픽</span>
+	                              </div>
+	                              <h3 class="product-name">${wish.prodName}</h3>
+	                              <div class="product-price">
+	                                  <span class="current-price">${wish.prodPrice}</span>
+	                                  <span class="original-price">32,000원</span>
+	                              </div>
+	                          </div>
+	                      </div>
+	                  </c:forEach> 
+                  </c:if>
+                      
+                    
                   </div>
               </div>
       
@@ -210,13 +177,13 @@
 	                  <div class="section inquiry" style="border:none;">
 	                      <div class="section-header">
 	                          <h4>상품 Q&A내역</h4>
-	                          <button class="more-btn" onclick="location.href='${ pageContext.request.contextPath }/productQna.me'">
+	                          <button class="more-btn" onclick="location.href='${ pageContext.request.contextPath }/list.io'">
 	                             더보기 &gt;
 	                          </button>
 	                      </div>
 	                      <div class="qna-list">
-	                     	 <c:if  test="${not empty list}">
-			                    <c:forEach var="list" items="${list}">
+	                     	 <c:if  test="${not empty qlist}">
+			                    <c:forEach var="list" items="${qlist}">
 			                        <div class="qna-item">
 			                          <div class="qna-details">
 			                          <c:choose>
@@ -233,7 +200,7 @@
 			                         </div>
 			                     </c:forEach>
 			                    </c:if>
-			                    <c:if test="${empty list}">
+			                    <c:if test="${empty qlist}">
 			                     	<div  style="display: flex; flex-direction: column; align-items: center;">
 			                          <span class="material-symbols-outlined" style="font-size:40px;">error</span>
 			                          <br>

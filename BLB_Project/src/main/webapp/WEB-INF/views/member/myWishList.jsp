@@ -8,10 +8,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>좋아요 | 뷰라밸 (Beauty Life Balance)</title>
-<link rel="stylesheet" href="resources/css/member//myReviewList.css">
+<title>찜한 리스트 | 뷰라밸 (Beauty Life Balance)</title>
+<link rel="stylesheet" href="resources/css/member//myWishList.css">
 
-<script src="resources/js/member/myReviewList.js" defer></script>   
+<script src="resources/js/member/myWishList.js" defer></script>   
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -23,9 +23,9 @@
              <%@ include file="/WEB-INF/views/member/menubar.jsp" %>
              <div class="container">
               <div class="tabs">
-            	<button class="tab active">나의 리뷰</button>
+            	<button class="tab active">찜한 리스트</button>
          	  </div>
-      	 	  <p class="notice">좋아요 상품은 최대 120일간 보관됩니다.</p>
+      	 	  <p class="notice">찜한 상품은 최대 120일간 보관됩니다.</p>
               <div class="highlight" style="padding:0px 20px;">전체  <span style="color:#7AB2D3; font-weight : 600;">${listCount}</span>건</div>        
        <br>
 	<table class="order-table">
@@ -37,52 +37,58 @@
         </tr>
     </thead>
     <tbody>
-        <c:if test="${empty rlist}">
+        <c:if test="${empty wlist}">
             <tr class="result">
-                <td colspan="3">
+                <td colspan="4">
                     <div style="display: flex; flex-direction: column; align-items: center;">
                         <span class="material-symbols-outlined" style="font-size:40px;">error</span>
                         <br>
-                        <div> 좋아요한 상품이 없습니다. </div>
+                        <div> 찜한 상품이 없습니다. </div>
                     </div>
                 </td>
             </tr>
         </c:if>
 
-        <c:if test="${not empty rlist}">
-            <c:forEach var="" items="">
+        <c:if test="${not empty wlist}">
+            <c:forEach var="wish" items="${wlist}">
                 <tr class="result">
                     <td>
-                      <a href="detail.pr?pno=1">
+                      <a href="detail.pr?pno=${wish.prodName}">
                         <div class="product">
-                          <img src="#" alt="샘플" >
+                          <img src="${pageContext.request.contextPath}/${wish.thumbImg}" alt="${wish.prodName}" >
                         </div>
                      </a>  
                     </td>            
                     <td>
                       <div class="product-info">
-                          <div>한율 어린쑥 수분진정 플루이드 125ml</div>
+                          <div>${wish.prodName}</div>
                       </div>
                     </td>
                     <td>
                         <div>29,500원</div>
-                        <div>28,500원</div>
+                        <div>${wish.prodPrice}</div>
                     </td>
                     <td>
                         <div class="button-group">
-                            <button class="button" onclick="updateReview();">수정하기</button>
+                            <button class="button" onclick="updateReview(${wish.prodNo});">장바구니</button>
                         </div>
                         <div class="button-group">
-                            <button class="button" onclick="updateReview();">리뷰보기</button>
+                            <button class="button" id="delete-wishlist" onclick="deleteWish(${wish.prodNo});">삭제</button>
                         </div>
                     </td>
                 </tr>
             </c:forEach>
         </c:if>
     </tbody>
+    <div id="overlay" class="overlay" >
+	    <div id="modal" class="modal">
+	     <span class="material-symbols-outlined">heart_minus</span>
+        <h1 id="message">찜해제!</h1>
+	    </div>
+	</div>
+	        
 </table>
 	
-	        
 		            <br><br>
 	 <!-- 페이지네이션 -->
 				<nav>
@@ -90,7 +96,7 @@
 						<!-- 이전 페이지 그룹 -->
 						<c:if test="${ pi.startPage > 1 }">
 							<li class="page-item">
-								<a href="reviewList.me?ppage=${ pi.startPage - pi.pageLimit }">
+								<a href="wishList.me?ppage=${ pi.startPage - pi.pageLimit }">
 									＜
 								</a>
 							</li>
@@ -107,7 +113,7 @@
 							</c:if>
 							<c:if test="${ p != pi.currentPage }">
 								<li class="page-item">
-									<a href="reviewList.me?ppage=${ p }">
+									<a href="wishList.me?ppage=${ p }">
 										${ p }
 									</a>
 								</li>
@@ -117,7 +123,7 @@
 						<!-- 다음 페이지 그룹 -->
 						<c:if test="${ pi.endPage < pi.maxPage }">
 							<li class="page-item">
-								<a href="reviewList.me?ppage=${ pi.startPage + pi.pageLimit }">
+								<a href="wishList.me?ppage=${ pi.startPage + pi.pageLimit }">
 									＞
 								</a>
 							</li>

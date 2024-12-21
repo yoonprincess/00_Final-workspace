@@ -80,7 +80,12 @@ public class InquiryServiceImpl implements InquiryService {
 	public ArrayList<Inquiry> selectInquiryListTop4(String memberId) {
 		return inquiryDao.selectInquiryListTop4(sqlSession, memberId);
 	}
-
+	
+	@Override
+	public ArrayList<Inquiry> selectProdQnaTop4(String memberId) {
+		return inquiryDao.selectProdQnaTop4(sqlSession, memberId);
+	}
+	
 	@Override
 	public int myProdQnaListCount(String memberId) {
 		
@@ -93,5 +98,5 @@ public class InquiryServiceImpl implements InquiryService {
 		return inquiryDao. selectMyProdQnaList(sqlSession,memberId,pi);
 	}
 
-	
+
 }

@@ -71,4 +71,9 @@ public class OrderDao {
 	public List<ProductOrder> selectProductOrderList(SqlSessionTemplate sqlSession, int orderNo) {
 		return sqlSession.selectList("orderMapper.selectProductOrderList", orderNo);
 	}
+
+
+	public ArrayList<Order> selectMyOrder(SqlSessionTemplate sqlSession, String orderNo) {
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMyOrder", orderNo);
+	}
 }

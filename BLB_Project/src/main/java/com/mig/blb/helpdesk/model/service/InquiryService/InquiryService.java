@@ -32,6 +32,8 @@ public interface InquiryService {
 
 	ArrayList<Inquiry> selectInquiryListTop4(String memberId);
 	
+	ArrayList<Inquiry> selectProdQnaTop4(String memberId);
+	
 	int myProdQnaListCount(String memberId);
 
 	List<Map<String, Object>> selectMyProdQnaList(String memberId, PageInfo pi);
