@@ -22,7 +22,7 @@ function deleteWish(prodNo){
             setTimeout(function() {
                 $overlay.animate({opacity: 0}, 300, function() {
                     $(this).css('display', 'none');
-                    window.location.href = "wishList.me";
+                    window.location.href = "myPage.me";
                 });
             }, 1000);
         },

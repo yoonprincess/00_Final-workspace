@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>마이페이지 | 뷰라밸 (Beauty Life Balance)</title>
 <link rel="stylesheet" href="resources/css/member/myPage.css">
+<script src="resources/js/member/myPage.js" defer></script>   
  
 <!-- Noto Sans font-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -115,7 +116,7 @@
 	                      <div class="product-card">
 	                          <div class="product-image">
 	                               <img src="${pageContext.request.contextPath}/${wish.thumbImg}" alt="${wish.prodName}" >
-	                              <button class="like-btn">♥</button>
+	                              <button class="like-btn" onclick="deleteWish(${wish.prodNo});">♥</button>
 	                          </div>
 	                          <div class="product-info">
 	                              <div class="product-tags">
@@ -135,6 +136,10 @@
                     
                   </div>
               </div>
+              <div id="overlay" class="overlay">
+		        <span class="material-symbols-outlined" id="heart">heart_minus</span>
+		        <p id="message"></p>
+			  </div>
       
               <!-- Inquiry Sections -->
 	              <div class="inquiry-sections " >

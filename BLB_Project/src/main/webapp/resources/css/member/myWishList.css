@@ -554,46 +554,29 @@ h1 {
     margin-top: 100px;
 }
 
-/* 오버레이 */
 #overlay {
-	display:none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);  /* 반투명 어두운 배경 */
-    display: none;  /* 초기에는 숨김 */
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
     justify-content: center;
     align-items: center;
-    pointer-events: auto;
-    visibility: visible;
+    z-index: 9999;
 }
 
-
-#modal {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    max-width: 400px;
-    width: 100%;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-}
 
 #message {
-    font-size: 200px;
+    font-size: 40px;
     margin-top: 10px;
-    color: red;
-    display: block; /* 추가 */
+    color: white;
 }
 
-.material-symbols-outlined {
+#heart {
     font-size: 48px;
     margin-bottom: 10px;
-    display: block; /* 추가 */
-    color: black; /* 추가 */
-}
-#modal, #message, .material-symbols-outlined {
-    z-index: 10000; /* overlay보다 높게 설정 */
+    color:#A4EBF3;
+   
 }

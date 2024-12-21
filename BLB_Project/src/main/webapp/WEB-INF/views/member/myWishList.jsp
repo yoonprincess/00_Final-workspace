@@ -28,6 +28,10 @@
       	 	  <p class="notice">찜한 상품은 최대 120일간 보관됩니다.</p>
               <div class="highlight" style="padding:0px 20px;">전체  <span style="color:#7AB2D3; font-weight : 600;">${listCount}</span>건</div>        
        <br>
+       <div id="overlay" class="overlay">
+        <span class="material-symbols-outlined" id="heart">heart_minus</span>
+        <p id="message"></p>
+	  </div>
 	<table class="order-table">
     <thead>
         <tr>
@@ -80,13 +84,7 @@
             </c:forEach>
         </c:if>
     </tbody>
-    <div id="overlay" class="overlay" >
-	    <div id="modal" class="modal">
-	     <span class="material-symbols-outlined">heart_minus</span>
-        <h1 id="message">찜해제!</h1>
-	    </div>
-	</div>
-	        
+    
 </table>
 	
 		            <br><br>
