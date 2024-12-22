@@ -1,90 +1,110 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CONTACT</title>
+    <title>FAQ</title>
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/helpdesk/FAQ.css">
 </head>
 <body class="body-offset">
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
-	<div class="container-fluid">
-    <div class="container">
-        <div class="grid">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">CONTACT</h2>
-                </div>
-                <div class="card-content">
-                    <div class="menu-items">
-                        <a href="${ pageContext.request.contextPath }/list.no" class="menu-item">
-                            <span class="font-medium">공지사항</span>
-                            <span class="chevron-right">›</span>
-                        </a>
-                        <a href="${ pageContext.request.contextPath }/Faq.blb" class="menu-item">
-                            <span class="font-medium">FAQ</span>
-                            <span class="chevron-right">›</span>
-                        </a>
-                        <a href="${ pageContext.request.contextPath }/list.io" class="menu-item">
-                            <span class="font-medium">고객 문의</span>
-                            <span class="chevron-right">›</span>
-                        </a>
-                    </div>
-                    <div class="notices" id="notices">
-                        <!-- Notices will be dynamically inserted here -->
-                    </div>
-                </div>
+    <%@ include file="/WEB-INF/views/common/header.jsp" %>
+    <div class="container-fluid">
+        <div class="container">
+            <br><br><br><br>
+            <!-- 네비게이션 메뉴 -->
+            <div class="faq-menu">
+			    <a href="Faq.blb" class="active">FAQ</a>
+			    <a href="list.io">1:1 문의</a>
+			    <a href="list.no">공지사항</a>
+			</div>
+
+            <div class="faq-search">
+                <form action="list.no" method="get">
+                    <input type="text" name="searchKeyword" placeholder="제목 또는 내용을 입력해주세요." value="${ param.searchKeyword }">
+                    <button type="submit">검색</button>
+                </form>
+                <c:if test="${ sessionScope.loginUser.memberId eq 'admin' }">
+                <!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
+                <a class="btn btn-secondary" style="float:right; background-color:#A4EBF3; border:none;" href="faqEnrollForm.no">글쓰기</a>
+            </c:if>
             </div>
 
-            <div class="card bg-light">
-                <div class="card-content">
-                    <div class="info-item">
-                        <div class="info-label">운영 시간</div>
-                        <div class="info-content">
-                            <p class="font-medium">평일 13:00 ~ 17:00</p>
-                            <p class="text-muted">주말 및 공휴일 휴무</p>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">전화 문의</div>
-                        <div class="info-content">
-                            <p class="font-medium">고객 문의 : 1544-6418</p>
-                            <p class="font-medium">대표 문의 : 080-022-2285</p>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">대표 메일</div>
-                        <div class="info-content">
-                            <p class="font-medium">whole_member@hello.co.kr</p>
-                            <p class="text-muted">문의 시간에 상담이 몰릴 경우 답변이 늦을 수 있음을 양해 부탁 드립니다</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card mt-6">
-            <div class="card-header">
-                <h2 class="card-title">FAQ Top 10</h2>
-                <a href="https://Faq.blb" class="text-muted">더보기 ›</a>
-            </div>
-            <div class="card-content">
-                <div class="faq-grid" id="faqGrid">
-				    <!-- FAQ 항목이 JavaScript로 추가됩니다. -->
-				</div>
-
-            </div>
+            <!-- FAQ 테이블 -->
+            <table id="faqList">
+                <thead>
+                    <tr>
+                        <th>질문</th>
+                        <th>답변</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="f" items="${ requestScope.faqList }">
+                        <tr class="faq-item">
+                            <td>${ f.question }</td>
+                            <td class="faq-answer">${ f.answer }</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+            <!-- 페이지네이션 -->
+            <nav>
+                <ul class="pagination">
+                    <!-- 이전 페이지 그룹 -->
+                    <c:if test="${ pi.startPage > 1 }">
+                        <li class="page-item">
+                            <a href="Faq.blb?cpage=${ pi.startPage - pi.pageLimit }&searchKeyword=${searchKeyword}">
+                                ＜
+                            </a>
+                        </li>
+                    </c:if>
+                    
+                    <!-- 페이지 번호 -->
+                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }" step="1">
+                        <c:if test="${ p == pi.currentPage }">
+                            <li class="page-item">
+                                <a class="active" href="#">${ p }</a>
+                            </li>
+                        </c:if>
+                        <c:if test="${ p != pi.currentPage }">
+                            <li class="page-item">
+                                <a href="Faq.blb?cpage=${ p }&searchKeyword=${searchKeyword}">${ p }</a>
+                            </li>
+                        </c:if>
+                    </c:forEach>
+                    
+                    <!-- 다음 페이지 그룹 -->
+                    <c:if test="${ pi.endPage < pi.maxPage }">
+                        <li class="page-item">
+                            <a href="Faq.blb?cpage=${ pi.startPage + pi.pageLimit }&searchKeyword=${searchKeyword}">
+                                ＞
+                            </a>
+                        </li>
+                    </c:if>
+                </ul>
+            </nav>
+            <!-- 페이지네이션 end -->
         </div>
     </div>
-
-    <script src="${ pageContext.request.contextPath }/resources/js/helpdesk/FAQ.js"></script>
-    </div>
+    <script>
+	    document.addEventListener("DOMContentLoaded", function() {
+	        const faqItems = document.querySelectorAll(".faq-item");
+	        
+	        faqItems.forEach(item => {
+	            item.addEventListener("click", function() {
+	                const answer = this.querySelector(".faq-answer");
+	                if (answer.style.display === "none" || !answer.style.display) {
+	                    answer.style.display = "block";
+	                } else {
+	                    answer.style.display = "none";
+	                }
+	            });
+	        });
+	    });
+    </script>
+    <script src="${ pageContext.request.contextPath }/resources/js/helpdesk/FAQ.js"></script> <!-- JS 파일 경로 -->
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>
-
-
-

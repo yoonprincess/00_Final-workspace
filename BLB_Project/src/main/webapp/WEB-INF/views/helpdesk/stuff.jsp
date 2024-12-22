@@ -1,177 +1,113 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1:1 Î¨∏ÏùòÌïòÍ∏∞</title>
+    <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/helpdesk/Inquiry.css">
 </head>
-<body>
-	
-        
-                <div id="faq" class="tab-content active">
-                    <div class="sub-tabs">
-                        <button class="sub-tab-button active" data-category="all">¿¸√º</button>
-                        <button class="sub-tab-button" data-category="product">ªÛ«∞</button>
-                        <button class="sub-tab-button" data-category="delivery">πËº€</button>
-                        <button class="sub-tab-button" data-category="order">¡÷πÆ</button>
-                        <button class="sub-tab-button" data-category="payment">∞·¡¶/»Ø∫“</button>
-                    </div>
-                    <div class="faq-list">
-                        <!-- FAQ «◊∏ÒµÈ¿Ã ø©±‚ø° µø¿˚¿∏∑Œ √ﬂ∞°µÀ¥œ¥Ÿ -->
-                    </div>
-                </div>
-        
-                <div id="inquiry" class="tab-content">
-                    <div class="header">
-                        BLB ∞Ì∞¥ºæ≈Õ¿‘¥œ¥Ÿ!
-                        <br />
-                        π´æ˘¿ª µµøÕµÂ∏±±Óø‰?
-                    </div>
-                    <div class="form-container">
-                        <div class="form-group">
-                            <label for="category">πÆ¿«¿Ø«¸</label>
-                            <select id="category">
-                                <option>ƒ´≈◊∞Ì∏Æ∏¶ º±≈√«ÿ¡÷ººø‰</option>
-                                <option>ªÛ«∞</option>
-                                <option>πËº€</option>
-                                <option>¡÷πÆ</option>
-                                <option>∞·¡¶/»Ø∫“</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="content">≥ªøÎ</label>
-                            <textarea id="content" placeholder="πÆ¿«≥ªøÎ¿ª ¿‘∑¬«ÿ¡÷ººø‰. (2000¿⁄ ¿Ã≥ª)"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="file-upload">√∑∫Œ∆ƒ¿œ</label>
-                            <button type="button" id="file-upload-btn" class="file-upload-btn">+</button>
-                            <span id="file-count">0/3</span>
-                            <p id="file-info" style="font-size: 12px; color: #7AB2D3;">10MB ¿Ã«œ ¿ÃπÃ¡ˆ ∆ƒ¿œ (JPG, PNG, GIF) 3∞≥∏¶ √∑∫Œ«“ ºˆ ¿÷Ω¿¥œ¥Ÿ.</p>
-                            <div class="file-list" id="file-list"></div>
-                        </div>
-                
-                        <div class="form-group">
-                            <label for="receive-email">
-                                <input type="checkbox" id="receive-email"> ¥‰∫Ø øœ∑· Ω√ ¿Ã∏ﬁ¿œ∑Œ æÀ∏≤ πﬁ±‚
-                            </label>
-                        </div>
-                
-                        <div class="form-group" id="email-group">
-                            <label for="email">¥‰∫Ø πﬁ¿ª ¿Ã∏ﬁ¿œ</label>
-                            <div>
-                                <input type="text" id="email" placeholder="¥‰∫Ø πﬁ¿ª ¿Ã∏ﬁ¿œ¿ª ¿‘∑¬«œººø‰." style="width: 55%;" disabled/>
-                            </div>
-                        </div>
-                
-                        <div class="form-buttons">
-                            <button type="button" class="cancel" onclick="resetForm()">√Îº“</button>
-                            <button type="button" class="submit" onclick="submitForm()">µÓ∑œ</button>
-                        </div>
-                    </div>
+<body class="body-offset">
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+    <div class="container-fluid">
+    <div class="container">
+        <h1>1:1 Î¨∏ÏùòÌïòÍ∏∞</h1>
+        <form id="insertInquiry" name="insertInquiry" action="insert.io" method="post" enctype="multipart/form-data">
+        	 <input type="hidden" value="${ sessionScope.loginUser.memberId }" name="memberId" >
+            <div class="form-group">
+                <label for="inquiryType">Î¨∏ÏùòÏú†Ìòï</label>
+                <select id="inquiryType" name="inquiryType" required>
+                    <option value="">Ïπ¥ÌÖåÍ≥†Î¶¨Î•º ÏÑ†ÌÉùÌï¥Ï£ºÏÑ∏Ïöî</option>
+                    <option value="ÏÉÅÌíà">ÏÉÅÌíà</option>
+                    <option value="Î∞∞ÏÜ°">Î∞∞ÏÜ°</option>
+                    <option value="Ï£ºÎ¨∏">Ï£ºÎ¨∏</option>
+                    <option value="Í≤∞Ï†ú/ÌôòÎ∂à">Í≤∞Ï†ú/ÌôòÎ∂à</option>
+                </select>
             </div>
-    
-            <div id="notice" class="tab-content">
-                <div class="sub-tabs">
-                    <button class="sub-tab-button active" data-category="all">¿¸√º</button>
-                    <button class="sub-tab-button" data-category="general">¿œπ›</button>
-                    <button class="sub-tab-button" data-category="store">∏≈¿Â</button>
-                    <button class="sub-tab-button" data-category="event">¿Ã∫•∆Æ</button>
-                </div>
-                
-                <!-- ∞Àªˆ ±‚¥… √ﬂ∞° -->
-                <div class="notice-search">
-                    <input type="text" id="notice-search-input" placeholder="∞ÀªˆæÓ∏¶ ¿‘∑¬«œººø‰.">
-                    <button type="button" id="notice-search-btn">∞Àªˆ</button>
-                </div>
-                
-                <table id="notice-table">
-                    <colgroup>
-                        <col style="width: 10%;"> <!-- ±€π¯»£ -->
-                        <col style="width: 20%;"> <!-- ∫–∑˘ -->
-                        <col style="width: 50%;"> <!-- ≥ªøÎ -->
-                        <col style="width: 20%;"> <!-- ¿€º∫¿œ -->
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>±€π¯»£</th>
-                            <th></th>
-                            <th>≥ªøÎ</th>
-                            <th>¿€º∫¿œ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="n" items="${requestScope.list }">
-                        	<tr>
-                        		<td class="nno">${n.noticeNo }</td>
-                        		<td>${ n.noticeTitle }</td>
-                        		<td>${ n.noticeContent }</td>
-                        		<td>${ n.noticeRegDate }</td>
-                        	</tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-                <div id="pagingArea">
-                <ul class="pagination">	          
-	                <c:choose>
-	                	<c:when test="${ requestScope.pi.currentPage eq 1 }">
-		                    <li class="page-item disabled">
-		                    	<a class="page-link" href="#">
-		                    		¿Ã¿¸
-		                    	</a>
-		                    </li>
-		                </c:when>
-		                <c:otherwise>
-		                	<li class="page-item">
-		                    	<a class="page-link" href="list.no?cpage=${ requestScope.pi.currentPage - 1 }">
-		                    		¿Ã¿¸
-		                    	</a>
-		                    </li>
-		                </c:otherwise>
-	                </c:choose>
-                    
-                    <c:forEach var="p" begin="${ requestScope.pi.startPage }"
-                    				   end="${ requestScope.pi.endPage }" 
-                    				   step="1">
-                    	<c:choose>
-                    		<c:when test="${ p ne requestScope.pi.currentPage }">			   
-			                    <li class="page-item">
-			                    	<a class="page-link" href="list.no?cpage=${ p }">
-			                    		${ p }
-			                    	</a>
-			                    </li>
-		                    </c:when>
-		                    <c:otherwise>
-		                    	<li class="page-item disabled">
-			                    	<a class="page-link" href="list.no?cpage=${ p }">
-			                    		${ p }
-			                    	</a>
-			                    </li>
-	                    	</c:otherwise>
-	                    </c:choose>
-                    </c:forEach>
-                    
-                    <c:choose>
-                    	<c:when test="${ requestScope.pi.currentPage ne requestScope.pi.maxPage }">
-                   			<li class="page-item">
-                   				<a class="page-link" href="list.no?cpage=${ requestScope.pi.currentPage + 1 }">
-                   					¥Ÿ¿Ω
-                   				</a>
-                   			</li>
-                   		</c:when>
-                   		<c:otherwise>
-                   			<li class="page-item disabled">
-                   				<a class="page-link" href="#">
-                   					¥Ÿ¿Ω
-                   				</a>
-                   			</li>
-                   		</c:otherwise>
-                   	</c:choose>
-                </ul>
+            <div class="form-group">
+                <label for="inquiry-content">Î¨∏ÏùòÎÇ¥Ïö©</label>
+                <textarea id="inquiryContent" name="inquiryContent" rows="10" placeholder="Î¨∏ÏùòÌïòÏã§ ÎÇ¥Ïö©ÏùÑ ÏûÖÎ†•Ìï¥Ï£ºÏÑ∏Ïöî (2000Ïûê Ïù¥ÎÇ¥)" required></textarea>
             </div>
+            <div class="form-group">
+            	<label for="upfile">Ï≤®Î∂ÄÌååÏùº</label>
+          		<div class="form-check row">
+          			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+          		</div>
+          		<div class="form-check row">
+          			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+          		</div>
+          		<div class="form-check row">
+          			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+          		</div>
+          		<div class="form-check row">
+          			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+          		</div>
+          		<div class="form-check row">
+          			<input type="file" id="upfile" class="form-control-file border" name="upfile">
+          		</div>
+          	</div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="email-notify" name="email"> Ïù¥Î©îÏùºÎ°ú ÎãµÎ≥Ä ÏôÑÎ£å Ïãú ÏïåÎ¶º Î∞õÍ∏∞
+                </label>
+                <div class="email-input">
+                    <input type="email" placeholder="Ïù¥Î©îÏùº Ï£ºÏÜåÎ•º ÏûÖÎ†•Ìï¥Ï£ºÏÑ∏Ïöî">
+                </div>
             </div>
-            
-        </div>
+            <div class="button-group">
+                <button type="submit" class="button button-primary">Îì±Î°ù</button>
+                <button type="button" class="button button-secondary">Ï∑®ÏÜå</button>
+            </div>
+        </form>
     </div>
+    <!-- ÌéòÏù¥ÏßÄÎÑ§Ïù¥ÏÖò -->
+			<nav>
+				<ul class="pagination">
+					<!-- Ïù¥Ï†Ñ ÌéòÏù¥ÏßÄ Í∑∏Î£π -->
+					<c:if test="${ pi.startPage > 1 }">
+						<li class="page-item">
+							<a href="list.io?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage - pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+								Ôºú
+							</a>
+						</li>
+					</c:if>
+					
+					<!-- ÌéòÏù¥ÏßÄ Î≤àÌò∏ -->
+					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }" step="1">
+						<c:if test="${ p == pi.currentPage }">
+							<li class="page-item">
+								<a class="active" href="#">
+									${ p }
+								</a>
+							</li>
+						</c:if>
+						<c:if test="${ p != pi.currentPage }">
+							<li class="page-item">
+								<a href="list.io?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+									${ p }
+								</a>
+							</li>
+						</c:if>
+					</c:forEach>
+					
+					<!-- Îã§Ïùå ÌéòÏù¥ÏßÄ Í∑∏Î£π -->
+					<c:if test="${ pi.endPage < pi.maxPage }">
+						<li class="page-item">
+							<a href="list.io?category=${ category }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage + pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
+								Ôºû
+							</a>
+						</li>
+					</c:if>
+				</ul>
+			</nav>
+			<!-- ÌéòÏù¥ÏßÄÎÑ§Ïù¥ÏÖò end -->
+    </div>
+    <script src="${ pageContext.request.contextPath }/resources/js/helpdesk/Inquiry.js"></script> <!-- JS ÌååÏùº Í≤ΩÎ°ú -->
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>
+
+
+
+
