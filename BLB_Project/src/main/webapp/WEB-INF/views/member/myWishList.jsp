@@ -26,7 +26,14 @@
             	<button class="tab active">찜한 리스트</button>
          	  </div>
       	 	  <p class="notice">찜한 상품은 최대 120일간 보관됩니다.</p>
-              <div class="highlight" style="padding:0px 20px;">전체  <span style="color:#7AB2D3; font-weight : 600;">${listCount}</span>건</div>        
+              <div class="highlight" style="padding:0px 20px;">
+              전체  <span style="color:#7AB2D3; font-weight : 600;">${listCount}</span>건
+              <div style="float:right;">
+                     <button class="button" id="all-delete" onclick="confirmDelete();" >전체삭제</button>
+                </div>
+              </div>        
+ 				
+ 				
        <br>
        <div id="overlay" class="overlay">
         <span class="material-symbols-outlined" id="heart">heart_minus</span>

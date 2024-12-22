@@ -3,6 +3,7 @@ package com.mig.blb.member.controller;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,34 +22,37 @@ public class AuthLoginController {
 	@Autowired
 	private KakaoApi kakaoApi;
 	
-	// 로그인 페이지로 이동
-  @GetMapping("/login.me")
-  
-    public ModelAndView loginKakaoForm(ModelAndView mv) {
-        mv.addObject("kakaoApiKey", kakaoApi.getKakaoApiKey());
-        mv.addObject("redirectUri", kakaoApi.getKakaoRedirectUri());
-        
-       return mv;
-    }
+	@Value("${kakao.api_key}")
+	private String kakaoApiKey;
 
+	@Value("${kakao.redirect_uri}")
+	private String kakaoRedirectUri;
+	
 	//  로그인 후 로직
 	@RequestMapping("loginKakao.me")
-	public String kakaoLogin(@RequestParam String code, Model model) {
+	public String kakaoLogin(@RequestParam(value = "code", required = false) String code) {
 		
-		model.addAttribute("kakaoApiKey", kakaoApi.getKakaoApiKey());
-        model.addAttribute("redirectUri", kakaoApi.getKakaoRedirectUri());
-        
 		String accessToken = kakaoApi.getAccessToken(code);
+		System.out.println("code값 잘 넘어왔나? " + code);
+		System.out.println("토큰은?"+ accessToken);
 		
-		Map<String,Object> memberInfo = kakaoApi.getUserInfo(accessToken);
+		Map<String, Object> userInfo = kakaoApi.getUserInfo(accessToken);
 		
-		String email = (String)memberInfo.get("email");
+		String email = (String)userInfo.get("email");
+		String name =(String)userInfo.get("name");
+		String phoneNumber =(String)userInfo.get("phoneNumber");
+		String birthyear =(String)userInfo.get("birthyear");
+		String birthday =(String)userInfo.get("birthday");
 		
 		System.out.println("email:"+ email);
+		System.out.println("name:"+ name);
+		System.out.println("phoneNumber :"+ phoneNumber);
+		System.out.println("birthyear:"+ birthyear);
+		System.out.println("birthday :"+ birthday );
 		System.out.println("access:"+ accessToken);
 		
 	
-		return "redirect:/main";
+		return "redirect:/";
 	
 	}
 	

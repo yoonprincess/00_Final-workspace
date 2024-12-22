@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +38,7 @@ public class MemberController {
 	
     @Autowired
     private KakaoApi kakaoApi;
-		
+    
 	
 	// 로그인 페이지 요청 
 	@GetMapping("loginForm.me")
@@ -53,9 +54,14 @@ public class MemberController {
 			
 			session.setAttribute("beforePage", redirectURL);
 		}
-			mv.addObject("kakaoApiKey", kakaoApi.getKakaoApiKey());
-			mv.addObject("redirectUri", kakaoApi.getKakaoRedirectUri());
-			
+		
+		 String kakaoAuthUrl = "https://kauth.kakao.com/oauth/authorize?client_id=" 
+	                + kakaoApi.getKakaoApiKey()  // kakaoApi 객체를 통해 값 가져오기
+	                + "&redirect_uri=" + kakaoApi.getKakaoRedirectUri()  // kakaoApi 객체를 통해 값 가져오기
+	                + "&response_type=code";    
+		
+		mv.addObject("kakaoAuthUrl",kakaoAuthUrl);
+		System.out.println(kakaoAuthUrl);
 			mv.setViewName("member/loginForm");
 		
 		return mv;
