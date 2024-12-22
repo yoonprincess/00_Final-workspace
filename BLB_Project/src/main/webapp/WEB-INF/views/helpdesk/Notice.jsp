@@ -10,41 +10,34 @@
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/helpdesk/Notice.css">
 </head>
 <body class="body-offset">
-	<%@ include file="/WEB-INF/views/common/header.jsp" %>
-
-    <div class="container-fluid">
+    <%@ include file="/WEB-INF/views/common/header.jsp" %>
+  <div class="container-fluid">
     <div class="container">
-    
-    <header>
-        <nav>
-            <a href="Faq.blb">고객센터</a>
-            <a href="list.io">1:1문의</a>
-            <a href="#">리뷰</a>
-            <a href="list.no">공지사항</a>
-        </nav>
-    </header>
-	    <c:if test="${ sessionScope.loginUser.memberId eq 'admin' }">
-	     	<!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
-	     	<a class="btn btn-secondary" style="float:right;" 
-	     								 href="NoticeEnrollForm.no">
-	     		글쓰기
-	     	</a>
-	    </c:if>
-        <h1>공지사항</h1>
-        <div class="notice-search">
+    <br><br><br><br>
+        <!-- 네비게이션 메뉴 -->
+        <div class="notice-menu">
+		    <a href="Faq.blb">FAQ</a>
+		    <a href="list.io">1:1 문의</a>
+		    <a href="list.no" class="active">공지사항</a>
+		</div>
+		<div class="notice-search">
 		    <form action="list.no" method="get">
-		        <input type="text" name="searchKeyword" placeholder="검색어를 입력하세요" value="${ param.searchKeyword }">
-		        <button type="submit">찾기</button>
+		        <input type="text" name="searchKeyword" placeholder="제목 또는 내용을 입력해주세요." value="${ param.searchKeyword }">
+		        <button type="submit">검색</button>
 		    </form>
+		    <c:if test="${ sessionScope.loginUser.memberId eq 'admin' }">
+		        <a style="background-color:#A4EBF3;" class="btn btn-secondary" href="NoticeEnrollForm.no">글쓰기</a>
+		    </c:if>
 		</div>
 
+        <!-- 공지사항 테이블 -->
         <table id="noticeList">
             <thead>
                 <tr>
-                    <th>글번호</th>
+                    <th>번호</th>
                     <th>제목</th>
                     <th>내용</th>
-                    <th>등록일</th>
+                    <th>작성일</th>
                 </tr>
             </thead>
             <tbody>
@@ -100,8 +93,8 @@
 			</nav>
 			<!-- 페이지네이션 end -->
     </div>
-    </div>
-    <script src="${ pageContext.request.contextPath }/resources/js/helpdesk/Notice.js"></script> <!-- JS 파일 경로 -->
+</div>
+	<script src="${ pageContext.request.contextPath }/resources/js/helpdesk/Notice.js"></script> <!-- JS 파일 경로 -->
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

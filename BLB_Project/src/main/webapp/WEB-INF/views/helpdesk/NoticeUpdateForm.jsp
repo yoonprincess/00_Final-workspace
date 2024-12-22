@@ -19,12 +19,12 @@
             <form class="edit-form" id="noticeUpdate" name="noticeUpdate" action="NoticeUpdate.no" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title">제목</label>
-                    <input type="text" id="title" name="title" class="input-field" value="${ requestScope.n.noticeTitle }">
+                    <input type="text" id="noticeTitle" name="noticeTitle" class="input-field" value="${ requestScope.n.noticeTitle }">
                 </div>
 
                 <div class="form-group">
                     <label for="content">내용</label>
-                    <textarea id="content" name="content" class="input-field textarea">${requestScope.n.noticeContent }</textarea>
+                    <textarea id="content" name="noticeContent" class="input-field textarea">${requestScope.n.noticeContent }</textarea>
                 </div>
 
                 <div class="form-group">
@@ -33,7 +33,6 @@
                         <div class="file-preview-grid" id="filePreviewGrid">
                             <c:choose>
                                 <c:when test="${ empty requestScope.na }">
-                                    첨부파일이 없습니다.
                                 </c:when>
                                 <c:otherwise>
                                     <c:forEach var="a" items="${ requestScope.na }">
@@ -52,15 +51,17 @@
                         <p class="file-info">이미지는 최대 5개까지 업로드 가능합니다.</p>
                     </div>
                 </div>
-					<input type="hidden" name="nno" value="${requestScope.n.noticeNo }">
-                 <button type="submit" class="btn btn-primary">수정하기</button>
-                    <button type="button" class="btn btn-danger" onclick="goBack();">이전으로</button>
+                <input type="hidden" name="nno" value="${requestScope.n.noticeNo }">
+                <input type="hidden" name="deleteFiles" id="deleteFiles">
+                <input type="hidden" name="newFiles" id="newFiles">
+                <button type="submit" class="btn btn-primary">수정하기</button>
+                <button type="button" class="btn btn-danger" onclick="goBack();">이전으로</button>
             </form>
         </div>
     </div>
 
     <script>
- // 임시 삭제 저장소 배열 (기존 파일)
+    // 임시 삭제 저장소 배열 (기존 파일)
     const tempDeleteStorage = [];
 
     // 새로 업로드된 파일 저장소
@@ -123,31 +124,25 @@
 
     // 폼 제출 시 삭제 파일 리스트와 새 파일 리스트를 숨겨진 input에 추가
     $("#noticeUpdate").on("submit", function () {
-        // 기존 파일 삭제 목록 추가
+        // 삭제 파일 목록 처리
         if (tempDeleteStorage.length > 0) {
-            const hiddenDeleteInput = $("<input>")
-                .attr("type", "hidden")
-                .attr("name", "deleteFiles")
-                .val(tempDeleteStorage.join(",")); // 배열을 콤마로 연결
-            $(this).append(hiddenDeleteInput);
+            $("#deleteFiles").val(tempDeleteStorage.join(",")); // 배열을 콤마로 연결
         }
 
-        // 새로 추가된 파일 목록 추가
+        // 새로 추가된 파일 목록 처리
         if (newFileStorage.length > 0) {
-            const hiddenNewInput = $("<input>")
-                .attr("type", "hidden")
-                .attr("name", "newFiles")
-                .val(newFileStorage.join(",")); // 배열을 콤마로 연결
-            $(this).append(hiddenNewInput);
+            $("#newFiles").val(newFileStorage.join(",")); // 배열을 콤마로 연결
         }
-    });
 
+        console.log("삭제 예정 파일 리스트:", tempDeleteStorage); // 디버깅용
+        console.log("새로 추가된 파일 리스트:", newFileStorage); // 디버깅용
+    });
 
     // 목록으로 돌아가기
     function goBack() {
         window.history.back();
     }
-</script>
+    </script>
 
 <script src="${ pageContext.request.contextPath }/resources/js/helpdesk/NoticeUpdateForm.js"></script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
