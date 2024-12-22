@@ -5,6 +5,17 @@ MODIFY BIRTHDATE DEFAULT NULL;
 -- 회원 등급컬럼 제약조건 변경구문-- 
 ALTER TABLE TB_MEMBER
           MODIFY GRADE_NAME  DEFAULT 'BABY';
+--카카오 회원 가입시 아이디 컬럼, 로그인방식 컬럼 추가구문 --
+ALTER TABLE TB_MEMBER
+ADD SNS_ID VARCHAR2(20);
+
+ALTER TABLE TB_MEMBER
+ADD LOGIN_TYPE VARCHAR2(20) DEFAULT 'normal';
+
+-- 회원 비밀번호 컬럼 제약조건 변경--
+ALTER TABLE TB_MEMBER 
+MODIFY MEMBER_PWD NULL;
+
          
 -- 회원 배송지테이블 컬럼 추가 구문 --
 ALTER TABLE TB_DELIVERY

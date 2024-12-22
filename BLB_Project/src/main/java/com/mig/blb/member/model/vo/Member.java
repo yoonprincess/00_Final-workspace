@@ -28,5 +28,6 @@ public class Member {
 	private String totalPoints;		//	TOTAL_POINTS	NUMBER
 	private String currentPoints;	//	CURRENT_POINTS	NUMBER
 	private String gradeName;		//	GRADE_NAME	VARCHAR2(20 BYTE)
-	
+	private String snsId;
+	private String loginType;
 }

@@ -156,6 +156,7 @@ public class MemberServiceImpl implements MemberService {
 	        return 0; 
 	    }
 	}
+	
 	@Override
 	public int myWishListCount(String memberId) {
 		
@@ -170,26 +171,21 @@ public class MemberServiceImpl implements MemberService {
 		
 		return memberDao.selectMyWishTop4(sqlSession,memberId);
 	}
+	@Transactional
 	@Override
 	public int deleteWish(int prodNo) {
 		return memberDao.deleteWish(sqlSession,prodNo);
 	}
+	@Transactional
+	@Override
+	public int findSnsId(String snsId) {
+		return memberDao.findSnsId(sqlSession, snsId);
+	}
+	@Override
+	public Member loginMember(String snsId) {
+		return memberDao.loginMember(sqlSession, snsId);
+	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

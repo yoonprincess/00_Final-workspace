@@ -157,5 +157,14 @@ public class MemberDao {
 		return sqlSession.delete("memberMapper.deleteWish",prodNo);
 	}
 
+	public int findSnsId(SqlSessionTemplate sqlSession, String snsId) {
+		
+		return sqlSession.selectOne("memberMapper.findSnsId", snsId);
+	}
+
+	public Member loginMember(SqlSessionTemplate sqlSession, String snsId) {
+		return sqlSession.selectOne("memberMapper.loginMember", snsId);
+	}
+
 
 }

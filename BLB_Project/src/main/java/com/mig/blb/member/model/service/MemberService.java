@@ -81,6 +81,10 @@ public interface MemberService {
 	ArrayList<Product> selectMyWishTop4(String memberId);
 
 	int deleteWish(int prodNo);
+
+	int findSnsId(String snsId);
+
+	Member loginMember(String snsId);
 	
 	
 }

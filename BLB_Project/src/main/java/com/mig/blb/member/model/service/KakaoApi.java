@@ -25,7 +25,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mig.blb.member.model.vo.KakaoProfile;
 import com.mig.blb.member.model.vo.OAuthToken;
 
 @Service
@@ -224,6 +223,11 @@ public class KakaoApi{
 	            JsonObject kakaoAccount = element.getAsJsonObject().getAsJsonObject("kakao_account");
 
 	            if (kakaoAccount != null) {
+	            	
+	            	if (kakaoAccount.has("id")) {
+	                    String snsId = kakaoAccount.getAsJsonObject().get("id").getAsString();
+	                    userInfo.put("snsId", snsId);
+	                }
 	                if (kakaoAccount.has("email")) {
 	                    String email = kakaoAccount.getAsJsonObject().get("email").getAsString();
 	                    userInfo.put("email", email);
