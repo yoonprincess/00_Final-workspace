@@ -8,6 +8,7 @@ import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
+import com.mig.blb.wish.model.vo.Wish;
 
 public interface ProductService {
 	
@@ -44,6 +45,15 @@ public interface ProductService {
 	
 	// 리뷰 수정용 상품 정보 추출
 	Map<String, Object> getInfoByRevNo(int revNo);
+	
+	// 찜(wish) 관련
+	// 찜 여부 확인
+	int isWished(Wish wish);
+	// 찜하기
+	int addWish(Wish wish);
+	// 찜취소
+	int removeWish(Wish wish);
+	
 	
 	
 }

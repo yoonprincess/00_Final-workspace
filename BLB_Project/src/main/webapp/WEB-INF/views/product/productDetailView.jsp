@@ -106,10 +106,14 @@
                             <button type="button" class="btn btn-outline-primary btn-lg mr-2 blb-btn" id="addToCart">
                                 <i class="fas fa-shopping-cart mr-2"></i>장바구니
                             </button>
-                            <button type="button" class="btn btn-primary btn-lg blb-btn" id="buyNow">바로구매</button>
-                            <button class="btn btn-outline-danger"><span class="material-symbols-outlined">
-                                favorite
-                            </span></button>
+                            <button type="button" class="btn btn-primary btn-lg mr-2 blb-btn" id="buyNow">바로구매</button>
+                            <button class="btn btn-outline-danger blb-btn wishlist-btn" title="찜하기" 
+                                    data-iswished="${isWished}" data-prodno="${ p.prodNo }"
+                                    data-memberid="${sessionScope.loginUser.memberId}">
+                                <span class="material-symbols-outlined ${isWished > 0 ? 'active' : ''}">
+                                    favorite
+                                </span>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -452,7 +456,7 @@
                                                     <c:if test="${!status.first}">
                                                         <hr>
                                                     </c:if>
-                                                    <strong>답변:</strong> ${reply.inquiryReplyNo}
+                                                    <strong>답변:</strong>
                                                     <p>${reply.inquiryReplyContent}</p>
                                                     <small class="text-muted">
                                                         <b>${reply.memberId}</b> | ${reply.inquiryReplyCreateDate}

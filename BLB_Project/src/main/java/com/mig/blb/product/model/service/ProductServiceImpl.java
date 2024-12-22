@@ -14,6 +14,7 @@ import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.product.model.dao.ProductDao;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
+import com.mig.blb.wish.model.vo.Wish;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -91,5 +92,22 @@ public class ProductServiceImpl implements ProductService {
 	@Transactional
 	public int updateProdInquiry(Inquiry inquiry) {
 		return productDao.updateProdInquiry(sqlSession, inquiry);
+	}
+
+	@Override
+	public int isWished(Wish wish) {
+		return productDao.isWished(sqlSession, wish);
+	}
+
+	@Override
+	@Transactional
+	public int addWish(Wish wish) {
+		return productDao.addWish(sqlSession, wish);
+	}
+
+	@Override
+	@Transactional
+	public int removeWish(Wish wish) {
+		return productDao.removeWish(sqlSession, wish);
 	}
 }

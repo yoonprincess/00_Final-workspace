@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.common.template.Pagination;
-import com.mig.blb.helpdesk.model.service.InquiryService.InquiryService;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.member.model.vo.Member;
 import com.mig.blb.option.model.service.OptionService;
@@ -30,6 +28,7 @@ import com.mig.blb.product.model.vo.ProductAtt;
 import com.mig.blb.review.model.service.ReviewService;
 import com.mig.blb.review.model.vo.Review;
 import com.mig.blb.review.model.vo.ReviewAtt;
+import com.mig.blb.wish.model.vo.Wish;
 
 @Controller
 public class ProductController {
@@ -51,13 +50,22 @@ public class ProductController {
 									@RequestParam(value="keyword", required=false) String keyword,
 									@RequestParam(value="sortBy", defaultValue="recent") String sortBy,
 							        @RequestParam(value="boardLimit", defaultValue="12") int boardLimit,
+							        HttpSession session,
 									Model model) {
+		
+		
 		// params를 생성하여 전달
         Map<String, Object> params = new HashMap<>();
         params.put("category", category);
         params.put("subcategories", subcategories);
         params.put("keyword", keyword);
 		
+        // 로그인한 유저라면 로그인 아이디도 전달 
+        if(session.getAttribute("loginUser") != null) {
+        	String loginMemberId = ((Member)session.getAttribute("loginUser")).getMemberId();
+        	params.put("memberId", loginMemberId);
+        }
+        
 		int listCount = productService.selectProductCount(params);
 		
 		int pageLimit = 2;
@@ -83,7 +91,8 @@ public class ProductController {
 	public String selectProduct(@RequestParam(value="pno", defaultValue="1")int prodNo,
 								@RequestParam(value="rpage", defaultValue="1")int revPage,
 								@RequestParam(value="qpage", defaultValue="1")int qnaPage,
-								Model model) {
+								Model model,
+								HttpSession session) {
 		
 		int count = productService.increaseViewCount(prodNo);
 		
@@ -116,6 +125,13 @@ public class ProductController {
 			PageInfo qnaPi = Pagination.getPageInfo(qnaListCount, qnaPage, 
 												 qnaPageLimit, qnaBoardLimit);
 			ArrayList<Inquiry> qnaList = productService.selectProdInquiryList(qnaPi, prodNo);
+			
+			// 찜 상태 조회
+	        if(session.getAttribute("loginUser") != null) {
+	        	String loginMemberId = ((Member)session.getAttribute("loginUser")).getMemberId();
+	        	int isWished = productService.isWished(new Wish(loginMemberId, prodNo));
+	        	model.addAttribute("isWished", isWished);
+	        }
 			
 			
 			// requestScope에 객체 전달
@@ -298,4 +314,21 @@ public class ProductController {
 
         return resultMap;
     }
+	
+	@PostMapping("toggle.wl")
+	@ResponseBody
+	public String toggleWishlist(Wish wish,
+								 @RequestParam String action, 
+								 HttpSession session) {
+
+	    if(action.equals("add")) {
+	        productService.addWish(wish);
+	        return "added";
+	    } else if(action.equals("remove")) {
+	    	productService.removeWish(wish);
+	        return "removed";
+	    }
+
+	    return "error";
+	}
 }

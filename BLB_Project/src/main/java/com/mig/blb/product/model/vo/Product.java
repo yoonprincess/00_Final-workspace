@@ -29,7 +29,9 @@ public class Product {
 	private String thumbImg;			//	PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
 	
 	// 추가된 필드
-    private float avgRating;    // AVG_RATING 평균 별점
-    private int reviewCount;     // REVIEW_COUNT 리뷰 개수
+    private float avgRating; 		    // AVG_RATING 평균 별점
+    private int reviewCount;     		// REVIEW_COUNT 리뷰 개수
+    private int isWished;			// IS_WISHED 찜한 상태
+    
 		
 }

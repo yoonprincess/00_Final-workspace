@@ -281,8 +281,8 @@
 			            <!-- 상품 카드 -->
 			            <c:forEach var="p" items="${ requestScope.pList }">
 				            <div class="col-md-3 col-sm-4 col-6 mb-4">
-				                <div class="card product-card position-relative" data-id="1" onclick="location.href='detail.pr?pno=${ p.prodNo }';">
-				                    <div class="card-img-container">
+				                <div class="card product-card position-relative" data-id="1">
+				                    <div class="card-img-container" onclick="location.href='detail.pr?pno=${ p.prodNo }';">
 				                        <img src="${ pageContext.request.contextPath }${ p.thumbImg }" class="card-img-top" alt="상품 이미지">
 				                        <div class="overlay">
 				                            <button class="btn btn-light btn-sm rounded-circle shadow add-cart" title="장바구니 추가" data-id="1">
@@ -290,8 +290,10 @@
 				                                    shopping_bag
 				                                </span>
 				                            </button>
-				                            <button class="btn btn-light btn-sm rounded-circle shadow add-wishlist" title="찜하기" data-id="1">
-				                                <span class="material-symbols-outlined">
+				                            <button class="btn btn-light btn-sm rounded-circle shadow wishlist-btn" title="찜하기" 
+													data-iswished="${p.isWished}" data-prodno="${ p.prodNo }"
+													data-memberid="${sessionScope.loginUser.memberId}">
+				                                <span class="material-symbols-outlined ${p.isWished > 0 ? 'active' : ''}">
 				                                    favorite
 				                                </span>
 				                            </button>

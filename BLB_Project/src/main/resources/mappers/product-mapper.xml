@@ -17,6 +17,7 @@
 		<result column="THUMB_IMG" property="thumbImg"/>
 		<result column="AVG_RATING" property="avgRating"/>
 		<result column="REVIEW_COUNT" property="reviewCount"/>
+		<result column="IS_WISHED" property="isWished"/>
 	</resultMap>
 	
 	<resultMap id="productAttResultSet" type="productAtt">
@@ -60,6 +61,14 @@
 		     , PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
 		     , NVL(ROUND(AVG(R.REV_RATING), 1), 0) AS AVG_RATING
            	 , NVL(COUNT(R.REV_NO), 0) AS REVIEW_COUNT
+           	 , CASE
+	               WHEN (SELECT COUNT(*)
+	                     FROM TB_WISH W
+	                     WHERE W.PROD_NO = P.PROD_NO
+	                       AND W.MEMBER_ID = NVL(#{memberId}, '-1')) > 0
+	               THEN 1
+	               ELSE 0
+	           END AS IS_WISHED
 		  FROM TB_PRODUCT P
 		  LEFT JOIN (
 		      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
@@ -274,5 +283,29 @@
 		 WHERE INQUIRY_NO = #{inquiryNo}
 		   AND INQUIRY_STATUS = 'Y'
 	</update>
+	
+	<!-- Wish(찜하기) 관련 -->
+	<resultMap id="wishSet" type="wish">
+		<result column="MEMBER_ID" property="memberId"/>
+		<result column="PROD_NO" property="prodNo"/>
+	</resultMap>
+	
+	<select id="isWished" parameterType="wish" resultType="_int">
+	    SELECT COUNT(*)
+	    FROM TB_WISH
+	    WHERE MEMBER_ID = #{memberId}
+	      AND PROD_NO = #{prodNo}
+	</select>
+	
+	<insert id="addWish" parameterType="wish">
+	    INSERT INTO TB_WISH (MEMBER_ID, PROD_NO)
+             		 VALUES (#{memberId}, #{prodNo})
+	</insert>
+	
+	<delete id="removeWish" parameterType="wish">
+	    DELETE FROM TB_WISH
+		 WHERE MEMBER_ID = #{memberId}
+		   AND PROD_NO = #{prodNo}
+	</delete>
 	
 </mapper>

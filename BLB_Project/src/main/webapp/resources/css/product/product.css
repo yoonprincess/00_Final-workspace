@@ -83,6 +83,12 @@ td label {
     color: #000;
     margin: 10px;
 }
+.wishlist-btn {
+    color: red !important;
+}
+.btn-outline-danger.wishlist-btn {
+    padding: 8px 16px; /* 버튼 크기 줄임 */
+}
 
 /* 상품 제목, 설명, 가격 스타일 */
 .card-body .card-title {

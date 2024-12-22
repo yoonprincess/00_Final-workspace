@@ -27,6 +27,7 @@
 	 	<typeAlias type="com.mig.blb.order.model.vo.Order" alias="order" />
 	 	<typeAlias type="com.mig.blb.order.model.vo.ProductOrder" alias="productOrder" />
 	 	<typeAlias type="com.mig.blb.option.model.vo.Option" alias="option" />
+	 	<typeAlias type="com.mig.blb.wish.model.vo.Wish" alias="wish" />
 	 </typeAliases>
 	 
 	 <mappers>

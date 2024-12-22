@@ -13,6 +13,7 @@ import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
+import com.mig.blb.wish.model.vo.Wish;
 
 @Repository
 public class ProductDao {
@@ -88,6 +89,18 @@ public class ProductDao {
 
 	public int updateProdInquiry(SqlSessionTemplate sqlSession, Inquiry inquiry) {
 		return sqlSession.update("productMapper.updateProdInquiry", inquiry);
+	}
+
+	public int isWished(SqlSessionTemplate sqlSession, Wish wish) {
+		return sqlSession.selectOne("productMapper.isWished", wish);
+	}
+
+	public int addWish(SqlSessionTemplate sqlSession, Wish wish) {
+		return sqlSession.insert("productMapper.addWish", wish);
+	}
+
+	public int removeWish(SqlSessionTemplate sqlSession, Wish wish) {
+		return sqlSession.delete("productMapper.removeWish", wish);
 	}
 
 }

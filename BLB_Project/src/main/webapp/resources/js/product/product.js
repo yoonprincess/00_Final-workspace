@@ -24,13 +24,49 @@ $(document).ready(function () {
         alert(`장바구니에 상품 ${productId} 추가!`);
     });
 
-    // 찜하기 버튼
-    $('.add-wishlist').click(function (e) {
+    // 찜하기 기능
+    $('.wishlist-btn').click(function (e) {
+    // $(document).on('click', '.wishlist-btn', function (e) {
         e.stopPropagation();
-        const productId = $(this).data('id');
-        alert(`찜 목록에 상품 ${productId} 추가!`);
+        e.preventDefault(); // 기본 동작 차단
+        const button = $(this);
+        const prodNo = button.data('prodno');
+        const isWished = button.data('iswished'); // 현재 찜 상태
+        const memberId = button.data('memberid'); // 회원 ID 가져오기
+        
+        if (!memberId) {
+            alertify.error("로그인 후 상품을 찜 할 수 있습니다.");
+            // 페이지 이동
+            setTimeout(function() {
+                window.location.href = `${contextPath}/loginForm.me`;
+            }, 1500); // 2초 후 이동
+            return; // 실행 중단
+        }
+    
+        $.ajax({
+            url: 'toggle.wl',
+            type: 'POST',
+            data: {
+                prodNo: prodNo,
+                memberId: memberId,
+                action: isWished > 0 ? 'remove' : 'add' // 상태에 따라 추가 또는 삭제
+            },
+            success: function (response) {
+                if (response === 'added') {
+                    button.data('iswished', 1);
+                    button.find('span').addClass('active'); // 하트 아이콘 활성화
+                    alertify.success('해당 상품을 찜하였습니다.');
+                } else if (response === 'removed') {
+                    button.data('iswished', 0);
+                    button.find('span').removeClass('active'); // 하트 아이콘 비활성화
+                    alertify.success('해당 상품의 찜을 해제하였습니다.');
+                }
+            },
+            error: function () {
+                alertify.error('찜 상태를 업데이트하는 데 실패했습니다.');
+            }
+        });
     });
-
 
     // * 상품 상세보기 script
     // 이미지 썸네일 클릭 이벤트
@@ -122,11 +158,6 @@ $(document).ready(function () {
         $('#totalPrice').html(total.toLocaleString() + '<small>원</small>');
     }
     
-    // 장바구니 추가
-    $('#addToCart').click(function() {
-        alert('장바구니에 추가되었습니다.');
-    });
-
     // 바로 구매
     $('#buyNow').click(function() {
         alert('구매 페이지로 이동합니다.');
