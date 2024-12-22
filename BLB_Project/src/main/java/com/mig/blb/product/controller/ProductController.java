@@ -5,17 +5,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.common.template.Pagination;
+import com.mig.blb.helpdesk.model.service.InquiryService.InquiryService;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
+import com.mig.blb.member.model.vo.Member;
 import com.mig.blb.option.model.service.OptionService;
 import com.mig.blb.option.model.vo.Option;
 import com.mig.blb.product.model.service.ProductService;
@@ -164,5 +170,132 @@ public class ProductController {
 	    }
 	    result.put("status", "review_exists");
         return result; // 이미 리뷰 작성된 상태
+    }
+	
+	@GetMapping("enrollForm.pqa")
+    public String writeProductInquiryForm(@RequestParam int prodNo, 
+	    							  	  @RequestParam String memberId, 
+	    							  	  Model model, 
+	    							  	  HttpSession session) {
+		
+		if(session.getAttribute("loginUser") == null) {
+        	session.setAttribute("errorMsg", "로그인 후 문의를 작성할 수 있습니다.");
+			return "redirect:/loginForm.me";
+		}
+		
+        // 현재 로그인된 사용자와 요청된 memberId 비교
+		String loginMemberId = ((Member)session.getAttribute("loginUser")).getMemberId();
+        
+        if(loginMemberId == null || !loginMemberId.equals(memberId)) {
+            model.addAttribute("errorMsg", "잘못된 접근입니다.");
+            return "common/errorPage"; // 접근 거부 페이지로 이동
+        }
+
+	    // 상품 및 사용자 정보 추가
+	    model.addAttribute("prodNo", prodNo);
+	    model.addAttribute("memberId", memberId);
+	    
+	    return "product/qnaWriteForm"; // 리뷰 작성 JSP 페이지
+    }
+	
+	@ResponseBody
+	@PostMapping("insert.pqa")
+    public Map<String, Object> insertProdInquiry(Inquiry inquiry,
+    						   					 HttpSession session) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		
+	    // 문의 저장
+	    int result = productService.insertProdInquiry(inquiry);;
+			
+		if(result > 0) {
+        	resultMap.put("success", true);
+            resultMap.put("message", "문의가 성공적으로 등록되었습니다.");
+            
+        } else {
+        	resultMap.put("success", false);
+            resultMap.put("message", "문의 등록에 실패했습니다.");
+        }
+
+        return resultMap;
+    }
+	
+	@GetMapping("delete.pqa")
+    public String deleteProdInquiry(Inquiry inquiry, 
+							   		Model model, 
+							   		HttpSession session,
+							   		@RequestHeader(value = "Referer", required = false) String referer) {
+		
+		if(session.getAttribute("loginUser") == null) {
+        	session.setAttribute("errorMsg", "로그인 후 문의를 삭제할 수 있습니다.");
+			return "redirect:/loginForm.me";
+		}
+		
+        // 현재 로그인된 사용자와 요청된 memberId 비교
+		String loginMemberId = ((Member)session.getAttribute("loginUser")).getMemberId();
+        
+        if(loginMemberId == null || !loginMemberId.equals(inquiry.getMemberId())) {
+            model.addAttribute("errorMsg", "잘못된 접근입니다.");
+            return "common/errorPage"; // 접근 거부 페이지로 이동
+        }
+        
+        int result = productService.deleteProdInquiry(inquiry.getInquiryNo());
+		
+		if (referer != null) {
+			session.setAttribute("successMsg", "게시글을 삭제했습니다.");
+            return "redirect:" + referer;
+        }
+		session.setAttribute("successMsg", "게시글을 삭제했습니다.");
+        // Referer가 없으면 루트 페이지로 리다이렉트
+        return "redirect:/";
+	}
+	
+	@GetMapping("updateForm.pqa")
+    public String editReviewForm(Inquiry inquiry, 
+    							 Model model, 
+    							 HttpSession session) {
+		
+		if(session.getAttribute("loginUser") == null) {
+        	session.setAttribute("errorMsg", "로그인 후 리뷰를 수정할 수 있습니다.");
+			return "redirect:/loginForm.me";
+		}
+		
+        // 현재 로그인된 사용자와 요청된 memberId 비교
+		String loginMemberId = ((Member)session.getAttribute("loginUser")).getMemberId();
+        
+        if(loginMemberId == null || !loginMemberId.equals(inquiry.getMemberId())) {
+            model.addAttribute("errorMsg", "잘못된 접근입니다.");
+            return "common/errorPage"; // 접근 거부 페이지로 이동
+        }
+        
+        // 문의정보 가져오기
+        Inquiry i = productService.selectProdInquiry(inquiry.getInquiryNo());
+        
+        model.addAttribute("i", i);
+        
+        return "product/qnaEditForm"; // 리뷰 작성 JSP 페이지
+       
+    }
+	
+	@ResponseBody
+	@PostMapping("update.pqa")
+    public Map<String, Object> updateReview(Inquiry inquiry,
+    						   HttpSession session) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		
+	    // 리뷰 저장
+	    int result = productService.updateProdInquiry(inquiry);
+	    
+	    if(result > 0) {
+        	resultMap.put("success", true);
+            resultMap.put("message", "리뷰가 성공적으로 수정되었습니다.");
+            
+        } else {
+        	resultMap.put("success", false);
+            resultMap.put("message", "리뷰 수정에 실패했습니다.");
+        }
+
+        return resultMap;
     }
 }

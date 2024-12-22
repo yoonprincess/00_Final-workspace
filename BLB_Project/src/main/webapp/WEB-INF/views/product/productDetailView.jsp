@@ -10,13 +10,6 @@
 <title>뷰라밸 - 제품상세보기</title>
 </head>
 <body class="body-offset">
-    <!-- 리뷰 작성하기 컨테이너 -->
-    <div id="reviewIframeContainer">
-        <div style="position: relative;"> <!-- 닫기 버튼을 포함하는 컨테이너 -->
-            <button class="close-btn review-enroll">&times;</button>
-            <iframe src=""></iframe>
-        </div>
-    </div>
 
 	<div class="container-fluid">
 	<div class="container mt-5">
@@ -324,7 +317,7 @@
                                         </div>
                         
                                         <!-- 버튼 액션: 수정, 삭제, 좋아요 -->
-                                        <div class="review-actions d-flex justify-content-between align-items-center">
+                                        <div class="product-actions d-flex justify-content-between align-items-center">
                                             <button 
                                                 class="like-btn btn btn-outline-secondary btn-sm" 
                                                 id="likeReview"
@@ -397,7 +390,13 @@
             <div class="tab-pane fade" id="qna" role="tabpanel">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>상품문의</h2>
-                    <button class="btn btn-primary blb-btn">문의하기</button>
+                    <button 
+                        class="btn btn-primary blb-btn" 
+                        id="writeQnaBtn" 
+                        data-prodno="${p.prodNo}" 
+                        data-memberid="${sessionScope.loginUser.memberId}">
+                        문의하기
+                    </button>
                 </div>
                 <c:choose>
                     <c:when test="${empty qnaList}">
@@ -411,9 +410,38 @@
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <!-- 문의글 -->
-                                        <p>${qna.inquiryContent}</p>
-                                        <p class="text-muted">
-                                            작성자: ${qna.memberId} | 작성일: ${qna.inquiryCreateDate} | ${qna.inquiryNo}
+                                         <!-- 버튼 액션: 수정, 삭제, 좋아요 -->
+                                        <div class="product-actions d-flex justify-content-between align-items-center">
+                                            <!-- 리뷰 내용 -->
+                                            <div class="review-content-container mb-3">
+                                                <div class="review-content short-content">
+                                                    <p class="review-text">${qna.inquiryContent}</p>
+                                                </div>
+                                                <button class="show-more-btn" style="display: none;">더보기</button>
+                                            </div>
+                                            <!-- <p>${qna.inquiryContent}</p> -->
+                                            <c:if test="${sessionScope.loginUser.memberId == qna.memberId}">
+                                                <div>
+                                                    <button 
+                                                        class="btn btn-sm btn-outline-primary mr-2"
+                                                        id="editQnaBtn"
+                                                        data-inquiryno="${qna.inquiryNo}"
+                                                        data-memberid="${qna.memberId}"
+                                                        >
+                                                        수정
+                                                    </button>
+                                                    <button 
+                                                        class="btn btn-sm btn-outline-danger mr-2"
+                                                        id="deleteQnaBtn"
+                                                        data-inquiryno="${qna.inquiryNo}"
+                                                        data-memberid="${qna.memberId}">
+                                                        삭제
+                                                    </button>
+                                                </div>
+                                            </c:if>
+                                        </div>
+                                        <p class="text-muted" style="margin-bottom: 0rem;">
+                                            <b>${qna.memberId}</b> | ${qna.inquiryCreateDate}
                                         </p>
                     
                                         <!-- 답변 -->
@@ -427,7 +455,7 @@
                                                     <strong>답변:</strong> ${reply.inquiryReplyNo}
                                                     <p>${reply.inquiryReplyContent}</p>
                                                     <small class="text-muted">
-                                                        작성자: ${reply.memberId} | 작성일: ${reply.inquiryReplyCreateDate}
+                                                        <b>${reply.memberId}</b> | ${reply.inquiryReplyCreateDate}
                                                     </small>
                                                 </c:forEach>
                                             </div>

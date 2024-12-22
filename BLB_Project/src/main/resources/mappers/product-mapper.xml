@@ -235,9 +235,7 @@
         ORDER BY I.INQUIRY_NO DESC
     </select>
 	
-	
-	
-	<insert id="insertInquiry" parameterType="inquiry">
+	<insert id="insertProdInquiry" parameterType="inquiry">
 	    INSERT INTO TB_INQUIRY(INQUIRY_NO
 	    					, INQUIRY_TYPE
 	                        , INQUIRY_CONTENT
@@ -247,20 +245,32 @@
 	                   		, #{inquiryType}
 	                        , #{inquiryContent}
 	                        , #{memberId}
-	                        , <if test="prodNo == 0">null</if>
-	                        <if test="prodNo != 0">#{prodNo}</if>)
+	                        , #{prodNo})
 	</insert>
 	
-	<update id="deleteInquiry" parameterType="_int">
+	<update id="deleteProdInquiry" parameterType="_int">
 		UPDATE TB_INQUIRY
 		   SET INQUIRY_STATUS = 'N'
 		 WHERE INQUIRY_NO = #{inquiryNo}
 	</update>
 	
-	<update id="updateInquiry" parameterType="inquiry">
+	<select id="selectProdInquiry" parameterType="_int" resultMap="inquiryResultMap">
+	    SELECT INQUIRY_NO
+	         , INQUIRY_TYPE
+	         , INQUIRY_CONTENT
+	         , TO_CHAR(INQUIRY_CREATE_DATE, 'YYYY-MM-DD HH:mm:ss') AS "INQUIRY_CREATE_DATE"
+	         , MEMBER_ID
+	         , PROD_NAME
+	         , PROD_NO
+	      FROM TB_INQUIRY 
+	      LEFT JOIN TB_PRODUCT USING(PROD_NO)
+	     WHERE INQUIRY_NO = #{inquiryNo}
+	       AND INQUIRY_STATUS = 'Y'
+	</select>
+	
+	<update id="updateProdInquiry" parameterType="inquiry">
 		UPDATE TB_INQUIRY
 		   SET INQUIRY_CONTENT = #{inquiryContent}
-		     , INQUIRY_CREATE_DATE = SYSDATE
 		 WHERE INQUIRY_NO = #{inquiryNo}
 		   AND INQUIRY_STATUS = 'Y'
 	</update>

@@ -240,13 +240,13 @@ public class ReviewController {
     }
 	
 	@GetMapping("delete.rv")
-    public String updateReview(Review review, 
+    public String deleteReview(Review review, 
 							   Model model, 
 							   HttpSession session,
 							   @RequestHeader(value = "Referer", required = false) String referer) {
 		
 		if(session.getAttribute("loginUser") == null) {
-        	session.setAttribute("errorMsg", "로그인 후 리뷰를 작성할 수 있습니다.");
+        	session.setAttribute("errorMsg", "로그인 후 리뷰를 삭제할 수 있습니다.");
 			return "redirect:/loginForm.me";
 		}
 		
@@ -261,9 +261,11 @@ public class ReviewController {
         int result = reviewService.deleteReview(review.getRevNo());
 		
 		if (referer != null) {
+			session.setAttribute("successMsg", "게시글을 삭제했습니다.");
             return "redirect:" + referer;
         }
         // Referer가 없으면 루트 페이지로 리다이렉트
+		session.setAttribute("successMsg", "게시글을 삭제했습니다.");
         return "redirect:/";
 	}
 	

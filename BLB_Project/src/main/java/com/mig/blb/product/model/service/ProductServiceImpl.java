@@ -69,4 +69,27 @@ public class ProductServiceImpl implements ProductService {
 	public Map<String, Object> getInfoByRevNo(int revNo) {
 		return productDao.getInfoByRevNo(sqlSession, revNo);
 	}
+
+	@Override
+	@Transactional
+	public int insertProdInquiry(Inquiry inquiry) {
+		return productDao.insertProdInquiry(sqlSession, inquiry);
+	}
+
+	@Override
+	@Transactional
+	public int deleteProdInquiry(int inquiryNo) {
+		return productDao.deleteProdInquiry(sqlSession, inquiryNo);
+	}
+
+	@Override
+	public Inquiry selectProdInquiry(int inquiryNo) {
+		return productDao.selectProdInquiry(sqlSession, inquiryNo);
+	}
+
+	@Override
+	@Transactional
+	public int updateProdInquiry(Inquiry inquiry) {
+		return productDao.updateProdInquiry(sqlSession, inquiry);
+	}
 }

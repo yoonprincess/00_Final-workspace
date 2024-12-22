@@ -215,12 +215,94 @@ $(document).ready(function () {
 
                 // 페이지네이션 클릭된 버튼 활성화 처리
                 $(`#qna-pagination a[data-url="${qnaUrl}"]`).addClass('active');
+
+                // 전문보기 버튼 체크 및 활성화
+                processReviewContent();
             },
             error: function () {
                 console.error('QnA 데이터를 불러오는데 실패했습니다.');
             }
         });
     });
+
+
+    // 상품문의 작성하기
+    $(document).on('click', '#writeQnaBtn', function () {
+        const prodNo = $(this).data('prodno'); // 상품 번호 가져오기
+        const memberId = $(this).data('memberid'); // 회원 ID 가져오기
+        
+        const iframe = $('#reviewIframeContainer iframe');
+        
+        if (!memberId) {
+            alertify.error("로그인 후 문의를 작성할 수 있습니다.");
+            // 페이지 이동
+            setTimeout(function() {
+                window.location.href = `${contextPath}/loginForm.me`;
+            }, 1500); // 2초 후 이동
+            return; // 실행 중단
+        }
+
+        const reviewIframeUrl = `${contextPath}/enrollForm.pqa?prodNo=${prodNo}&memberId=${memberId}`;
+        $(iframe).attr('src', reviewIframeUrl);
+
+        // iframe 로드 후 크기 조정
+        iframe.on('load', function () {
+            const iframeContent = this.contentWindow.document || this.contentDocument;
+            if (iframeContent) {
+                const iframeHeight = iframeContent.body.scrollHeight || iframeContent.documentElement.scrollHeight;
+                const iframeWidth = iframeContent.body.scrollWidth || iframeContent.documentElement.scrollWidth;
+
+                $(this).css({
+                    width: iframeWidth + 'px',
+                    height: iframeHeight + 'px',
+                });
+            }
+        });
+
+        // 모달 표시
+        $('#reviewIframeContainer').fadeIn();
+    });
+
+    // 상품문의 수정하기
+    $(document).on('click', '#editQnaBtn', function () {
+        const memberId = $(this).data('memberid'); // 회원 ID 가져오기
+        const inquiryNo = $(this).data('inquiryno'); // 리뷰 번호 가져오기기
+        
+        const iframe = $('#reviewIframeContainer iframe');
+
+        const reviewIframeUrl = `${contextPath}/updateForm.pqa?memberId=${memberId}&inquiryNo=${inquiryNo}`;
+        $(iframe).attr('src', reviewIframeUrl);
+
+        // iframe 로드 후 크기 조정
+        iframe.on('load', function () {
+            const iframeContent = this.contentWindow.document || this.contentDocument;
+            if (iframeContent) {
+                const iframeHeight = iframeContent.body.scrollHeight || iframeContent.documentElement.scrollHeight;
+                const iframeWidth = iframeContent.body.scrollWidth || iframeContent.documentElement.scrollWidth;
+
+                $(this).css({
+                    width: iframeWidth + 'px',
+                    height: iframeHeight + 'px',
+                });
+            }
+        });
+
+        // 모달 표시
+        $('#reviewIframeContainer').fadeIn();
+    });
+    // 상품문의 삭제하기
+    $(document).on('click', '#deleteQnaBtn', function () {
+        const memberId = $(this).data('memberid'); // 회원 ID 가져오기
+        const inquiryNo = $(this).data('inquiryno'); // 리뷰 번호 가져오기기
+        // 확인 팝업 표시
+        if (confirm("작성한 문의가 완전히 삭제됩니다. 진행하시겠습니까?")) {
+            // 확인 클릭 시 URL로 이동
+            const url = `${contextPath}/delete.pqa?memberId=${memberId}&inquiryNo=${inquiryNo}`;
+            window.location.href = url;
+        }
+    });
+
+
 
     // 리뷰 전체 썸네일 더보기 버튼 썸네일 5개 이하일 경우 숨김
     $('.thumbnail-container').each(function () {
@@ -234,6 +316,9 @@ $(document).ready(function () {
         const targetTab = $(e.target).attr('href');
 
         if (targetTab === '#reviews') {
+            processReviewContent();
+        }
+        if (targetTab === '#qna') {
             processReviewContent();
         }
     });

@@ -179,7 +179,7 @@
 <body>
     <div class="review-container">
         <!-- 리뷰 작성 폼 -->
-        <form id="reviewForm" action="insert.rv" method="post" enctype="multipart/form-data">
+        <form id="reviewWriteForm" action="insert.rv" method="post" enctype="multipart/form-data">
             <input type="hidden" id="serialNo" name="serialNo" value="${purchaseOne.serialNo}">
             <input type="hidden" id="memberId" name="memberId" value="${memberId}">
             <input type="hidden" id="prodNo" name="prodNo" value="${prodNo}">
@@ -199,14 +199,14 @@
             <div class="review-rating">
                 <label for="revRating" style="margin-right: 10px;">만족도</label>
                 <div class="rating-stars" id="ratingStars">
-                    <i class="fas fa-star" data-value="1"></i>
-                    <i class="fas fa-star" data-value="2"></i>
-                    <i class="fas fa-star" data-value="3"></i>
-                    <i class="fas fa-star" data-value="4"></i>
-                    <i class="fas fa-star" data-value="5"></i>
+                    <i class="fas fa-star selected" data-value="1"></i>
+                    <i class="fas fa-star selected" data-value="2"></i>
+                    <i class="fas fa-star selected" data-value="3"></i>
+                    <i class="fas fa-star selected" data-value="4"></i>
+                    <i class="fas fa-star selected" data-value="5"></i>
                 </div>
             </div>
-            <input type="hidden" id="revRating" name="revRating" value="">
+            <input type="hidden" id="revRating" name="revRating" value="5">
     
             <!-- 리뷰 작성 -->
             <div class="form-group">
@@ -255,6 +255,9 @@
                     $('#charCount').removeClass('text-danger');
                 }
             });
+
+            // 별점 기본 5점
+            // $('#ratingStars i').addClass('selected');
 
             // 별점 선택
             $('#ratingStars i').on('click', function () {
@@ -311,7 +314,7 @@
             });
 
             // 글자수 제한 처리 및 ajax 처리 후 창 닫기
-            $('#reviewForm').on('submit', function (e) {
+            $('#reviewWriteForm').on('submit', function (e) {
                 e.preventDefault(); // 기본 폼 제출 방지
 
                 const textLength = $('#revContent').val().length;
@@ -336,7 +339,7 @@
                             setTimeout(function () {
                                 parent.$('#reviewIframeContainer').hide();
                                 parent.location.reload(); // 부모 페이지 새로고침
-                            }, 2000); // 2초 후 창 닫기
+                            }, 1000); // 1초 후 창 닫기
                         } else {
                             // 실패 메시지
                             alertify.error(response.message);
@@ -344,7 +347,7 @@
                             setTimeout(function () {
                                 parent.$('#reviewIframeContainer').hide();
                                 parent.location.reload(); // 부모 페이지 새로고침
-                            }, 2000); // 2초 후 창 닫기
+                            }, 1000); // 1초 후 창 닫기
                         }
                     },
                     error: function () {
@@ -353,7 +356,7 @@
                         setTimeout(function () {
                                 parent.$('#reviewIframeContainer').hide();
                                 parent.location.reload(); // 부모 페이지 새로고침
-                            }, 2000); // 2초 후 창 닫기
+                            }, 1000); // 1초 후 창 닫기
                     }
                 });
             });

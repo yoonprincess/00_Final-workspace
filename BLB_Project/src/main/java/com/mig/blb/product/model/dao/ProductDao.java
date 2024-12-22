@@ -74,4 +74,20 @@ public class ProductDao {
 		return sqlSession.selectOne("productMapper.getInfoByRevNo", revNo);
 	}
 
+	public int insertProdInquiry(SqlSessionTemplate sqlSession, Inquiry inquiry) {
+		return sqlSession.insert("productMapper.insertProdInquiry", inquiry);
+	}
+
+	public int deleteProdInquiry(SqlSessionTemplate sqlSession, int inquiryNo) {
+		return sqlSession.update("productMapper.deleteProdInquiry", inquiryNo);
+	}
+
+	public Inquiry selectProdInquiry(SqlSessionTemplate sqlSession, int inquiryNo) {
+		return sqlSession.selectOne("productMapper.selectProdInquiry", inquiryNo);
+	}
+
+	public int updateProdInquiry(SqlSessionTemplate sqlSession, Inquiry inquiry) {
+		return sqlSession.update("productMapper.updateProdInquiry", inquiry);
+	}
+
 }

@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-    <title>리뷰 작성</title>
+    <title>리뷰 수정</title>
     <!-- jQuery 3.7.1 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- header CSS -->
@@ -365,7 +365,7 @@
                             setTimeout(function () {
                                 parent.$('#reviewIframeContainer').hide();
                                 parent.location.reload(); // 부모 페이지 새로고침
-                            }, 2000); // 2초 후 창 닫기
+                            }, 1000); // 1초 후 창 닫기
                         } else {
                             // 실패 메시지
                             alertify.error(response.message);
@@ -373,7 +373,7 @@
                             setTimeout(function () {
                                 parent.$('#reviewIframeContainer').hide();
                                 parent.location.reload(); // 부모 페이지 새로고침
-                            }, 2000); // 2초 후 창 닫기
+                            }, 1000); // 1초 후 창 닫기
                         }
                     },
                     error: function () {
@@ -382,7 +382,7 @@
                         setTimeout(function () {
                                 parent.$('#reviewIframeContainer').hide();
                                 parent.location.reload(); // 부모 페이지 새로고침
-                            }, 2000); // 2초 후 창 닫기
+                            }, 1000); // 1초 후 창 닫기
                     }
                 });
             });

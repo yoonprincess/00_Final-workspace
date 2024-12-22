@@ -30,10 +30,20 @@ public interface ProductService {
 	int selectProdInquiryCount(int prodNo);
 	// 문의 목록(상세, 댓글포함)조회
 	ArrayList<Inquiry> selectProdInquiryList(PageInfo qnaPi, int prodNo);
+	// 문의 등록
+	int insertProdInquiry(Inquiry inquiry);
+	// 문의 삭제
+	int deleteProdInquiry(int inquiryNo);
+	// 문의 조회
+	Inquiry selectProdInquiry(int inquiryNo);
+	// 문의 수정
+	int updateProdInquiry(Inquiry inquiry);
 	
 	// 상품 구매 여부 확인 및 정보 추출
 	List<Map<String, Object>> getPurchaseInfo(String memberId, int prodNo);
 	
 	// 리뷰 수정용 상품 정보 추출
 	Map<String, Object> getInfoByRevNo(int revNo);
+	
+	
 }
