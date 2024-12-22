@@ -2,9 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-	
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context-4.3.xsd">
 	<!-- DB 연동관련 빈 등록 -->
 	<bean class="org.apache.commons.dbcp2.BasicDataSource" 
 		  id="dataSource" destroy-method="close">
@@ -64,5 +65,9 @@
 		</property>	
 	</bean>
 	
+	<!-- application.properties 파일관련 -->
+	<beans profile="private">
+    	<context:property-placeholder location="classpath:application.properties" />
+    </beans>
 	
 </beans>
