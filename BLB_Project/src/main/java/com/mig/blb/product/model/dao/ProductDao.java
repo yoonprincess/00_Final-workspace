@@ -70,4 +70,8 @@ public class ProductDao {
 		return sqlSession.selectList("productMapper.getPurchaseInfo", Map.of("memberId", memberId, "prodNo", prodNo));
 	}
 
+	public Map<String, Object> getInfoByRevNo(SqlSessionTemplate sqlSession, int revNo) {
+		return sqlSession.selectOne("productMapper.getInfoByRevNo", revNo);
+	}
+
 }

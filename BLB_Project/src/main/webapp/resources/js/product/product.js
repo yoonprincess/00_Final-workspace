@@ -132,8 +132,8 @@ $(document).ready(function () {
         alert('구매 페이지로 이동합니다.');
     });
 
+    // 상품정보 별점 클릭 시 이동동
     $('.top-review').on('click', function (e) {
-
         let tabsOffset = $('.origin-tab-location').offset().top || 0; // 탭 메뉴의 위치
         // 부드러운 스크롤 이동
         $('html, body').animate(
@@ -142,10 +142,8 @@ $(document).ready(function () {
             },
             300 // 스크롤 이동 속도 (밀리초)
         );
-        
         // 탭 활성화 처리
         $('#reviews-tab').tab('show');
-        
     });
 
     
@@ -186,6 +184,9 @@ $(document).ready(function () {
 
                 // 페이지네이션 클릭된 버튼 활성화 처리
                 $(`#rev-pagination a[data-url="${revUrl}"]`).addClass('active');
+
+                // 전문보기 버튼 체크 및 활성화
+                processReviewContent();
             },
             error: function () {
                 console.error('리뷰 데이터를 불러오는 중 오류 발생');
@@ -220,13 +221,87 @@ $(document).ready(function () {
             }
         });
     });
+
+    // 리뷰 전체 썸네일 더보기 버튼 썸네일 5개 이하일 경우 숨김
+    $('.thumbnail-container').each(function () {
+        if ($(this).find('.review-thumbnail').length <= 6) {
+            $(this).siblings('.show-more-thumbnails-btn').hide();
+        }
+    });
+
+    // 탭 활성화 이벤트
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        const targetTab = $(e.target).attr('href');
+
+        if (targetTab === '#reviews') {
+            processReviewContent();
+        }
+    });
+
+    // 리뷰 내용 처리 함수
+    function processReviewContent() {
+        $('.review-content-container').each(function () {
+            const reviewText = $(this).find('.review-text');
+            const moreButton = $(this).find('.show-more-btn');
+            const lineHeight = parseInt(reviewText.css('line-height')) || 24;
+            const maxHeight = lineHeight * 3;
     
+            const scrollHeight = getScrollHeightHiddenElement(reviewText);
+    
+            if (scrollHeight > maxHeight) {
+                reviewText.css({
+                    'max-height': `${maxHeight}px`,
+                    'overflow': 'hidden',
+                });
+                moreButton.text('더보기'); // 기본 버튼 텍스트 설정
+                moreButton.show();
+            } else {
+                moreButton.hide();
+            }
+    
+            // "더보기" 버튼 클릭 시 전체 보기
+            moreButton.off('click').on('click', function () {
+                if (reviewText.hasClass('expanded')) {
+                    // 접기 동작
+                    reviewText.removeClass('expanded');
+                    reviewText.css({
+                        'max-height': `${maxHeight}px`,
+                        'overflow': 'hidden',
+                    });
+                    $(this).text('더보기');
+                } else {
+                    // 더보기 동작
+                    reviewText.addClass('expanded');
+                    reviewText.css({
+                        'max-height': 'none',
+                        'overflow': 'visible',
+                    });
+                    $(this).text('접기');
+                }
+            });
+        });
+    }
+    // 숨겨진 요소 높이 계산 함수
+    function getScrollHeightHiddenElement(element) {
+        const clone = $(element).clone();
+        clone.css({
+            display: 'block',
+            visibility: 'hidden',
+            position: 'absolute',
+            height: 'auto', // 높이 제한 해제
+        });
+        $('body').append(clone);
+        const scrollHeight = clone[0].scrollHeight;
+        clone.remove();
+        return scrollHeight;
+    }
+
 });
 
 // * 리뷰 썸네일 기능
 // 더보기/접기 버튼 동작
 $(document).on('click', '.show-more-thumbnails-btn', function () {
-    const thumbnailsContainer = $(this).siblings('.review-thumbnails');
+    const thumbnailsContainer = $(this).siblings('.thumbnail-container');
     
     if (thumbnailsContainer.hasClass('short-thumbnails')) {
         thumbnailsContainer.removeClass('short-thumbnails').addClass('full-thumbnails');
@@ -239,24 +314,22 @@ $(document).on('click', '.show-more-thumbnails-btn', function () {
 
 // 이미지 모달 열기
 function openThumbModal(imageSrc) {
-    $('#thumbModal').show();
     $('#fullImage').attr('src', imageSrc);
+    $('#thumbModal').fadeIn();
 }
-
 // 이미지 모달 닫기
 function closeThumbModal() {
-    $('#thumbModal').hide();
+    $('#thumbModal').fadeOut();
 }
-
-// 전문 보기/접기 토글
-$(document).on('click', '.show-more-btn', function () {
-    const contentContainer = $(this).siblings('.review-content');
-    
-    if (contentContainer.hasClass('short-content')) {
-        contentContainer.removeClass('short-content');
-        $(this).text('접기');
-    } else {
-        contentContainer.addClass('short-content');
-        $(this).text('더보기');
+// 모달 외부 클릭 시 닫기
+$(document).on('click', '#imageModal', function (e) {
+    if ($(e.target).is('#imageModal')) {
+        closeImageModal();
     }
 });
+
+// 좋아요 버튼 클릭 이벤트
+function likeReview(reviewId) {
+    alert(`리뷰 좋아요: ${reviewId}`);
+    // 좋아요 로직 추가 필요
+}

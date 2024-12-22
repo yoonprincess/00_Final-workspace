@@ -65,4 +65,24 @@ public class ReviewDao {
 	public List<ReviewAtt> getAllReviewAtt(SqlSessionTemplate sqlSession, int prodNo) {
 		return (List)sqlSession.selectList("reviewMapper.getAllReviewAtt", prodNo);
 	}
+
+	public Review selectReview(SqlSessionTemplate sqlSession, int revNo) {
+		return sqlSession.selectOne("reviewMapper.selectReview", revNo);
+	}
+
+	public int updateReview(SqlSessionTemplate sqlSession, Review review) {
+		return sqlSession.update("reviewMapper.updateReview", review);
+	}
+
+	public int deleteReviewAtt(SqlSessionTemplate sqlSession, String saveFileName) {
+		return sqlSession.delete("reviewMapper.deleteReviewAtt", saveFileName);
+	}
+
+	public int updateReviewAtt(SqlSessionTemplate sqlSession, ReviewAtt ra) {
+		return sqlSession.insert("reviewMapper.updateReviewAtt", ra);
+	}
+
+	public int deleteReview(SqlSessionTemplate sqlSession, int revNo) {
+		return sqlSession.update("reviewMapper.deleteReview", revNo);
+	}
 }

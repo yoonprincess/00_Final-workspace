@@ -22,10 +22,6 @@ td label {
     margin-bottom: 0px; /* 아래쪽 간격 */
     display: inline-block !important; /* 한 줄에 여러 개 배치되도록 */
 }
-.d-flex button {
-    margin-left: 10px;
-    margin-right: 10px;
-}
 
 /* 상품 카드 스타일 */
 .product-card {
@@ -106,7 +102,6 @@ td label {
 /* * 상품 상세보기 css */
 .product-image { height: 500px; object-fit: contain; }
 .thumbnail { width: 80px; height: 80px; object-fit: cover; cursor: pointer; }
-.active-thumbnail { border: 2px solid #007bff; }
 .top-review {
     cursor: pointer;
     display: inline-block; /* 내부 콘텐츠 크기에 맞게 div 크기 조정 */
@@ -173,31 +168,57 @@ td label {
     justify-content: space-between;
     align-items: flex-start;
 }
-
+.custom-rating-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.custom-rating-label {
+    width: 100px; /* 좌측 라벨의 고정 너비 */
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+}
+.custom-progress {
+    flex: 1; /* 가로로 늘어나도록 설정 */
+    height: 15px;
+    background-color: #f8f9fa; /* 진행바 배경 */
+    border-radius: 10px;
+    margin: 0 10px; /* 라벨과 수량 간격 조정 */
+    overflow: hidden;
+}
+.custom-progress-bar {
+    height: 100%; /* 진행바 높이 */
+    border-radius: 10px;
+    background-color: #ffc107; /* 부트스트랩 경고색 */
+    transition: width 0.3s ease; /* 부드러운 변화 */
+}
+.custom-rating-count {
+    width: 40px; /* 우측 별점 수량 고정 너비 */
+    font-size: 14px;
+    text-align: right;
+    color: #666;
+}
 .thumbnail-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); /* 최소 너비 80px, 가변 크기 */
-    gap: 10px; /* 썸네일 간격 */
-    max-height: 150px; /* 기본 최대 높이 */
+    gap: 5px; /* 썸네일 간격 */
+    max-height: 200px; /* 기본 최대 높이 */
     overflow: hidden; /* 숨김 처리 */
 }
-
 /* 전체 보기 시 확장 */
 .thumbnail-container.full-thumbnails {
     max-height: none; /* 높이 제한 해제 */
 }
-
-.rev-thumbnail {
+.review-thumbnail {
     width: 100%;
     height: 80px;
     object-fit: cover;
     cursor: pointer;
     border-radius: 5px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease-in-out;
 }
-
-/* 더보기 버튼 */
+/* 썸네일 더보기 버튼 */
 .show-more-thumbnails-btn {
     background-color: transparent;
     border: none;
@@ -207,14 +228,13 @@ td label {
     margin-top: 10px;
     display: inline-block;
 }
-
 .show-more-thumbnails-btn:hover {
     color: #7AB2D3;
 }
 
 /* 모달 스타일 */
-.modal {
-    display: none; /* 기본적으로 숨김 */
+.modal.review-image {
+    display: flex;
     position: fixed;
     top: 0;
     left: 0;
@@ -226,14 +246,25 @@ td label {
     align-items: center;
 }
 
-.modal-content {
+.modal-content.review-image {
     max-width: 80%;
-    max-height: 80%;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    max-height: 100%;
+    padding: 0;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    overflow: auto;
 }
-
-.close-modal {
+.modal-content.review-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain !important; /* 비율 유지 */
+    margin: 0;
+    display: block;
+}
+.close-modal.review-image {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -242,19 +273,40 @@ td label {
     cursor: pointer;
 }
 
-
-/* 리뷰 내용 컨테이너 */
-.review-content-container {
-    position: relative;
-}
-
 /* 기본적으로 3줄까지만 보이게 설정 */
-.review-content.short-content p {
+.review-text {
     display: -webkit-box;
     -webkit-line-clamp: 3; /* 최대 3줄 */
     -webkit-box-orient: vertical;
+    line-height: 1.5em; /* 원하는 줄 높이 설정 */
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: pre-wrap; /* 줄바꿈 지원 */
+    word-break: break-word; /* 긴 단어 줄바꿈 */
+    transition: max-height 0.3s ease, margin-bottom 0.3s ease; /* 부드러운 확장/축소 효과 */
+    margin-bottom: 10px; /* 기본 간격 */
+}
+
+/* 확장된 리뷰 텍스트 */
+.review-text.expanded {
+    -webkit-line-clamp: unset; /* 줄 제한 해제 */
+    max-height: none; /* 높이 제한 해제 */
+    margin-bottom: 10px; /* 이미지와 간격 확보 */
+}
+
+/* 카드 스타일 */
+.review-card {
+    /* border: 1px solid #e0e0e0;
+    border-radius: 10px; */
+    padding: 15px;
+    background-color: #fff;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+
+/* 별점 스타일 */
+.review-stars i {
+    color: #ffc107;
+    margin-right: 2px;
 }
 
 /* 전문 보기 버튼 */
@@ -271,38 +323,30 @@ td label {
 .show-more-btn:hover {
     color: #7AB2D3;
 }
-
-/* 리뷰 항목 이미지 */
+/* 썸네일 스타일 */
 .review-images {
-    display: flex;
     gap: 10px;
-    margin-top: 10px;
 }
-
-.review-images .thumbnail {
+.review-images .thumbnail-container {
     width: 80px;
     height: 80px;
-    object-fit: cover;
-    cursor: pointer;
+    overflow: hidden;
     border-radius: 5px;
-    transition: transform 0.3s ease;
-}
-
-/* 좋아요 버튼 */
-.like-btn {
-    background-color: transparent;
-    border: none;
-    color: #4A628A;
+    margin-right: 10px;
+    position: relative;
     cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+}
+.review-images .thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.like-btn:hover {
-    color: #7AB2D3;
+/* 버튼 스타일 */
+.review-actions .btn {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
-
 
 

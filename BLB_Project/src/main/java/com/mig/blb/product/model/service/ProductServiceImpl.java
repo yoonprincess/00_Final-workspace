@@ -64,4 +64,9 @@ public class ProductServiceImpl implements ProductService {
 	public List<Map<String, Object>> getPurchaseInfo(String memberId, int prodNo) {
 		return productDao.getPurchaseInfo(sqlSession, memberId, prodNo);
 	}
+
+	@Override
+	public Map<String, Object> getInfoByRevNo(int revNo) {
+		return productDao.getInfoByRevNo(sqlSession, revNo);
+	}
 }

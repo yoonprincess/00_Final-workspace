@@ -28,4 +28,14 @@ public interface ReviewService {
 	int insertReviewAtt(ReviewAtt ra);
 	// 상품에 포함된 전체 리뷰 이미지
 	List<ReviewAtt> getAllReviewAtt(int prodNo);
+	// 리뷰 1개 조회
+	Review selectReview(int revNo);
+	// 리뷰 글수정
+	int updateReview(Review review);
+	// 리뷰 첨부파일 삭제
+	int deleteReviewAtt(String saveFileName);
+	// 리뷰 수정 시 첨부파일 추가
+	int updateReviewAtt(ReviewAtt ra);
+	// 리뷰 삭제
+	int deleteReview(int revNo);
 }

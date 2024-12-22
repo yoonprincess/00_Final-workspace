@@ -82,6 +82,25 @@
 		ORDER BY R.REV_NO DESC
 	</select>
 	
+	<select id="selectReview" parameterType="_int"
+			resultMap="reviewResultSet">
+		SELECT R.REV_NO
+		     , R.REV_CONTENT
+		     , R.REV_ENROLL_DATE
+		     , R.REV_RATING
+		     , R.MEMBER_ID
+		     , R.SERIAL_NO
+		     , RA.REV_ATT_NO
+		     , RA.ORIG_FILE_NAME
+		     , RA.SAVE_FILE_NAME
+		     , RA.SAVE_PATH
+		     , RA.REV_NO AS ATT_REV_NO
+		  FROM TB_REVIEW R
+		  LEFT JOIN TB_REVIEW_ATTACHMENT RA ON R.REV_NO = RA.REV_NO
+		 WHERE R.REV_NO = #{revNo}
+		   AND R.REV_STATUS = 'Y'
+	</select>
+	
 	<select id="selectReviewStats" parameterType="int" resultMap="reviewStatsSet">
 	    SELECT ROUND(AVG(R.REV_RATING), 1) AS AVG_RATING,
 	           COUNT(*) AS TOTAL_REVIEWS,
@@ -132,6 +151,40 @@
                                  SEQ_REV_NO.CURRVAL)
     </insert>
     
+    <update id="updateReview" parameterType="review">
+        UPDATE TB_REVIEW
+		   SET REV_CONTENT = #{revContent}
+		     , REV_RATING = #{revRating}
+		 WHERE REV_NO = #{revNo}
+		   AND REV_STATUS = 'Y'
+    </update>
+    
+    <delete id="deleteReviewAtt" parameterType="string">
+    	DELETE
+		  FROM TB_REVIEW_ATTACHMENT
+		 WHERE SAVE_FILE_NAME = #{saveFileName}
+		   AND REV_ATT_STATUS = 'Y'
+    </delete>
+    
+    <insert id="updateReviewAtt" parameterType="reviewAtt">
+    INSERT INTO TB_REVIEW_ATTACHMENT(REV_ATT_NO,
+                             ORIG_FILE_NAME,
+                             SAVE_FILE_NAME,
+                             SAVE_PATH,
+                             REV_NO)
+                      VALUES(SEQ_REV_ATT_NO.NEXTVAL,
+                             #{origFileName},
+                             #{saveFileName},
+                             #{savePath},
+                             #{revNo})
+    </insert>
+    <update id="deleteReview" parameterType="_int">
+        UPDATE TB_REVIEW
+		   SET REV_STATUS = 'N'
+		 WHERE REV_NO = #{revNo}
+		   AND REV_STATUS = 'Y'
+    </update>
+    
     <!-- 모든 리뷰 이미지 가져오기 -->
 	<select id="getAllReviewAtt" parameterType="int"
 			resultMap="reviewAttResultSet">
@@ -142,7 +195,8 @@
 		  FROM TB_REVIEW_ATTACHMENT
 		 WHERE REV_NO 
 		    IN (SELECT REV_NO FROM TB_REVIEW
-		         WHERE SERIAL_NO 
+		         WHERE REV_STATUS = 'Y'
+		           AND SERIAL_NO 
 		            IN (SELECT SERIAL_NO FROM TB_PRODUCT_ORDER PO
 		                  JOIN TB_OPTION O ON PO.OPT_NO = O.OPT_NO
 		                 WHERE O.PROD_NO = #{prod_no}

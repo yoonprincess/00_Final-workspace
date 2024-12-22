@@ -33,4 +33,7 @@ public interface ProductService {
 	
 	// 상품 구매 여부 확인 및 정보 추출
 	List<Map<String, Object>> getPurchaseInfo(String memberId, int prodNo);
+	
+	// 리뷰 수정용 상품 정보 추출
+	Map<String, Object> getInfoByRevNo(int revNo);
 }

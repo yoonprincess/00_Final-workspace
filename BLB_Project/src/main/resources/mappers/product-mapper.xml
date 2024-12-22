@@ -165,6 +165,31 @@
 		ORDER BY TO_NUMBER(PO.SERIAL_NO) ASC
 	</select>
 	
+	<!-- 리뷰수정용 구매정보 -->
+	<select id="getInfoByRevNo" parameterType="_int" 
+			resultMap="purchaseInfoSet">
+	    SELECT PO.SERIAL_NO,
+		       O.ORDER_DATE,
+		       OPT.OPT_NAME,
+		       OPT.OPT_VALUE,
+		       P.PROD_NAME,
+		       PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_ONE"
+		  FROM TB_REVIEW R
+		  JOIN TB_PRODUCT_ORDER PO ON R.SERIAL_NO = PO.SERIAL_NO
+		  JOIN TB_ORDER O ON PO.ORDER_NO = O.ORDER_NO
+		  JOIN TB_OPTION OPT ON PO.OPT_NO = OPT.OPT_NO
+		  JOIN TB_PRODUCT P ON OPT.PROD_NO = P.PROD_NO
+		  LEFT JOIN (
+		        SELECT PROD_NO, MIN(PROD_ATT_NO) AS MIN_PROD_ATT_NO
+		          FROM TB_PRODUCT_ATTACHMENT
+		         GROUP BY PROD_NO
+		        ) MPA ON P.PROD_NO = MPA.PROD_NO
+		  LEFT JOIN TB_PRODUCT_ATTACHMENT PA 
+		       ON PA.PROD_NO = MPA.PROD_NO
+		      AND PA.PROD_ATT_NO = MPA.MIN_PROD_ATT_NO
+		WHERE R.REV_NO = #{revNo}
+	</select>
+	
 	
 	<!-- 1:1 문의 관련 매퍼 -->
     <!-- QnA와 답글 resultMap -->

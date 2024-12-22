@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -178,69 +180,75 @@
 </head>
 <body>
     <div class="review-container">
-        <!-- 리뷰 작성 폼 -->
-        <form id="reviewForm" action="insert.rv" method="post" enctype="multipart/form-data">
-            <input type="hidden" id="serialNo" name="serialNo" value="${purchaseOne.serialNo}">
-            <input type="hidden" id="memberId" name="memberId" value="${memberId}">
-            <input type="hidden" id="prodNo" name="prodNo" value="${prodNo}">
+        <!-- 리뷰 수정 폼 -->
+        <form id="reviewEditForm" action="update.rv" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="revNo" name="revNo" value="${r.revNo}">
+            
             <!-- 상품 정보 -->
             <div class="product-info" onclick="window.open('detail.pr?pno=${prodNo}', '_blank');" style="cursor: pointer;">
                 <div class="product-thumbnail">
-                    <img src="${ pageContext.request.contextPath }${ purchaseOne.thumbOne }" alt="상품 썸네일">
+                    <img src="${pageContext.request.contextPath}${productInfo.thumbOne}" alt="상품 썸네일">
                 </div>
                 <div class="product-details">
-                    <div class="product-name">${purchaseOne.prodName}</div>
-                    <div class="product-options">${purchaseOne.optName} ${purchaseOne.optValue}</div>
-                    <div class="product-options text-muted">구매 일자: <fmt:formatDate value="${purchaseOne.orderDate}" pattern="yyyy-MM-dd hh:mm" /></div>
+                    <div class="product-name">${productInfo.prodName}</div>
+                    <div class="product-options">${productInfo.optName} ${productInfo.optValue}</div>
+                    <div class="product-options text-muted">구매 일자: <fmt:formatDate value="${productInfo.orderDate}" pattern="yyyy-MM-dd hh:mm" /></div>
                 </div>
             </div>
-    
+        
             <!-- 리뷰 별점 -->
             <div class="review-rating">
                 <label for="revRating" style="margin-right: 10px;">만족도</label>
                 <div class="rating-stars" id="ratingStars">
-                    <i class="fas fa-star" data-value="1"></i>
-                    <i class="fas fa-star" data-value="2"></i>
-                    <i class="fas fa-star" data-value="3"></i>
-                    <i class="fas fa-star" data-value="4"></i>
-                    <i class="fas fa-star" data-value="5"></i>
+                    <i class="fas fa-star ${r.revRating >= 1 ? 'selected' : ''}" data-value="1"></i>
+                    <i class="fas fa-star ${r.revRating >= 2 ? 'selected' : ''}" data-value="2"></i>
+                    <i class="fas fa-star ${r.revRating >= 3 ? 'selected' : ''}" data-value="3"></i>
+                    <i class="fas fa-star ${r.revRating >= 4 ? 'selected' : ''}" data-value="4"></i>
+                    <i class="fas fa-star ${r.revRating >= 5 ? 'selected' : ''}" data-value="5"></i>
                 </div>
             </div>
-            <input type="hidden" id="revRating" name="revRating" value="">
-    
+            <input type="hidden" id="revRating" name="revRating" value="${r.revRating}">
+        
             <!-- 리뷰 작성 -->
             <div class="form-group">
-                <label for="revContent">리뷰 작성란</label>
+                <label for="revContent">리뷰 수정란</label>
                 <textarea 
                     class="form-control" 
                     id="revContent" 
                     name="revContent" 
                     rows="5" 
-                    placeholder="리뷰 내용을 입력하세요 (최소 10자, 최대 500자)" 
                     required
-                    style="resize: none;"
-                ></textarea>
-                <small id="charCount" class="form-text text-muted">0 / 500자</small>
+                    style="resize: none;">${r.revContent}</textarea>
+                <small id="charCount" class="form-text text-muted">${fn:length(r.revContent)} / 500자</small>
             </div>
-    
+        
             <!-- 첨부 이미지 -->
             <div class="form-group">
                 <label>포토 첨부</label>
                 <div class="image-preview-container" id="imagePreviewContainer">
+                    <!-- 기존 이미지 표시 -->
+                    <c:forEach var="image" items="${r.reviewAttList}">
+                        <div class="image-preview existing-image" data-file="${image.saveFileName}">
+                            <img src="${pageContext.request.contextPath}${image.savePath}${image.saveFileName}" alt="첨부 이미지">
+                            <button type="button" class="remove-btn existing-remove-btn">&times;</button>
+                        </div>
+                    </c:forEach>
+                    <!-- 새로 추가할 이미지 -->
                     <div class="add-image" id="addImageButton">+</div>
                 </div>
             </div>
-    
+        
             <!-- 작성 버튼 -->
-            <button type="submit" class="btn-submit">리뷰 작성하고 적립금 받기</button>
+            <button type="submit" class="btn-submit">수정 완료</button>
         </form>
     </div>
+    
 
     <script>
         $(document).ready(function () {
             const maxChar = 500;
             const minChar = 10;
-            const maxFiles = 4;
+            const maxFiles = 4; // 총 이미지 최대 개수 (기존 + 추가 포함)
 
             const imagePreviewContainer = $('#imagePreviewContainer');
 
@@ -268,7 +276,23 @@
                 });
             });
 
-            // 이미지 추가
+            // 기존 이미지 삭제
+            $('.existing-remove-btn').click(function () {
+                const parent = $(this).closest('.image-preview');
+                const fileName = parent.data('file');
+                parent.remove();
+
+                // 삭제 대상 파일 추가
+                const removeInput = $('<input>')
+                    .attr('type', 'hidden')
+                    .attr('name', 'removeFiles')
+                    .val(fileName);
+                $('#reviewEditForm').append(removeInput);
+
+                checkAddButtonVisibility();
+            });
+
+            // 새 이미지 추가
             $('#addImageButton').click(function () {
                 if ($('.image-preview').length >= maxFiles) {
                     alert('최대 4개의 이미지만 첨부할 수 있습니다.');
@@ -282,36 +306,41 @@
                     if (file) {
                         const reader = new FileReader();
                         reader.onload = function (event) {
-                            // 미리보기 요소 생성
                             const preview = $('<div class="image-preview"></div>');
-                            const img = $('<img alt="첨부 이미지">').attr('src', event.target.result); // src 설정
+                            const img = $('<img alt="첨부 이미지">').attr('src', event.target.result);
                             const removeBtn = $('<button type="button" class="remove-btn">&times;</button>');
 
-                            // Remove 버튼 동작 설정
                             removeBtn.click(function () {
                                 preview.remove();
                                 fileInput.remove();
-                                $('#addImageButton').show();
+                                checkAddButtonVisibility();
                             });
 
-                            // 미리보기 요소에 이미지와 버튼 추가
                             preview.append(img).append(removeBtn);
-
                             $('#addImageButton').before(preview);
-
-                            if ($('.image-preview').length >= maxFiles) {
-                                $('#addImageButton').hide();
-                            }
+                            checkAddButtonVisibility();
                         };
-                        reader.readAsDataURL(file); // 파일 읽기 시작
+                        reader.readAsDataURL(file);
                     }
                 });
-                
                 imagePreviewContainer.append(fileInput);
             });
 
+            // 이미지 추가 버튼 보이기/숨기기
+            function checkAddButtonVisibility() {
+                const totalImages = $('.image-preview').length; // 기존 + 추가된 이미지 개수
+                if (totalImages >= maxFiles) {
+                    $('#addImageButton').hide();
+                } else {
+                    $('#addImageButton').show();
+                }
+            }
+
+            // 초기 호출 (기존 이미지가 이미 있는 경우를 대비)
+            checkAddButtonVisibility();
+
             // 글자수 제한 처리 및 ajax 처리 후 창 닫기
-            $('#reviewForm').on('submit', function (e) {
+            $('#reviewEditForm').on('submit', function (e) {
                 e.preventDefault(); // 기본 폼 제출 방지
 
                 const textLength = $('#revContent').val().length;
@@ -323,7 +352,7 @@
                 const formData = new FormData(this);
 
                 $.ajax({
-                    url: 'insert.rv',
+                    url: 'update.rv',
                     type: 'POST',
                     data: formData,
                     contentType: false,

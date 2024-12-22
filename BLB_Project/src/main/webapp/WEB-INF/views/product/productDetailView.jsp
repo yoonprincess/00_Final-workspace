@@ -10,12 +10,14 @@
 <title>뷰라밸 - 제품상세보기</title>
 </head>
 <body class="body-offset">
+    <!-- 리뷰 작성하기 컨테이너 -->
     <div id="reviewIframeContainer">
         <div style="position: relative;"> <!-- 닫기 버튼을 포함하는 컨테이너 -->
             <button class="close-btn review-enroll">&times;</button>
             <iframe src=""></iframe>
         </div>
     </div>
+
 	<div class="container-fluid">
 	<div class="container mt-5">
         <div class="row">
@@ -201,77 +203,91 @@
                                     </div>
                                 </div>
                                 <!-- 별점 분포 -->
-                                <!-- 5점 -->
-                                <div class="progress mb-2" style="height: 20px;">
-                                    <div class="progress-bar bg-warning" role="progressbar"
-                                            style="width: <fmt:formatNumber value="${(reviewStats.rating5 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating5 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
-                                            aria-valuemin="0" aria-valuemax="100">
-                                            5점 (<fmt:formatNumber value="${(reviewStats.rating5 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+                                <div class="custom-rating-distribution">
+                                    <div class="custom-rating-row">
+                                        <span class="custom-rating-label">아주 좋아요</span>
+                                        <div class="custom-progress">
+                                            <div class="custom-progress-bar bg-warning" role="progressbar"
+                                                style="width: <fmt:formatNumber value="${(reviewStats.rating5 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%;"
+                                                aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating5 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                                aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                        <span class="custom-rating-count">${reviewStats.rating5}</span>
                                     </div>
-                                </div>
-                            
-                                <!-- 4점 -->
-                                <div class="progress mb-2" style="height: 20px;">
-                                    <div class="progress-bar bg-warning" role="progressbar"
-                                            style="width: <fmt:formatNumber value="${(reviewStats.rating4 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating4 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
-                                            aria-valuemin="0" aria-valuemax="100">
-                                            4점 (<fmt:formatNumber value="${(reviewStats.rating4 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+
+                                    <div class="custom-rating-row">
+                                        <span class="custom-rating-label">맘에 들어요</span>
+                                        <div class="custom-progress">
+                                            <div class="custom-progress-bar bg-warning" role="progressbar"
+                                                style="width: <fmt:formatNumber value="${(reviewStats.rating4 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%;"
+                                                aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating4 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                                aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                        <span class="custom-rating-count">${reviewStats.rating4}</span>
                                     </div>
-                                </div>
-                            
-                                <!-- 3점 -->
-                                <div class="progress mb-2" style="height: 20px;">
-                                    <div class="progress-bar bg-warning" role="progressbar"
-                                            style="width: <fmt:formatNumber value="${(reviewStats.rating3 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating3 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
-                                            aria-valuemin="0" aria-valuemax="100">
-                                            3점 (<fmt:formatNumber value="${(reviewStats.rating3 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+
+                                    <div class="custom-rating-row">
+                                        <span class="custom-rating-label">보통이에요</span>
+                                        <div class="custom-progress">
+                                            <div class="custom-progress-bar bg-warning" role="progressbar"
+                                                style="width: <fmt:formatNumber value="${(reviewStats.rating3 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%;"
+                                                aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating3 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                                aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                        <span class="custom-rating-count">${reviewStats.rating3}</span>
                                     </div>
-                                </div>
-                            
-                                <!-- 2점 -->
-                                <div class="progress mb-2" style="height: 20px;">
-                                    <div class="progress-bar bg-warning" role="progressbar"
-                                            style="width: <fmt:formatNumber value="${(reviewStats.rating2 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating2 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
-                                            aria-valuemin="0" aria-valuemax="100">
-                                            2점 (<fmt:formatNumber value="${(reviewStats.rating2 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+
+                                    <div class="custom-rating-row">
+                                        <span class="custom-rating-label">그냥 그래요</span>
+                                        <div class="custom-progress">
+                                            <div class="custom-progress-bar bg-warning" role="progressbar"
+                                                style="width: <fmt:formatNumber value="${(reviewStats.rating2 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%;"
+                                                aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating2 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                                aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                        <span class="custom-rating-count">${reviewStats.rating2}</span>
                                     </div>
-                                </div>
-                            
-                                <!-- 1점 -->
-                                <div class="progress mb-2" style="height: 20px;">
-                                    <div class="progress-bar bg-warning" role="progressbar"
-                                            style="width: <fmt:formatNumber value="${(reviewStats.rating1 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%"
-                                            aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating1 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
-                                            aria-valuemin="0" aria-valuemax="100">
-                                            1점 (<fmt:formatNumber value="${(reviewStats.rating1 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%)
+
+                                    <div class="custom-rating-row">
+                                        <span class="custom-rating-label">별로에요</span>
+                                        <div class="custom-progress">
+                                            <div class="custom-progress-bar bg-warning" role="progressbar"
+                                                style="width: <fmt:formatNumber value="${(reviewStats.rating1 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>%;"
+                                                aria-valuenow="<fmt:formatNumber value="${(reviewStats.rating1 * 100) / reviewStats.totalReviews}" type="number" minFractionDigits="1" maxFractionDigits="1"/>"
+                                                aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                        <span class="custom-rating-count">${reviewStats.rating1}</span>
                                     </div>
                                 </div>
                             </div>
                             <!-- 모든 첨부파일 썸네일 -->
                             <div class="col-md-6 all-thumbnails">
-                                <h5>첨부된 사진</h5>
                                 <div class="thumbnail-container short-thumbnails">
                                     <c:forEach var="image" items="${allRevAttList}">
-                                        <img src="${ pageContext.request.contextPath }${image.savePath}${image.saveFileName}" alt="${iamge.origFileName}" class="thumbnail" onclick="openThumbModal('${ pageContext.request.contextPath }${image.savePath}${image.saveFileName}')">
+                                        <img src="${ pageContext.request.contextPath }${image.savePath}${image.saveFileName}" alt="${iamge.origFileName}" class="review-thumbnail" onclick="openThumbModal('${ pageContext.request.contextPath }${image.savePath}${image.saveFileName}')">
                                     </c:forEach>
                                 </div>
                                 <button class="show-more-thumbnails-btn">더보기</button>
                             </div>
                             <!-- 이미지 모달 -->
-                            <div id="thumbModal" class="modal">
-                                <span class="close-modal" onclick="closeThumbModal()">&times;</span>
-                                <img class="modal-content" id="fullImage">
+                            <div id="thumbModal" class="modal review-image" style="display: none;" onclick="closeThumbModal()">
+                                <span class="close-modal review-image" onclick="closeThumbModal()">&times;</span>
+                                <div class="modal-content review-image">
+                                    <img id="fullImage" src="" alt="확대 이미지">
+                                </div>
                             </div>
                         </div>
                         <div id="reviewList">
                             <c:forEach var="review" items="${revList}">
                                 <div class="card mb-3">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="card-body review-card">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <!-- 리뷰 상단: 별점, 작성자, 작성일 -->
                                             <div>
                                                 <span class="review-stars">
                                                     <c:forEach var="i" begin="1" end="${review.revRating}">
@@ -281,30 +297,62 @@
                                                         <i class="far fa-star"></i>
                                                     </c:forEach>
                                                 </span>
-                                                <span class="ml-2">${review.memberId} | ${review.revNo}</span>
+                                                <span class="ml-2 font-weight-bold">${review.memberId}</span>
                                             </div>
                                             <small class="text-muted">
                                                 <fmt:formatDate value="${review.revEnrollDate}" pattern="yyyy-MM-dd hh:mm" />
                                             </small>
                                         </div>
+                        
                                         <!-- 리뷰 내용 -->
-                                        <div class="review-content-container">
-                                            <div class="card-text review-content short-content">
-                                                <p>${review.revContent}</p>
+                                        <div class="review-content-container mb-3">
+                                            <div class="review-content short-content">
+                                                <p class="review-text">${review.revContent}</p>
                                             </div>
-                                            <button class="show-more-btn">더보기</button>
+                                            <button class="show-more-btn" style="display: none;">더보기</button>
                                         </div>
-                                        <!-- 리뷰 이미지 썸네일 -->
-                                        <div class="review-images">
-                                            <c:forEach var="image" items="${review.reviewAttList}">
-                                                <img src="${ pageContext.request.contextPath }${image.savePath}${image.saveFileName}" alt="리뷰 이미지" class="thumbnail" onclick="openThumbModal('${ pageContext.request.contextPath }${image.savePath}${image.saveFileName}')">
+                        
+                                        <!-- 리뷰 이미지 썸네일 (최대 4개) -->
+                                        <div class="review-images d-flex flex-wrap mb-3">
+                                            <c:forEach var="image" items="${review.reviewAttList}" end="4">
+                                                <div class="thumbnail-container">
+                                                    <img src="${pageContext.request.contextPath}${image.savePath}${image.saveFileName}"
+                                                        alt="리뷰 이미지" class="thumbnail"
+                                                        onclick="openThumbModal('${pageContext.request.contextPath}${image.savePath}${image.saveFileName}')">
+                                                </div>
                                             </c:forEach>
                                         </div>
-                                        <!-- 좋아요 버튼 -->
-                                        <div class="review-actions">
-                                            <button class="like-btn" data-review-id="${review.revNo}" onclick="likeReview(${review.revNo})">
-                                                <i class="fas fa-thumbs-up"></i> 좋아요 <span>좋아요수</span>
+                        
+                                        <!-- 버튼 액션: 수정, 삭제, 좋아요 -->
+                                        <div class="review-actions d-flex justify-content-between align-items-center">
+                                            <button 
+                                                class="like-btn btn btn-outline-secondary btn-sm" 
+                                                id="likeReview"
+                                                data-revno="${review.revNo}"
+                                                data-memberid="${sessionScope.loginUser.memberId}">
+                                                <i class="fas fa-thumbs-up"></i> <span>좋아요</span> <span class="like-count">0</span>
                                             </button>
+                                            <c:if test="${sessionScope.loginUser.memberId == review.memberId}">
+                                                <div>
+                                                    <button 
+                                                        class="btn btn-sm btn-outline-primary mr-2"
+                                                        id="editReviewBtn"
+                                                        data-revno="${review.revNo}"
+                                                        data-prodno="${p.prodNo}" 
+                                                        data-memberid="${review.memberId}"
+                                                        >
+                                                        수정
+                                                    </button>
+                                                    <button 
+                                                        class="btn btn-sm btn-outline-danger mr-2"
+                                                        id="deleteReviewBtn"
+                                                        data-revno="${review.revNo}"
+                                                        data-prodno="${p.prodNo}" 
+                                                        data-memberid="${review.memberId}">
+                                                        삭제
+                                                    </button>
+                                                </div>
+                                            </c:if>
                                         </div>
                                     </div>
                                 </div>

@@ -245,7 +245,7 @@
 				        </tbody>
 				    </table>
 				    <div class="d-flex justify-content-center">
-				        <button id="resetFilters" class="btn btn-secondary btn-sm" type="button"
+				        <button id="resetFilters" class="btn btn-secondary btn-sm mr-3" type="button"
 				                onclick="location.href='list.pr?category=${ category }'">초기화</button>
 				        <button type="submit" class="btn btn-success btn-sm">선택 조건 상품보기</button>
 				    </div>

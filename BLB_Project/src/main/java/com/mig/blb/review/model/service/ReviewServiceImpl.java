@@ -72,4 +72,33 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDao.getAllReviewAtt(sqlSession, prodNo);
 	}
 
+	@Override
+	public Review selectReview(int revNo) {
+		return reviewDao.selectReview(sqlSession, revNo);
+	}
+
+	@Override
+	@Transactional
+	public int updateReview(Review review) {
+		return reviewDao.updateReview(sqlSession, review);
+	}
+
+	@Override
+	@Transactional
+	public int deleteReviewAtt(String saveFileName) {
+		return reviewDao.deleteReviewAtt(sqlSession, saveFileName);
+	}
+
+	@Override
+	@Transactional
+	public int updateReviewAtt(ReviewAtt ra) {
+		return reviewDao.updateReviewAtt(sqlSession, ra);
+	}
+
+	@Override
+	@Transactional
+	public int deleteReview(int revNo) {
+		return reviewDao.deleteReview(sqlSession, revNo);
+	}
+
 }

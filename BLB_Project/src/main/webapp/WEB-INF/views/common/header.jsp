@@ -44,6 +44,12 @@
 		</script>	
 		<c:remove var="alertMsg" scope="session"/>
 	</c:if>
+	<c:if test="${ not empty sessionScope.errorMsg }">
+		<script>
+		alertify.error('Error', '${ sessionScope.errorMsg }');
+		</script>	
+		<c:remove var="alertMsg" scope="session"/>
+	</c:if>
 	
     <nav class="navbar navbar-expand-md navbar-dark fixed-top transparent-navbar">
         <div class="container-fluid">

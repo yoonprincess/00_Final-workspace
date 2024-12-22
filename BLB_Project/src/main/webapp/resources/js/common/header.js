@@ -168,9 +168,10 @@ $(function() {
         return false;
     });
 
-    // * 리뷰 작성하기
+    // * 리뷰 작성/수정/삭제하기
     // iframe 크기 조정 함수
     $('#reviewIframeContainer').hide(); // 초기에는 숨김
+    // 리뷰 작성하기
     $('#writeReviewBtn').on('click', function () {
         const prodNo = $(this).data('prodno'); // 상품 번호 가져오기
         const memberId = $(this).data('memberid'); // 회원 ID 가져오기
@@ -230,8 +231,48 @@ $(function() {
             }
         });
     });
+    // 리뷰 수정하기
+    $(document).on('click', '#editReviewBtn', function () {
+        const prodNo = $(this).data('prodno'); // 상품 번호 가져오기
+        const memberId = $(this).data('memberid'); // 회원 ID 가져오기
+        const revNo = $(this).data('revno'); // 리뷰 번호 가져오기기
+        
+        const iframe = $('#reviewIframeContainer iframe');
+
+        const reviewIframeUrl = `${contextPath}/updateForm.rv?prodNo=${prodNo}&memberId=${memberId}&revNo=${revNo}`;
+        $(iframe).attr('src', reviewIframeUrl);
+
+        // iframe 로드 후 크기 조정
+        iframe.on('load', function () {
+            const iframeContent = this.contentWindow.document || this.contentDocument;
+            if (iframeContent) {
+                const iframeHeight = iframeContent.body.scrollHeight || iframeContent.documentElement.scrollHeight;
+                const iframeWidth = iframeContent.body.scrollWidth || iframeContent.documentElement.scrollWidth;
+
+                $(this).css({
+                    width: iframeWidth + 'px',
+                    height: iframeHeight + 'px',
+                });
+            }
+        });
+
+        // 모달 표시
+        $('#reviewIframeContainer').fadeIn();
+    });
+    // 리뷰 삭제하기
+    $(document).on('click', '#deleteReviewBtn', function () {
+        const prodNo = $(this).data('prodno'); // 상품 번호 가져오기
+        const memberId = $(this).data('memberid'); // 회원 ID 가져오기
+        const revNo = $(this).data('revno'); // 리뷰 번호 가져오기기
+        // 확인 팝업 표시
+        if (confirm("작성한 리뷰가 완전히 삭제됩니다. 진행하시겠습니까?")) {
+            // 확인 클릭 시 URL로 이동
+            const url = `${contextPath}/delete.rv?prodNo=${prodNo}&memberId=${memberId}&revNo=${revNo}`;
+            window.location.href = url;
+        }
+    });
     // 닫기 버튼 클릭 시
-    $('.close-btn').on('click', function () {
+    $('.close-btn.review-enroll').on('click', function () {
         $('#reviewIframeContainer').fadeOut();
         $('#reviewIframeContainer iframe').attr('src', ''); // iframe 초기화
     });
