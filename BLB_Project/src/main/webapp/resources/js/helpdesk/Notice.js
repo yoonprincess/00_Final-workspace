@@ -7,4 +7,14 @@ $(function() {
 	});
 });
 
+// 관리자 확인 및 버튼 표시 로직
+        const isAdmin = localStorage.getItem('userId') === 'admin';
+        const adminControls = document.getElementById('adminControls');
+        if (isAdmin) {
+            adminControls.style.display = 'flex';
+        }
+        
+        function goList(){
+            location.href="../list.no";
+        }
 

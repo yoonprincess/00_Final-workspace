@@ -58,7 +58,7 @@ public class NoticeDao {
     }
 
 	public int deleteNoticeAtt(SqlSessionTemplate sqlSession, int noticeAttNo) {
-		return sqlSession.delete("helpdeskMapper.deleteNoticeAtt", noticeAttNo);
+		return sqlSession.delete("helpdeskMapper.deleteNoticeAtt",noticeAttNo);
 	}
 
 	public ArrayList<Notice> selectSearchNoticeList(SqlSessionTemplate sqlSession, String searchKeyword, PageInfo pi) {
@@ -69,6 +69,10 @@ public class NoticeDao {
 		//System.out.println(searchKeyword);
 		
 		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectSearchNoticeList", searchKeyword, rowBounds);
+	}
+
+	public int insertNoticeAtt(SqlSessionTemplate sqlSession, NoticeAtt newAtt) {
+		return sqlSession.insert("helpdeskMapper.insertNewNotice", newAtt);
 	}
 
 }

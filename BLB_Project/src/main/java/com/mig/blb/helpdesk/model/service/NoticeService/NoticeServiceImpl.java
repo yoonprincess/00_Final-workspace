@@ -58,8 +58,8 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public int deleteNoticeAtt(int noticeAttNo) {
-		return noticeDao.deleteNoticeAtt(sqlSession, noticeAttNo);
+	public int deleteNoticeAtt(int nno) {
+		return noticeDao.deleteNoticeAtt(sqlSession, nno);
 	}
 
 	@Override
@@ -70,6 +70,11 @@ public class NoticeServiceImpl implements NoticeService{
 	@Override
 	public ArrayList<Notice> selectSearchNoticeList(String searchKeyword, PageInfo pi) {
 		return noticeDao.selectSearchNoticeList(sqlSession, searchKeyword, pi);
+	}
+
+	@Override
+	public int insertNoticeAtt(NoticeAtt newAtt) {
+		return noticeDao.insertNoticeAtt(sqlSession, newAtt);
 	}
 
 	

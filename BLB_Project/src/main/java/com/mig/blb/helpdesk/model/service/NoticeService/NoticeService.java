@@ -23,10 +23,13 @@ public interface NoticeService {
 	
 	int deleteNotice(int nno);
 
-	int deleteNoticeAtt(int noticeAttNo);
+	int deleteNoticeAtt(int nno);
 
 	int updateNotice(Notice n);
 
 	ArrayList<Notice> selectSearchNoticeList(String searchKeywrod, PageInfo pi);
+
+	// 첨부파일 단일 저장
+	int insertNoticeAtt(NoticeAtt newAtt);
 	
 }

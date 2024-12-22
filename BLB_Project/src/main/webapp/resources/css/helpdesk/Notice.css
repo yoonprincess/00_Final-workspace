@@ -1,216 +1,121 @@
+/* 전체 레이아웃 */
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+    width: 80%;
+    margin: 0 auto;
 }
 
-header {
-  background-color: #333;
-  color: white;
-  padding: 10px 0;
+/* 기존 nav 스타일 대신 notice-menu에 적용 */
+.notice-menu {
+    display: flex;
+    justify-content: center; /* 중앙 정렬 */
+margin: 30px 0 50px; /* 위아래 간격 조정 */
+    text-align: center;
 }
 
-nav {
-  display: flex;
-  justify-content: center;
+.notice-menu a {
+    margin: 0 50px; /* 좌우 간격 조정 */
+    text-decoration: none;
+    color: #666;
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 5px;
 }
 
-nav a {
-  color: white;
-  text-decoration: none;
-  padding: 10px 20px;
+.notice-menu a.active {
+    color: #000;
+    border-bottom: 2px solid #000;
 }
 
-nav a:hover {
-  background-color: #555;
+.notice-menu a:hover {
+    text-decoration: none;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
+/* 검색 박스 스타일 */
+ .notice-search {
+margin: 20px 0 30px;
+position: relative; /* 자식 요소의 위치를 기준으로 설정 */
+text-align: center;
 }
 
-.search-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.search-input {
-  width: 300px;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.category-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.category-button {
-  padding: 10px 20px;
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
-  cursor: pointer;
-}
-
-.card {
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  padding: 20px;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.card-title {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.card-link {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.faq-item {
-  border: 1px solid #ddd;
-  margin-bottom: 10px;
-}
-
-.faq-question {
-  background-color: #f0f0f0;
-  padding: 10px;
-  cursor: pointer;
-  position: relative;
-}
-
-.faq-question::after {
-  content: '+';
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.faq-answer {
-  padding: 10px;
-  display: none;
-}
-
-.faq-item:target .faq-answer {
-  display: block;
-}
-
-.faq-item:target .faq-question::after {
-  content: '-';
-}
-
-.notice-item {
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
-}
-
-th {
-  background-color: #f0f0f0;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-select, textarea {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.radio-group {
-  display: flex;
-  gap: 20px;
-}
-
-.button-group {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.button-primary {
-  background-color: #007bff;
-  color: white;
-  border: none;
-}
-
-.button-secondary {
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
-}
-
-.file-input {
-  margin-top: 10px;
-}
-
-.email-notification {
-  margin-top: 10px;
-}
-
-.email-input {
-  display: none;
-}
-
-#email-notify:checked ~ .email-input {
-  display: block;
-}
-
-.notice-search {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.notice-search select, .notice-search input[type="text"] {
-  padding: 5px;
-  margin-right: 10px;
+.notice-search input[type="text"] {
+    width: 500px;
+    height: 36px;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
 }
 
 .notice-search button {
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
+    height: 38px;
+    padding: 0 20px;
+    margin-left: 10px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
 }
+
+.notice-search button:hover {
+    background-color: #555;
+}
+
+.notice-search .btn {
+    position: absolute; /* 글쓰기 버튼의 위치를 고정 */
+    right: 0; /* 오른쪽 끝에 배치 */
+    top: 50%; /* 부모 요소의 세로 중심 기준으로 이동 */
+    transform: translateY(-50%); /* 정확히 세로 중심으로 정렬 */
+    height: 38px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.notice-search .btn:hover {
+    background-color: #0056b3;
+}
+
+
+        /* 테이블 스타일 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            text-align: center;
+        }
+        table thead th {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-top: 2px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        table tbody tr {
+            border-bottom: 1px solid #eee;
+        }
+        table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+        table tbody td {
+            padding: 15px;
+            font-size: 15px;
+        }
+        table tbody td:nth-child(2) {
+            text-align: center;
+        }
+
+        /* 공지사항 강조 */
+        table tbody tr:first-child td {
+            font-weight: bold;
+        }
+
+        
