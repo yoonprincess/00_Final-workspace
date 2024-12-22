@@ -68,6 +68,8 @@ public class InquiryController {
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLmit);
 			ArrayList<Inquiry> list = inquiryService.selectInquiryList(pi, memberId);
 			
+			//System.out.println(list);
+			
 			model.addAttribute("list", list);
 			model.addAttribute("pi", pi);
 			
@@ -88,7 +90,7 @@ public class InquiryController {
 	@PostMapping("insert.io")
 	public ModelAndView insertInquiry(Inquiry i,
 									  RedirectAttributes ar,
-									  MultipartFile[] upfile,
+									  @RequestParam(value="upfile", required=false) MultipartFile[] upfile,
 									  HttpSession session,
 									  ModelAndView mv){
 		
@@ -99,8 +101,8 @@ public class InquiryController {
 			// 첨부파일 처리
 			for(int ia = 0; ia < upfile.length; ia++) {
 				MultipartFile upfiles = upfile[ia];
+				 
 				if(!upfiles.isEmpty()) {
-					
 					// 파일저장
 					String changeName = saveFile(upfiles, session);
 					

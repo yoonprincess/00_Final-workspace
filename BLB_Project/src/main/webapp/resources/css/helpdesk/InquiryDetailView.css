@@ -1,78 +1,72 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
 
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-}
-
-h2, h3 {
-    color: #333;
-}
-
-nav ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 10px;
-}
-
-nav ul li {
-    display: inline;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: #007bff;
-}
-
-nav ul li a:hover {
-    text-decoration: underline;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .inquiry-details, .admin-comment {
+            margin-bottom: 20px;
+        }
+        .inquiry-details p, .admin-comment p {
+            margin: 10px 0;
+        }
+        .label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .admin-actions {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-edit {
+            background-color: #3498db;
+            color: white;
+        }
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .btn-comment {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        
+        .reply-input-section {
     margin-top: 20px;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-th {
-    background-color: #f4f4f4;
-}
-
-textarea {
-    width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: none;
+    border-top: 1px solid #ccc;
+}
+
+.comments-section {
+    margin-bottom: 20px;
+}
+
+.reply-buttons {
+    text-align: right;
     margin-top: 10px;
 }
 
-button {
-    margin-top: 10px;
+.btn-primary {
+    background-color:#A4EBF3 !important;
+    color: white;
+    border: none !important;
+    border-radius: 4px;
     padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
     cursor: pointer;
+    text-decoration: none;
 }
 
-button:hover {
-    background-color: #0056b3;
-}
+        

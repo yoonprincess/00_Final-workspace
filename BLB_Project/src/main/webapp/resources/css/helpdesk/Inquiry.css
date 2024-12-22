@@ -1,216 +1,187 @@
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+/* 문의 폼 */
+.inquiry-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-header {
-  background-color: #333;
-  color: white;
-  padding: 10px 0;
+/* 폼 라벨 */
+.form-row {
+    margin-bottom: 20px;
 }
 
-nav {
-  display: flex;
-  justify-content: center;
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    width: 120px;
 }
 
-nav a {
-  color: white;
-  text-decoration: none;
-  padding: 10px 20px;
+/* 입력 필드 */
+select,
+textarea,
+input[type="text"],
+input[type="email"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-nav a:hover {
-  background-color: #555;
+/* 내용 텍스트 영역 */
+.content-textarea {
+    height: 200px;
+    resize: vertical;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
+/* 파일 업로드 */
+.file-upload {
+    margin-top: 10px;
 }
 
-.search-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+/* 파일 선택 버튼 스타일 */
+.file-upload-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #A4EBF3;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    text-align: center;
+    font-size: 1em;
+    width: auto;  /* 버튼의 크기를 자동으로 맞추기 */
 }
 
-.search-input {
-  width: 300px;
-  padding: 10px;
-  font-size: 16px;
+/* input[type="file"] 숨기기 */
+.file-upload-input {
+    display: none;
 }
 
-.category-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
+/* 파일 업로드 목록 */
+.file-list {
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow-y: auto;
+    width: 1120px;
 }
 
-.category-button {
-  padding: 10px 20px;
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
-  cursor: pointer;
+/* 파일 항목 */
+.file-item {
+    width: calc(33.333% - 10px);
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.card {
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  padding: 20px;
+/* 이미지 미리보기 */
+.file-preview {
+    width: 100%;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
 }
 
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+/* 파일 정보 */
+.file-info {
+    padding: 8px;
+    text-align: center;
 }
 
-.card-title {
-  font-size: 18px;
-  font-weight: bold;
+/* 파일 이름 */
+.file-name {
+    font-size: 0.9em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.card-link {
-  color: #007bff;
-  text-decoration: none;
+/* 삭제 버튼 */
+.delete-button {
+    color: #ff4444;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    text-align: center;
+    width: 100%;
 }
 
-.faq-item {
-  border: 1px solid #ddd;
-  margin-bottom: 10px;
+.delete-button:hover {
+    background-color: #ffeeee;
 }
 
-.faq-question {
-  background-color: #f0f0f0;
-  padding: 10px;
-  cursor: pointer;
-  position: relative;
+/* 업로드 제한 정보 */
+.upload-limit-info {
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #666;
 }
 
-.faq-question::after {
-  content: '+';
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.faq-answer {
-  padding: 10px;
-  display: none;
-}
-
-.faq-item:target .faq-answer {
-  display: block;
-}
-
-.faq-item:target .faq-question::after {
-  content: '-';
-}
-
-.notice-item {
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
-}
-
-th {
-  background-color: #f0f0f0;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-select, textarea {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.radio-group {
-  display: flex;
-  gap: 20px;
-}
-
-.button-group {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.button-primary {
-  background-color: #007bff;
-  color: white;
-  border: none;
-}
-
-.button-secondary {
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
-}
-
-.file-input {
-  margin-top: 10px;
-}
-
-.email-notification {
-  margin-top: 10px;
-}
-
+/* 이메일 입력 */
 .email-input {
-  display: none;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
 }
 
-#email-notify:checked ~ .email-input {
-  display: block;
+.email-input input,
+.email-input select {
+    width: 150px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-.notice-search {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+/* 버튼 */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
 }
 
-.notice-search select, .notice-search input[type="text"] {
-  padding: 5px;
-  margin-right: 10px;
+.submit-button {
+    padding: 10px 40px;
+    background-color: #A4EBF3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.notice-search button {
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
+.submit-button:hover {
+    background-color: #81c9d0;
+}
+
+.cancel-button {
+    padding: 10px 40px;
+    background-color: #888;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background-color: #6e6e6e;
+}
+
+/* 알림 메시지 */
+.notice {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 20px;
 }
