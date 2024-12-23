@@ -553,3 +553,21 @@ h1 {
     position: relative; /* navigator의 위치를 기준으로 할 수 있도록 설정 */
     margin-top: 100px;
 }
+
+.review-images {
+    gap: 10px;
+}
+.review-images .thumbnail-container {
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 5px;
+    margin-right: 10px;
+    position: relative;
+    cursor: pointer;
+}
+.review-images .thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

@@ -8,18 +8,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mig.blb.cart.model.service.CartService;
+import com.mig.blb.cart.model.vo.Cart;
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.common.template.Pagination;
 import com.mig.blb.helpdesk.model.service.InquiryService.InquiryService;
@@ -29,10 +32,14 @@ import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
 import com.mig.blb.member.model.vo.PageforOrders;
 import com.mig.blb.member.model.vo.PaginationOrders;
+import com.mig.blb.option.model.service.OptionService;
+import com.mig.blb.option.model.vo.Option;
 import com.mig.blb.order.model.service.OrderService;
 import com.mig.blb.order.model.vo.Order;
+import com.mig.blb.product.model.service.ProductService;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.review.model.service.ReviewService;
+import com.mig.blb.review.model.vo.Review;
 
 @Controller
 public class MyPageController {
@@ -43,6 +50,14 @@ public class MyPageController {
 	@Autowired
 	private OrderService orderService;
 	
+	@Autowired
+	private CartService cartService;
+	
+	@Autowired
+	private ProductService productService;
+	
+	@Autowired
+	private OptionService optionService;
 	@Autowired
 	private InquiryService inquiryService;
 	
@@ -72,7 +87,7 @@ public class MyPageController {
 				HashMap<String, Integer> myOrderCounts = orderService.myOrderCounts(memberId);
 				
 				int listCount = reviewService.myReviewListCount(loginUser.getMemberId());
-				
+				int cartCount = cartService.myCartCount(loginUser.getMemberId());
 				
 				mv.addObject("myOrderComplete", myOrderCounts.get("COMPLETE"));
 				mv.addObject("myOrderDelivery", myOrderCounts.get("DELIVERY"));
@@ -82,7 +97,10 @@ public class MyPageController {
 				mv.addObject("qlist", qlist);
 				mv.addObject("wlist",wlist);
 				
+				mv.addObject("cartCount",cartCount);
+				
 				session.setAttribute("listCount", listCount); // menubar.jsp 
+				
 
 				mv.setViewName("member/myPage");
 			
@@ -191,7 +209,9 @@ public class MyPageController {
 		    
 		    // 주문 상태 카운트
 		    HashMap<String, Integer> myOrderCounts = orderService.myOrderCounts(memberId);
-
+		    
+		    //리뷰 있는지 여부 
+		  
 		    mv.addObject("myOrderComplete", myOrderCounts.get("COMPLETE"));
 			mv.addObject("myOrderWait", myOrderCounts.get("WAIT"));
 			mv.addObject("myOrderDelivery", myOrderCounts.get("DELIVERY"));
@@ -480,9 +500,9 @@ public class MyPageController {
 				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
 							 pageLimit, boardLimit);
 				
-				List<Map<String, Object>> rlist = reviewService.selectMyReviewList(loginUser.getMemberId(),pi); 
-			    //System.out.println(rlist);
-				
+				ArrayList<Review> rlist = reviewService.selectMyReviewList(loginUser.getMemberId(),pi); 
+			    System.out.println(rlist);
+			
 				mv.addObject("pi",pi);
 				mv.addObject("rlist",rlist);
 				mv.addObject("listCount",listCount);
@@ -564,9 +584,71 @@ public class MyPageController {
 			}
 				
 			return mv;
-		}		
+		}	
+		
+		// 장바구니 넣기전 상품 옵션 불러오기 
+		@GetMapping("selectCartOption.me")			
+		public ModelAndView selectCartOption(ModelAndView mv
+										, HttpSession session
+										, @RequestParam("prodNo") int prodNo) {
 			
+			Member loginUser =(Member)session.getAttribute("loginUser");
+				
+			if( loginUser != null) {
+				ArrayList<Option> optList = optionService.selectCartOption(prodNo);
+				
+				if (optList != null) {
+					mv.addObject("optList", optList);
+					mv.setViewName("member/optForm");
+					
+				}else {
+					
+					session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+					mv.setViewName("member/myWishList");
+				}
+					
 			
+			}else {
+				
+				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+				mv.setViewName("/main");
+			}
+				
+			return mv;
+		}
+				
+		// 장바구니 넣기 
+		@ResponseBody
+		@PostMapping("insertCart.me")
+		public ModelAndView insertCart(ModelAndView mv
+										, HttpSession session
+										, Cart c
+										, int prodNo
+										, int optNo) {
+			
+			Member loginUser =(Member)session.getAttribute("loginUser");
+			
+			System.out.println(prodNo);
+			System.out.println(optNo);
+			
+			if( loginUser != null) {
+				
+				c.setMemberId(loginUser.getMemberId());
+				c.setProdNo(prodNo);
+				c.setOptNo(optNo);
+				c.setCartQty(1);
+				
+				mv.setViewName("member/myWishList");
+		
+			}else {
+				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+				mv.setViewName("/main");
+			}
+				
+			return mv;	
+		}
+			
+}			
 		/* 내 상품문의 페이지 요청 
 		@GetMapping("productQna.me")
 		public ModelAndView myProdQnaList(ModelAndView mv,
@@ -656,6 +738,28 @@ public class MyPageController {
 		}
 		*/
 		 
-}
-
+	/*
+		@PostMapping("insertCart.me")
+		public ModelAndView insertCart(ModelAndView mv
+										, HttpSession session
+										, Cart c) {
+			
+			Member loginUser =(Member)session.getAttribute("loginUser");
+			
+			if( loginUser != null) {
+				
+				c.setMemberId(loginUser.getMemberId());
+				c.setProdNo(0);
+				c.setProdName(null);
+				c.setOptNo(0);
+				c.setCartQty(1);
+				c.setOptAddPrice(0);
+				
+				
+			
+				
+				
+			return mv;	
+		}
+*/
 

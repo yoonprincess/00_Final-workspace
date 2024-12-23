@@ -24,6 +24,9 @@ public interface CartService {
 
 	// 장바구니 선택 옵션 변경
 	int updateCartOption(int cartNo, int updatedOptNo);
+	
+	// 마이페이지용 장바구니 총 갯수조회
+	int myCartCount(String memberId);
 
 	
 }

@@ -184,6 +184,7 @@
             <input type="hidden" id="memberId" name="memberId" value="${memberId}">
             <input type="hidden" id="prodNo" name="prodNo" value="${prodNo}">
             <!-- 상품 정보 -->
+      
             <div class="product-info" onclick="window.open('detail.pr?pno=${prodNo}', '_blank');" style="cursor: pointer;">
                 <div class="product-thumbnail">
                     <img src="${ pageContext.request.contextPath }${ purchaseOne.thumbOne }" alt="상품 썸네일">

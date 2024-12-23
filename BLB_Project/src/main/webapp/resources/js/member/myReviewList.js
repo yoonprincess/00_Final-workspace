@@ -53,5 +53,33 @@
 			}
 		});
 	}
+// 이미지 모달 열기
+function openThumbModal(imageSrc) {
+    $('#fullImage').attr('src', imageSrc);
+    $('#thumbModal').fadeIn();
+}
+// 이미지 모달 닫기
+function closeThumbModal() {
+    $('#thumbModal').fadeOut();
+}
+// 모달 외부 클릭 시 닫기
+$(document).on('click', '#imageModal', function (e) {
+    if ($(e.target).is('#imageModal')) {
+        closeImageModal();
+    }
+});
 
+// * 리뷰 썸네일 기능
+// 더보기/접기 버튼 동작
+$(document).on('click', '.show-more-thumbnails-btn', function () {
+    const thumbnailsContainer = $(this).siblings('.thumbnail-container');
+    
+    if (thumbnailsContainer.hasClass('short-thumbnails')) {
+        thumbnailsContainer.removeClass('short-thumbnails').addClass('full-thumbnails');
+        $(this).text('접기');
+    } else {
+        thumbnailsContainer.removeClass('full-thumbnails').addClass('short-thumbnails');
+        $(this).text('더보기');
+    }
+});
 	

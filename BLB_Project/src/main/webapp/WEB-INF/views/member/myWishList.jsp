@@ -36,8 +36,10 @@
  				
        <br>
        <div id="overlay" class="overlay">
-        <span class="material-symbols-outlined" id="heart">heart_minus</span>
-        <p id="message"></p>
+        <div id="buttonDiv">
+         <span class="material-symbols-outlined" id="heart">heart_minus</span>
+         <p id="message"></p>
+	    </div>
 	  </div>
 	<table class="order-table">
     <thead>
@@ -81,7 +83,7 @@
                     </td>
                     <td>
                         <div class="button-group">
-                            <button class="button" onclick="updateReview(${wish.prodNo});">장바구니</button>
+                            <button class="button" onclick="openModal(${wish.prodNo});">장바구니</button>
                         </div>
                         <div class="button-group">
                             <button class="button" id="delete-wishlist" onclick="deleteWish(${wish.prodNo});">삭제</button>
@@ -93,7 +95,17 @@
     </tbody>
     
 </table>
-	
+	<!-- 옵션선택 모달창  -->
+	 <div id="optModal" class="modal">
+        <div class="modal-content" id="reviewIframeContainer" >
+            <span class="close">&times;</span>
+            <h2>옵션을 선택하세요</h2>
+           <div class="options">
+          	 <iframe src=""></iframe>
+            </div>
+            <button id="insertCartBtn"  >장바구니추가</button>
+        </div>
+   	 </div>
 		            <br><br>
 	 <!-- 페이지네이션 -->
 				<nav>

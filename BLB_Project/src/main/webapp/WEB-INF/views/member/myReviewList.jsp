@@ -52,37 +52,64 @@
             <c:forEach var="r" items="${rlist}">
                 <tr class="result">
                     <td>
-                        <a href="detail.pr?pno=${r.PROD_NO}">
+                        <a href="detail.pr?pno=${r.prodNo}">
                             <div class="product">
-                                <img src="${pageContext.request.contextPath}/${r.THUMB_IMG}" alt="${r.PROD_NAME}" >
+                                <img src="${pageContext.request.contextPath}/${r.thumbImg}" alt="${r.prodName}" >
                                 <div class="product-info">
-                                    <div><span>구매일자</span> ${r.ORDER_DATE}</div>
-                                    <div>${r.PROD_NAME}</div>
-                                    <div><span>옵션 | </span>${r.OPT_NAME}</div>
+                                    <div><span>구매일자</span> ${r.orderDate}</div>
+                                    <div>${r.prodName}</div>
+                                    <div><span>옵션 | </span>${r.optName}</div>
                                 </div>
                             </div>
                         </a>  
                     </td>
                     <td>
-                        <div><span>작성일자</span> ${r.REV_ENROLL_DATE}</div>
+                        <div><span>작성일자</span> 
+                        <fmt:formatDate value="${r.revEnrollDate}" pattern="yyyy-MM-dd hh:mm" />
+                        </div>
                         <div class="rating" style="color: #ffc107;">
                             <span class="review-stars">
-                                <c:forEach var="i" begin="1" end="${r.REV_RATING}">
+                                <c:forEach var="i" begin="1" end="${r.revRating}">
                                     <i class="fas fa-star"></i>
                                 </c:forEach>
-                                <c:forEach var="i" begin="1" end="${5 - r.REV_RATING}">
+                                <c:forEach var="i" begin="1" end="${5 - r.revRating}">
                                     <i class="far fa-star"></i>
                                 </c:forEach>
                             </span>
                         </div>
-                        <div>${r.REV_CONTENT}</div>
+                        <div>${r.revContent}</div>
+                        <div class="review-images d-flex flex-wrap mb-3">
+                            <c:forEach var="image" items="${r.reviewAttList}">
+                                <div class="thumbnail-container">
+                                    <img src="${ pageContext.request.contextPath }${image.savePath}${image.saveFileName}"
+                                        alt="리뷰 이미지" class="thumbnail"
+                                        onclick="openThumbModal('${pageContext.request.contextPath}${image.savePath}${image.saveFileName}')">
+                                </div>
+                            </c:forEach>
+                       </div>
                     </td>
                     <td>
                         <div class="button-group">
-                            <button class="button" onclick="updateReview('${r.REV_NO}');">수정하기</button>
+                            <button 
+                                  class="btn btn-sm btn-outline-primary mr-2"
+                                  id="editReviewBtn"
+                                  data-revno="${r.revNo}"
+                                  data-prodno="${r.prodNo}" 
+                                  data-memberid="${r.memberId}"
+                                  >
+                                  수정
+                              </button>
+                                                    
                         </div>
                         <div class="button-group">
-                            <button class="button" onclick="updateReview('${r.REV_NO}');">리뷰보기</button>
+                            <button 
+                              class="btn btn-sm btn-outline-danger mr-2"
+                              id="deleteReviewBtn"
+                             data-revno="${r.revNo}"
+                                  data-prodno="${r.prodNo}" 
+                                  data-memberid="${r.memberId}">
+                              삭제
+                           </button>
                         </div>
                     </td>
                 </tr>

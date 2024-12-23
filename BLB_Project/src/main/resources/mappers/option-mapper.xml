@@ -20,6 +20,7 @@
 		     , OPT_VALUE
 		     , OPT_ADD_PRICE
 		     , REMAIN_QTY
+		     , PROD_NO
 		  FROM TB_OPTION
 		 WHERE PROD_NO = #{prodNo}
 		 ORDER BY OPT_NO DESC

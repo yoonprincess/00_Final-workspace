@@ -46,4 +46,9 @@ public class CartDao {
 		return sqlSession.update("cartMapper.updateCartOption", params);
 	}
 
+	public int myCartCount(SqlSessionTemplate sqlSession, String memberId) {
+		
+		return sqlSession.selectOne("memberMapper.myCartCount", memberId);
+	}
+
 }

@@ -61,7 +61,7 @@ public class MemberController {
 	                + "&response_type=code";    
 		
 		mv.addObject("kakaoAuthUrl",kakaoAuthUrl);
-		System.out.println(kakaoAuthUrl);
+		//System.out.println(kakaoAuthUrl);
 			mv.setViewName("member/loginForm");
 		
 		return mv;

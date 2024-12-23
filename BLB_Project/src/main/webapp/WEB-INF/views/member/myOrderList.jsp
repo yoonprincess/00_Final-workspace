@@ -287,6 +287,16 @@
 									    </c:if>
 									    <c:if test="${myOrder.dlvrStatus == '배송완료'}">
 									        <span class="delivery-complete">${myOrder.dlvrStatus}</span>
+									        	<c:if test="${productOrder.isWritten == 0}">
+										          <button 
+							                        class="btn btn-primary blb-btn" 
+							                        id="writeReviewBtn" 
+							                        data-prodno="${product.prodNo}" 
+							                        data-serialno="${productOrder.serialNo}"
+							                        data-memberid="${sessionScope.loginUser.memberId}">
+							                        리뷰 작성하기
+							                    </button>
+						                      </c:if>
 									    </c:if>
 									    <c:if test="${myOrder.dlvrStatus == '배송중'}">
 									        <span class="delivery-other">${myOrder.dlvrStatus}</span>

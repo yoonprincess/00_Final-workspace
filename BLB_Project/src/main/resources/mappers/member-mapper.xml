@@ -62,6 +62,7 @@
 	    <result column="TOTAL_AMT" property="totalAmt" />
 	    <result column="ORDER_NO" property="orderNo" />
 	    <result column="OPT_NO" property="optNo" />
+	    <result column="IS_WRITTEN" property="isWritten" />
 	    
 	    <collection property="option" ofType="option" resultMap="optionResultSet"/>
 	</resultMap>
@@ -115,6 +116,39 @@
 		<result column="OPT_NO" property="optNo"/>
 		<result column="OPT_NAME" property="optName"/>
 		<result column="OPT_VALUE" property="optValue"/>
+		<result column="PROD_NAME" property="prodName"/>
+		<result column="PROD_NO" property="prodNo"/>
+		<result column="ORDER_DATE" property="orderDate"/>
+		<result column="THUMB_IMG" property="thumbImg"/>
+		
+	
+		<collection property="reviewAttList" ofType="reviewAtt">
+            <id column="REV_ATT_NO" property="revAttNo"/>
+			<result column="ORIG_FILE_NAME" property="origFileName"/>
+			<result column="SAVE_FILE_NAME" property="saveFileName"/>
+			<result column="SAVE_PATH" property="savePath"/>
+			<result column="THUMB_PATH" property="thumbPath"/>
+			<result column="REV_ATT_STATUS" property="revAttStatus"/>
+			<result column="ATT_REV_NO" property="revNo"/>
+        </collection>
+	
+	</resultMap>
+	
+	
+	<resultMap id="cartResultSet" type="cart">
+		<id column="CART_NO" property="cartNo" />
+		<result column="MEMBER_ID" property="memberId" />
+		<result column="PROD_NO" property="prodNo" />
+		<result column="OPT_NO" property="optNo" />
+		<result column="CART_QTY" property="cartQty" />
+		
+		<result column="PROD_NAME" property="prodName" />
+		<result column="OPT_NAME" property="optName" />
+		<result column="OPT_ADD_PRICE" property="optAddPrice" />
+		<result column="REMAIN_QTY" property="remainQty" />
+		<result column="PROD_PRICE" property="prodPrice" />
+		<result column="THUMB_IMG" property="thumbImg" />
+
 	</resultMap>
 	
 	
@@ -277,7 +311,13 @@
 	           SUM(PO.ORDER_QTY)AS "ORDER_QTY",
 	           OP.OPT_NAME,
                OP.OPT_NO,
-	           'blb'|| PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
+	           'blb'|| PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG",
+	           PO.SERIAL_NO,
+	           (
+	              SELECT COUNT(*)
+			        FROM TB_REVIEW R
+			       WHERE R.SERIAL_NO = PO.SERIAL_NO
+	           ) AS IS_WRITTEN
 	   FROM TB_ORDER O
 	   JOIN TB_PRODUCT_ORDER PO ON PO.ORDER_NO = O.ORDER_NO
 	   JOIN TB_OPTION OP ON OP.OPT_NO = PO.OPT_NO
@@ -298,9 +338,8 @@
 	   AND PA.THUMB_PATH IS NOT NULL
 	    GROUP BY O.ORDER_NO, O.REFUND_DATE,O.ORDER_DATE, O.DLVR_STATUS, PO.TOTAL_AMT
 	    		,P.PROD_NAME, OP.OPT_NAME, PA.THUMB_PATH, PA.SAVE_FILE_NAME
-	    		,OP.OPT_NO,P.PROD_NO
+	    		,OP.OPT_NO,P.PROD_NO,PO.SERIAL_NO
 	  ORDER BY O.ORDER_DATE DESC
-	 
 	</select>
 	
 	<select id="selectInquiryListTop4" resultMap="inquiryResultSet" parameterType="string">
@@ -364,7 +403,7 @@
          ) PA ON PA.PROD_NO = P.PROD_NO
 	    WHERE MEMBER_ID = #{memberId}
 	      AND PA.THUMB_PATH IS NOT NULL
-	    ORDER BY DBMS_RANDOM.VALUE
+	   ORDER BY P.PROD_NO DESC
 	)
 	WHERE ROWNUM &lt;= 4
 	</select>
@@ -444,39 +483,44 @@
 	     AND REV_STATUS =  'Y'
 	</select>
 	
-	<select id="selectMyReviewList" parameterType="string" resultType="java.util.HashMap">
+	<select id="selectMyReviewList" parameterType="string" resultMap="reviewResultSet">
 	SELECT R.REV_NO
-		     , R.REV_CONTENT
-		     , TO_CHAR(R.REV_ENROLL_DATE,'YYYY.MM.DD') AS "REV_ENROLL_DATE"
-		     , R.REV_RATING
-		     , R.MEMBER_ID
-		     , R.SERIAL_NO
-		     , P.PROD_NAME
-             ,P.PROD_NO
-		     , OP.OPT_NAME
-		     , TO_CHAR(O.ORDER_DATE,'YYYY.MM.DD') AS "ORDER_DATE",
-		     PA.THUMB_PATH || SAVE_FILE_NAME AS "THUMB_IMG"
-		  FROM TB_REVIEW R
-		   JOIN TB_PRODUCT_ORDER PO ON R.SERIAL_NO = PO.SERIAL_NO
-		   JOIN TB_OPTION OP ON PO.OPT_NO = OP.OPT_NO
-           JOIN TB_ORDER O ON PO.ORDER_NO = O.ORDER_NO
-           JOIN TB_PRODUCT P ON P.PROD_NO = OP.PROD_NO
-      LEFT JOIN  (
-			      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
-			        FROM TB_PRODUCT_ATTACHMENT
-			       WHERE (PROD_NO, PROD_ATT_NO) IN (
-			           SELECT PROD_NO, MIN(PROD_ATT_NO)
-			             FROM TB_PRODUCT_ATTACHMENT
-			            WHERE PROD_ATT_STATUS = 'Y'
-			              AND THUMB_PATH IS NOT NULL
-			            GROUP BY PROD_NO
-			       )
-		 ) PA ON PA.PROD_NO = P.PROD_NO
-           
-		 WHERE R.REV_STATUS = 'Y'
-           AND R.MEMBER_ID= #{memberId}
-           AND PA.THUMB_PATH IS NOT NULL
-		ORDER BY R.REV_ENROLL_DATE DESC
+	     , R.REV_CONTENT
+	     , R.REV_ENROLL_DATE
+	     , R.REV_RATING
+	     , R.MEMBER_ID
+	     , R.SERIAL_NO
+	     , P.PROD_NAME
+	     , P.PROD_NO
+	     , OP.OPT_NAME
+	     , TO_CHAR(O.ORDER_DATE, 'YYYY.MM.DD') AS "ORDER_DATE"
+	     , PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
+	     , RA.REV_ATT_NO
+	     , RA.ORIG_FILE_NAME
+	     , RA.SAVE_FILE_NAME AS "SAVE_FILE_NAME" 
+	     , RA.SAVE_PATH
+	     , RA.REV_NO AS "ATT_REV_NO"
+	  FROM TB_REVIEW R
+	       JOIN TB_PRODUCT_ORDER PO ON R.SERIAL_NO = PO.SERIAL_NO
+	       JOIN TB_OPTION OP ON PO.OPT_NO = OP.OPT_NO
+	       JOIN TB_ORDER O ON PO.ORDER_NO = O.ORDER_NO
+	       JOIN TB_PRODUCT P ON P.PROD_NO = OP.PROD_NO
+	  LEFT JOIN TB_REVIEW_ATTACHMENT RA ON R.REV_NO = RA.REV_NO   
+	  LEFT JOIN (
+	               SELECT PA.PROD_NO, PA.THUMB_PATH, PA.SAVE_FILE_NAME
+	                 FROM TB_PRODUCT_ATTACHMENT PA
+	                WHERE (PA.PROD_NO, PA.PROD_ATT_NO) IN (
+	                        SELECT PROD_NO, MIN(PROD_ATT_NO)
+	                          FROM TB_PRODUCT_ATTACHMENT
+	                         WHERE PROD_ATT_STATUS = 'Y'
+	                           AND THUMB_PATH IS NOT NULL
+	                         GROUP BY PROD_NO
+	                     )
+	           ) PA ON PA.PROD_NO = P.PROD_NO
+	 WHERE R.REV_STATUS = 'Y'
+	   AND R.MEMBER_ID = #{memberId}
+	   AND PA.THUMB_PATH IS NOT NULL
+	 ORDER BY R.REV_ENROLL_DATE DESC
 	</select>
 	
 	<select id="myProdQnaListCount" parameterType="string" resultType="_int">
@@ -612,4 +656,10 @@
 	                        ,#{snsId}
 	                        ,#{loginType})            
   	</insert>
+  	
+  	<select id="myCartCount" parameterType="string"  resultType="_int">
+  	SELECT COUNT(*)
+      FROM TB_CART
+	 WHERE MEMBER_ID = #{memberId}  
+  	</select>
 </mapper>

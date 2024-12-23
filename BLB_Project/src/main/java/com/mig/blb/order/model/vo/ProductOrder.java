@@ -36,7 +36,10 @@ public class ProductOrder {
 	private int prodPrice;
 	private String thumbImg;
 	private int cartNo;
-
+	private int isWritten;
+	
 	// 마이바티스에서 collection 연결용
     private ArrayList<Option> option; 
+    
+    
 }

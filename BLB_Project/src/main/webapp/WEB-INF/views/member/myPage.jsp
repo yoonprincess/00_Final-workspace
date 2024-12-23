@@ -50,10 +50,12 @@
                           <div class="label">적립금</div>
                       </div>
                       <div class="divider"></div>
-                      <div class="cart">
+                      <div class="cart" align="center">
+                      <a href="${ pageContext.request.contextPath }/list.ct" >
                           <div class="icon"><i class="fas fa-shopping-cart"></i></div>
-                          <div class="amount">5건</div>
+                          <div class="amount">${ cartCount }건</div>
                           <div class="label">장바구니</div>
+                     </a>     
                       </div>
                       
                   </div>
@@ -137,8 +139,10 @@
                   </div>
               </div>
               <div id="overlay" class="overlay">
-		        <span class="material-symbols-outlined" id="heart">heart_minus</span>
-		        <p id="message"></p>
+             	 <div id="buttonDiv" >
+			        <span class="material-symbols-outlined" id="heart" style="text-align: center;">favorite</span>
+			        <p id="message"></p>
+		        </div>
 			  </div>
       
               <!-- Inquiry Sections -->

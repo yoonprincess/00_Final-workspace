@@ -49,4 +49,10 @@ public class CartServiceImpl implements CartService {
 		return cartDao.updateCartOption(sqlSession, cartNo, updatedOptNo);
 	}
 
+	@Override
+	public int myCartCount(String memberId) {
+	
+		return cartDao.myCartCount(sqlSession,memberId);
+	}
+
 }
