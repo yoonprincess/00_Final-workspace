@@ -12,7 +12,7 @@ function deleteWish(prodNo){
             var $overlay = $('#overlay');
             var $message = $('#message');
             
-            $message.text('찜 해제!');
+           	togglerEvent.disable('favorite', 'orangered', '찜 해제!');
           
             $overlay.css({
                 'display': 'flex',
@@ -28,7 +28,6 @@ function deleteWish(prodNo){
         },
         error: function() {
             console.log("ajax 통신 실패!");
-            alert("찜 해제 실패");
         }
     });
 }

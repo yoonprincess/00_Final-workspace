@@ -138,13 +138,7 @@
                     
                   </div>
               </div>
-              <div id="overlay" class="overlay">
-             	 <div id="buttonDiv" >
-			        <span class="material-symbols-outlined" id="heart" style="text-align: center;">favorite</span>
-			        <p id="message"></p>
-		        </div>
-			  </div>
-      
+                   
               <!-- Inquiry Sections -->
 	              <div class="inquiry-sections " >
 	                  <div class="section inquiry" >

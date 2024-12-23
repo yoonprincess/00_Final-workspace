@@ -35,12 +35,7 @@
  				
  				
        <br>
-       <div id="overlay" class="overlay">
-        <div id="buttonDiv">
-         <span class="material-symbols-outlined" id="heart">heart_minus</span>
-         <p id="message"></p>
-	    </div>
-	  </div>
+       
 	<table class="order-table">
     <thead>
         <tr>
