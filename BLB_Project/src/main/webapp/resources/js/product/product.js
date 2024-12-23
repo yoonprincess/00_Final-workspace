@@ -20,8 +20,39 @@ $(document).ready(function () {
     // 장바구니 추가 버튼
     $('.add-cart').click(function (e) {
         e.stopPropagation();
-        const productId = $(this).data('id');
-        alert(`장바구니에 상품 ${productId} 추가!`);
+        e.preventDefault(); // 기본 동작 차단
+        const button = $(this);
+        const prodNo = button.data('prodno');
+        const memberId = button.data('memberid'); // 회원 ID 가져오기
+        
+        if (!memberId) {
+            alertify.error("로그인 후 상품을 찜 할 수 있습니다.");
+            // 페이지 이동
+            setTimeout(function() {
+                window.location.href = `${contextPath}/loginForm.me`;
+            }, 1500); // 2초 후 이동
+            return; // 실행 중단
+        }
+    
+        const reviewIframeUrl = `${contextPath}/enrollForm.ct?prodNo=${prodNo}&memberId=${memberId}`;
+        $(iframe).attr('src', reviewIframeUrl);
+
+        // iframe 로드 후 크기 조정
+        iframe.on('load', function () {
+            const iframeContent = this.contentWindow.document || this.contentDocument;
+            if (iframeContent) {
+                const iframeHeight = iframeContent.body.scrollHeight || iframeContent.documentElement.scrollHeight;
+                const iframeWidth = iframeContent.body.scrollWidth || iframeContent.documentElement.scrollWidth;
+
+                $(this).css({
+                    width: iframeWidth + 'px',
+                    height: iframeHeight + 'px',
+                });
+            }
+        });
+
+        // 모달 표시
+        $('#reviewIframeContainer').fadeIn();
     });
 
     // 찜하기 기능

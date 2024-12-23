@@ -286,8 +286,10 @@
 				                    <div class="card-img-container">
 				                        <img src="${ pageContext.request.contextPath }${ p.thumbImg }" class="card-img-top" alt="상품 이미지">
 				                        <div class="overlay">
-				                            <button class="btn btn-light btn-sm rounded-circle shadow add-cart" title="장바구니 추가" data-id="1">
-				                                <span class="material-symbols-outlined">
+				                            <button class="btn btn-light btn-sm rounded-circle shadow add-cart" title="장바구니 추가"
+													data-prodno="${ p.prodNo }"
+													data-memberid="${sessionScope.loginUser.memberId}">
+				                                <span class="material-symbols-outlined active">
 				                                    shopping_bag
 				                                </span>
 				                            </button>
