@@ -18,6 +18,7 @@
 		<result column="AVG_RATING" property="avgRating"/>
 		<result column="REVIEW_COUNT" property="reviewCount"/>
 		<result column="IS_WISHED" property="isWished"/>
+		<result column="TOTAL_SALES" property="totalSales"/>
 	</resultMap>
 	
 	<resultMap id="productAttResultSet" type="productAtt">
@@ -61,6 +62,7 @@
 		     , PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
 		     , NVL(ROUND(AVG(R.REV_RATING), 1), 0) AS AVG_RATING
            	 , NVL(COUNT(R.REV_NO), 0) AS REVIEW_COUNT
+           	 , NVL(SUM(PO.ORDER_QTY), 0) AS TOTAL_SALES
            	 , CASE
 	               WHEN (SELECT COUNT(*)
 	                     FROM TB_WISH W
@@ -100,7 +102,29 @@
 	     GROUP BY P.PROD_NO, P.CATEGORY_NAME, P.SUBCATEGORY_NAME, P.PROD_NAME, 
 	     		  P.PROD_CONTENT, P.PROD_PRICE, P.PROD_COUNT, P.PROD_ENROLL_DATE, 
 	           	  PA.THUMB_PATH, PA.SAVE_FILE_NAME
-		 ORDER BY P.PROD_NO DESC
+		<choose>
+	        <when test="sortBy == 'recent'">
+	        	ORDER BY P.PROD_NO DESC
+	        </when>
+	        <when test="sortBy == 'rating'">
+	            ORDER BY AVG_RATING DESC
+	        </when>
+	        <when test="sortBy == 'reviews'">
+	            ORDER BY REVIEW_COUNT DESC
+	        </when>
+	        <when test="sortBy == 'sales'">
+	            ORDER BY TOTAL_SALES DESC
+	        </when>
+	        <when test="sortBy == 'lowPrice'">
+	            ORDER BY P.PROD_PRICE ASC
+	        </when>
+	        <when test="sortBy == 'highPrice'">
+	            ORDER BY P.PROD_PRICE DESC
+	        </when>
+	        <otherwise>
+	            ORDER BY P.PROD_ENROLL_DATE DESC
+	        </otherwise>
+    	</choose>
 	</select>
 	
 	<select id="increaseViewCount" parameterType="_int">

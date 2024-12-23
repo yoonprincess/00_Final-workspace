@@ -443,9 +443,3 @@ $(document).on('click', '#imageModal', function (e) {
         closeImageModal();
     }
 });
-
-// 좋아요 버튼 클릭 이벤트
-function likeReview(reviewId) {
-    alert(`리뷰 좋아요: ${reviewId}`);
-    // 좋아요 로직 추가 필요
-}

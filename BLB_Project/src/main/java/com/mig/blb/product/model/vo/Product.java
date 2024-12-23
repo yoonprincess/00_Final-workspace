@@ -32,6 +32,7 @@ public class Product {
     private float avgRating; 		    // AVG_RATING 평균 별점
     private int reviewCount;     		// REVIEW_COUNT 리뷰 개수
     private int isWished;			// IS_WISHED 찜한 상태
+    private int totalSales;			// TOTAL_SALES 전체 판매수
     
 		
 }

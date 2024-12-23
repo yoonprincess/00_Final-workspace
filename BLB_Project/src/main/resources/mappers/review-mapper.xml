@@ -117,7 +117,7 @@
 	</select>
 	
 	<!-- 리뷰 작성 여부 확인 -->
-	<select id="isReviewWritten" parameterType="int" resultType="int">
+	<select id="isReviewWritten" parameterType="string" resultType="int">
 	    SELECT COUNT(*)
 	      FROM TB_REVIEW R
 	     WHERE R.SERIAL_NO = #{serialNo}

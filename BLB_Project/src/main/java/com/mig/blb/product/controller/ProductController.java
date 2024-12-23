@@ -59,6 +59,7 @@ public class ProductController {
         params.put("category", category);
         params.put("subcategories", subcategories);
         params.put("keyword", keyword);
+        params.put("sortBy", sortBy);
 		
         // 로그인한 유저라면 로그인 아이디도 전달 
         if(session.getAttribute("loginUser") != null) {
@@ -157,7 +158,8 @@ public class ProductController {
 	@ResponseBody
 	@PostMapping("checkPurchase.pr")
     public Map<String, Object> checkReviewAvailability(@RequestParam int prodNo,
-													   @RequestParam String memberId) {
+													   @RequestParam String memberId,
+													   @RequestParam(value="serialNo", required=false) String serialNo) {
 		
 		Map<String, Object> result = new HashMap<>();
 
@@ -168,24 +170,48 @@ public class ProductController {
 	        result.put("status", "no_purchase");
 	        return result; // 구매하지 않은 상태
 	    }
+	    
+	    // Step2: 시리얼 넘버가 있을 경우 작성 여부 확인
+	    if(serialNo != null) {
+	    	for(Map<String, Object> purchaseOne : purchaseInfo) {
 
-	    // Step 2: 리뷰 작성 여부 확인
-	    // 리뷰되지 않은 SERIAL_NO 찾기
-	    for (Map<String, Object> purchaseOne : purchaseInfo) {
-	        int serialNo = Integer.parseInt((String) purchaseOne.get("serialNo"));
-
-	        // 리뷰 작성 여부 확인
-	        boolean isReviewWritten = reviewService.isReviewWritten(serialNo);
-
-	        if (!isReviewWritten) {
-	        	result.put("status", "ok");
-	        	result.put("purchaseOne", purchaseOne);
-	        	// serialNo, orderDate, optName, optValue, prodName
-	            return result;
-	        }
+	    		String purchaseSerialNo = (String)purchaseOne.get("serialNo");
+	    		
+	    		if(purchaseSerialNo.equals(serialNo)) {
+	    			// 리뷰 작성 여부 확인
+	    			boolean isReviewWritten = reviewService.isReviewWritten(purchaseSerialNo);
+	    			
+	    			if(!isReviewWritten) {
+	    				result.put("status", "ok");
+	    				result.put("serialNo", purchaseSerialNo);
+	    	            return result;
+	    			} else {
+	    				result.put("status", "review_exists");
+	    		        return result; // 이미 리뷰 작성된 상태
+	    			}
+	    		}
+		    }
+	    	result.put("status", "serial_error");
+	    	return result; // 잘못된 주문번호
+	    } else {
+	    	
+	    	// Step 2: 리뷰 작성 여부 확인
+	    	// 리뷰되지 않은 SERIAL_NO 찾기
+	    	for (Map<String, Object> purchaseOne : purchaseInfo) {
+	    		String serialMinNo = (String)purchaseOne.get("serialNo");
+	    		
+	    		// 리뷰 작성 여부 확인
+	    		boolean isReviewWritten = reviewService.isReviewWritten(serialMinNo);
+	    		
+	    		if (!isReviewWritten) {
+	    			result.put("status", "ok");
+	    			result.put("serialNo", serialMinNo);
+	    			return result;
+	    		}
+	    	}
+	    	result.put("status", "review_exists");
+	    	return result; // 이미 리뷰 작성된 상태
 	    }
-	    result.put("status", "review_exists");
-        return result; // 이미 리뷰 작성된 상태
     }
 	
 	@GetMapping("enrollForm.pqa")

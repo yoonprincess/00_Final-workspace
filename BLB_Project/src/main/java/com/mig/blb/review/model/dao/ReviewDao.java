@@ -34,7 +34,7 @@ public class ReviewDao {
 		return sqlSession.selectOne("reviewMapper.selectReviewStats", prodNo);
 	}
 	
-	public boolean isReviewWritten(SqlSessionTemplate sqlSession, int serialNo) {
+	public boolean isReviewWritten(SqlSessionTemplate sqlSession, String serialNo) {
 		return (int)sqlSession.selectOne("reviewMapper.isReviewWritten", serialNo) > 0;
 	}
 

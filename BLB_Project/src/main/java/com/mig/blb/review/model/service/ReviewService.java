@@ -21,7 +21,7 @@ public interface ReviewService {
 	// 마이페이지용 내 리뷰 목록조회
 	ArrayList<Review> selectMyReviewList(String memberId, PageInfo pi);
 	// 리뷰 작성여부 확인
-	boolean isReviewWritten(int serialNo);
+	boolean isReviewWritten(String serialNo);
 	// 리뷰 글작성
 	int insertReview(Review review);
 	// 리뷰 첨부파일 등록

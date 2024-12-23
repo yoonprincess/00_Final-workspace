@@ -42,7 +42,8 @@ public class ReviewController {
 	
 	@GetMapping("enrollForm.rv")
     public String writeReviewForm(@RequestParam int prodNo, 
-    							  @RequestParam String memberId, 
+    							  @RequestParam String memberId,
+    							  @RequestParam String serialNo,
     							  Model model, 
     							  HttpSession session) {
 		
@@ -59,31 +60,29 @@ public class ReviewController {
             return "common/errorPage"; // 접근 거부 페이지로 이동
         }
 
-        // 구매 여부 확인
         // Step 1: 구매 여부 확인 및 정보 추출
         List<Map<String, Object>> purchaseInfo = productService.getPurchaseInfo(memberId, prodNo);
-	    if(purchaseInfo.isEmpty()) {
-	    	model.addAttribute("alertMsg", "구매한 상품에만 리뷰를 작성할 수 있습니다.");
-            return "redirect:/detail.pr?pno=" + prodNo; // 상품페이지로 리다이렉트
-	    }
 
-	    // Step 2: 리뷰 작성 여부 확인
-	    // 리뷰되지 않은 SERIAL_NO 찾기
-	    for(Map<String, Object> purchaseOne : purchaseInfo) {
-	        int serialNo = Integer.parseInt((String) purchaseOne.get("serialNo"));
+        for(Map<String, Object> purchaseOne : purchaseInfo) {
 
-	        // 리뷰 작성 여부 확인
-	        boolean isReviewWritten = reviewService.isReviewWritten(serialNo);
+    		String purchaseSerialNo = (String)purchaseOne.get("serialNo");
+    		
+    		if(purchaseSerialNo.equals(serialNo)) {
+    			// 리뷰 작성 여부 확인
+    			boolean isReviewWritten = reviewService.isReviewWritten(purchaseSerialNo);
+    			
 
-	        if(!isReviewWritten) {
-	        	// 상품 및 사용자 정보 추가
-	            model.addAttribute("prodNo", prodNo);
-	            model.addAttribute("memberId", memberId);
-	            model.addAttribute("purchaseOne", purchaseOne);
-	            // serialNo, orderDate, optName, optValue, prodName
-	            return "review/reviewWriteForm"; // 리뷰 작성 JSP 페이지
-	        }
-	    }
+		        if(!isReviewWritten) {
+		        	// 상품 및 사용자 정보 추가
+		            model.addAttribute("prodNo", prodNo);
+		            model.addAttribute("memberId", memberId);
+		            model.addAttribute("purchaseOne", purchaseOne);
+		            // serialNo, orderDate, optName, optValue, prodName
+		            return "review/reviewWriteForm"; // 리뷰 작성 JSP 페이지
+		        }
+		        
+    		}
+        }
         model.addAttribute("alertMsg", "이미 리뷰를 작성하셨습니다.");
         return "redirect:/detail.pr?pno=" + prodNo; // 상품페이지로 리다이렉트
     }

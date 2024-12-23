@@ -51,7 +51,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 	
 	@Override
-	public boolean isReviewWritten(int serialNo) {
+	public boolean isReviewWritten(String serialNo) {
 		return reviewDao.isReviewWritten(sqlSession, serialNo);
 	}
 	

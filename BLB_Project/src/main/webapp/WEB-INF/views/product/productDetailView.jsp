@@ -416,7 +416,7 @@
                                         <!-- 문의글 -->
                                          <!-- 버튼 액션: 수정, 삭제, 좋아요 -->
                                         <div class="product-actions d-flex justify-content-between align-items-center">
-                                            <!-- 리뷰 내용 -->
+                                            <!-- 문의 내용 -->
                                             <div class="review-content-container mb-3">
                                                 <div class="review-content short-content">
                                                     <p class="review-text">${qna.inquiryContent}</p>

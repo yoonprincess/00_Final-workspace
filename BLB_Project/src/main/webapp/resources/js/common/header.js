@@ -172,10 +172,10 @@ $(function() {
     // iframe 크기 조정 함수
     $('#reviewIframeContainer').hide(); // 초기에는 숨김
     // 리뷰 작성하기
-    $('#writeReviewBtn').on('click', function () {
+    $(document).on('click', '#writeReviewBtn', function () {
         const prodNo = $(this).data('prodno'); // 상품 번호 가져오기
         const memberId = $(this).data('memberid'); // 회원 ID 가져오기
-        
+        const serialNo = $(this).data('serialno');
         const iframe = $('#reviewIframeContainer iframe');
 
         if (!memberId) {
@@ -193,7 +193,8 @@ $(function() {
             type: 'POST',
             data: {
                 prodNo: prodNo,
-                memberId: memberId
+                memberId: memberId,
+                serialNo: serialNo
             },
             success: function (response) {
                 if(response.status == "no_purchase") {
@@ -202,9 +203,11 @@ $(function() {
                 if(response.status == "review_exists") {
                     alertify.warning("이미 리뷰를 작성하셨습니다.");
                 }
-
+                if(response.status == "serial_error") {
+                    alertify.error("잘못된 주문번호 입니다.");
+                }
                 if (response.status == "ok") {
-                    const reviewIframeUrl = `${contextPath}/enrollForm.rv?prodNo=${prodNo}&memberId=${memberId}`;
+                    const reviewIframeUrl = `${contextPath}/enrollForm.rv?prodNo=${prodNo}&memberId=${memberId}&serialNo=${response.serialNo}`;
                     // 서버 검증 후 iframe URL을 서버에서 제공
                     $(iframe).attr('src', reviewIframeUrl);
 

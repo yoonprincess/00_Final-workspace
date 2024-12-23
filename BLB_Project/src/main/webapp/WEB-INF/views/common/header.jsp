@@ -56,13 +56,23 @@
 		</script>	
 		<c:remove var="successMsg" scope="session"/>
 	</c:if>
-		<!-- 리뷰 작성하기 컨테이너 -->
-		<div id="reviewIframeContainer" style="display: none;">
-			<div style="position: relative;"> <!-- 닫기 버튼을 포함하는 컨테이너 -->
-				<button class="close-btn review-enroll">&times;</button>
-				<iframe src=""></iframe>
-			</div>
+	
+	<!-- 리뷰 작성하기 컨테이너 -->
+	<div id="reviewIframeContainer" style="display: none;">
+		<div style="position: relative;"> <!-- 닫기 버튼을 포함하는 컨테이너 -->
+			<button class="close-btn review-enroll">&times;</button>
+			<iframe src=""></iframe>
 		</div>
+	</div>
+	<!-- 찜토글 효과 -->
+	<div id="overlay" class="overlay blb-toggler">
+		<div id="buttonDiv" >
+		  <span class="material-symbols-outlined" id="heart" style="text-align: center;">heart_minus</span>
+		  <p id="message"></p>
+	  </div>
+	</div>
+
+
     <nav class="navbar navbar-expand-md navbar-dark fixed-top transparent-navbar">
         <div class="container-fluid">
             <a class="navbar-brand" href="${ pageContext.request.contextPath }/">
