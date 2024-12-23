@@ -85,6 +85,8 @@ public interface MemberService {
 	int findSnsId(String snsId);
 
 	Member loginMember(String snsId);
+
+	int insertKakao(Member m);
 	
 	
 }

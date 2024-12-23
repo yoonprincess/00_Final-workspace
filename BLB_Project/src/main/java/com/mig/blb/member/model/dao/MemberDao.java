@@ -163,7 +163,11 @@ public class MemberDao {
 	}
 
 	public Member loginMember(SqlSessionTemplate sqlSession, String snsId) {
-		return sqlSession.selectOne("memberMapper.loginMember", snsId);
+		return sqlSession.selectOne("memberMapper.kakaoLogin", snsId);
+	}
+
+	public int insertKakao(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.insert("memberMapper.insertKakao", m);
 	}
 
 

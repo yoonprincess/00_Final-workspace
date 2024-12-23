@@ -344,6 +344,17 @@ body {
     padding: 32px 0;
 }
 
+a {
+    text-decoration: none !important;
+    color: inherit !important; 
+}
+
+a:hover {
+    text-decoration: none !important; 
+    color: inherit !important;
+    
+}
+
 .qna-item {
     display: flex; /* 수평 배치를 위해 flex 사용 */
     justify-content: space-evenly; /* 항목들 간에 간격을 최대로 */
@@ -351,6 +362,7 @@ body {
     padding: 5px 0; /* 항목들 간의 여백 */
     border-bottom: 1px solid #ddd; /* 항목 간 구분선 */
     transition: background-color 0.3s ease; /* 배경 색 변경에 애니메이션 추가 */
+    text-decoration: none;
 }
 
 .qna-item:hover {

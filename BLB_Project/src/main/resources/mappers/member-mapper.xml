@@ -15,6 +15,8 @@
 	 		<result column="TOTAL_POINTS" property="totalPoints" />
 	 		<result column="CURRENT_POINTS" property="currentPoints" />
 	 		<result column="GRADE_NAME" property="gradeName" />
+	 		<result column="SNS_ID" property="snsId" />
+	 		<result column="LOGIN_TYPE" property="loginType" />
 	</resultMap>
 	
 	<resultMap id="deliveryResultSet" type="delivery">
@@ -347,7 +349,7 @@
            P.PROD_NO,
            P.PROD_PRICE,
            PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
-      FROM TB_WISHI W
+      FROM TB_WISH W
       JOIN TB_PRODUCT P ON P.PROD_NO = W.PROD_NO
  LEFT JOIN (
         SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
@@ -548,7 +550,7 @@
 	
 	<select id="myWishListCount" parameterType="string" resultType="int">
 		SELECT COUNT(*)
-		  FROM TB_WISHI
+		  FROM TB_WISH
 		 WHERE MEMBER_ID = #{memberId}  
 	</select>
 	
@@ -557,7 +559,7 @@
        	   P.PROD_NO,
            P.PROD_PRICE,
            PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
-	       FROM TB_WISHI W
+	       FROM TB_WISH W
 	   JOIN TB_PRODUCT P ON P.PROD_NO = W.PROD_NO
   LEFT JOIN  (
 		      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
@@ -575,7 +577,39 @@
 	</select>
 	<delete id="deleteWish" parameterType="_int">
 		DELETE 
-		  FROM TB_WISHI
+		  FROM TB_WISH
 		 WHERE PROD_NO = #{prodNo}	
 	</delete>
+	
+	<select id="findSnsId" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		  FROM TB_MEMBER
+		  WHERE SNS_ID = #{snsId}
+	</select>
+	<select id="kakaoLogin"
+			parameterType="member"
+			resultMap="memberResultSet">
+		SELECT *
+		  FROM TB_MEMBER
+		  WHERE SNS_ID = #{snsId}
+		   AND STATUS='Y'
+		   AND LOGIN_TYPE ='kakao'
+	</select>
+	
+	<insert id="insertKakao" parameterType="member">
+	  	INSERT INTO TB_MEMBER (MEMBER_ID
+	                       ,MEMBER_NAME
+	                       ,PHONE
+	                       ,EMAIL
+	                       ,BIRTHDATE
+	                       ,SNS_ID
+	                       ,LOGIN_TYPE)                                                                                             
+	                  VALUES(#{memberId}
+	                        ,#{memberName}
+	                        ,#{phone}
+	                        ,#{email}
+	                        ,#{birthdate}
+	                        ,#{snsId}
+	                        ,#{loginType})            
+  	</insert>
 </mapper>

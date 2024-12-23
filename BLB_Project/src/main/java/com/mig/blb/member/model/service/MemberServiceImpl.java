@@ -185,6 +185,12 @@ public class MemberServiceImpl implements MemberService {
 	public Member loginMember(String snsId) {
 		return memberDao.loginMember(sqlSession, snsId);
 	}
+	
+	@Transactional
+	@Override
+	public int insertKakao(Member m) {
+		return  memberDao.insertKakao(sqlSession, m);
+	}
 
 }
 

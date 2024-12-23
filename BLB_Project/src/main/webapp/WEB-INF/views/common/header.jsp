@@ -226,7 +226,7 @@
 						
                         
                         <!-- 찜 -->
-                        <a class="menu-btn" href="#">
+                        <a class="menu-btn" href="${ pageContext.request.contextPath }/wishList.me">
                             <span class="material-symbols-outlined menu-icon">
                                 favorite
                             </span>

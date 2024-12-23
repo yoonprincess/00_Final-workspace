@@ -46,19 +46,23 @@ public class AuthLoginController {
 							HttpServletRequest request) {
 		
 		String accessToken = kakaoApi.getAccessToken(code);
-		System.out.println("code값 잘 넘어왔나? " + code);
-		System.out.println("토큰은?"+ accessToken);
+		//System.out.println("code값 잘 넘어왔나? " + code);
+		//System.out.println("토큰은?"+ accessToken);
 		
 		Map<String, Object> userInfo = kakaoApi.getUserInfo(accessToken);
 		
 		String email = (String)userInfo.get("email");
-		String snsId = (String)userInfo.get("snsId");
+		String snsId = (String)userInfo.get("id");
 		String name =(String)userInfo.get("name");
 		String phoneNumber =(String)userInfo.get("phoneNumber");
 		String phone = phoneNumber.replace("+82 ", "0")  
 		        				  .replace("-", "")     
 		        				  .replace(" ", "");  
-		System.out.println(phone);
+		
+		//System.out.println(phone);
+		//System.out.println(email);
+		//System.out.println(snsId);
+		
 		String birthyear =(String)userInfo.get("birthyear");
 		String birthday =(String)userInfo.get("birthday");
 		
@@ -71,15 +75,19 @@ public class AuthLoginController {
 			birthDate = year + "/" + month + "/" + day;
 		}
 		
-		int result = memberService.findSnsId(snsId);
+		//System.out.println(birthDate);
 		
-		if(result > 0 ) { // 카카오 가입이력있을 경우 
+		int result1 = memberService.findSnsId(snsId);
+		
+		if(result1 > 0 ) { // 카카오 가입이력있을 경우 
 			
 			Member loginUser = memberService.loginMember(snsId);
 			
 			if(loginUser != null) {
 				session.setAttribute("loginUser", loginUser);
+				
 				String redirectURL = (String) session.getAttribute("beforePage");
+				
 				if(redirectURL != null) {
 
 				    if ("POST".equalsIgnoreCase(request.getMethod())) {
@@ -94,29 +102,30 @@ public class AuthLoginController {
 					mv.setViewName("redirect:/" );
 				}
 			}else {
-				mv.setViewName("common/errorPage");
+				mv.setViewName("member/loginErrorForm");
 			}
-			
-		
 		
 		}else { // 카카오 가입 이력 없을 경우 
 				
 			Member m = new Member();
 			m.setMemberId("kakao_"+snsId);
 			m.setMemberName(name);
+			m.setEmail(email);
 			m.setSnsId(snsId);
-			m.setPhone(phoneNumber); //+82 10-4773-5572
+			m.setPhone(phone); //+82 10-4773-5572
+			m.setLoginType("kakao");
 			
 			if(birthDate !=null) {
+				
 				m.setBirthdate(birthDate);
 			}
 			
-			m.setLoginType("kakao");
-			
-			int result2 = memberService.insertMember(m);
+			int result2 = memberService.insertKakao(m);
 			
 			if(result2>0) {
+				
 				session.setAttribute("alertMsg", "환영합니다-*^^*");
+				
 				mv.addObject("memberId", m.getMemberId());
 				mv.addObject("memberName", m.getMemberName());
 				mv.addObject("email", m.getEmail());
@@ -128,7 +137,7 @@ public class AuthLoginController {
 			}
 		}
 		
-		System.out.println("access:"+ accessToken);
+		//System.out.println("access:"+ accessToken);
 	
 		return mv;
 	

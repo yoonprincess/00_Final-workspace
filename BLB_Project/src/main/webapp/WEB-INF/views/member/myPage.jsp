@@ -103,14 +103,14 @@
                       	<button class="more-btn" 
                       			onclick="location.href='${ pageContext.request.contextPath }/wishList.me'">더보기 &gt;</button>
                     </div>
-                  <div class="product-grid">
-                  <c:if test="${empty wlist}">
+                    <c:if test="${empty wlist}">
                    <div style="display: flex; flex-direction: column; align-items: center;">
                         <span class="material-symbols-outlined" style="font-size:40px;">error</span>
                         <br>
                         <div> 찜한 상품이 없습니다. </div>
                     </div>
                   </c:if>
+                  <div class="product-grid">
                   <c:if test="${not empty wlist}">
 	                  <c:forEach var="wish" items="${wlist}">
 	                      <div class="product-card">
@@ -153,6 +153,7 @@
 		                     <div class="qna-list">
 		                      <c:if  test="${not empty list}">
 			                    <c:forEach var="list" items="${list}">
+			                     <a href="${ pageContext.request.contextPath }/inquiry/${list.inquiryNo}">
 			                        <div class="qna-item">
 			                          <div class="qna-details">
 			                          <c:choose>
@@ -167,6 +168,7 @@
 			                            <div class="qna-title">${list.inquiryContent}</div>
 			                            <div class="qna-date">${list.inquiryCreateDate}</div>
 			                         </div>
+			                       </a>
 			                     </c:forEach>
 			                    </c:if>
 			                    <c:if test="${empty list}">
@@ -189,6 +191,7 @@
 	                      <div class="qna-list">
 	                     	 <c:if  test="${not empty qlist}">
 			                    <c:forEach var="list" items="${qlist}">
+			                    <a href="${ pageContext.request.contextPath }/inquiry/${list.inquiryNo}">
 			                        <div class="qna-item">
 			                          <div class="qna-details">
 			                          <c:choose>
@@ -203,6 +206,7 @@
 			                            <div class="qna-title">${list.inquiryContent}</div>
 			                            <div class="qna-date">${list.inquiryCreateDate}</div>
 			                         </div>
+			                       </a>
 			                     </c:forEach>
 			                    </c:if>
 			                    <c:if test="${empty qlist}">

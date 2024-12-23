@@ -219,15 +219,16 @@ public class KakaoApi{
 	            
 	            JsonParser parser = new JsonParser();
 	            JsonElement element = parser.parse(result);
-
+	            
+	            if (element.getAsJsonObject().has("id")) {
+	                String snsId = element.getAsJsonObject().get("id").getAsString();
+	                userInfo.put("id", snsId);
+	            }
+	            
 	            JsonObject kakaoAccount = element.getAsJsonObject().getAsJsonObject("kakao_account");
 
 	            if (kakaoAccount != null) {
 	            	
-	            	if (kakaoAccount.has("id")) {
-	                    String snsId = kakaoAccount.getAsJsonObject().get("id").getAsString();
-	                    userInfo.put("snsId", snsId);
-	                }
 	                if (kakaoAccount.has("email")) {
 	                    String email = kakaoAccount.getAsJsonObject().get("email").getAsString();
 	                    userInfo.put("email", email);
