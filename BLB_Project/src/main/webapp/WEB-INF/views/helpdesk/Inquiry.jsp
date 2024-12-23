@@ -72,7 +72,7 @@
 
         <div class="button-group">
             <button type="submit" class="submit-button">등록</button>
-            <button type="button" class="cancel-button">취소</button>
+            <button type="button" class="cancel-button" onclick="goBack();">취소</button>
         </div>
     </form>
     <br><br>

@@ -1,4 +1,6 @@
-
+function goBack(){
+	history.back();
+}
 
 
 // 문서가 로드된 후 실행
