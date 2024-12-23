@@ -13,10 +13,10 @@ import lombok.ToString;
 @ToString
 public class Faq {
 
-	private int FaqNo;
-	private String FaqTitle;
-	private String FaqContent;
-	private String FaqType;
-	private String FaqStatus;
+	private int faqNo;
+	private String faqTitle;
+	private String faqContent;
+	private String faqType;
+	private String faqStatus;
 	
 }

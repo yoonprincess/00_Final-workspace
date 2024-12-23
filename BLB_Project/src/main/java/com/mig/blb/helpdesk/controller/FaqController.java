@@ -45,23 +45,17 @@ public class FaqController {
 			return "helpdesk/FAQ";
 			
 		}
-	
-		// FAQ 작성 페이지 요청
-		@GetMapping("FaqEnrollForm.fo")
-		public ModelAndView faqEnrollForm(ModelAndView mv) {
-		
-		mv.setViewName("helpdesk/FaqEnrollForm");
-		return mv;
-		
-		}
 		
 		// FAQ 작성 요청
 		@PostMapping("insert.fo")
 		public ModelAndView insertFaq(Faq f,
+									/*@RequestParam(value="faqType") String faqType,*/
 		                                 RedirectAttributes ar,
 		                                 HttpSession session,
 		                                 ModelAndView mv) {
-
+				//f.setFaqType(faqType);
+				
+			
 				// Faq 객체를 서비스에 전달
 				int result = faqService.insertFaq(f);
 				
@@ -107,7 +101,7 @@ public class FaqController {
 		    f.setFaqTitle(faqTitle); // 공지사항 제목 설정
 		    f.setFaqContent(faqContent); // 공지사항 내용 설정
 		    
-		    System.out.println(f);
+		    //System.out.println(f);
 		    
 		    int result = faqService.updateFaq(f);
 		    

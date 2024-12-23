@@ -69,6 +69,32 @@
                     </details>
                 </c:forEach>
             </div>
+
+            <!-- 관리자만 FAQ 등록 버튼 표시 -->
+            <c:if test="${sessionScope.loginUser != null && sessionScope.loginUser.memberId == 'admin'}">
+                <button type="button" class="add-faq-button" onclick="showAddFaqForm()">FAQ 등록</button>
+            </c:if>
+            
+            <!-- FAQ 등록 폼 -->
+            <form class="faq-add-form" action="${pageContext.request.contextPath}/insert.fo" method="post" style="display: none;">
+                <h3>새 FAQ 등록</h3>
+                <input type="text" name="faqTitle" placeholder="제목을 입력하세요" required style="width: 100%; margin-bottom: 10px;">
+                <textarea name="faqContent" placeholder="내용을 입력하세요" rows="4" required style="width: 100%;"></textarea>
+
+                <!-- 분류 선택 -->
+                <select name="faqType" required style="width: 100%; margin-bottom: 10px;">
+                    <option value="">-- 분류를 선택하세요 --</option>
+                    <option value="general">일반</option>
+                    <option value="technical">기술</option>
+                    <option value="account">계정 관련</option>
+                    <option value="payment">결제 관련</option>
+                </select>
+                
+                <div class="faq-actions">
+                    <button type="submit" class="save-button">등록</button>
+                    <button type="button" class="cancel-button" onclick="cancelAddFaq()">취소</button>
+                </div>
+            </form>
         </div>
     </div>
     <script>
@@ -94,6 +120,18 @@
             titleDiv.style.display = 'block'; // 제목 표시
             displayDiv.style.display = 'block'; // 내용 표시
             editForm.style.display = 'none'; // 수정 폼 숨기기
+        }
+
+        // FAQ 등록 버튼 클릭 시 등록 폼 표시
+        function showAddFaqForm() {
+            const addForm = document.querySelector('.faq-add-form');
+            addForm.style.display = 'block';
+        }
+
+        // 취소 버튼 클릭 시 등록 폼 숨기기
+        function cancelAddFaq() {
+            const addForm = document.querySelector('.faq-add-form');
+            addForm.style.display = 'none';
         }
     </script>
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>

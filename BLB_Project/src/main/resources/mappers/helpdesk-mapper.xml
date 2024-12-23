@@ -25,10 +25,12 @@
 	<insert id="insertFaq" parameterType="faq">
 	    INSERT INTO TB_FAQ(FAQ_NO,
 						      FAQ_TITLE,
-						      FAQ_CONTENT)
+						      FAQ_CONTENT,
+						      FAQ_TYPE)
 					   VALUES(SEQ_FAQ_NO.NEXTVAL,
 					         #{faqTitle},
-					         #{faqContent})
+					         #{faqContent},
+					         #{faqType})
 	</insert>
 	
 	<!-- FAQ 삭제 -->
