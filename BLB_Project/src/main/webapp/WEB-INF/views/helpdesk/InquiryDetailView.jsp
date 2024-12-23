@@ -19,11 +19,10 @@
         <h1>문의사항 상세조회</h1>
         <div class="inquiry-details">
             <c:choose>
-            	<c:when test="${requestScope.i.prodNo} != 'null'">
-            		<p><span class="label">상품명:</span> ${requestScope.i.prodNo}</p>
+            	<c:when test="${not empty requestScope.i.prodName}">
+            		<p><span class="label">상품명:</span> ${requestScope.i.prodName}</p>
             	</c:when>
-            	<c:otherwise>
-            	</c:otherwise>
+            	<c:otherwise></c:otherwise>
             </c:choose>
             <p><span class="label">문의 번호:</span> ${requestScope.i.inquiryNo}</p>
             <p><span class="label">문의자:</span> ${requestScope.i.memberId}</p>
