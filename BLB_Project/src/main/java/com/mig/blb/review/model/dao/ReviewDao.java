@@ -43,7 +43,7 @@ public class ReviewDao {
 		return sqlSession.selectOne("memberMapper.myReviewListCount", memberId);
 	}
 
-	public List<Map<String, Object>> selectMyReviewList(SqlSessionTemplate sqlSession, String memberId, PageInfo pi) {
+	public ArrayList<Review> selectMyReviewList(SqlSessionTemplate sqlSession, String memberId, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		

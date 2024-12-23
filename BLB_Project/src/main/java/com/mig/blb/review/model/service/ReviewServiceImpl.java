@@ -45,7 +45,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectMyReviewList(String memberId, PageInfo pi) {
+	public ArrayList<Review> selectMyReviewList(String memberId, PageInfo pi) {
 
 		return reviewDao.selectMyReviewList(sqlSession,memberId,pi);
 	}
