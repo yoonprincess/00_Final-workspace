@@ -10,6 +10,42 @@
 		<result column="FAQ_TYPE" property="faqType"/>
 		<result column="FAQ_STATUS" property="faqStatus"/>
 	</resultMap>
+	
+	<!-- FAQ 목록조회 -->
+	<select id="selectFaqList" resultMap="FaqResultSet">
+		SELECT FAQ_NO
+		     , FAQ_TITLE
+		     , FAQ_CONTENT
+		  FROM TB_FAQ
+		 WHERE FAQ_STATUS = 'Y'
+       	   ORDER BY FAQ_NO DESC
+	</select>
+	
+	<!-- FAQ 등록 -->
+	<insert id="insertFaq" parameterType="faq">
+	    INSERT INTO TB_FAQ(FAQ_NO,
+						      FAQ_TITLE,
+						      FAQ_CONTENT)
+					   VALUES(SEQ_FAQ_NO.NEXTVAL,
+					         #{faqTitle},
+					         #{faqContent})
+	</insert>
+	
+	<!-- FAQ 삭제 -->
+	<update id="deleteFaq" parameterType="_int">
+		UPDATE TB_FAQ
+		   SET FAQ_STATUS = 'N'
+		 WHERE FAQ_NO = #{faqNo}
+	</update>
+	
+	<!-- FAQ 수정 -->
+	<update id="updateFaq" parameterType="faq">
+		UPDATE TB_FAQ
+		   SET FAQ_TITLE = #{faqTitle}
+		     , FAQ_CONTENT = #{faqContent}
+		 WHERE FAQ_NO = #{faqNo}
+		   AND FAQ_STATUS = 'Y'
+	</update>
 
 													<!-- 공지사항 관련 매퍼 -->
 	<!-- 공지글 관련 -->												

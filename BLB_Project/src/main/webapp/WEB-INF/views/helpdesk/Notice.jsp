@@ -16,7 +16,7 @@
     <br><br><br><br>
         <!-- 네비게이션 메뉴 -->
         <div class="notice-menu">
-		    <a href="Faq.blb">FAQ</a>
+		    <a href="list.fo">FAQ</a>
 		    <a href="list.io">1:1 문의</a>
 		    <a href="list.no" class="active">공지사항</a>
 		</div>

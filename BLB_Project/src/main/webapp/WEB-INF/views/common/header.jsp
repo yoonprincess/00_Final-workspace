@@ -295,7 +295,7 @@
                         <a class="nav-link" href="#">리뷰</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${ pageContext.request.contextPath }/Faq.blb">고객센터</a>
+                        <a class="nav-link" href="${ pageContext.request.contextPath }/list.fo">고객센터</a>
                     </li>
                 </ul>
             </div>

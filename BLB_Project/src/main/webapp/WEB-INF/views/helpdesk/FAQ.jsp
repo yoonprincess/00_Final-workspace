@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ</title>
-    <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/helpdesk/FAQ.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/helpdesk/FAQ.css">
 </head>
 <body class="body-offset">
     <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -16,95 +16,86 @@
             <br><br><br><br>
             <!-- 네비게이션 메뉴 -->
             <div class="faq-menu">
-			    <a href="Faq.blb" class="active">FAQ</a>
-			    <a href="list.io">1:1 문의</a>
-			    <a href="list.no">공지사항</a>
-			</div>
-
-            <div class="faq-search">
-                <form action="list.no" method="get">
-                    <input type="text" name="searchKeyword" placeholder="제목 또는 내용을 입력해주세요." value="${ param.searchKeyword }">
-                    <button type="submit">검색</button>
-                </form>
-                <c:if test="${ sessionScope.loginUser.memberId eq 'admin' }">
-                <!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
-                <a class="btn btn-secondary" style="float:right; background-color:#A4EBF3; border:none;" href="faqEnrollForm.no">글쓰기</a>
-            </c:if>
+                <a href="${pageContext.request.contextPath}/list.fo" class="active">FAQ</a>
+                <a href="${pageContext.request.contextPath}/list.io">1:1 문의</a>
+                <a href="${pageContext.request.contextPath}/list.no">공지사항</a>
+            </div>
+            <h1>FAQ</h1>
+    
+            <div class="section-header">
+                <h2>많이 찾는 질문</h2>
             </div>
 
-            <!-- FAQ 테이블 -->
-            <table id="faqList">
-                <thead>
-                    <tr>
-                        <th>질문</th>
-                        <th>답변</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="f" items="${ requestScope.faqList }">
-                        <tr class="faq-item">
-                            <td>${ f.question }</td>
-                            <td class="faq-answer">${ f.answer }</td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-            <!-- 페이지네이션 -->
-            <nav>
-                <ul class="pagination">
-                    <!-- 이전 페이지 그룹 -->
-                    <c:if test="${ pi.startPage > 1 }">
-                        <li class="page-item">
-                            <a href="Faq.blb?cpage=${ pi.startPage - pi.pageLimit }&searchKeyword=${searchKeyword}">
-                                ＜
-                            </a>
-                        </li>
-                    </c:if>
-                    
-                    <!-- 페이지 번호 -->
-                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }" step="1">
-                        <c:if test="${ p == pi.currentPage }">
-                            <li class="page-item">
-                                <a class="active" href="#">${ p }</a>
-                            </li>
-                        </c:if>
-                        <c:if test="${ p != pi.currentPage }">
-                            <li class="page-item">
-                                <a href="Faq.blb?cpage=${ p }&searchKeyword=${searchKeyword}">${ p }</a>
-                            </li>
-                        </c:if>
-                    </c:forEach>
-                    
-                    <!-- 다음 페이지 그룹 -->
-                    <c:if test="${ pi.endPage < pi.maxPage }">
-                        <li class="page-item">
-                            <a href="Faq.blb?cpage=${ pi.startPage + pi.pageLimit }&searchKeyword=${searchKeyword}">
-                                ＞
-                            </a>
-                        </li>
-                    </c:if>
-                </ul>
-            </nav>
-            <!-- 페이지네이션 end -->
+            <p class="description">
+                찾으시는 내용이 없다면 1:1문의를 이용해주세요!
+            </p>
+
+            <div class="faq-list">
+                <c:forEach var="faq" items="${list}">
+                    <details>
+                        <!-- 제목 및 내용 수정 영역 -->
+                        <summary>
+                            <form class="faq-edit" action="${pageContext.request.contextPath}/FaqUpdate.fo?fno=${faq.faqNo}" method="post" style="display: none;">
+                                <input type="hidden" name="fno" value="${faq.faqNo}">
+                                <!-- 제목 수정 -->
+                                <input type="text" name="faqTitle" value="${faq.faqTitle}" style="width: 100%; margin-bottom: 5px;">
+                                <!-- 내용 수정 -->
+                                <textarea name="faqContent" rows="4" style="width: 100%;">${faq.faqContent}</textarea>
+                                <div class="faq-actions">
+                                    <button type="submit" class="save-button">저장</button>
+                                    <button type="button" class="cancel-button" onclick="cancelEdit(this)">취소</button>
+                                </div>
+                            </form>
+
+                            <div class="faq-title-display">${faq.faqTitle}</div>
+                        </summary>
+
+                        <div class="content">
+                            <!-- 내용 표시 영역 -->
+                            <div class="faq-display">
+                                <p>${faq.faqContent}</p>
+                                <!-- 관리자만 수정/삭제 버튼 표시 -->
+                                <c:if test="${sessionScope.loginUser != null && sessionScope.loginUser.memberId == 'admin'}">
+                                    <div class="faq-actions">
+                                        <button type="button" class="update-button" onclick="editFaq(this)">수정</button>
+                                        <form action="${pageContext.request.contextPath}/FaqDelete.fo" method="post" style="display: inline;">
+                                            <input type="hidden" name="fno" value="${faq.faqNo}">
+                                            <button type="submit" class="delete-button">삭제</button>
+                                        </form>
+                                    </div>
+                                </c:if>
+                            </div>
+                        </div>
+                    </details>
+                </c:forEach>
+            </div>
         </div>
     </div>
     <script>
-	    document.addEventListener("DOMContentLoaded", function() {
-	        const faqItems = document.querySelectorAll(".faq-item");
-	        
-	        faqItems.forEach(item => {
-	            item.addEventListener("click", function() {
-	                const answer = this.querySelector(".faq-answer");
-	                if (answer.style.display === "none" || !answer.style.display) {
-	                    answer.style.display = "block";
-	                } else {
-	                    answer.style.display = "none";
-	                }
-	            });
-	        });
-	    });
+        // 수정 버튼 클릭 시 수정 모드 활성화
+        function editFaq(button) {
+            const contentDiv = button.closest('.content');
+            const displayDiv = contentDiv.querySelector('.faq-display');
+            const editForm = contentDiv.closest('details').querySelector('.faq-edit');
+            const titleDiv = contentDiv.closest('details').querySelector('.faq-title-display');
+
+            titleDiv.style.display = 'none'; // 제목 숨기기
+            displayDiv.style.display = 'none'; // 내용 숨기기
+            editForm.style.display = 'block'; // 수정 폼 표시
+        }
+
+        // 취소 버튼 클릭 시 수정 모드 취소
+        function cancelEdit(button) {
+            const contentDiv = button.closest('.content');
+            const displayDiv = contentDiv.querySelector('.faq-display');
+            const editForm = contentDiv.closest('details').querySelector('.faq-edit');
+            const titleDiv = contentDiv.closest('details').querySelector('.faq-title-display');
+
+            titleDiv.style.display = 'block'; // 제목 표시
+            displayDiv.style.display = 'block'; // 내용 표시
+            editForm.style.display = 'none'; // 수정 폼 숨기기
+        }
     </script>
-    <script src="${ pageContext.request.contextPath }/resources/js/helpdesk/FAQ.js"></script> <!-- JS 파일 경로 -->
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

@@ -15,7 +15,7 @@
     <br><br><br><br>
     <!-- 네비게이션 메뉴 -->
         <div class="inquiry-menu">
-		    <a href="Faq.blb">FAQ</a>
+		    <a href="list.fo">FAQ</a>
 		    <a href="list.io" class="active">1:1 문의</a>
 		    <a href="list.no">공지사항</a>
 		</div>

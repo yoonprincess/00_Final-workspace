@@ -1,106 +1,152 @@
-.container {
-    width: 80%;
-    margin: 0 auto;
-}
+		.faq-actions {
+            margin-top: 10px;
+        }
+        .faq-actions button {
+            padding: 5px 10px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .update-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .update-button:hover {
+            background-color: #45a049;
+        }
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+        }
+        .delete-button:hover {
+            background-color: #d32f2f;
+        }
+        .save-button {
+            background-color: #2196F3;
+            color: white;
+        }
+        .save-button:hover {
+            background-color: #1E88E5;
+        }
+        .cancel-button {
+            background-color: #9E9E9E;
+            color: white;
+        }
+        .cancel-button:hover {
+            background-color: #757575;
+        }
+		
+		/* 기존 nav 스타일 대신 faq-menu에 적용 */
+		.faq-menu {
+		    display: flex;
+		    justify-content: center; /* 중앙 정렬 */
+		    margin: 30px 0 50px; /* 위아래 간격 조정 */
+		    text-align: center;
+		}
+		
+		.faq-menu a {
+		    margin: 0 50px; /* 좌우 간격 조정 */
+		    text-decoration: none;
+		    color: #666;
+		    font-size: 18px;
+		    font-weight: bold;
+		    padding-bottom: 5px;
+		}
+		
+		.faq-menu a.active {
+		    color: #000;
+		    border-bottom: 2px solid #000;
+		}
+		
+		.faq-menu a:hover {
+		    text-decoration: none;
+		}
+		
+		h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #333;
+        }
 
-/* 기존 nav 스타일 대신 faq-menu에 적용 */
-.faq-menu {
-    display: flex;
-    justify-content: center; /* 중앙 정렬 */
-    margin: 30px 0 50px; /* 위아래 간격 조정 */
-    text-align: center;
-}
+        .section-header {
+            text-align: center;
+            position: relative;
+            margin-bottom: 30px;
+        }
 
-.faq-menu a {
-    margin: 0 50px; /* 좌우 간격 조정 */
-    text-decoration: none;
-    color: #666;
-    font-size: 18px;
-    font-weight: bold;
-    padding-bottom: 5px;
-}
+        .section-header h2 {
+            display: inline-block;
+            background-color: #f9f9f9;
+            padding: 0 20px;
+            color: #333;
+            font-size: 1.5rem;
+            font-weight: normal;
+        }
 
-.faq-menu a.active {
-    color: #000;
-    border-bottom: 2px solid #000;
-}
+        .section-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #A4EBF3, transparent);
+            z-index: -1;
+        }
 
-.faq-menu a:hover {
-    text-decoration: none;
-}
+        .description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
 
-/* 검색 박스 스타일 */
-.faq-search {
-    margin: 20px 0 30px;
-    position: relative; /* 자식 요소의 위치를 기준으로 설정 */
-	text-align: center;
-}
-.faq-search input[type="text"] {
-    width: 500px;
-    height: 36px;
-    padding: 8px 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    text-align: center;
-}
-.faq-search button {
-    height: 38px;
-    padding: 0 20px;
-    margin-left: 10px;
-    border: none;
-    background-color: #333;
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.faq-search button:hover {
-    background-color: #555;
-}
+        details {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
 
-.faq-search .btn {
-    position: absolute; /* 글쓰기 버튼의 위치를 고정 */
-    right: 0; /* 오른쪽 끝에 배치 */
-    top: 50%; /* 부모 요소의 세로 중심 기준으로 이동 */
-    transform: translateY(-50%); /* 정확히 세로 중심으로 정렬 */
-    height: 38px;
-    font-size: 14px;
-    font-weight: bold;
-    background-color: #007bff;
-    color: #fff;
-    text-align: center;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        details:hover {
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
 
-.faq-search .btn:hover {
-    background-color: #0056b3;
-}
+        summary {
+            padding: 20px;
+            cursor: pointer;
+            position: relative;
+            font-weight: 500;
+            color: #333;
+            list-style: none;
+        }
 
-/* 테이블 스타일 */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0 auto;
-    text-align: center;
-}
-table thead th {
-    background-color: #f8f8f8;
-    padding: 15px;
-    border-top: 2px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    font-weight: bold;
-}
-table tbody tr {
-    border-bottom: 1px solid #eee;
-}
-table tbody tr:hover {
-    background-color: #f9f9f9;
-}
-table tbody td {
-    padding: 15px;
-    font-size: 15px;
-}
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: '';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid #666;
+            border-bottom: 2px solid #666;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after {
+            transform: translateY(-50%) rotate(-135deg);
+        }
+
+        .content {
+            padding: 0 20px 20px;
+            color: #666;
+            line-height: 1.6;
+        }
