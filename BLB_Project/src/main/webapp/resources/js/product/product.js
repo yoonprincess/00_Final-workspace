@@ -26,7 +26,6 @@ $(document).ready(function () {
 
     // 찜하기 기능
     $('.wishlist-btn').click(function (e) {
-    // $(document).on('click', '.wishlist-btn', function (e) {
         e.stopPropagation();
         e.preventDefault(); // 기본 동작 차단
         const button = $(this);
@@ -55,11 +54,13 @@ $(document).ready(function () {
                 if (response === 'added') {
                     button.data('iswished', 1);
                     button.find('span').addClass('active'); // 하트 아이콘 활성화
-                    alertify.success('해당 상품을 찜하였습니다.');
+                    togglerEvent.active('favorite', 'orangered', '찜 성공!');
+                    // alertify.success('해당 상품을 찜하였습니다.');
                 } else if (response === 'removed') {
                     button.data('iswished', 0);
                     button.find('span').removeClass('active'); // 하트 아이콘 비활성화
-                    alertify.success('해당 상품의 찜을 해제하였습니다.');
+                    togglerEvent.disable('favorite', 'orangered', '찜 해제!');
+                    // alertify.success('해당 상품의 찜을 해제하였습니다.');
                 }
             },
             error: function () {

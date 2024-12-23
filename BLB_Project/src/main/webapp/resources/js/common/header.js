@@ -4,6 +4,48 @@ $(function() {
     const productTabs = $('#productTabs'); // 상품 상세보기 페이지 탭 메뉴
     const isProductPage = productTabs.length > 0; // 상품 상세보기 페이지 여부 확인
     let lastScrollTop = 0; // 이전 스크롤 위치 저장
+
+    // 토글버튼 효과 처리
+    var $blbToggler = $('.overlay.blb-toggler');
+    var $TogglerMessage = $blbToggler.find('#toggler-message');
+    var $TogglerIcon = $blbToggler.find('span');
+
+    window.togglerEvent = {
+        active: function(icon, style, text) {
+            $TogglerIcon.text(icon);
+            $TogglerIcon.attr('id', style);
+            $TogglerIcon.addClass('active');
+            $TogglerMessage.text(text);
+
+            $blbToggler.css({
+                'display': 'flex',
+                'opacity': '0'
+            }).animate({opacity: 1}, 300);
+            setTimeout(function() {
+                $blbToggler.animate({opacity: 0}, 300, function() {
+                    $(this).css('display', 'none');
+                    // window.location.reload();
+                });
+            }, 1000);
+        },
+        disable: function(icon, style, text) {
+            $TogglerIcon.text(icon);
+            $TogglerIcon.attr('id', style);
+            $TogglerIcon.removeClass('active');
+            $TogglerMessage.text(text);
+
+            $blbToggler.css({
+                'display': 'flex',
+                'opacity': '0'
+            }).animate({opacity: 1}, 300);
+            setTimeout(function() {
+                $blbToggler.animate({opacity: 0}, 300, function() {
+                    $(this).css('display', 'none');
+                    // window.location.reload();
+                });
+            }, 1000);
+        }
+    }
     
     // * 상품 상세보기 페이지: 헤더 숨김 및 상품 메뉴 탭 고정
     if (isProductPage) {
@@ -279,6 +321,5 @@ $(function() {
         $('#reviewIframeContainer').fadeOut();
         $('#reviewIframeContainer iframe').attr('src', ''); // iframe 초기화
     });
-
-    
+   
 });

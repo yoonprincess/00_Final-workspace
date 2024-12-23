@@ -57,19 +57,22 @@
 		<c:remove var="successMsg" scope="session"/>
 	</c:if>
 	
-	<!-- 리뷰 작성하기 컨테이너 -->
+	<!-- iframe 작성하기 컨테이너 -->
 	<div id="reviewIframeContainer" style="display: none;">
 		<div style="position: relative;"> <!-- 닫기 버튼을 포함하는 컨테이너 -->
 			<button class="close-btn review-enroll">&times;</button>
 			<iframe src=""></iframe>
 		</div>
 	</div>
-	<!-- 찜토글 효과 -->
-	<div id="overlay" class="overlay blb-toggler">
+	<!-- 토글버튼 효과 -->
+	<div class="overlay blb-toggler" style="display: none;">
 		<div id="buttonDiv" >
-		  <span class="material-symbols-outlined" id="heart" style="text-align: center;">heart_minus</span>
-		  <p id="message"></p>
-	  </div>
+			<span class="material-symbols-outlined" 
+				id="" 
+				style="text-align: center;">
+			</span>
+			<p id="toggler-message"></p>
+		</div>
 	</div>
 
 
