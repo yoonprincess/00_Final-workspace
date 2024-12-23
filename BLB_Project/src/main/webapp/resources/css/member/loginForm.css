@@ -91,43 +91,41 @@ input[type="checkbox"] {
 }
 
 .kakao-logo {
-    width: 60px;
+    width: 100%;
     height: 60px;
     background-color: #FFCD00;
-    border-radius: 50%;
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0 auto;
     margin-right: 0;
-
-}
-
-.kakao-logo span {
     color: black;
-    font-size: 33px;
-    font-weight: bold;
-    line-height: 30px;
+
 }
-.naver-logo {
-    width: 60px;
-    height: 60px;
-    background-color: #03c75a;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto ;
-    margin-left: 0;
-    float: right;
+.kakao-logo i{
+   font-size:30px;
+   margin-right:50px;
+
 }
 
-.naver-logo span {
-    color: white;
-    font-size: 33px;
-    font-weight: bold;
-    line-height: 30px;
+.social-login {
+	
+    width:100%; /* 가로 정렬 */
+    align-items: center; /* 세로 정렬 */
+    justify-content: center ; /* 중앙 정렬 */
+   
 }
+.social-login a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: inherit; /* 상속된 글씨 색 유지 */
+}
+
+.social-login a:hover {
+    text-decoration: none; /* hover 시에도 밑줄 제거 */
+    color: inherit; /* hover 시에도 글씨 색 유지 */
+}
+
 
 .separator {
     font-size: 14px;
@@ -152,12 +150,7 @@ input[type="checkbox"] {
     font-size: 13px;
 
 }
-.social-login {
-    display: flex; /* 가로 정렬 */
-    align-items: center; /* 세로 정렬 */
-    justify-content: center ; /* 중앙 정렬 */
-   
-}
+
 
 hr {
     border: none;

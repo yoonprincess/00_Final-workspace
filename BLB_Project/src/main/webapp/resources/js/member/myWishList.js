@@ -13,18 +13,11 @@ function deleteWish(prodNo){
             var $message = $('#message');
             
            	togglerEvent.disable('favorite', 'orangered', '찜 해제!');
-          
-            $overlay.css({
-                'display': 'flex',
-                'opacity': '0'
-            }).animate({opacity: 1}, 300);
-            
-            setTimeout(function() {
-                $overlay.animate({opacity: 0}, 300, function() {
-                    $(this).css('display', 'none');
-                    window.location.href = "wishList.me";
-                });
-            }, 1000);
+  
+             setTimeout(function() {
+                window.location.reload(); // 새로고침
+            }, 500); // 500ms 후에 새로고침 (애니메이션이 있을 경우 시간 설정)
+           
         },
         error: function() {
             console.log("ajax 통신 실패!");
@@ -42,29 +35,14 @@ function confirmDelete() {
 }
 
 function openModal(prodNo) {
-        // 아이프레임을 선택하고, src 속성을 동적으로 설정
-        console.log(prodNo);
-        var iframe = document.getElementById('optModal').querySelector('iframe');
-     	 iframe.src = "selectCartOption.me?prodNo=" + prodNo;
-        
-        // 모달을 띄움
-        document.getElementById('optModal').style.display = 'block';
-    }
-
-
-// 옵션선택 
-const modal = document.getElementById("optModal");
-const openModalBtn = document.getElementById("openModal");
-const closeModalBtn = document.querySelector(".close");
-const selectOptionBtn = document.getElementById("selectOption");
-const dropdown = document.getElementById("dropdown");
-
-
-
-// Close modal
-closeModalBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-});
+    // 아이프레임을 선택하고, src 속성을 동적으로 설정
+    console.log(prodNo);
+    var iframe = document.getElementById('optModal').querySelector('iframe');
+ 	 iframe.src = "selectCartOption.me?prodNo=" + prodNo;
+    
+    // 모달을 띄움
+    document.getElementById('optModal').style.display = 'block';
+}
 
 
 

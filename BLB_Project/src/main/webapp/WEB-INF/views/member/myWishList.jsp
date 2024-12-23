@@ -61,7 +61,7 @@
             <c:forEach var="wish" items="${wlist}">
                 <tr class="result">
                     <td>
-                      <a href="detail.pr?pno=${wish.prodName}">
+                      <a href="detail.pr?pno=${wish.prodNo}">
                         <div class="product">
                           <img src="${pageContext.request.contextPath}/${wish.thumbImg}" alt="${wish.prodName}" >
                         </div>
@@ -73,8 +73,13 @@
                       </div>
                     </td>
                     <td>
-                        <div>29,500원</div>
-                        <div>${wish.prodPrice}</div>
+                        <div>
+                          <span class="unit_b"><s><fmt:formatNumber value="${wish.prodPrice *1.2}" type="number"/></s>원</span>
+                        </div>
+                        <div>
+                       	  <fmt:formatNumber value="${wish.prodPrice}" type="number"/><span class="unit">원</span>
+                        </div>
+                        
                     </td>
                     <td>
                         <div class="button-group">

@@ -502,11 +502,13 @@ public class MyPageController {
 							 pageLimit, boardLimit);
 				
 				ArrayList<Review> rlist = reviewService.selectMyReviewList(loginUser.getMemberId(),pi); 
-			    System.out.println(rlist);
+			    //System.out.println(rlist);
 			
 				mv.addObject("pi",pi);
 				mv.addObject("rlist",rlist);
 				mv.addObject("listCount",listCount);
+				
+				session.setAttribute("listCount", listCount);
 				
 				mv.setViewName("member/myReviewList");
 				
@@ -543,7 +545,7 @@ public class MyPageController {
 				ArrayList<Product> wlist = memberService.selectMyWishList(loginUser.getMemberId(),pi); 
 				mv.addObject("pi",pi);
 				mv.addObject("wlist",wlist);
-				mv.addObject("listCount",listCount);
+				mv.addObject("listCount",listCount);// menubar.jsp 
 				
 				mv.setViewName("member/myWishList");
 				
@@ -624,8 +626,8 @@ public class MyPageController {
 		// 장바구니 넣기 
 		@ResponseBody
 		@PostMapping("insertCart.me")
-		public ModelAndView insertCart(ModelAndView mv
-										, HttpSession session
+		public Map<String, Object> insertCart(
+										 HttpSession session
 										, Cart c
 										, @RequestParam("prodNo") Integer prodNo
 										,  @RequestParam("optNo") int optNo) {
@@ -642,10 +644,11 @@ public class MyPageController {
 				c.setCartQty(1);
 				
 				int result = cartService.insertCart(c);
+				
 				if(result>0) {
 					response.put("success", true);
 		            response.put("message", "상품이 장바구니에 추가되었습니다.");
-		            mv.setViewName("cart/cartListView");
+		            
 				
 				}else {
 					response.put("success", false);
@@ -653,13 +656,13 @@ public class MyPageController {
 					
 				}
 				
-				
 			}else {
 				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
-				mv.setViewName("/main");
+				response.put("success", false);
+		        response.put("message", "로그인 필요");
 			}
-				
-			return mv;	
+			
+			  return response; 
 		}
 			
 }			

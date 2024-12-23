@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>마이페이지 | 뷰라밸 (Beauty Life Balance)</title>
 <link rel="stylesheet" href="resources/css/member/myPage.css">
-<script src="resources/js/member/myPage.js" defer></script>   
+<script src="resources/js/member/myPage.js"></script>   
  
 <!-- Noto Sans font-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,12 +32,12 @@
                       <h2> ${ loginUser.memberName }님, 반갑습니다.</h2>
                       <div class="member-grade">
                           <span class="text-gray-600">회원등급</span>
-                          <span class="i-icon">i</span>
+                          <button type="button" id="openModal" class="i-icon" >i</button>
                           <span class="bold">${ loginUser.gradeName } </span>
                           <span class="info-icon">B</span>
                       </div>
                       <div class="monthly-info">
-                        <span class="bold" style="color : #a6e3e9 "> [MINT] </span> 까지 남은 구매금액은 <span class="bold">10,000원</span> 입니다.
+                        <span class="bold" style="color : #a6e3e9 "> [MINT] </span> 까지 남은 구매금액은 <span class="bold">30,000원</span> 입니다.
                           <br>
                           승급 기준에 따른 매장 금액이므로 총구매 금액과 달라질 수 있습니다.
                       </div>
@@ -60,7 +60,50 @@
                       
                   </div>
               </div>
-      
+              
+              <!-- GRADE_MODAL -->
+			      <div id="modal" class="modal">
+			        <div class="modal-content">
+			            <span class="close">&times;</span>
+			            <h4>[회원 등급제 안내]</h4>
+			            <p class="subtitle">*최근 1년간 누적 구매 금액 기준</p>
+			            <div class="tier-chart">
+						    
+						     <div class="tier family" data-label="BABY">
+						        <span class="badge">B</span>
+						    </div>
+						    <div class="tier silver" data-label="MINT">
+						        <span class="badge">M</span>
+						    </div>
+						 
+						    <div class="tier gold" data-label="GOLD">
+						        <span class="badge">G</span>
+						    </div>
+						       <div class="tier vip" data-label="VIP">
+						        <span class="badge">V</span>
+						    </div>
+						</div>
+			
+			            <table>
+			                <tr>
+			                    <th>등급기준<br>(금액 조건시)</th>
+			                    <td>신규가입<br>3만원 미만</td>
+			                    <td>3만원 이상<br>5만원 미만</td>
+			                    <td>5만원 이상<br>10만원 미만</td>
+			                    <td>10만원 이상</td>
+			                </tr>
+			                <tr>
+			                    <th>구매적립금</th>
+			                    <td>1%</td>
+			                    <td>2%</td>
+			                    <td>3%</td>
+			                    <td>5%</td>
+			                </tr>
+			            </table>
+			            <br><br>
+			        </div>
+			    </div>
+			    
               <!-- Delivery Tracking -->
               <div class="section delivery-tracking" style="border : none;">
                   <div class="section-header">
@@ -115,6 +158,7 @@
                   <div class="product-grid">
                   <c:if test="${not empty wlist}">
 	                  <c:forEach var="wish" items="${wlist}">
+	                     <a href="${ pageContext.request.contextPath }/detail.pr?pno=${wish.prodNo}">
 	                      <div class="product-card">
 	                          <div class="product-image">
 	                               <img src="${pageContext.request.contextPath}/${wish.thumbImg}" alt="${wish.prodName}" >
@@ -132,6 +176,7 @@
 	                              </div>
 	                          </div>
 	                      </div>
+	                     </a>
 	                  </c:forEach> 
                   </c:if>
                       

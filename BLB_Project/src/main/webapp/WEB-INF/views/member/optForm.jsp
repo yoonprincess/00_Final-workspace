@@ -92,6 +92,15 @@
             <button type="submit" class="btn-submit">장바구니 담기</button>
         </form>
     </div>
+    
+    <div id="customModal" class="modal" style="display:none;">
+	    <div class="modal-content">
+	        <span class="close-btn" onclick="closeModal()">&times;</span>
+	        <p id="modalMessage"></p>
+	        <button id="modalButton" onclick="closeModal();">쇼핑계속하기</button>
+	        <button id="modalButton" onclick="goCart();">장바구니이동</button>
+	    </div>
+	</div>
 
     <script>
         $(document).ready(function () {
@@ -110,18 +119,17 @@
                     processData: false,
                     success: function (response) {
                         if (response.success) {
-                        	 console.log(response); 
                             // 성공 메시지
-                            alertify.success(response.message);
+                             openModal(response.message);
+                            
                             // 일정 시간 후 창 닫기
                             setTimeout(function () {
                                 parent.$('#reviewIframeContainer').hide();
-                                // 부모 페이지 새로고침
-                            }, 1000); // 1초 후 창 닫기
+                                parent.location.reload(); 
+                            }, 8000); // 1초 후 창 닫기
                         } else {
                             // 실패 메시지
                             alertify.error(response.message);
-                            // 일정 시간 후 창 닫기
                             setTimeout(function () {
                                 parent.$('#reviewIframeContainer').hide();
                                 parent.location.reload(); // 부모 페이지 새로고침
@@ -130,7 +138,7 @@
                     },
                     error: function () {
                     	
-                        //alertify.error("서버 오류가 발생했습니다. 다시 시도해주세요.");
+                        alertify.error("서버 오류가 발생했습니다. 다시 시도해주세요.");
                         // 일정 시간 후 창 닫기
                         setTimeout(function () {
                                 parent.$('#reviewIframeContainer').hide();
@@ -140,6 +148,25 @@
                 });
             });
         });
+        
+        // 장바구니 담은 후 성공시 띄우는 모달창 
+        function openModal(message) {
+		    // 모달에 메시지 설정
+		    document.getElementById('modalMessage').textContent = message;
+		    // 모달 열기
+		    document.getElementById('customModal').style.display = 'block';
+		}
+		
+		function closeModal() {
+            parent.$('#reviewIframeContainer').hide();
+            parent.location.reload(); // 부모 페이지 새로고침
+		}
+		
+		function goCart() {
+		    parent.$('#reviewIframeContainer').hide();
+		   	parent.window.location.href = '${pageContext.request.contextPath}/list.ct'; // 장바구니 페이지로 이동
+		}
+
     </script>
 
     

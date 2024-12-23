@@ -57,18 +57,15 @@
                 <br>
                 <hr>
                 <br>
-                <div class="sub-title">간편로그인</div>
+                <div class="sub-title">또는</div>
                 <br>
                 <div class="social-login">
-                    <div class="kakao-logo">
-                  <a href="${kakaoAuthUrl}">
+               	 <a href="${kakaoAuthUrl}">
+	                 <div class="kakao-logo">
 					    <i class="fa fa-comment"></i>
-					</a>
-                    </div>
-                    <span class="separator">또는</span>
-                    <div class="naver-logo">
-                        <span>N</span> 
-                    </div>
+					    카카오 1초 로그인/회원가입
+	                 </div>
+               	 </a>
                 </div>
             </form>
         </div>

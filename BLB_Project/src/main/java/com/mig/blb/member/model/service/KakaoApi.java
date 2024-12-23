@@ -215,7 +215,7 @@ public class KakaoApi{
 	            }
 	            String result = responseSb.toString();
 
-	            System.out.println("API Response: " + result);
+	            //System.out.println("API Response: " + result);
 	            
 	            JsonParser parser = new JsonParser();
 	            JsonElement element = parser.parse(result);

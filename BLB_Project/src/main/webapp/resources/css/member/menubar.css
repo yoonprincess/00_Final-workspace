@@ -425,7 +425,7 @@ body {
 }
 
 #main{
-    width: 95%; /* 내용물 너비 */
+    width: 100%; /* 내용물 너비 */
     margin: 0 auto; /* 중앙 정렬 */
     display: flex; /* 필요한 경우 Flexbox 설정 유지 */
     box-sizing: border-box;

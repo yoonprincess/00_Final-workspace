@@ -1,5 +1,4 @@
 
-
 	// 버튼 관련
 	function goEnrollForm() {
 	    window.location.href = "/blb/enrollDeliveryForm.me";

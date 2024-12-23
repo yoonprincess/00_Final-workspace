@@ -289,12 +289,13 @@
 									        <span class="delivery-complete">${myOrder.dlvrStatus}</span>
 									        	<c:if test="${productOrder.isWritten == 0}">
 										          <button 
-							                        class="btn btn-primary blb-btn" 
+							                        class="btn-outline-primary blb-btn" 
 							                        id="writeReviewBtn" 
+							                        style="width:70px; font-size:13px; padding:5px 2px;"
 							                        data-prodno="${product.prodNo}" 
 							                        data-serialno="${productOrder.serialNo}"
 							                        data-memberid="${sessionScope.loginUser.memberId}">
-							                        리뷰 작성하기
+							                        리뷰 작성
 							                    </button>
 						                      </c:if>
 									    </c:if>
