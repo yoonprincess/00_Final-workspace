@@ -95,6 +95,27 @@
 				        #{savePath},
 				        SEQ_NOTICE_NO.CURRVAL)
 	</insert>
+	
+	<!-- 이전글 조회 -->
+	<select id="selectPreviousNotice" parameterType="int" resultMap="noticeResultSet">
+	    SELECT *
+		  FROM (SELECT *
+			      FROM TB_NOTICE
+			     WHERE NOTICE_NO &lt; #{noticeNo}
+			  ORDER BY NOTICE_NO DESC)
+		  WHERE ROWNUM = 1
+	</select>
+	
+	<!-- 다음글 조회 -->
+	<select id="selectNextNotice" parameterType="int" resultMap="noticeResultSet">
+	    SELECT *
+		  FROM (SELECT *
+			      FROM TB_NOTICE
+			     WHERE NOTICE_NO &gt; #{noticeNo}
+			  ORDER BY NOTICE_NO ASC)
+		  WHERE ROWNUM = 1
+	</select>
+	
 
 	<!-- 공지글 상세조회 -->
 	<select id="selectNotice" parameterType="_int" resultMap="noticeResultSet">

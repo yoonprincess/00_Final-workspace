@@ -64,17 +64,21 @@
                     </script>
                 </c:if>
 
-    <div class="navigation">
-        <a href="#" class="nav-item">
-            <span class="nav-label">다음글</span>
-            <span class="nav-title">[공지] TMH 2024년 리뉴얼 상품 안내</span>
-            <span class="badge-new">NEW</span>
-        </a>
-        <a href="#" class="nav-item">
-            <span class="nav-label">이전글</span>
-            <span class="nav-title">[공지] 온라인몰 v4.0.12 업데이트+리뉴얼 안내로 상품 안내</span>
-        </a>
-    </div>
+    <c:if test="${ previousNotice != null }">
+	    <a href="${pageContext.request.contextPath}/notice/${previousNotice.noticeNo}" class="nav-item">
+	        <span class="nav-label">이전글</span>
+	        <span class="nav-title">${previousNotice.noticeTitle}</span>
+	    </a>
+	</c:if>
+	<c:if test="${ nextNotice != null }">
+	    <a href="${pageContext.request.contextPath}/notice/${nextNotice.noticeNo}" class="nav-item">
+	        <span class="nav-label">다음글</span>
+	        <span class="nav-title">${nextNotice.noticeTitle}</span>
+	        <span class="badge-new">NEW</span>
+	    </a>
+	</c:if>
+
+
 
     <div class="button-container">
         <button type="button" class="list-button" onclick="goList();">목록보기</button>

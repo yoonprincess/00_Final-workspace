@@ -19,5 +19,7 @@ public class Notice {
 	private String noticeRegDate;
 	private String noticePinnedYn;
 	private String noticeStatus;
+	private int prevNotice;
+	private int nextNotice;
 	
 }

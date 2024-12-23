@@ -45,6 +45,16 @@ public class NoticeDao {
 		return sqlSession.selectOne("helpdeskMapper.selectNotice", nno);
 	}
 	
+	// 공지사항 이전글 조회
+	public Notice selectPreviousNotice(SqlSessionTemplate sqlSession, int nno) {
+		return sqlSession.selectOne("helpdeskMapper.selectPreviousNotice", nno);
+	}
+
+	// 공지사항 다음글 조회
+	public Notice selectNextNotice(SqlSessionTemplate sqlSession, int nno) {
+		return sqlSession.selectOne("helpdeskMapper.selectNextNotice", nno);
+	}
+	
 	public ArrayList<NoticeAtt> selectNoticeAtt(SqlSessionTemplate sqlSession, int nno) {
 		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectNoticeAtt", nno);
 	}
@@ -74,5 +84,7 @@ public class NoticeDao {
 	public int insertNoticeAtt(SqlSessionTemplate sqlSession, NoticeAtt newAtt) {
 		return sqlSession.insert("helpdeskMapper.insertNewNotice", newAtt);
 	}
+
+	
 
 }

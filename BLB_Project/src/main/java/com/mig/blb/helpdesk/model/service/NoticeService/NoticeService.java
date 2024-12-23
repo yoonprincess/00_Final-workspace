@@ -31,5 +31,9 @@ public interface NoticeService {
 
 	// 첨부파일 단일 저장
 	int insertNoticeAtt(NoticeAtt newAtt);
+
+	Notice selectPreviousNotice(int nno);
+
+	Notice selectNextNotice(int nno);
 	
 }

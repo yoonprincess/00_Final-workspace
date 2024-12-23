@@ -116,18 +116,32 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 		public ModelAndView selectNotice(@PathVariable(value = "noticeNo") int nno,
 		                                 ModelAndView mv,
 		                                 RedirectAttributes ra) {
-		        Notice n = noticeService.selectNotice(nno);
-		        ArrayList<NoticeAtt> na = noticeService.selectNoticeAtt(nno);
-		        mv.addObject("n", n).setViewName("helpdesk/NoticeDetailView");
-		        mv.addObject("na", na).setViewName("helpdesk/NoticeDetailView");
-		        //System.out.println(na);
-		        // > na 배열에 잘 담겨있음!
-		        
-		        
-		        
-		        
+		    // 공지사항 조회
+		    Notice n = noticeService.selectNotice(nno);
+		    ArrayList<NoticeAtt> na = noticeService.selectNoticeAtt(nno);
+
+		    // 이전글 조회
+		    Notice previousNotice = noticeService.selectPreviousNotice(nno);
+
+		    // 다음글 조회
+		    Notice nextNotice = noticeService.selectNextNotice(nno);
+
+		    // 모델에 데이터 추가
+		    mv.addObject("n", n);
+		    mv.addObject("na", na);
+		    mv.addObject("previousNotice", previousNotice);
+		    mv.addObject("nextNotice", nextNotice);
+
+		    // 뷰 이름 설정
+		    mv.setViewName("helpdesk/NoticeDetailView");
+
+		    // 디버깅 로그 (선택적)
+		    System.out.println(previousNotice);
+		    System.out.println(nextNotice);
+
 		    return mv;
 		}
+
 
 		// 공지사항 삭제 요청
 		@PostMapping("NoticeDelete.no")
