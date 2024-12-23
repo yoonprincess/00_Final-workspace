@@ -55,4 +55,9 @@ public class CartServiceImpl implements CartService {
 		return cartDao.myCartCount(sqlSession,memberId);
 	}
 
+	@Override
+	public int insertCart(Cart c) {
+		return cartDao.insertCart(sqlSession,c);
+	}
+
 }

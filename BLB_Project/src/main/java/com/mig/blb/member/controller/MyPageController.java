@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -568,7 +569,7 @@ public class MyPageController {
 				
 				if (result>0) {
 					
-					session.setAttribute("alertMsg", "찜 해제 !");
+					session.setAttribute("alertMsg", "찜 해제");
 					mv.setViewName("member/myWishList");
 				
 				}else {
@@ -590,15 +591,18 @@ public class MyPageController {
 		@GetMapping("selectCartOption.me")			
 		public ModelAndView selectCartOption(ModelAndView mv
 										, HttpSession session
-										, @RequestParam("prodNo") int prodNo) {
+										,   @RequestParam("prodNo") int prodNo) {
 			
 			Member loginUser =(Member)session.getAttribute("loginUser");
 				
 			if( loginUser != null) {
+				//System.out.println(prodNo);
+				
 				ArrayList<Option> optList = optionService.selectCartOption(prodNo);
 				
 				if (optList != null) {
 					mv.addObject("optList", optList);
+					//System.out.println(optList);
 					mv.setViewName("member/optForm");
 					
 				}else {
@@ -623,13 +627,12 @@ public class MyPageController {
 		public ModelAndView insertCart(ModelAndView mv
 										, HttpSession session
 										, Cart c
-										, int prodNo
-										, int optNo) {
+										, @RequestParam("prodNo") Integer prodNo
+										,  @RequestParam("optNo") int optNo) {
 			
 			Member loginUser =(Member)session.getAttribute("loginUser");
 			
-			System.out.println(prodNo);
-			System.out.println(optNo);
+			Map<String, Object> response = new HashMap<>();
 			
 			if( loginUser != null) {
 				
@@ -638,8 +641,19 @@ public class MyPageController {
 				c.setOptNo(optNo);
 				c.setCartQty(1);
 				
-				mv.setViewName("member/myWishList");
-		
+				int result = cartService.insertCart(c);
+				if(result>0) {
+					response.put("success", true);
+		            response.put("message", "상품이 장바구니에 추가되었습니다.");
+		            mv.setViewName("cart/cartListView");
+				
+				}else {
+					response.put("success", false);
+					response.put("message", "장바구니 추가 실패.");
+					
+				}
+				
+				
 			}else {
 				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
 				mv.setViewName("/main");
@@ -649,117 +663,6 @@ public class MyPageController {
 		}
 			
 }			
-		/* 내 상품문의 페이지 요청 
-		@GetMapping("productQna.me")
-		public ModelAndView myProdQnaList(ModelAndView mv,
-										HttpSession session,
-										Member m,
-						   			 	@RequestParam(value = "year", required = false) String year,
-			                            @RequestParam(value = "month", required = false) String month,
-			                            @RequestParam(value = "day", required = false) String day,
-			                            @RequestParam(value = "year1", required = false) String year1,
-			                            @RequestParam(value = "month1", required = false) String month1,
-			                            @RequestParam(value = "day1", required = false) String day1,
-			                            @RequestParam(value="ppage", defaultValue="1")int currentPage) throws ParseException {
-			
-			Member loginUser =(Member)session.getAttribute("loginUser");
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			
-		    if (year == null || month == null || day == null || year1 == null || month1 == null || day1 == null) {
-
-		    	Date today = new Date();
-		       
-		    	String defaultDate = sdf.format(today);
-		        
-		        String[] dateParts = defaultDate.split("-");
-		        year1 = dateParts[0];
-		        month1 = dateParts[1];
-		        day1 = dateParts[2];
-
-		        // 1개월 전 날짜 계산
-		        Calendar calendar = Calendar.getInstance();
-		        calendar.add(Calendar.MONTH, -1);
-		        String startDate = sdf.format(calendar.getTime());
-		        
-		        
-		        dateParts = startDate.split("-");
-		        year = dateParts[0];
-		        month = dateParts[1];
-		        day = dateParts[2];
-		    }		
-		    
-		   
-			HashMap<String, Object> dateMap = new HashMap<>();
-		    dateMap.put("year", year);
-		    dateMap.put("month", month);
-		    dateMap.put("day", day);
-		    dateMap.put("year1", year1);
-		    dateMap.put("month1", month1);
-		    dateMap.put("day1", day1);
-		    
-		    Date startDate = sdf.parse(String.format("%s-%s-%s", year, month, day));
-		    Date endDate = sdf.parse(String.format("%s-%s-%s", year1, month1, day1));
-		    
-		    dateMap.put("startDate", startDate);
-		    dateMap.put("endDate", endDate);
-		    
-			if( loginUser != null) {
-				String memberId = loginUser.getMemberId();
-				dateMap.put("memberId", memberId);
-				//System.out.println(dateMap);
-				
-				// 페이징처리
-				int boardLimit = 10;
-				
-				// 한 번에 보여줄 페이지 수
-				int pageLimit = 5;
-				
-				int listCount = inquiryService.myProdQnaListCount(loginUser.getMemberId());
-				
-				//System.out.println("qlistCount : " + listCount);
-				
-				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
-							 pageLimit, boardLimit);
-				
-				List<Map<String, Object>> qlist = inquiryService.selectMyProdQnaList(loginUser.getMemberId(),pi); 
-			    //System.out.println(qlist);
-				
-				mv.addObject("pi",pi);
-				mv.addObject("qlist",qlist);
-				mv.setViewName("member/myOrderList");
-			
-			}else {
-				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
-				mv.setViewName("/main");
-			}
-			
-			return null;
-		}
-		*/
-		 
-	/*
-		@PostMapping("insertCart.me")
-		public ModelAndView insertCart(ModelAndView mv
-										, HttpSession session
-										, Cart c) {
-			
-			Member loginUser =(Member)session.getAttribute("loginUser");
-			
-			if( loginUser != null) {
-				
-				c.setMemberId(loginUser.getMemberId());
-				c.setProdNo(0);
-				c.setProdName(null);
-				c.setOptNo(0);
-				c.setCartQty(1);
-				c.setOptAddPrice(0);
-				
-				
-			
-				
-				
-			return mv;	
-		}
-*/
+		
+	
 

@@ -28,5 +28,7 @@ public interface CartService {
 	// 마이페이지용 장바구니 총 갯수조회
 	int myCartCount(String memberId);
 
+	int insertCart(Cart c);
+
 	
 }

@@ -100,10 +100,9 @@
         <div class="modal-content" id="reviewIframeContainer" >
             <span class="close">&times;</span>
             <h2>옵션을 선택하세요</h2>
-           <div class="options">
-          	 <iframe src=""></iframe>
+          	 <div class="options">
+          	 	<iframe src=""></iframe>
             </div>
-            <button id="insertCartBtn"  >장바구니추가</button>
         </div>
    	 </div>
 		            <br><br>

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -64,25 +65,27 @@
     <div class="qna-container">
         <!-- 문의 작성 폼 -->
         <form id="insertCartForm" action="insertCart.me" method="post" enctype="multipart/form-data">
-            <input type="hidden" id="prodNo" name="prodNo" value="${opt.prodNo}">
+            <input type="hidden" id="prodNo" name="prodNo" value="${optList[0].prodNo}">
             <!-- 문의 작성 -->
             <div class="form-group">
-                <select id="dropdown" name="optNo">
+               <select id="dropdown" name="optNo" style="width:100%;">
+                  <option>옵션을 선택해주세요</option>
                   <c:forEach var="opt" items="${optList}">
                     <option value="${opt.optNo}"
 		                    data-name="${opt.optName}" 
 		                    data-price="${opt.optAddPrice}" 
 		                    data-stock="${opt.remainQty}"
-		                    data-prodno="${opt.prodNo}">
-		               
+		                    >
+		               ${opt.optName}
 		              	  <c:if test="${opt.optAddPrice > 0}">
 		              	  	(+<fmt:formatNumber value="${opt.optAddPrice}" type="number" pattern="#,###"/>원)
 		              	  </c:if>
 		                (재고: ${opt.remainQty})
-		                  <p>옵션 번호: ${opt.optNo}, 상품 번호: ${opt.prodNo}</p>  
+		                 
 		            </option>
                   </c:forEach>
                 </select>
+				
             </div>
     
             <!-- 작성 버튼 -->
@@ -92,22 +95,6 @@
 
     <script>
         $(document).ready(function () {
-            const maxChar = 1000;
-            const minChar = 10;
-
-            const imagePreviewContainer = $('#imagePreviewContainer');
-
-            // 글자 수 실시간 체크
-            $('#inquiryContent').on('input', function () {
-                const textLength = $(this).val().length;
-                $('#charCount').text(`\${textLength} / \${maxChar}자`);
-                // 글자 수 초과 경고
-                if (textLength > maxChar) {
-                    $('#charCount').addClass('text-danger');
-                } else {
-                    $('#charCount').removeClass('text-danger');
-                }
-            });
 
             // 글자수 제한 처리 및 ajax 처리 후 창 닫기
             $('#insertCartForm').on('submit', function (e) {
@@ -123,12 +110,13 @@
                     processData: false,
                     success: function (response) {
                         if (response.success) {
+                        	 console.log(response); 
                             // 성공 메시지
                             alertify.success(response.message);
                             // 일정 시간 후 창 닫기
                             setTimeout(function () {
                                 parent.$('#reviewIframeContainer').hide();
-                                parent.location.reload(); // 부모 페이지 새로고침
+                                // 부모 페이지 새로고침
                             }, 1000); // 1초 후 창 닫기
                         } else {
                             // 실패 메시지
@@ -141,7 +129,8 @@
                         }
                     },
                     error: function () {
-                        alertify.error("서버 오류가 발생했습니다. 다시 시도해주세요.");
+                    	
+                        //alertify.error("서버 오류가 발생했습니다. 다시 시도해주세요.");
                         // 일정 시간 후 창 닫기
                         setTimeout(function () {
                                 parent.$('#reviewIframeContainer').hide();
