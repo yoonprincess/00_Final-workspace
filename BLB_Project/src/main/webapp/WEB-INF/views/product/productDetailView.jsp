@@ -103,7 +103,9 @@
                             <h2 id="totalPrice"><fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /><small>원</small></h2>
                         </div>
                         <div class="form-group">
-                            <button type="button" class="btn btn-outline-primary btn-lg mr-2 blb-btn" id="addToCart">
+                            <button type="button" class="btn btn-outline-primary btn-lg mr-2 blb-btn" id="cartAddForm"
+                                    data-prodno="${ p.prodNo }"
+                                    data-memberid="${sessionScope.loginUser.memberId}">
                                 <i class="fas fa-shopping-cart mr-2"></i>장바구니
                             </button>
                             <button type="button" class="btn btn-primary btn-lg mr-2 blb-btn" id="buyNow">바로구매</button>

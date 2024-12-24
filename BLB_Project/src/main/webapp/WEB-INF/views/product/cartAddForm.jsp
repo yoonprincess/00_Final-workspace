@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -34,18 +35,17 @@
             padding: 0;
             box-sizing: border-box;
             width: 100%;
-            height: 100%;
+            height: auto;
         }
         /* 컨테이너 스타일 */
         .cart-container {
             width: 100%; /* 부모의 크기를 기준으로 조정 */
+            height: auto;
             margin: 0 auto; /* 중앙 정렬 */
-            border: 1px solid #ddd;
             border-radius: 10px;
             padding: 20px;
             background-color: #fff;
         }
-
         /* 상품 정보 */
         .product-info {
             display: flex;
@@ -81,6 +81,9 @@
             font-size: 14px;
             color: #888;
         }
+        #selectedOptions {
+            margin-top: 10px;
+        }
 
         /* 버튼 스타일 */
         .btn-submit {
@@ -94,15 +97,9 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
-        /* .cart-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        } */
         .success-message {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 50px;
         }
         .success-buttons {
             display: flex;
@@ -122,35 +119,35 @@
       
             <div class="product-info" onclick="window.open('detail.pr?pno=${prodNo}', '_blank');" style="cursor: pointer;">
                 <div class="product-thumbnail">
-                    <img src="${ pageContext.request.contextPath }${ purchaseOne.thumbOne }" alt="상품 썸네일">
+                    <img src="${ pageContext.request.contextPath }${ p.thumbImg }" alt="상품 썸네일">
                 </div>
                 <div class="product-details">
-                    <div class="product-name">${prodName}</div>
-                    <input type="hidden" id="base-price" value="${ requestScope.p.prodPrice }">
-                    <p><fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /><small>원</small></p>
-                    <!-- 옵션 정보 -->
-                    <label for="product-option">옵션 선택</label>
-                    <select class="form-control product-options" id="product-option">
-                        <!-- 기본 선택 옵션 -->
-                        <option value="">선택하세요</option>
-                        <!-- 옵션 리스트 출력 -->
-                        <c:forEach var="opt" items="${optList}">
-                            <option value="${opt.optNo}" 
-                                    data-name="${opt.optName}" 
-                                    data-price="${opt.optAddPrice}" 
-                                    data-stock="${opt.remainQty}">
-                                ${opt.optName} 
-                                <c:if test="${opt.optAddPrice > 0}">(+<fmt:formatNumber value="${opt.optAddPrice}" type="number" pattern="#,###"/>원)</c:if>
-                                (재고: ${opt.remainQty})
-                            </option>
-                        </c:forEach>
-                    </select>
+                    <div class="product-name">${p.prodName}</div>
+                    <input type="hidden" id="base-price" value="${ p.prodPrice }">
+                    <p><fmt:formatNumber value="${ p.prodPrice }" type="number" pattern="#,###" /><small>원</small></p>
                 </div>
-                <div id="selectedOptions"></div>
-                <div class="form-group">
-                    <label>총 상품금액</label>
-                    <h2 id="totalPrice"><fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /><small>원</small></h2>
-                </div>
+            </div>
+            <!-- 옵션 정보 -->
+            <label for="product-option">옵션 선택</label>
+            <select class="form-control product-options" id="product-option">
+                <!-- 기본 선택 옵션 -->
+                <option value="">선택하세요</option>
+                <!-- 옵션 리스트 출력 -->
+                <c:forEach var="opt" items="${optList}">
+                    <option value="${opt.optNo}" 
+                            data-name="${opt.optName}" 
+                            data-price="${opt.optAddPrice}" 
+                            data-stock="${opt.remainQty}">
+                        ${opt.optName} 
+                        <c:if test="${opt.optAddPrice > 0}">(+<fmt:formatNumber value="${opt.optAddPrice}" type="number" pattern="#,###"/>원)</c:if>
+                        (재고: ${opt.remainQty})
+                    </option>
+                </c:forEach>
+            </select>
+            <div id="selectedOptions"></div>
+            <div class="form-group totalPrice">
+                <label>총 상품금액</label>
+                <h3 id="totalPrice"><fmt:formatNumber value="${ p.prodPrice }" type="number" pattern="#,###" /><small>원</small></h3>
             </div>
     
             <!-- 작성 버튼 -->
@@ -160,22 +157,23 @@
 
     <script>
         $(document).ready(function () {
+            
             // 옵션 선택 및 수량 변경
             let selectedOptions = [];
 
             // 옵션 선택 시 옵션 목록에 추가
             $('#product-option').change(function () {
-                const optionNo = $(this).val(); // 옵션 NO
+                const optionId = $(this).val(); // 옵션 NO
                 const optionName = $(this).find('option:selected').data('name'); // 옵션 이름
                 const optionPrice = parseInt($(this).find('option:selected').data('price')) || 0; // 옵션 가격
                 const optionStock = parseInt($(this).find('option:selected').data('stock')) || 0; // 옵션 재고
 
-                if (optionNo) {
-                    let existingOption = selectedOptions.find(opt => opt.id == optionNo); // `==`으로 비교
+                if (optionId) {
+                    let existingOption = selectedOptions.find(opt => opt.id == optionId); // `==`으로 비교
                     if (existingOption) {
                         existingOption.quantity++;
                     } else {
-                        selectedOptions.push({ id: optionNo, name: optionName, price: optionPrice, stock: optionStock, quantity: 1 });
+                        selectedOptions.push({ id: optionId, name: optionName, price: optionPrice, stock: optionStock, quantity: 1 });
                     }
                     updateSelectedOptions();
                     // 선택 값을 초기화하여 "선택하세요"로 변경
@@ -193,7 +191,7 @@
                                 <!-- 옵션 내용 (좌측 정렬) -->
                                 <span style="flex: 1; text-align: left;">\${option.name}</span>
                                 <!-- 옵션 재고 (우측 정렬, 조건부 스타일) -->
-                                <span style="flex: 1; text-align: right; color: \${option.stock < 10 ? 'red' : 'inherit'};">
+                                <span style="flex: 1; text-align: right; color: \${option.stock < 10 ? 'red' : 'inherit'}; margin-right: 5px;">
                                     재고: \${option.stock}개
                                 </span>
                                 <div>
@@ -207,6 +205,7 @@
                 });
                 $('#selectedOptions').html(html);
                 updateTotalPrice();
+                adjustIframeSize();
             }
 
             // 수량 증가
@@ -249,31 +248,41 @@
 
                 const memberId = $('#memberId').val();
                 const prodNo = $('#prodNo').val();
-                const optData = selectedOptions.map(option => ({
+
+                if (!memberId) {
+                    alertify.error("로그인 후 이용 할 수 있습니다.");
+                    // 페이지 이동
+                    setTimeout(function() {
+                        parent.location.href = `${contextPath}/loginForm.me`;
+                    }, 1500); // 2초 후 이동
+                    return; // 실행 중단
+                }
+
+                const cartData = selectedOptions.map(option => ({
                     memberId: memberId,
                     prodNo: prodNo,
-                    optNo: option.optNo,
-                    cartQty: option.cartQty
+                    optNo: option.id,
+                    cartQty: option.quantity
                 }));
+
+                if (cartData.every(data => !data.optNo)) {
+                    alertify.error("옵션을 선택해야 합니다.");
+                    return; // 실행 중단
+                }
 
                 $.ajax({
                     url: 'insert.ct',
                     type: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify({ optData: optData }),
+                    data: JSON.stringify(cartData),
                     success: function (response) {
                         
                         if (response.success) {
                             // 성공 메시지
-                            alertify.success(response.message);
-                            showSuccessMessage();
-
-
-                            // 일정 시간 후 창 닫기
-                            setTimeout(function () {
-                                parent.$('#reviewIframeContainer').hide();
-                                // 장바구니 담기 성공 팝업 출력 : 장바구니 보기 / 계속 쇼핑하기 버튼튼
-                            }, 1000); // 1초 후 창 닫기
+                            // parent.togglerEvent.active('shopping_bag', '', '장바구니 등록 성공!');
+                            // alertify.success(response.message);
+                            parent.$('#reviewIframeContainer').hide();
+                            parent.showSuccessMessage();
                         } else {
                             // 실패 메시지
                             alertify.error(response.message);
@@ -295,26 +304,49 @@
                 });
             });
 
-            function showSuccessMessage() {
-                $('.cart-container').html(`
-                    <div class="success-message">
-                        <h2>장바구니 담기 성공</h2>
-                        <p>상품이 장바구니에 성공적으로 담겼습니다.</p>
-                        <div class="success-buttons">
-                            <button onclick="goToCart()" class="btn btn-primary">장바구니 보기</button>
-                            <button onclick="continueShopping()" class="btn btn-secondary">계속 쇼핑하기</button>
-                        </div>
-                    </div>
-                `);
-            }
+            // function showSuccessMessage() {
+            //     $('.cart-container').html(`
+            //         <div class="success-message">
+            //             <h2>장바구니 담기 성공</h2>
+            //             <p>상품이 장바구니에 성공적으로 담겼습니다.</p>
+            //             <div class="success-buttons">
+            //                 <button onclick="goToCart()" class="btn btn-primary">장바구니 보기</button>
+            //                 <button onclick="continueShopping()" class="btn btn-secondary">계속 쇼핑하기</button>
+            //             </div>
+            //         </div>
+            //     `);
+            // }
 
             window.goToCart = function() {
-                window.location.href = 'cart.ct';  // 장바구니 페이지 URL로 변경해주세요
+                // iframe 모달 닫기
+                parent.$('#reviewIframeContainer').hide(function() {
+                    parent.$('#reviewIframeContainer iframe').attr('src', ''); // iframe URL 초기화
+                });
+
+                // 부모 페이지 URL 변경
+                parent.window.location.href = 'list.ct';
             };
 
             window.continueShopping = function() {
-                window.location.href = 'list.pr';  // 상품 목록 페이지 URL로 변경해주세요
+                // iframe 모달 닫기
+                parent.$('#reviewIframeContainer').hide(function() {
+                    parent.$('#reviewIframeContainer iframe').attr('src', ''); // iframe URL 초기화
+                });
+                parent.location.reload(); // 부모 페이지 새로고침
             };
+            function adjustIframeSize() {
+                const iframe = parent.document.getElementById('reviewIframeContainer').querySelector('iframe');
+                if (iframe) {
+                    const iframeContent = iframe.contentWindow.document || iframe.contentDocument;
+                    if (iframeContent) {
+                        const iframeHeight = iframeContent.body.scrollHeight || iframeContent.documentElement.scrollHeight;
+                        const iframeWidth = iframeContent.body.scrollWidth || iframeContent.documentElement.scrollWidth;
+
+                        iframe.style.height = `\${iframeHeight}px`;
+                        iframe.style.width = `\${iframeWidth}px`;
+                    }
+                }
+            }
         });
     </script>
 

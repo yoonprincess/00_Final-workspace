@@ -9,6 +9,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.mig.blb.cart.model.vo.Cart;
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.product.model.vo.Product;
@@ -101,6 +102,25 @@ public class ProductDao {
 
 	public int removeWish(SqlSessionTemplate sqlSession, Wish wish) {
 		return sqlSession.delete("productMapper.removeWish", wish);
+	}
+
+	public Product getInfoByProdNo(SqlSessionTemplate sqlSession, int prodNo) {
+		return sqlSession.selectOne("productMapper.getInfoByProdNo", prodNo);
+	}
+
+	public Cart getCartByMemberAndOption(SqlSessionTemplate sqlSession, String memberId, int optNo) {
+		Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("memberId", memberId);
+        paramMap.put("optNo", optNo);
+        return sqlSession.selectOne("productMapper.getCartByMemberAndOption", paramMap);
+	}
+
+	public int updateCart(SqlSessionTemplate sqlSession, Cart cart) {
+		return sqlSession.update("productMapper.updateCart", cart);
+	}
+
+	public int insertCart(SqlSessionTemplate sqlSession, Cart cart) {
+		return sqlSession.insert("productMapper.insertCart", cart);
 	}
 
 }

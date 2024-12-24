@@ -151,6 +151,26 @@
 		   AND PROD_STATUS = 'Y'
 	</select>
 	
+		<!-- 심플 상품 정보 추출 (prodNo) -->
+	<select id="getInfoByProdNo" parameterType="_int" 
+			resultMap="productResultSet">
+	    SELECT P.PROD_NO,
+		       P.PROD_NAME,
+		       P.PROD_PRICE,
+		       PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
+		  FROM TB_PRODUCT P
+		  LEFT JOIN (
+		       SELECT PROD_NO, MIN(PROD_ATT_NO) AS MIN_PROD_ATT_NO
+		         FROM TB_PRODUCT_ATTACHMENT
+		        GROUP BY PROD_NO
+		       ) MPA ON P.PROD_NO = MPA.PROD_NO
+		  LEFT JOIN TB_PRODUCT_ATTACHMENT PA 
+		    ON PA.PROD_NO = MPA.PROD_NO
+		   AND PA.PROD_ATT_NO = MPA.MIN_PROD_ATT_NO
+		 WHERE P.PROD_NO = #{prodNo}
+		   AND PROD_STATUS = 'Y'
+	</select>
+	
 	<select id="selectProductAtt" parameterType="_int"
 			resultMap="productAttResultSet">
 		SELECT PROD_ATT_NO
@@ -168,7 +188,11 @@
 		<result column="ORDER_DATE" property="orderDate"/>
 		<result column="OPT_NAME" property="optName"/>
 		<result column="OPT_VALUE" property="optValue"/>
+		<result column="OPT_ADD_PRICE" property="optAddPrice" />
+		<result column="REMAIN_QTY" property="remainQty" />
+		<result column="PROD_NO" property="prodNo"/>
 		<result column="PROD_NAME" property="prodName"/>
+		<result column="PROD_PRICE" property="prodPrice"/>
 		<result column="THUMB_ONE" property="thumbOne"/>
 	</resultMap>
 	
@@ -331,5 +355,48 @@
 		 WHERE MEMBER_ID = #{memberId}
 		   AND PROD_NO = #{prodNo}
 	</delete>
+	
+	<!-- 장바구니 담기 -->
+	<resultMap id="cartResultSet" type="cart">
+		<id column="CART_NO" property="cartNo" />
+		<result column="MEMBER_ID" property="memberId" />
+		<result column="PROD_NO" property="prodNo" />
+		<result column="OPT_NO" property="optNo" />
+		<result column="CART_QTY" property="cartQty" />
+		
+		<result column="PROD_NAME" property="prodName" />
+		<result column="OPT_NAME" property="optName" />
+		<result column="OPT_ADD_PRICE" property="optAddPrice" />
+		<result column="REMAIN_QTY" property="remainQty" />
+		<result column="PROD_PRICE" property="prodPrice" />
+		<result column="THUMB_IMG" property="thumbImg" />
+	</resultMap>
+	
+	<select id="getCartByMemberAndOption" parameterType="map" 
+			resultMap="cartResultSet">
+	    SELECT CART_NO, MEMBER_ID, PROD_NO, OPT_NO, CART_QTY
+	      FROM TB_CART
+	     WHERE MEMBER_ID = #{memberId}
+	       AND OPT_NO = #{optNo}
+	</select>
+	
+	<update id="updateCart" parameterType="cart">
+	    UPDATE TB_CART
+	       SET CART_QTY = #{cartQty}
+	     WHERE CART_NO = #{cartNo}
+	</update>
+	
+	<insert id="insertCart" parameterType="cart">
+	    INSERT INTO TB_CART (CART_NO, 
+	    					 MEMBER_ID, 
+	    					 PROD_NO, 
+	    					 OPT_NO, 
+	    					 CART_QTY)
+	    			 VALUES (SEQ_CART_NO.NEXTVAL,
+	    			 		 #{memberId}, 
+	    			 		 #{prodNo}, 
+	    			 		 #{optNo}, 
+	    			 		 #{cartQty})
+	</insert>
 	
 </mapper>

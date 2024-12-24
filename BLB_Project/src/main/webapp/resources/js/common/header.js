@@ -4,6 +4,8 @@ $(function() {
     const productTabs = $('#productTabs'); // 상품 상세보기 페이지 탭 메뉴
     const isProductPage = productTabs.length > 0; // 상품 상세보기 페이지 여부 확인
     let lastScrollTop = 0; // 이전 스크롤 위치 저장
+    
+    window.iframe = $('#reviewIframeContainer iframe'); // iframe
 
     // 토글버튼 효과 처리
     var $blbToggler = $('.overlay.blb-toggler');
@@ -46,7 +48,36 @@ $(function() {
             }, 1000);
         }
     }
-    
+
+    // iframe 크기 조정 함수
+    function adjustIframeSize(iframe) {
+        if (iframe) {
+            const iframeContent = iframe.contentWindow.document || iframe.contentDocument;
+            if (iframeContent) {
+                const iframeHeight = iframeContent.body.scrollHeight || iframeContent.documentElement.scrollHeight;
+                const iframeWidth = iframeContent.body.scrollWidth || iframeContent.documentElement.scrollWidth;
+
+                $(iframe).css({
+                    width: `${Math.min(iframeWidth, window.innerWidth * 0.9)}px`, // 최대 너비 제한
+                    height: `${Math.min(iframeHeight, window.innerHeight * 0.9)}px`, // 최대 높이 제한
+                });
+            }
+        }
+    }
+    window.adjustIframeSize = adjustIframeSize;
+    function showSuccessMessage() {
+        const reviewIframeUrl = `${contextPath}/successForm.ct`;
+        $(iframe).attr('src', reviewIframeUrl);
+
+        // iframe 크기 조정
+        iframe.on('load', function () {
+            adjustIframeSize(this); // 크기 조정 함수 호출
+        });
+
+        // 모달 표시
+        $('#reviewIframeContainer').fadeIn();
+    }
+    window.showSuccessMessage = showSuccessMessage;
     // * 상품 상세보기 페이지: 헤더 숨김 및 상품 메뉴 탭 고정
     if (isProductPage) {
 
@@ -218,7 +249,6 @@ $(function() {
         const prodNo = $(this).data('prodno'); // 상품 번호 가져오기
         const memberId = $(this).data('memberid'); // 회원 ID 가져오기
         const serialNo = $(this).data('serialno');
-        const iframe = $('#reviewIframeContainer iframe');
 
         if (!memberId) {
             alertify.error("로그인 후 리뷰를 작성할 수 있습니다.");
@@ -255,17 +285,9 @@ $(function() {
 
                     // iframe 로드 후 크기 조정
                     iframe.on('load', function () {
-                        const iframeContent = this.contentWindow.document || this.contentDocument;
-                        if (iframeContent) {
-                            const iframeHeight = iframeContent.body.scrollHeight || iframeContent.documentElement.scrollHeight;
-                            const iframeWidth = iframeContent.body.scrollWidth || iframeContent.documentElement.scrollWidth;
-
-                            $(this).css({
-                                width: iframeWidth + 'px',
-                                height: iframeHeight + 'px',
-                            });
-                        }
+                        adjustIframeSize(this); // 크기 조정 함수 호출
                     });
+                    
 
                     // 모달 표시
                     $('#reviewIframeContainer').fadeIn();
@@ -316,10 +338,42 @@ $(function() {
             window.location.href = url;
         }
     });
+
+    // 장바구니 추가 버튼
+    $('.add-cart').click(function (e) {
+        e.stopPropagation();
+        e.preventDefault(); // 기본 동작 차단
+        const button = $(this);
+        const prodNo = button.data('prodno');
+        const memberId = button.data('memberid'); // 회원 ID 가져오기
+
+        if (!memberId) {
+            alertify.error("로그인 후 이용가능합니다.");
+            // 페이지 이동
+            setTimeout(function() {
+                window.location.href = `${contextPath}/loginForm.me`;
+            }, 1500); // 2초 후 이동
+            return; // 실행 중단
+        }
+    
+        const reviewIframeUrl = `${contextPath}/enrollForm.ct?prodNo=${prodNo}&memberId=${memberId}`;
+        $(iframe).attr('src', reviewIframeUrl);
+
+        // iframe 크기 조정
+        iframe.on('load', function () {
+            adjustIframeSize(this); // 크기 조정 함수 호출
+        });
+
+        // 모달 표시
+        $('#reviewIframeContainer').fadeIn();
+    });
+
+
     // 닫기 버튼 클릭 시
     $('.close-btn.review-enroll').on('click', function () {
-        $('#reviewIframeContainer').fadeOut();
+        $('#reviewIframeContainer').hide();
         $('#reviewIframeContainer iframe').attr('src', ''); // iframe 초기화
+        window.location.reload();
     });
    
 });

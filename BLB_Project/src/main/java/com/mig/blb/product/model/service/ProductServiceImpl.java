@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mig.blb.cart.model.vo.Cart;
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.product.model.dao.ProductDao;
@@ -109,5 +110,27 @@ public class ProductServiceImpl implements ProductService {
 	@Transactional
 	public int removeWish(Wish wish) {
 		return productDao.removeWish(sqlSession, wish);
+	}
+
+	@Override
+	public Product getInfoByProdNo(int prodNo) {
+		return productDao.getInfoByProdNo(sqlSession, prodNo);
+	}
+
+	@Override
+	public Cart getCartByMemberAndOption(String memberId, int optNo) {
+		return productDao.getCartByMemberAndOption(sqlSession, memberId, optNo);
+	}
+
+	@Override
+	@Transactional
+	public int updateCart(Cart cart) {
+		return productDao.updateCart(sqlSession, cart);
+	}
+
+	@Override
+	@Transactional
+	public int insertCart(Cart cart) {
+		return productDao.insertCart(sqlSession, cart);
 	}
 }

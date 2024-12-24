@@ -1,4 +1,4 @@
-/*  */
+/* iframe 컨테이너 스타일 */
 #reviewIframeContainer {
     display: none; /* 기본적으로 숨김 */
     position: fixed;
@@ -20,7 +20,7 @@
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
     min-width: 400px;
     max-width: 90%; /* 최대 너비 제한 */
-    max-height: 90%; /* 최대 높이 제한 */
+    max-height: 100%; /* 최대 높이 제한 */
     /* position: relative; X 버튼 위치 조정용 */
 }
 .close-btn.review-enroll {

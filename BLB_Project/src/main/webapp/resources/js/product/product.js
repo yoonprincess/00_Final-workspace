@@ -17,44 +17,6 @@ $(document).ready(function () {
 	    window.location.href = currentUrl.toString();
 	});
 
-    // 장바구니 추가 버튼
-    $('.add-cart').click(function (e) {
-        e.stopPropagation();
-        e.preventDefault(); // 기본 동작 차단
-        const button = $(this);
-        const prodNo = button.data('prodno');
-        const memberId = button.data('memberid'); // 회원 ID 가져오기
-        
-        if (!memberId) {
-            alertify.error("로그인 후 상품을 찜 할 수 있습니다.");
-            // 페이지 이동
-            setTimeout(function() {
-                window.location.href = `${contextPath}/loginForm.me`;
-            }, 1500); // 2초 후 이동
-            return; // 실행 중단
-        }
-    
-        const reviewIframeUrl = `${contextPath}/enrollForm.ct?prodNo=${prodNo}&memberId=${memberId}`;
-        $(iframe).attr('src', reviewIframeUrl);
-
-        // iframe 로드 후 크기 조정
-        iframe.on('load', function () {
-            const iframeContent = this.contentWindow.document || this.contentDocument;
-            if (iframeContent) {
-                const iframeHeight = iframeContent.body.scrollHeight || iframeContent.documentElement.scrollHeight;
-                const iframeWidth = iframeContent.body.scrollWidth || iframeContent.documentElement.scrollWidth;
-
-                $(this).css({
-                    width: iframeWidth + 'px',
-                    height: iframeHeight + 'px',
-                });
-            }
-        });
-
-        // 모달 표시
-        $('#reviewIframeContainer').fadeIn();
-    });
-
     // 찜하기 기능
     $('.wishlist-btn').click(function (e) {
         e.stopPropagation();
@@ -65,7 +27,7 @@ $(document).ready(function () {
         const memberId = button.data('memberid'); // 회원 ID 가져오기
         
         if (!memberId) {
-            alertify.error("로그인 후 상품을 찜 할 수 있습니다.");
+            alertify.error("로그인 후 이용 할 수 있습니다.");
             // 페이지 이동
             setTimeout(function() {
                 window.location.href = `${contextPath}/loginForm.me`;
@@ -140,7 +102,7 @@ $(document).ready(function () {
                         <!-- 옵션 내용 (좌측 정렬) -->
                         <span style="flex: 1; text-align: left;">${option.name}</span>
                         <!-- 옵션 재고 (우측 정렬, 조건부 스타일) -->
-                        <span style="flex: 1; text-align: right; color: ${option.stock < 10 ? 'red' : 'inherit'};">
+                        <span style="flex: 1; text-align: right; color: ${option.stock < 10 ? 'red' : 'inherit'}; margin-right: 5px;">
                             재고: ${option.stock}개
                         </span>
                         <div>
@@ -189,6 +151,72 @@ $(document).ready(function () {
         const total = selectedOptions.reduce((sum, opt) => sum + (basePrice + opt.price) * opt.quantity, 0);
         $('#totalPrice').html(total.toLocaleString() + '<small>원</small>');
     }
+
+    // 데이터 제출
+    $('#cartAddForm').click(function (e) {
+        e.preventDefault(); // 기본 폼 제출 방지
+
+        const prodNo = $(this).data('prodno'); // 상품 번호 가져오기
+        const memberId = $(this).data('memberid'); // 회원 ID 가져오기
+
+        if (!memberId) {
+            alertify.error("로그인 후 이용 할 수 있습니다.");
+            // 페이지 이동
+            setTimeout(function() {
+                window.location.href = `${contextPath}/loginForm.me`;
+            }, 1500); // 2초 후 이동
+            return; // 실행 중단
+        }
+
+        console.log(selectedOptions);
+        
+        const cartData = selectedOptions.map(option => ({
+            memberId: memberId,
+            prodNo: prodNo,
+            optNo: option.id,
+            cartQty: option.quantity
+        }));
+
+        if (cartData.every(data => !data.optNo)) {
+            alertify.error("옵션을 선택해야 합니다.");
+            return; // 실행 중단
+        }
+
+        $.ajax({
+            url: 'insert.ct',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(cartData),
+            success: function (response) {
+                
+                if (response.success) {
+                    // 성공 메시지
+                    // togglerEvent.active('shopping_bag', '', '장바구니 등록 성공!');
+                    // alertify.success(response.message);
+                    showSuccessMessage();
+                } else {
+                    // 실패 메시지
+                    alertify.error(response.message);
+                }
+            },
+            error: function () {
+                alertify.error("서버 오류가 발생했습니다. 다시 시도해주세요.");
+            }
+        });
+    });
+
+    // function showSuccessMessage() {
+    //     const reviewIframeUrl = `${contextPath}/successForm.ct`;
+    //     $(iframe).attr('src', reviewIframeUrl);
+
+    //     // iframe 크기 조정
+    //     iframe.on('load', function () {
+    //         adjustIframeSize(this); // 크기 조정 함수 호출
+    //     });
+
+    //     // 모달 표시
+    //     $('#reviewIframeContainer').fadeIn();
+    // }
     
     // 바로 구매
     $('#buyNow').click(function() {
@@ -297,7 +325,7 @@ $(document).ready(function () {
         const iframe = $('#reviewIframeContainer iframe');
         
         if (!memberId) {
-            alertify.error("로그인 후 문의를 작성할 수 있습니다.");
+            alertify.error("로그인 후 이용 할 수 있습니다.");
             // 페이지 이동
             setTimeout(function() {
                 window.location.href = `${contextPath}/loginForm.me`;

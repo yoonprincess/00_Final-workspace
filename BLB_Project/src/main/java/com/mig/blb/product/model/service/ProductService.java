@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.mig.blb.cart.model.vo.Cart;
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.product.model.vo.Product;
@@ -54,6 +55,14 @@ public interface ProductService {
 	// 찜취소
 	int removeWish(Wish wish);
 	
-	
+	// 장바구니(cart) 관련
+	// 상품 1건 추출
+	Product getInfoByProdNo(int prodNo);
+	// 회원과 옵션에 해당하는 장바구니 정보 조회
+	Cart getCartByMemberAndOption(String memberId, int optNo);
+	// 장바구니 수정
+	int updateCart(Cart cart);
+	// 장바구니 등록
+	int insertCart(Cart cart);
 	
 }

@@ -8,14 +8,17 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mig.blb.cart.model.vo.Cart;
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.common.template.Pagination;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
@@ -376,11 +379,67 @@ public class ProductController {
             model.addAttribute("errorMsg", "잘못된 접근입니다.");
             return "common/errorPage"; // 접근 거부 페이지로 이동
         }
+        
+        // 상품 정보 추출
+        Product p = productService.getInfoByProdNo(prodNo);
+        // 상품 옵션 추출
+        ArrayList<Option> optList = optionService.selectCartOption(prodNo);
 
 	    // 상품 및 사용자 정보 추가
 	    model.addAttribute("prodNo", prodNo);
 	    model.addAttribute("memberId", memberId);
+	    model.addAttribute("p", p);
+	    model.addAttribute("optList", optList);
 	    
 	    return "product/cartAddForm"; // 리뷰 작성 JSP 페이지
+    }
+	
+	@PostMapping("insert.ct")
+    @ResponseBody
+    public Map<String, Object> addOrUpdateCart(@RequestBody List<Cart> cartData) {
+        Map<String, Object> response = new HashMap<>();
+        if(!cartData.isEmpty()) {
+        	for (Cart cart : cartData) {
+        		// 기존 장바구니 항목 존재 여부 확인
+        		Cart existingCart = productService.getCartByMemberAndOption(cart.getMemberId(), cart.getOptNo());
+        		if (existingCart != null) {
+        			// 기존 항목이 있으면 수량 업데이트
+        			existingCart.setCartQty(cart.getCartQty() + existingCart.getCartQty());
+        			
+        			int updateResult = productService.updateCart(existingCart);
+        			
+        			if(updateResult == 0) {
+        				response.put("success", false);
+        				response.put("message", "수량 추가가 실패했습니다.");
+        				return response;
+        			}
+        			
+        		} else {
+        			// 기존 항목이 없으면 새 항목 추가
+        			int insertResult = productService.insertCart(cart);
+        			System.out.println(insertResult);
+        			if(insertResult == 0) {
+        				response.put("success", false);
+        				response.put("message", "장바구니 담기가 실패했습니다.");
+        				return response;
+        			}
+        			
+        		}
+        	}
+        	
+        } else {
+        	response.put("success", false);
+			response.put("message", "장바구니 내용이 없습니다.");
+			return response;
+        }
+
+        response.put("success", true);
+        response.put("message", "장바구니 담기 성공.");
+        return response;
+    }
+	
+	@GetMapping("successForm.ct")
+    public String cartAddForm() {
+	    return "product/cartSuccessForm"; // 리뷰 작성 JSP 페이지
     }
 }
