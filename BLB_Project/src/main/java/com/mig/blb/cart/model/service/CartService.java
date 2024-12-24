@@ -33,7 +33,9 @@ public interface CartService {
 
 	int myCartCount(String memberId);
 
-	int selectCart(int optNo);
+	Integer selectCart(Cart checkCart);
+
+	int selectCartQty(int cartNo);
 
 	
 }

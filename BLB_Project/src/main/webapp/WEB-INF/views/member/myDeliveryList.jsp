@@ -39,9 +39,9 @@
 	            <tr class="result">
 	                <td colspan="5">
 	                    <div style="display: flex; flex-direction: column; align-items: center;">
-	                        <span class="material-symbols-outlined" style="font-size:40px;">error</span>
+	                       <span class="material-symbols-outlined" style="font-size:100px; color:#7AB2D3;">error</span>
 	                        <br>
-	                        <div> 등록된 배송지가 없습니다.</div>
+	                       <div style="color:#7AB2D3"> 등록된 배송지가 없습니다.</div>
 	                    </div>
 	                </td>
 	            </tr>

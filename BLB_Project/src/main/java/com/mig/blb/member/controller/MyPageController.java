@@ -635,25 +635,48 @@ public class MyPageController {
 			Map<String, Object> response = new HashMap<>();
 			
 			if( loginUser != null) {
+				Cart checkCart = new Cart();
+				checkCart.setMemberId(loginUser.getMemberId());
+				checkCart.setOptNo(optNo);
 				
-				c.setMemberId(loginUser.getMemberId());
-				c.setProdNo(prodNo);
-				c.setOptNo(optNo);
-				c.setCartQty(1);
+				Integer cartNo = cartService.selectCart(checkCart);
+				//System.out.println(cartNo);
+				
+				if (cartNo == null) {
+					
+					c.setMemberId(loginUser.getMemberId());
+					c.setProdNo(prodNo);
+					c.setOptNo(optNo);
+					c.setCartQty(1);
 
-				int result = cartService.insertCart(c);
-				
-				
-				
-				if(result>0) {
-					response.put("success", true);
-		            response.put("message", "상품이 장바구니에 추가되었습니다.");
-		            
+					int result1 = cartService.insertCart(c);
+					
+					if(result1>0) {
+						response.put("success", true);
+			            response.put("message", "상품이 장바구니에 추가되었습니다.");
+
+					}else {
+						response.put("success", false);
+						response.put("message", "장바구니 추가 실패.");
+						
+					}
 				
 				}else {
-					response.put("success", false);
-					response.put("message", "장바구니 추가 실패.");
 					
+		            int cartQty = cartService.selectCartQty(cartNo); // 현재 장바구니에 있는 수량을 조회
+		            //System.out.println(cartQty);
+		            int updatedQty = cartQty + 1;  // 수량을 1 증가시킴
+					int result2 = cartService.updateCartQty(cartNo, updatedQty);
+					
+					if(result2>0) {
+						response.put("success", true);
+			            response.put("message", "상품이 장바구니에 추가되었습니다.");
+
+					}else {
+						response.put("success", false);
+						response.put("message", "장바구니 추가 실패.");
+						
+					}
 				}
 				
 			}else {

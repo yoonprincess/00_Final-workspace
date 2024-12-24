@@ -49,9 +49,9 @@
             <tr class="result">
                 <td colspan="4">
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <span class="material-symbols-outlined" style="font-size:40px;">error</span>
+                        <span class="material-symbols-outlined" style="font-size:100px; color:#7AB2D3;">error</span>
                         <br>
-                        <div> 찜한 상품이 없습니다. </div>
+                         <div style="color:#7AB2D3"> 찜한 상품이 없습니다. </div>
                     </div>
                 </td>
             </tr>
@@ -72,8 +72,8 @@
                           <div>${wish.prodName}</div>
                       </div>
                     </td>
-                    <td>
-                        <div>
+                    <td style="text-align:center;">
+                        <div >
                           <span class="unit_b"><s><fmt:formatNumber value="${wish.prodPrice *1.2}" type="number"/></s>원</span>
                         </div>
                         <div>
@@ -83,10 +83,8 @@
                     </td>
                     <td>
                         <div class="button-group">
-                            <button class="button" onclick="openModal(${wish.prodNo});">장바구니</button>
-                        </div>
-                        <div class="button-group">
-                            <button class="button" id="delete-wishlist" onclick="deleteWish(${wish.prodNo});">삭제</button>
+                            <button class="btn-outline-primary blb-btn" onclick="openModal(${wish.prodNo});">장바구니</button>
+                            <button class="btn-outline-primary blb-btn" id="delete-wishlist" onclick="deleteWish(${wish.prodNo});">삭제</button>
                         </div>
                     </td>
                 </tr>
@@ -98,10 +96,9 @@
 	<!-- 옵션선택 모달창  -->
 	 <div id="optModal" class="modal">
         <div class="modal-content" id="reviewIframeContainer" >
-            <span class="close">&times;</span>
-            <h2>옵션을 선택하세요</h2>
+            <span class="close" style="color: white; margin-left:380px; margin-bottom:10px;">&times;</span>
           	 <div class="options">
-          	 	<iframe src=""></iframe>
+          	 	<iframe src="" style="height:210px;"></iframe>
             </div>
         </div>
    	 </div>

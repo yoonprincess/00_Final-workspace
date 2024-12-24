@@ -40,9 +40,9 @@
             <tr class="result">
                 <td colspan="3">
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <span class="material-symbols-outlined" style="font-size:40px;">error</span>
+                        <span class="material-symbols-outlined" style="font-size:140px; color:#7AB2D3;">error</span>
                         <br>
-                        <div> 최근 1개월간 문의하신 내용이 없습니다.</div>
+                        <div style="color:#7AB2D3"> 작성하신 리뷰가 없습니다.</div>
                     </div>
                 </td>
             </tr>

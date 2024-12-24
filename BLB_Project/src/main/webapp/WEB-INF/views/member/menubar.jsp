@@ -44,11 +44,13 @@
              <a class="sub-menu-link" href="${ pageContext.request.contextPath }/list.io">
 		       <div  class="sub-menu-item" >1:1 문의내역</div>
 		     </a>
-           
-             
+           	 
              <a class="sub-menu-link" href="${ pageContext.request.contextPath }/reviewList.me">
            		  <div class="sub-menu-item" >리뷰 (${sessionScope.listCount})</div>
              </a>
+              <a class="sub-menu-link" href="${ pageContext.request.contextPath }/pointList.me">
+		       <div  class="sub-menu-item" >적립금</div>
+		      </a>
          </div>
          <br>
          <hr class="custom-hr"> <hr class="custom-hr">

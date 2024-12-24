@@ -45,7 +45,10 @@ function openModal(prodNo) {
 }
 
 
-
+  // close 버튼 클릭 시 모달 닫기
+    $('.close').on('click', function () {
+        $('#optModal').hide(); // 모달을 숨김
+    });
 
 
 

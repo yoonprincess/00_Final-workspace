@@ -38,7 +38,7 @@
             height: 100%;
         }
         /* 컨테이너 스타일 */
-        .qna-container {
+        .option-container {
             width: 100%; /* 부모의 크기를 기준으로 조정 */
             margin: 0 auto; /* 중앙 정렬 */
             border: 1px solid #ddd;
@@ -59,17 +59,37 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        #dropdown{
+	        width:100%;  
+	        color: silver; 
+	        padding-left:5px; 
+	        height:30px;
+	        border-radius:5px;
+        }
+        #dropdown:focus{
+	        border:none;
+	        border-radius:5px;
+        }
+        .btn-group{
+        	display:flex;
+        	flex-direction:row;
+        	gap:20px;
+        	 justify-content: center; /* 수평 가운데 정렬 */
+  			align-items: center;     /* 수직 가운데 정렬 (필요시) */
+        }
     </style>
 </head>
 <body>
-    <div class="qna-container">
+    <div class="option-container" id="firstModal">
         <!-- 문의 작성 폼 -->
         <form id="insertCartForm" action="insertCart.me" method="post" enctype="multipart/form-data">
             <input type="hidden" id="prodNo" name="prodNo" value="${optList[0].prodNo}">
             <!-- 문의 작성 -->
             <div class="form-group">
-               <select id="dropdown" name="optNo" style="width:100%;">
-                  <option>옵션을 선택해주세요</option>
+            <h5>옵션 선택</h5>
+            <hr>
+               <select id="dropdown" name="optNo" style="">
+                  <option style="padding-left:10px;" >옵션을 선택해주세요</option>
                   <c:forEach var="opt" items="${optList}">
                     <option value="${opt.optNo}"
 		                    data-name="${opt.optName}" 
@@ -85,32 +105,43 @@
 		            </option>
                   </c:forEach>
                 </select>
-				
             </div>
-    
-            <!-- 작성 버튼 -->
             <button type="submit" class="btn-submit">장바구니 담기</button>
         </form>
     </div>
     
-    <div id="customModal" class="modal" style="display:none;">
-	    <div class="modal-content">
-	        <span class="close-btn" onclick="closeModal()">&times;</span>
-	        <p id="modalMessage"></p>
-	        <button id="modalButton" onclick="closeModal();">쇼핑계속하기</button>
-	        <button id="modalButton" onclick="goCart();">장바구니이동</button>
-	    </div>
-	</div>
+	<div class="option-container modal" id="customModal"  style="display:none;">
+      
+            <input type="hidden" id="prodNo" name="prodNo" value="${optList[0].prodNo}">
+            <!-- 문의 작성 -->
+            <div class="form-group" align="center;">
+            <h5>선택완료</h5>
+            <hr>
+            <p id="modalMessage" style="text-align:center;"></p>
+              <div class="btn-group" align="center;">
+		        <button class="btn-outline-primary blb-btn" onclick="closeModal();">쇼핑계속하기</button>
+		        <button class="btn-outline-primary blb-btn" onclick="goCart();">장바구니이동</button>
+		    </div>
+            </div>
+           
+       
+    </div>
 
     <script>
         $(document).ready(function () {
 
-            // 글자수 제한 처리 및 ajax 처리 후 창 닫기
             $('#insertCartForm').on('submit', function (e) {
                 e.preventDefault(); // 기본 폼 제출 방지
-
+                
+                const selectedOption = $('#dropdown').val(); // 드롭다운에서 선택된 값
+              	  if (selectedOption === "" || selectedOption === "옵션을 선택해주세요") {
+               	 
+              		alertify.error("옵션을 선택해주세요"); // 옵션이 선택되지 않으면 경고 메시지 출력
+                    return; // 선택되지 않으면 폼 제출을 막고 함수 종료
+               	 }
+                
                 const formData = new FormData(this);
-
+                
                 $.ajax({
                     url: 'insertCart.me',
                     type: 'POST',
@@ -155,6 +186,8 @@
 		    document.getElementById('modalMessage').textContent = message;
 		    // 모달 열기
 		    document.getElementById('customModal').style.display = 'block';
+		    document.getElementById('firstModal').style.display = 'none';
+		    
 		}
 		
 		function closeModal() {

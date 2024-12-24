@@ -215,6 +215,17 @@
         </tr>
     </thead>
     <tbody>
+			    <c:if test="${empty myListbyDate}">
+				    <tr style="text-align:center;">
+				        <td colspan="5">
+				            <div style="display: flex; flex-direction: column; align-items: center;">
+				               <span class="material-symbols-outlined" style="font-size:140px; color:#7AB2D3;">error</span>
+				                <br>
+				                 <div style="color:#7AB2D3"> 조회하신 기간 내 주문내역이 없습니다.</div>
+				            </div>
+				        </td>
+				    </tr>
+				</c:if>
         <c:forEach var="entry" items="${myListbyDate}">
             <c:set var="orderDate" value="${entry.key}"/>
             <c:set var="myOrderList" value="${entry.value}"/>
