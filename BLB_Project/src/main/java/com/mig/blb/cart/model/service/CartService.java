@@ -31,5 +31,7 @@ public interface CartService {
 
 	int insertCart(Cart c);
 
+	int myCartCount(String memberId);
+
 	
 }
