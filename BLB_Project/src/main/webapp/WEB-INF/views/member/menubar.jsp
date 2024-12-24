@@ -19,7 +19,9 @@
 </head>
 <body>
 	<div id="menubar">
+	 <a class="sub-menu-link" href="${ pageContext.request.contextPath }/myPage.me">
          <div class="my-page"><h3>마이페이지</h3></div>
+     </a>    
          <div class="menu-section">
              <hr class="custom-hr"> <hr class="custom-hr">
              <div class="menu-item">마이 쇼핑</div>

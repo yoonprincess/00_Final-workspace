@@ -662,4 +662,18 @@
       FROM TB_CART
 	 WHERE MEMBER_ID = #{memberId}  
   	</select>
+  	
+  	<insert id="insertCart" parameterType="cart">
+	  	INSERT INTO TB_CART (CART_NO
+	                       ,MEMBER_ID
+	                       ,PROD_NO
+	                       ,OPT_NO
+	                       ,CART_QTY)
+	                  VALUES(SEQ_CART_NO.NEXTVAL
+	                        ,#{memberId}
+	                        ,#{prodNo}
+	                        ,#{optNo}
+	                        ,#{cartQty}
+	                      )         
+  	</insert>
 </mapper>

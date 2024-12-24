@@ -7,24 +7,17 @@
 <meta charset="UTF-8">
 <title>배송지 관리 |  뷰라밸 (Beauty Life Balance)</title>
 
- 
-
 <link rel="stylesheet" href="resources/css/member/myDeliveryList.css">
-
 <script src="resources/js/member/myDeliveryList.js" ></script>   
-
-  
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
 </head>
 <body class="body-offset">
  <%@ include file="/WEB-INF/views/common/header.jsp" %>
  <div class="outer container-fluid">
-  <div id="main">
+  <div id="main" >
     <%@ include file="/WEB-INF/views/member/menubar.jsp" %>
       <div class="outer">
-       
-       
         <div class="container">
          <div class="tabs">
             <button class="tab active">배송지</button>
@@ -42,6 +35,18 @@
                 </tr>
             </thead>
             <tbody>
+             <c:if test="${empty dlist}">
+	            <tr class="result">
+	                <td colspan="5">
+	                    <div style="display: flex; flex-direction: column; align-items: center;">
+	                        <span class="material-symbols-outlined" style="font-size:40px;">error</span>
+	                        <br>
+	                        <div> 등록된 배송지가 없습니다.</div>
+	                    </div>
+	                </td>
+	            </tr>
+	        </c:if>
+	        
            		<c:forEach var="d" items="${dlist}">
 	                <tr class="result">
 	                    <td>${d.deliNickname}</td>
@@ -79,7 +84,7 @@
 	            
 <!-- 페이지네이션 -->
 			<nav>
-				<ul class="pagination">
+				<ul class="pagination" style="width:1024px;">
 					<!-- 이전 페이지 그룹 -->
 					<c:if test="${ pi.startPage > 1 }">
 						<li class="page-item">

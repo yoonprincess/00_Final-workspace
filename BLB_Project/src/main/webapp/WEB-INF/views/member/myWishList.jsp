@@ -35,12 +35,7 @@
  				
  				
        <br>
-       <div id="overlay" class="overlay">
-        <div id="buttonDiv">
-         <span class="material-symbols-outlined" id="heart">heart_minus</span>
-         <p id="message"></p>
-	    </div>
-	  </div>
+       
 	<table class="order-table">
     <thead>
         <tr>
@@ -66,7 +61,7 @@
             <c:forEach var="wish" items="${wlist}">
                 <tr class="result">
                     <td>
-                      <a href="detail.pr?pno=${wish.prodName}">
+                      <a href="detail.pr?pno=${wish.prodNo}">
                         <div class="product">
                           <img src="${pageContext.request.contextPath}/${wish.thumbImg}" alt="${wish.prodName}" >
                         </div>
@@ -78,8 +73,13 @@
                       </div>
                     </td>
                     <td>
-                        <div>29,500원</div>
-                        <div>${wish.prodPrice}</div>
+                        <div>
+                          <span class="unit_b"><s><fmt:formatNumber value="${wish.prodPrice *1.2}" type="number"/></s>원</span>
+                        </div>
+                        <div>
+                       	  <fmt:formatNumber value="${wish.prodPrice}" type="number"/><span class="unit">원</span>
+                        </div>
+                        
                     </td>
                     <td>
                         <div class="button-group">
@@ -100,10 +100,9 @@
         <div class="modal-content" id="reviewIframeContainer" >
             <span class="close">&times;</span>
             <h2>옵션을 선택하세요</h2>
-           <div class="options">
-          	 <iframe src=""></iframe>
+          	 <div class="options">
+          	 	<iframe src=""></iframe>
             </div>
-            <button id="insertCartBtn"  >장바구니추가</button>
         </div>
    	 </div>
 		            <br><br>

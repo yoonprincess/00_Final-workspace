@@ -56,4 +56,9 @@ public class CartDao {
         return sqlSession.selectList("cartMapper.getSelectedCartItems", params);
     }
 
+	public int insertCart(SqlSessionTemplate sqlSession, Cart c) {
+		
+		return sqlSession.insert("memberMapper.insertCart", c);
+	}
+
 }

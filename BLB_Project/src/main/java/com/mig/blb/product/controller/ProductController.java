@@ -357,4 +357,30 @@ public class ProductController {
 
 	    return "error";
 	}
+	
+	@GetMapping("enrollForm.ct")
+    public String cartAddForm(@RequestParam int prodNo, 
+						  	  @RequestParam String memberId, 
+						  	  Model model, 
+						  	  HttpSession session) {
+		
+		if(session.getAttribute("loginUser") == null) {
+        	session.setAttribute("errorMsg", "로그인 후 이용할 수 있습니다.");
+			return "redirect:/loginForm.me";
+		}
+		
+        // 현재 로그인된 사용자와 요청된 memberId 비교
+		String loginMemberId = ((Member)session.getAttribute("loginUser")).getMemberId();
+        
+        if(loginMemberId == null || !loginMemberId.equals(memberId)) {
+            model.addAttribute("errorMsg", "잘못된 접근입니다.");
+            return "common/errorPage"; // 접근 거부 페이지로 이동
+        }
+
+	    // 상품 및 사용자 정보 추가
+	    model.addAttribute("prodNo", prodNo);
+	    model.addAttribute("memberId", memberId);
+	    
+	    return "product/cartAddForm"; // 리뷰 작성 JSP 페이지
+    }
 }

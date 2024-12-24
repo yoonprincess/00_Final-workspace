@@ -29,5 +29,7 @@ public interface CartService {
 	// 체크된 장바구니 상품 주문서에서 조회용
 	List<Cart> getSelectedCartItems(String memberId, List<Integer> checkedCartNos);
 
+	int insertCart(Cart c);
+
 	
 }
