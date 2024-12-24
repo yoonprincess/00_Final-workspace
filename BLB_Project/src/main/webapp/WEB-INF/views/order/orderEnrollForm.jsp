@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>주문서 작성/결제 | 뷰라밸</title>
+
 <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/order/orderEnrollForm.css">
 <!-- <link rel="stylesheet" type="text/css" href="../../../resources/css/order/orderEnrollForm.css"> -->
 <!-- 부트스트랩 -->
@@ -14,14 +15,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <!-- jQuery 라이브러리 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- NICE Pay JS SDK -->
+<script src="https://pay.nicepay.co.kr/v1/js/"></script>
 
 </head>
 <body class="body-offset">
 
     <div class="container-fluid">
-        <form id="order-form"
+        <!-- <form id="order-form"
               action="orderEnrollForm.or"
-              method="POST">
+              method="POST"> -->
             
             <!-- 네비게이터 영역 -->
             <div class="navigator">
@@ -41,40 +44,71 @@
             <h3>배송 정보 입력</h3>
             <hr class="custom-hr">
     
-            <form name="payForm" method="post" action="payResult_utf.jsp">
 
                 <table id="delivery-form">
+                    <tr>
+                        <th>배송지 선택 </th>
+                        <td>
+                            <select id="deliSelect">
+                                <c:forEach var="d" items="${deliveryList}">
+                                    <option value="${d.deliCode}" 
+                                        <c:if test="${d.deliDefault == '기본배송지'}">selected</c:if>>
+                                        ${d.deliCode}
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>배송지명 <span class="required">*</span></th>
+                        <td>
+                            <input type="text"
+                                   placeholder="받는 사람 이름을 입력하세요"
+                                   required
+                                   id="deliCode"
+                                   value="${selectedDelivery.deliCode}">${d.deliCode}
+                            <div class="badge">${d.deliDefault}</div>
+                        </td>
+                    </tr>
                     <tr>
                         <th>받는 사람 <span class="required">*</span></th>
                         <td>
                             <input type="text"
                                    placeholder="받는 사람 이름을 입력하세요"
                                    required
-                                   value="${order.rcvrName}">
+                                   id="rcvrName"
+                                   value="${selectedDelivery.deliName}">
                         </td>
                     </tr>
                     <tr>
                         <th>주소 <span class="required">*</span></th>
                         <td>
                             <div class="address-container">
-                                <input type="text" placeholder="우편번호" style="width: 120px;">
+                                <input type="text"
+                                       placeholder="우편번호"
+                                       style="width: 120px;"
+                                       id="dlvrPostCode"
+                                       value="${selectedDelivery.postcode}">
                                 <button type="button" class="btn-search">주소검색</button>
                             </div>
                             <input type="text"
                                    placeholder="기본 주소"
                                    style="width: 100%; margin-top: 10px;"
-                                   value="${order.rcvrAddress}">
+                                   id="rcvrAddress"
+                                   value="${selectedDelivery.deliAddress}">
                             <input type="text"
                                    placeholder="상세 주소"
                                    style="width: 100%; margin-top: 10px;"
-                                   value="">
+                                   id="rcvrDetailAddress"
+                                   value="${selectedDelivery.detailAddress}">
                         </td>
                     </tr>
                     <tr>
                         <th>휴대전화 <span class="required">*</span></th>
                         <td>
-                            <!-- 전제 전화번호 숨기기기 -->
-                            <input type="hidden" id="hidden-phone-number" value="${order.rcvrPhone}">
+                            <!-- 전제 전화번호 숨기기 -->
+                            <input type="hidden" id="hidden-phone-number" value="${selectedDelivery.deliPhone}">
 
                             <div class="phone-container">
                                 <select id="phone-prefix" name="phone-prefix">
@@ -100,31 +134,47 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>배송 요청 사항</th>
+                        <th rowspan="2">배송 요청 사항</th>
                         <td>
-                            <select name="delivery-message" id="delivery-message">
-                                <option value="default" selected>-- 메시지 선택 (선택사항) --</option>
-                                <option>배송 전에 미리 연락바랍니다.</option>
-                                <option>부재 시 경비실에 맡겨주세요.</option>
-                                <option>부재 시 문 앞에 놓아주세요.</option>
-                                <option>빠른 배송 부탁드립니다.</option>
-                                <option>택배함에 보관해 주세요.</option>
-                                <option value="custom">직접 입력</option>
-                            </select>
+                            <label class="form-label required">공동현관 출입방법</label>
+                            <div class="form-input radio-group" name="delivery-message">
+                                <label class="radio-label">
+                                    <input type="radio" name="entry" value="비밀번호" checked >
+                                        비밀번호
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="entry" value="경비실호출">
+                                        경비실호출
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="entry" value="자유출입가능">
+                                        자유출입가능
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="entry" value="기타사항">
+                                        기타사항
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" id="add-request">추가 요청 사항</label>
+                                    <div class="form-input">
+                                        <input type="text"
+                                               class="address-input"
+                                               id="additionalInfo"
+                                               placeholder="공동현관 비밀번호를 입력하세요">
+                                    </div>
+                                </div>
+                                <input type="hidden"
+                                       name="dlvrReqMessage"
+                                       id="dlvrReqMessage"
+                                       value="${selectedDelivery.deliComment}">
+                            </div>
                         </td>
                     </tr>
-                    <tr>
-                        <th></th>
-                        <td>
-                            <!-- 직접 입력 선택 시 나타남 -->
-                            <textarea id="custom-comment" placeholder="상세 요청사항을 입력해 주세요."></textarea>
-                        </td>
-                    </tr>
-        
+
                 </table>
-            </form>
     
-            <hr>
       
             <!-- 주문 상품 목록 영역 -->
             <div class="order-products">
@@ -132,18 +182,23 @@
                 <h3>주문 상품</h3>
                 <hr class="custom-hr">
 
-                <c:forEach var="productOrder" items="${productOrderList}">
+                <c:forEach var="cl" items="${selectedCartList}">
                         
-                    <div class="order-product">
-                        <img src="${ pageContext.request.contextPath }${productOrder.thumbImg}" alt="${productOrder.prodName}" style="width: 100px; height: 100px;">
+                    <div class="order-product"
+                          data-cart-no="${cl.cartNo}">
+                        <img src="${ pageContext.request.contextPath }${cl.thumbImg}" alt="${cl.prodName}" style="width: 100px; height: 100px;">
                         <div class="product-detail">
-                            <p class="product-title">${productOrder.prodName}</p>
-                            <p class="product-option">[옵션: ${productOrder.prodName} (+ 
-                                <fmt:formatNumber value="${productOrder.optAddPrice}" pattern="###,###,###"/> 원)]</p>
-                            <p class="product-quantity-${productOrder.cartNo}">수량: ${productOrder.orderQty}개</p>
-                            <p class="product-price">
-                            <fmt:formatNumber value="${productOrder.totalAmt}" />원
+                            <p class="product-title">${cl.prodName}</p>
+                            <p class="product-option">[옵션: ${cl.prodName} (+ 
+                                <fmt:formatNumber value="${cl.optAddPrice}" pattern="###,###,###"/> 원)]</p>
+                            <p class="product-price-${cl.cartNo}">상품 가격: 
+                                <fmt:formatNumber value="${cl.prodPrice}" />원
                             </p>
+                            <p class="product-quantity-${cl.cartNo}"
+                               value="${cl.cartNo}">
+                               수량: ${cl.cartQty}개
+                            </p>
+                            <p class="product-order-price-${cl.cartNo}">ㅇ</p>
                         </div>
                         <button class="delete-button" aria-label="상품 삭제">×</button>
                     </div>
@@ -160,13 +215,13 @@
                         <td>
                             <p>총 판매가</p>
                             <p class="value" id="total-amt">
-                                <fmt:formatNumber value="${orderTotalAmt}" pattern="###,###,###" />
+                                <fmt:formatNumber value="${orderTotalAmt}" pattern="###,###,###" />원
                             </p>
                         </td>
                         <td>-</td>
                         <td>
                             <p>총 할인가</p>
-                            <p class="value discount">6,320원</p>
+                            <p class="value discount"></p>
                         </td>
                         <td>+</td>
                         <td>
@@ -400,8 +455,12 @@
             <p>주문 내용을 확인하였으며 약관에 동의합니다.</p>
 
             <!-- 결제하기 버튼 -->
-            <button type="submit" class="btn btn-primary payment-button">18,180원 결제하기</button>        
-        </form>
+            <button type="submit" class="btn btn-primary payment-button">
+                최종 결제 금액
+                <span class="final-order-price">
+                </span>
+            </button>        
+        <!-- </form> -->
 
     </div>
 

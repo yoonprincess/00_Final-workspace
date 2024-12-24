@@ -44,6 +44,38 @@
 
 
 /* 배송 정보 입력 테이블 스타일 */
+/* 레이블 스타일 */
+.form-input {
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+}
+
+#add-request {
+    padding-top: 20px;
+}
+
+.form-label {
+    display: block;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.radio-group {
+    width: 70%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.address-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
 .order-form {
     width: 1000px;
     margin: 10px auto;
@@ -58,19 +90,22 @@
     box-sizing: border-box;
     margin : 5px;
     gap: 10px;
+    border-collapse: collapse;
 }
 
-#delivery-form>th {
+#delivery-form th {
     width: 20%;
     font-weight: bold;
+    font-size: 14px;
+    border-right: 1px solid #ddd;
 }
 
-#delivery-form>td {
+#delivery-form td {
     width: 80%;
 }
 
-#delivery-form>th,
-#delivery-form>td {
+#delivery-form th,
+#delivery-form td {
     padding: 10px;
     text-align: left;
     vertical-align: middle;
@@ -110,7 +145,6 @@ input[type="text"], select {
 }
 
 #delivery-message {
-    padding: 8px;
     font-size: 14px;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -224,6 +258,7 @@ button.btn-search:hover {
     margin: 40px auto;
     border-top: 2px solid #4A628A;
     border-collapse: collapse;
+    table-layout: fixed; /* 고정된 열 너비 사용 */
     text-align: center;
 }
 

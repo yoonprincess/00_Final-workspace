@@ -2,6 +2,7 @@ package com.mig.blb.cart.model.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -46,9 +47,13 @@ public class CartDao {
 		return sqlSession.update("cartMapper.updateCartOption", params);
 	}
 
-	public int myCartCount(SqlSessionTemplate sqlSession, String memberId) {
-		
-		return sqlSession.selectOne("memberMapper.myCartCount", memberId);
-	}
+	public List<Cart> getSelectedCartItems(SqlSessionTemplate sqlSession, String memberId, List<Integer> checkedCartNos) {
+        
+		Map<String, Object> params = new HashMap<>();
+        params.put("memberId", memberId);
+        params.put("checkedCartNos", checkedCartNos);
+        
+        return sqlSession.selectList("cartMapper.getSelectedCartItems", params);
+    }
 
 }

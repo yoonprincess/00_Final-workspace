@@ -1,6 +1,7 @@
 package com.mig.blb.cart.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.mig.blb.cart.model.vo.Cart;
 
@@ -24,9 +25,9 @@ public interface CartService {
 
 	// 장바구니 선택 옵션 변경
 	int updateCartOption(int cartNo, int updatedOptNo);
-	
-	// 마이페이지용 장바구니 총 갯수조회
-	int myCartCount(String memberId);
+
+	// 체크된 장바구니 상품 주문서에서 조회용
+	List<Cart> getSelectedCartItems(String memberId, List<Integer> checkedCartNos);
 
 	
 }

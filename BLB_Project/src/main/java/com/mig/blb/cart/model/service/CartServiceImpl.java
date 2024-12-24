@@ -1,6 +1,7 @@
 package com.mig.blb.cart.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.mig.blb.cart.model.dao.CartDao;
 import com.mig.blb.cart.model.vo.Cart;
+import com.mig.blb.order.model.vo.ProductOrder;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -50,9 +52,8 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public int myCartCount(String memberId) {
-	
-		return cartDao.myCartCount(sqlSession,memberId);
+	public List<Cart> getSelectedCartItems(String memberId, List<Integer> checkedCartNos) {
+		return cartDao.getSelectedCartItems(sqlSession, memberId, checkedCartNos);
 	}
 
 }

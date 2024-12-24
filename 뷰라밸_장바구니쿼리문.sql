@@ -138,3 +138,19 @@ SELECT C.CART_NO
 		 WHERE MEMBER_ID = 'admin'
 		 ORDER BY CART_NO DESC
 
+-- 체크된 장바구니 상품 주문서 조회용
+SELECT C.CART_NO
+     , C.ORDER_QTY
+     , P.PROD_NAME
+     , P.THUMB_IMG
+     , P.PROD_PRICE
+     , O.OPT_NAME
+     , O.OPT_ADD_PRICE
+     , (C.ORDER_QTY * (P.PROD_PRICE + O.OPT_ADD_PRICE)) AS TOTAL_AMT
+  FROM CART C
+  JOIN PRODUCT P ON C.PROD_ID = P.PROD_ID
+LEFT JOIN OPTION O ON C.OPT_NO = O.OPT_NO
+WHERE C.CART_NO IN 
+<foreach item="cartNo" collection="checkedCartNos" open="(" separator="," close=")">
+    #{cartNo}
+</foreach>

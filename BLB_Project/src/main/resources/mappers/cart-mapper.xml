@@ -82,5 +82,43 @@
 		  SET OPT_NO = #{updatedOptNo}
 		WHERE CART_NO = #{cartNo}
 	</update>
+	
+	<!-- 체크된 장바구니 상품 주문서에서 조회용 쿼리문 -->
+	<select id="getSelectedCartItems"
+			parameterType="map"
+			resultMap="cartResultSet">
+	    SELECT C.CART_NO
+			 , P.PROD_NO
+		     , P.PROD_NAME
+		     , C.OPT_NO
+		     , O.OPT_NAME
+		     , O.OPT_ADD_PRICE
+		     , O.REMAIN_QTY
+		     , C.CART_QTY
+		     , P.PROD_PRICE
+             , PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
+		  FROM TB_CART C
+		  LEFT JOIN TB_PRODUCT P ON (C.PROD_NO = P.PROD_NO)
+		  LEFT JOIN TB_OPTION O ON (C.OPT_NO = O.OPT_NO)
+          LEFT JOIN (
+		      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+		        FROM TB_PRODUCT_ATTACHMENT
+		       WHERE (PROD_NO, PROD_ATT_NO) IN (
+		           SELECT PROD_NO, MIN(PROD_ATT_NO)
+		             FROM TB_PRODUCT_ATTACHMENT
+		            WHERE PROD_ATT_STATUS = 'Y'
+		              AND THUMB_PATH IS NOT NULL
+		            GROUP BY PROD_NO
+		       )
+		  ) PA
+		    ON P.PROD_NO = PA.PROD_NO
+		 WHERE MEMBER_ID = #{memberId}
+		   AND C.CART_NO IN 
+		<foreach item="cartNo" collection="checkedCartNos" open="(" separator="," close=")">
+		    #{cartNo}
+		</foreach>
+		 ORDER BY CART_NO DESC
+	</select>
+		
 	 
 </mapper>
