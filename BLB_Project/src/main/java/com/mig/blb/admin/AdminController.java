@@ -34,4 +34,11 @@ public class AdminController {
 		return mv;
 	}
 	
+	@GetMapping("adminInquiry.blb")
+	public ModelAndView adminInquiryList(ModelAndView mv) {
+		
+		mv.setViewName("admin/admin_inquiry");
+		return mv;
+	}
+	
 }
