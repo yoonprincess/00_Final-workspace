@@ -1,6 +1,7 @@
 package com.mig.blb.member.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.member.model.vo.CertEmail;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
+import com.mig.blb.member.model.vo.Point;
 import com.mig.blb.order.model.vo.Order;
 import com.mig.blb.product.model.vo.Product;
 
@@ -87,6 +89,10 @@ public interface MemberService {
 	Member loginMember(String snsId);
 
 	int insertKakao(Member m);
+
+	ArrayList<Point> selectMyPoints(HashMap<String, Object> dateMap);
+
+	int myPointListCount(String memberId);
 	
 	
 }

@@ -1,6 +1,7 @@
 package com.mig.blb.member.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import com.mig.blb.member.model.dao.MemberDao;
 import com.mig.blb.member.model.vo.CertEmail;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
+import com.mig.blb.member.model.vo.Point;
 import com.mig.blb.product.model.vo.Product;
 
 //@Component
@@ -190,6 +192,15 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int insertKakao(Member m) {
 		return  memberDao.insertKakao(sqlSession, m);
+	}
+	@Override
+	public ArrayList<Point> selectMyPoints(HashMap<String, Object> dateMap) {
+		
+		return memberDao.selectMyPoints(sqlSession, dateMap);
+	}
+	@Override
+	public int myPointListCount(String memberId) {
+		return memberDao.myPointListCount(sqlSession, memberId);
 	}
 
 }

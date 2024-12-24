@@ -33,5 +33,7 @@ public interface CartService {
 
 	int myCartCount(String memberId);
 
+	int selectCart(int optNo);
+
 	
 }

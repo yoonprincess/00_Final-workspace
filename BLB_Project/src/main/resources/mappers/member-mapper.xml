@@ -151,6 +151,13 @@
 
 	</resultMap>
 	
+	<resultMap id="pointResultSet" type="point">
+		<id column="POINT_NO" property="pointNo"/>
+		<result column="POINT_AMT" property="pointAmt"/>
+		<result column="POINT_REASON" property="pointReason"/>
+		<result column="POINT_DATE" property="pointDate"/>
+		<result column="MEMBER_ID" property="memberId"/>
+	</resultMap>
 	
 	<select id="loginMember"
 			parameterType="member"
@@ -673,7 +680,23 @@
 	                        ,#{memberId}
 	                        ,#{prodNo}
 	                        ,#{optNo}
-	                        ,#{cartQty}
-	                      )         
+	                        ,#{cartQty})         
   	</insert>
+  	
+  	<select id="selectMyPoints" parameterType="hashmap" resultMap="pointResultSet"> 
+  	SELECT POINT_NO,
+	   	   POINT_AMT,
+           TO_CHAR(POINT_DATE,'YYYY-MM-DD') AS "POINT_DATE",
+	       POINT_REASON 
+	   FROM TB_POINT 
+	   WHERE MEMBER_ID = #{memberId}
+	   AND POINT_DATE BETWEEN #{startDate} AND #{endDate}                    
+	  ORDER BY POINT_DATE DESC
+  	</select>
+  	
+  	<select id="myPointListCount" parameterType="string" resultType="_int">
+  	SELECT COUNT(*)
+      FROM TB_POINT 
+	 WHERE MEMBER_ID = #{memberId}  
+  	</select>
 </mapper>

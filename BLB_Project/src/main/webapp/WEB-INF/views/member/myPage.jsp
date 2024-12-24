@@ -45,9 +45,13 @@
                   <div class="divider" style="margin-left: 80px;"></div>
                   <div class="points-coupons">
                       <div class="points">
+                       <a href="${ pageContext.request.contextPath }/pointList.me" >
                           <div class="icon">P</div>
-                          <div class="amount">${ loginUser.currentPoints }원</div>
+                          <div class="amount">
+                          	   <fmt:formatNumber value="${loginUser.totalPoints}" type="number"/><span class="unit">P</span>
+                          </div>
                           <div class="label">적립금</div>
+                       </a>
                       </div>
                       <div class="divider"></div>
                       <div class="cart" align="center">
@@ -158,10 +162,12 @@
                   <div class="product-grid">
                   <c:if test="${not empty wlist}">
 	                  <c:forEach var="wish" items="${wlist}">
-	                     <a href="${ pageContext.request.contextPath }/detail.pr?pno=${wish.prodNo}">
+	                   
 	                      <div class="product-card">
 	                          <div class="product-image">
+	                            <a href="${ pageContext.request.contextPath }/detail.pr?pno=${wish.prodNo}">
 	                               <img src="${pageContext.request.contextPath}/${wish.thumbImg}" alt="${wish.prodName}" >
+	                            </a>
 	                              <button class="like-btn" onclick="deleteWish(${wish.prodNo});">♥</button>
 	                          </div>
 	                          <div class="product-info">
@@ -176,7 +182,7 @@
 	                              </div>
 	                          </div>
 	                      </div>
-	                     </a>
+	                    
 	                  </c:forEach> 
                   </c:if>
                       

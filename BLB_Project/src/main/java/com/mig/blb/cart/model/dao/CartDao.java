@@ -63,7 +63,12 @@ public class CartDao {
 
 	public int myCartCount(SqlSessionTemplate sqlSession, String memberId) {
 		
-		return sqlSession.insert("memberMapper.myCartCount", memberId);
+		return sqlSession.selectOne("memberMapper.myCartCount", memberId);
+	}
+
+	public int selectCart(SqlSessionTemplate sqlSession, int optNo) {
+		
+		return sqlSession.selectOne("memberMapper.selectCart", optNo);
 	}
 
 }

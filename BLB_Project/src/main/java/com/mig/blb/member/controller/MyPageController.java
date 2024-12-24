@@ -33,6 +33,7 @@ import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
 import com.mig.blb.member.model.vo.PageforOrders;
 import com.mig.blb.member.model.vo.PaginationOrders;
+import com.mig.blb.member.model.vo.Point;
 import com.mig.blb.option.model.service.OptionService;
 import com.mig.blb.option.model.vo.Option;
 import com.mig.blb.order.model.service.OrderService;
@@ -83,12 +84,10 @@ public class MyPageController {
 				ArrayList<Inquiry> qlist = inquiryService.selectProdQnaTop4(memberId);
 				ArrayList<Product> wlist = memberService.selectMyWishTop4(memberId); 
 				
-				
-				
 				HashMap<String, Integer> myOrderCounts = orderService.myOrderCounts(memberId);
 				
-				int listCount = reviewService.myReviewListCount(loginUser.getMemberId());
-				int cartCount = cartService.myCartCount(loginUser.getMemberId());
+				int listCount = reviewService.myReviewListCount(memberId);
+				int cartCount = cartService.myCartCount(memberId);
 				
 				mv.addObject("myOrderComplete", myOrderCounts.get("COMPLETE"));
 				mv.addObject("myOrderDelivery", myOrderCounts.get("DELIVERY"));
@@ -99,7 +98,6 @@ public class MyPageController {
 				mv.addObject("wlist",wlist);
 				
 				mv.addObject("cartCount",cartCount);
-				
 				session.setAttribute("listCount", listCount); // menubar.jsp 
 				
 
@@ -642,8 +640,10 @@ public class MyPageController {
 				c.setProdNo(prodNo);
 				c.setOptNo(optNo);
 				c.setCartQty(1);
-				
+
 				int result = cartService.insertCart(c);
+				
+				
 				
 				if(result>0) {
 					response.put("success", true);
@@ -664,6 +664,105 @@ public class MyPageController {
 			
 			  return response; 
 		}
+		
+		// 적립금 내역 페이지 이동 
+		@GetMapping("pointList.me")
+		public ModelAndView myPointList(ModelAndView mv,
+										HttpSession session,
+										Member m,
+						   			 	@RequestParam(value = "year", required = false) String year,
+			                            @RequestParam(value = "month", required = false) String month,
+			                            @RequestParam(value = "day", required = false) String day,
+			                            @RequestParam(value = "year1", required = false) String year1,
+			                            @RequestParam(value = "month1", required = false) String month1,
+			                            @RequestParam(value = "day1", required = false) String day1,
+			                            @RequestParam(value="ppage", defaultValue="1")int currentPage) throws ParseException {
+			
+			Member loginUser =(Member)session.getAttribute("loginUser");
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+		    if (year == null || month == null || day == null || year1 == null || month1 == null || day1 == null) {
+
+		    	Date today = new Date();
+		       
+		    	String defaultDate = sdf.format(today);
+		        
+		        String[] dateParts = defaultDate.split("-");
+		        year1 = dateParts[0];
+		        month1 = dateParts[1];
+		        day1 = dateParts[2];
+
+		        // 1개월 전 날짜 계산
+		        Calendar calendar = Calendar.getInstance();
+		        calendar.add(Calendar.MONTH, -1);
+		        String startDate = sdf.format(calendar.getTime());
+		        
+		        
+		        dateParts = startDate.split("-");
+		        year = dateParts[0];
+		        month = dateParts[1];
+		        day = dateParts[2];
+		    }		
+		    
+		   
+			HashMap<String, Object> dateMap = new HashMap<>();
+		    dateMap.put("year", year);
+		    dateMap.put("month", month);
+		    dateMap.put("day", day);
+		    dateMap.put("year1", year1);
+		    dateMap.put("month1", month1);
+		    dateMap.put("day1", day1);
+		    
+			if( loginUser != null) {
+				
+				String memberId = loginUser.getMemberId();
+				dateMap.put("memberId", memberId);
+				
+				Date startDate = sdf.parse(String.format("%s-%s-%s", year, month, day));
+			    Date endDate = sdf.parse(String.format("%s-%s-%s", year1, month1, day1));
+			    
+			    dateMap.put("startDate", startDate);
+			    dateMap.put("endDate", endDate);
+				
+			    //System.out.println("dateMap 전달 데이터: " + dateMap);
+			    
+				ArrayList<Point> plist = memberService.selectMyPoints(dateMap);
+				
+				//System.out.println(plist);		
+				
+				Map<String, List<Point>>  pointDateList = new LinkedHashMap<>();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+				for (Point point : plist) {
+					
+				    String pointDate = dateFormat.format(point.getPointDate()); 
+				    pointDateList.putIfAbsent(pointDate, new ArrayList<>()); // 값이 없으면 초기화
+				    pointDateList.get(pointDate).add(point); 
+				}
+				// 페이징처리
+				int boardLimit = 5;
+				// 한 번에 보여줄 페이지 수
+				int pageLimit = 10;
+				
+				int listCount = memberService.myPointListCount(loginUser.getMemberId());
+				//System.out.println("적립갯수 :"  + listCount);
+				
+				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
+							 pageLimit, boardLimit);
+				
+				//System.out.println(pointDateList);
+				mv.addObject("pi",pi);
+				mv.addObject("plist",plist);
+				mv.addObject("pointDateList", pointDateList); 
+				mv.addObject("loginUser",loginUser);
+				mv.setViewName("member/myPointList");
+			
+			}else {
+				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+				mv.setViewName("/main");
+			}
+			return mv;
+		}		
 			
 }			
 		
