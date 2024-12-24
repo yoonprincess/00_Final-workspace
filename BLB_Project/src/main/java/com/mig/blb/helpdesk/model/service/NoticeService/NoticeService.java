@@ -35,5 +35,9 @@ public interface NoticeService {
 	Notice selectPreviousNotice(int nno);
 
 	Notice selectNextNotice(int nno);
+
+	int selectAdminListCount();
+
+	ArrayList<Notice> selectAdminList(PageInfo pi);
 	
 }

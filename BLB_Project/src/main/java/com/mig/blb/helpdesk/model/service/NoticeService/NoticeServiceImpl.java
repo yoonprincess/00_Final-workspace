@@ -89,6 +89,17 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDao.insertNoticeAtt(sqlSession, newAtt);
 	}
 
+	// 관리자
+	@Override
+	public int selectAdminListCount() {
+		return noticeDao.selectAdminListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Notice> selectAdminList(PageInfo pi) {
+		return noticeDao.selectAdminList(sqlSession, pi);
+	}
+
 	
 
 	

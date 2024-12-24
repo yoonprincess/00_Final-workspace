@@ -86,5 +86,15 @@ public class NoticeDao {
 	}
 
 	
+	// 관리자
+	public int selectAdminListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("helpdeskMapper.selectAdminListCount");
+	}
+
+	public ArrayList<Notice> selectAdminList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectAdminList", pi);
+	}
+
+	
 
 }

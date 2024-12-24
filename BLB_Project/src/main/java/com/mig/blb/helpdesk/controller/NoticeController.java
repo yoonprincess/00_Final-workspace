@@ -32,6 +32,27 @@ import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 		@Autowired
 		private NoticeService noticeService;
 		
+		// 관리자 - 공지사항 전체조회
+		@GetMapping("adminList.no")
+		public String selectAdminList(@RequestParam(value="cpage", defaultValue="1")int currentPage,
+								 		Model model) {
+				
+				int listCount = noticeService.selectAdminListCount();
+				
+				int pageLimit = 5;
+				int boardLimit = 5;
+				
+				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+				ArrayList<Notice> list = noticeService.selectAdminList(pi);
+				
+				model.addAttribute("list",list);
+				model.addAttribute("pi",pi);
+				
+				
+				return "admin/admin_inquiry";
+				
+				}
+		
 		// 공지사항 목록 조회 요청
 		@GetMapping("list.no")
 		public String selectList(@RequestParam(value="cpage", defaultValue="1")int currentPage,
