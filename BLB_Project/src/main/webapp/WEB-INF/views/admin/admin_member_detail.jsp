@@ -370,18 +370,13 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <span class="m-0 font-weight-bold text-primary">뷰라밸 회원목록</span>
-                            <div class="button-group" style="float:right;">
-                            	<button  class="btn btn-outline-info"type="button" onclick="updateMember();">수정</button>
-                            	<button class=" btn btn-outline-danger" type="button" onclick="deleteMember();">탈퇴</button>
-                            </div>
+                            <h6 class="m-0 font-weight-bold text-primary">뷰라밸 회원목록</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>선택</th>
                                             <th>아이디</th>
                                             <th>이름</th>
                                             <th>전화번호</th>
@@ -396,13 +391,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    
                                        <c:forEach var="m" items="${mList}">
-                                       
 	                                        <tr onclick="window.location.href='${pageContext.request.contextPath}/adminMemberDetail.me?memberId=${m.memberId}'">
-	                                         <td>
-                                       	 		<input type="checkbox" value="Y">
-                                      		 </td>
 	                                           <td>${m.memberId}</td>
 	                                           <td>${m.memberName}</td>
 	                                           <td>${m.phone}</td>

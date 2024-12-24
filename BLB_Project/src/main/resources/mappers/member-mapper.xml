@@ -168,6 +168,12 @@
 		   AND UPPER(status)='Y'
 	</select>
 	
+	<select id="selectMemberList"
+			resultMap="memberResultSet">
+		SELECT *
+		  FROM TB_MEMBER
+	</select>
+	
 	<insert id="insertMember" parameterType="member">
 	  	INSERT INTO TB_MEMBER (MEMBER_ID
 	                       ,MEMBER_NAME

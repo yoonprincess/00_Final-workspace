@@ -78,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public ArrayList<Member> selectMemberList() {
-		return null;
+		return memberDao.selectMemberList(sqlSession);
 	}
 	
 	@Transactional
