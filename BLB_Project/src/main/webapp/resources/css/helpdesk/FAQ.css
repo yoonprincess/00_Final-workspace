@@ -36,6 +36,28 @@
         .cancel-button:hover {
             background-color: #757575;
         }
+        
+        .btn-secondary {
+    float: right;
+    background-color: #A4EBF3; /* 밝은 하늘색 */
+    border: none;
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px; /* 안쪽 여백 */
+    font-size: 16px; /* 글자 크기 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    cursor: pointer; /* 마우스 포인터 변경 */
+    transition: background-color 0.3s, transform 0.2s; /* 애니메이션 효과 */
+}
+
+.btn-secondary:hover {
+    background-color: #81D4FA; /* 조금 더 진한 하늘색 */
+    transform: scale(1.05); /* 살짝 커지는 효과 */
+}
+
+.btn-secondary:active {
+    background-color: #4FC3F7; /* 클릭 시 더 진한 색상 */
+    transform: scale(0.95); /* 살짝 작아지는 효과 */
+}
 		
 		/* 기존 nav 스타일 대신 faq-menu에 적용 */
 		.faq-menu {
