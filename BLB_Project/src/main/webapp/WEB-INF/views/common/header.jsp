@@ -34,7 +34,7 @@
 
 	<!-- GSAP CDN 연동 구문 -->
 	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>	
-	
+
 
 </head>
 <body>
@@ -101,10 +101,55 @@
 		                    </span>
 		                </a>
 	           		</c:when>
-
+	           		
+	           		<c:when test="${not empty sessionScope.loginUser && sessionScope.loginUser.memberId eq 'admin' }">
+	                	<a class="menu-btn" href="${ pageContext.request.contextPath }/admin.blb">
+	                		<span class="material-symbols-outlined menu-icon">
+								construction
+							</span>
+	                	</a>
+						<div class="menu-btn notification-system">
+						    <a id="notification-toggle" href="#" aria-label="알림 토글" aria-expanded="false">
+						        <span class="material-symbols-outlined menu-icon">
+						            notifications
+						        </span>
+						        <span class="notification-count">0</span>
+						    </a>
+					    <div class="notification-dropdown" aria-label="알림">
+					        <div class="notification-actions">
+					            <button class="action-btn" id="mark-all-read">모두 읽음</button>
+					            <button class="action-btn" id="delete-all">모두 삭제</button>
+					        </div>
+					        <ul class="notification-list">
+					            <!-- 알림 항목들이 여기에 동적으로 추가됩니다 -->
+					        </ul>
+					    </div>
+						</div>
+		                	
+                        <a class="menu-btn" href="${ pageContext.request.contextPath }/wishList.me">
+                            <span class="material-symbols-outlined menu-icon">
+                                favorite
+                            </span>
+                        </a>
+                        
+                        <a class="menu-btn" href="${ pageContext.request.contextPath }/list.ct">
+                            <span class="material-symbols-outlined menu-icon">
+                                shopping_bag
+                            </span>
+                        </a>
+                        
+	                	<a class="menu-btn" href="${ pageContext.request.contextPath }/myPage.me">
+		                    <span class="material-symbols-outlined menu-icon">
+		                        person_check
+		                    </span>
+		                </a>	
+	               	 	<a class="menu-btn" href="${ pageContext.request.contextPath }/logout.me">
+		                    <span class="material-symbols-outlined menu-icon">
+		                        Logout
+		                    </span>
+		              	</a>
+			        </c:when>
 	                <c:otherwise>
-	                
-	                
                         <!-- 알림 -->
 						<div class="menu-btn notification-system">
 						    <a id="notification-toggle" href="#" aria-label="알림 토글" aria-expanded="false">
@@ -123,120 +168,6 @@
 						        </ul>
 						    </div>
 						</div>
-						<script>
-						document.addEventListener('DOMContentLoaded', function() {
-						    const notificationToggle = document.getElementById('notification-toggle');
-						    const notificationDropdown = document.querySelector('.notification-dropdown');
-						    const notificationCount = document.querySelector('.notification-count');
-						    const notificationList = document.querySelector('.notification-list');
-						    const markAllReadBtn = document.getElementById('mark-all-read');
-						    const deleteAllBtn = document.getElementById('delete-all');
-						
-						    // 알림 토글 기능
-						    notificationToggle.addEventListener('click', function(e) {
-						        e.preventDefault();
-						        const expanded = this.getAttribute('aria-expanded') === 'true' || false;
-						        this.setAttribute('aria-expanded', !expanded);
-						        notificationDropdown.style.display = expanded ? 'none' : 'block';
-						    });
-						
-						 	// 개별 알림 삭제 및 읽음 표시 기능
-						    notificationList.addEventListener('click', function(e) {
-						        const notificationItem = e.target.closest('.notification-item');
-						        if (!notificationItem) return; // 알림 항목 외의 클릭은 무시합니다
-
-						        if (e.target.closest('.delete-notification')) {
-						            notificationItem.remove();
-						            updateNotificationCount();
-						        } else if (e.target.closest('.read-notification')) {
-						            notificationItem.classList.add('read');
-						            updateNotificationCount();
-						        }
-						    });
-						
-						    // 모든 알림 읽기 기능
-						    markAllReadBtn.addEventListener('click', function() {
-						        const notifications = notificationList.querySelectorAll('.notification-item');
-						        notifications.forEach(notification => {
-						            notification.classList.add('read');
-						        });
-						        updateNotificationCount();
-						    });
-						
-						    // 모든 알림 삭제 기능
-						    deleteAllBtn.addEventListener('click', function() {
-						        notificationList.innerHTML = '';
-						        updateNotificationCount();
-						    });
-						
-						    // 알림 개수 업데이트 함수
-						    function updateNotificationCount() {
-						        const unreadCount = notificationList.querySelectorAll('.notification-item:not(.read)').length;
-						        notificationCount.textContent = unreadCount;
-						        notificationCount.style.display = unreadCount > 0 ? 'inline-block' : 'none';
-						    }
-							
-						    // 초기 알림 개수 설정
-						    updateNotificationCount();
-						
-						    // 실시간 알림 시뮬레이션 (실제 구현 시 이 부분을 서버와의 통신으로 대체)
-						    setInterval(function() {
-						        const newNotification = document.createElement('li');
-						        newNotification.className = 'notification-item';
-						        newNotification.innerHTML = `
-						            <p class="notification-message">새로운 실시간 알림입니다.</p>
-						            <div class="notification-actions">
-						                <button class="read-notification" aria-label="알림 읽음">
-						                    <span class="material-symbols-outlined">done</span>
-						                </button>
-						                <button class="delete-notification" aria-label="알림 삭제">
-						                    <span class="material-symbols-outlined">close</span>
-						                </button>
-						            </div>
-						        `;
-						        notificationList.prepend(newNotification);
-						        updateNotificationCount();
-						    }, 10000); // 10초마다 새 알림 추가 (테스트용)
-						});
-						
-					    
-						// 웹소켓 객체를 담을 전역변수
-						let socket2;
-						
-						$(function(){
-							connect2();
-						});
-						
-						// 접속용 함수
-						function connect2() {
-							
-							// 접속할 주소
-							let url = "ws://localhost:80/blb/noty.blb";
-							
-							socket2 = new WebSocket(url);
-							// > 객체가 생성된 동시에 채팅방에 입장됨!!
-							
-							socket2.onopen = function() {
-								console.log("연결 완료!");
-							};
-							
-							socket2.onclose = function() {
-								console.log("연결 종료!");
-							};
-							
-							socket2.onerror = function() {
-								console.log("에러 발생!");
-							};
-							
-							socket2.onmessage = function(e) {
-								
-								console.log("메세지 전송 완료");
-							};
-							
-						}
-						</script>
-						
-						
                         
                         <!-- 찜 -->
                         <a class="menu-btn" href="${ pageContext.request.contextPath }/wishList.me">
@@ -317,8 +248,121 @@
     
     <!-- header Javascript -->
     <script src="${ pageContext.request.contextPath }/resources/js/common/header.js"></script>
+    
     <script>
         const contextPath = "${pageContext.request.contextPath}";
+        
+        document.addEventListener('DOMContentLoaded', function() {
+		    const notificationToggle = document.getElementById('notification-toggle');
+		    const notificationDropdown = document.querySelector('.notification-dropdown');
+		    const notificationCount = document.querySelector('.notification-count');
+		    const notificationList = document.querySelector('.notification-list');
+		    const markAllReadBtn = document.getElementById('mark-all-read');
+		    const deleteAllBtn = document.getElementById('delete-all');
+		
+		    // 알림 토글 기능
+		    notificationToggle.addEventListener('click', function(e) {
+		        e.preventDefault();
+		        const expanded = this.getAttribute('aria-expanded') === 'true' || false;
+		        this.setAttribute('aria-expanded', !expanded);
+		        notificationDropdown.style.display = expanded ? 'none' : 'block';
+		    });
+		
+		 	// 개별 알림 삭제 및 읽음 표시 기능
+		    notificationList.addEventListener('click', function(e) {
+		        const notificationItem = e.target.closest('.notification-item');
+		        if (!notificationItem) return; // 알림 항목 외의 클릭은 무시합니다
+
+		        if (e.target.closest('.delete-notification')) {
+		            notificationItem.remove();
+		            updateNotificationCount();
+		        } else if (e.target.closest('.read-notification')) {
+		            notificationItem.classList.add('read');
+		            updateNotificationCount();
+		        }
+		    });
+		
+		    // 모든 알림 읽기 기능
+		    markAllReadBtn.addEventListener('click', function() {
+		        const notifications = notificationList.querySelectorAll('.notification-item');
+		        notifications.forEach(notification => {
+		            notification.classList.add('read');
+		        });
+		        updateNotificationCount();
+		    });
+		
+		    // 모든 알림 삭제 기능
+		    deleteAllBtn.addEventListener('click', function() {
+		        notificationList.innerHTML = '';
+		        updateNotificationCount();
+		    });
+		
+		    // 알림 개수 업데이트 함수
+		    function updateNotificationCount() {
+		        const unreadCount = notificationList.querySelectorAll('.notification-item:not(.read)').length;
+		        notificationCount.textContent = unreadCount;
+		        notificationCount.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+		    }
+			
+		    // 초기 알림 개수 설정
+		    updateNotificationCount();
+		
+		    // 실시간 알림 시뮬레이션 (실제 구현 시 이 부분을 서버와의 통신으로 대체)
+		    setInterval(function() {
+		        const newNotification = document.createElement('li');
+		        newNotification.className = 'notification-item';
+		        newNotification.innerHTML = `
+		            <p class="notification-message">새로운 실시간 알림입니다.</p>
+		            <div class="notification-actions">
+		                <button class="read-notification" aria-label="알림 읽음">
+		                    <span class="material-symbols-outlined">done</span>
+		                </button>
+		                <button class="delete-notification" aria-label="알림 삭제">
+		                    <span class="material-symbols-outlined">close</span>
+		                </button>
+		            </div>
+		        `;
+		        notificationList.prepend(newNotification);
+		        updateNotificationCount();
+		    }, 10000); // 10초마다 새 알림 추가 (테스트용)
+		});
+		
+	    
+		// 웹소켓 객체를 담을 전역변수
+		let socket2;
+		
+		$(function(){
+			connect2();
+		});
+		
+		// 접속용 함수
+		function connect2() {
+			
+			// 접속할 주소
+			let url = "ws://localhost:80/blb/noty.blb";
+			
+			socket2 = new WebSocket(url);
+			// > 객체가 생성된 동시에 채팅방에 입장됨!!
+			
+			socket2.onopen = function() {
+				console.log("연결 완료!");
+			};
+			
+			socket2.onclose = function() {
+				console.log("연결 종료!");
+			};
+			
+			socket2.onerror = function() {
+				console.log("에러 발생!");
+			};
+			
+			socket2.onmessage = function(e) {
+				
+				console.log("메세지 전송 완료");
+			};
+			
+		}
+        
     </script>
 
 </body>
