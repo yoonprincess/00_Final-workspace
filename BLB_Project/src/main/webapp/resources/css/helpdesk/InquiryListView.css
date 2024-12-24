@@ -76,6 +76,7 @@
         }
         table tbody tr:hover {
             background-color: #f9f9f9;
+            cursor : pointer;
         }
         table tbody td {
             padding: 15px;
