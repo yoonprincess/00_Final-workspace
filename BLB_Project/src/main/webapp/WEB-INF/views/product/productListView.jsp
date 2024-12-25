@@ -259,12 +259,12 @@
 	                <select id="sortBy" class="form-control form-control-sm mr-2">
 	                	<option value="recent" ${ sortBy == 'recent' ? 'selected' : '' }>최신순</option>
 	                	<option value="rating" ${ sortBy == 'rating' ? 'selected' : '' }>별점순</option>
-					    <option value="reviews" ${ sortBy == 'reviews' ? 'selected' : '' }>리뷰 많은 순</option>
+					    <option value="reviews" ${ sortBy == 'reviews' ? 'selected' : '' }>리뷰많은순</option>
 					    <option value="sales" ${ sortBy == 'sales' ? 'selected' : '' }>높은판매순</option>
 					    <option value="lowPrice" ${ sortBy == 'lowPrice' ? 'selected' : '' }>낮은가격순</option>
 					    <option value="highPrice" ${ sortBy == 'highPrice' ? 'selected' : '' }>높은가격순</option>
 					</select>
-					<select id="boardLimit" class="form-control form-control-sm">
+					<select id="boardLimit" class="form-control form-control-sm w-75">
 					    <option value="12" ${ boardLimit == '12' ? 'selected' : '' }>12개씩</option>
 					    <option value="20" ${ boardLimit == '20' ? 'selected' : '' }>20개씩</option>
 					    <option value="40" ${ boardLimit == '40' ? 'selected' : '' }>40개씩</option>
@@ -289,8 +289,9 @@
 				                            <button class="btn btn-light btn-sm rounded-circle shadow add-cart" title="장바구니 추가"
 													data-prodno="${ p.prodNo }"
 													data-memberid="${sessionScope.loginUser.memberId}">
+												<!-- <i class="fas fa-cart-arrow-down"></i> -->
 				                                <span class="material-symbols-outlined active">
-				                                    shopping_bag
+				                                    add_shopping_cart
 				                                </span>
 				                            </button>
 				                            <button class="btn btn-light btn-sm rounded-circle shadow wishlist-btn" title="찜하기" 

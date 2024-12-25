@@ -183,18 +183,16 @@ body {
 
 /* Google Fonts Icon 스타일 */
 .material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 48;
+    vertical-align: middle; /* 텍스트와 같은 라인에 정렬 */
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 200,
+    'opsz' 48;
 }
 .material-symbols-outlined.active {
     font-variation-settings:
-    'FILL' 1,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 48;
+    'FILL' 1
   }
 .menu-icon {
     font-size: 35px !important;

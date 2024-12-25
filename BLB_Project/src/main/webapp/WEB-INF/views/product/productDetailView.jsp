@@ -106,9 +106,13 @@
                             <button type="button" class="btn btn-outline-primary btn-lg mr-2 blb-btn" id="cartAddForm"
                                     data-prodno="${ p.prodNo }"
                                     data-memberid="${sessionScope.loginUser.memberId}">
-                                <i class="fas fa-shopping-cart mr-2"></i>장바구니
+                                <i class="fas fa-cart-arrow-down mr-0"></i>
+                                <!-- <span class="material-symbols-outlined">add_shopping_cart</span> -->
+                                장바구니
                             </button>
-                            <button type="button" class="btn btn-primary btn-lg mr-2 blb-btn" id="buyNow">바로구매</button>
+                            <button type="button" class="btn btn-primary btn-lg mr-2 blb-btn" id="buyNow">
+                                바로구매
+                            </button>
                             <button class="btn btn-outline-danger blb-btn wishlist-btn" title="찜하기" 
                                     data-iswished="${isWished}" data-prodno="${ p.prodNo }"
                                     data-memberid="${sessionScope.loginUser.memberId}">

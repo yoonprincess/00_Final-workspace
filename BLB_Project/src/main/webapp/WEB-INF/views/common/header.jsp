@@ -134,7 +134,7 @@
                         
                         <a class="menu-btn" href="${ pageContext.request.contextPath }/list.ct">
                             <span class="material-symbols-outlined menu-icon">
-                                shopping_bag
+                                shopping_cart
                             </span>
                         </a>
                         
@@ -179,7 +179,7 @@
                         <!-- 장바구니 -->
                         <a class="menu-btn" href="${ pageContext.request.contextPath }/list.ct">
                             <span class="material-symbols-outlined menu-icon">
-                                shopping_bag
+                                shopping_cart
                             </span>
                         </a>
                         
@@ -220,10 +220,10 @@
 					    </div>
 					</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">베스트</a>
+                        <a class="nav-link" href="${ pageContext.request.contextPath }/list.pr?sortBy=sales">베스트</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">신제품</a>
+                        <a class="nav-link" href="${ pageContext.request.contextPath }/list.pr?sortBy=recent">신제품</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">리뷰</a>

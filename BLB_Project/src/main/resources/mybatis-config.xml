@@ -17,6 +17,7 @@
 	 	
 	 	<typeAlias type="com.mig.blb.product.model.vo.Product" alias="product"/>
 	 	<typeAlias type="com.mig.blb.product.model.vo.ProductAtt" alias="productAtt"/>
+	 	<typeAlias type="com.mig.blb.product.model.vo.ProductBanner" alias="productBanner"/>
 	 	<typeAlias type="com.mig.blb.review.model.vo.Review" alias="review"/>
 	 	<typeAlias type="com.mig.blb.review.model.vo.ReviewAtt" alias="reviewAtt"/>
 	 	<typeAlias type="com.mig.blb.member.model.vo.Member" alias="member" />

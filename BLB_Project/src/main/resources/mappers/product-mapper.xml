@@ -19,6 +19,8 @@
 		<result column="REVIEW_COUNT" property="reviewCount"/>
 		<result column="IS_WISHED" property="isWished"/>
 		<result column="TOTAL_SALES" property="totalSales"/>
+		<result column="BANNER_IMG" property="bannerImg"/>
+		<result column="MD_IMG" property="mdImg"/>
 	</resultMap>
 	
 	<resultMap id="productAttResultSet" type="productAtt">
@@ -28,6 +30,16 @@
 		<result column="SAVE_PATH" property="savePath"/>
 		<result column="THUMB_PATH" property="thumbPath"/>
 		<result column="PROD_ATT_STATUS" property="prodAttStatus"/>
+		<result column="PROD_NO" property="prodNo"/>
+	</resultMap>
+	
+	<resultMap id="productBannerSet" type="productBanner">
+		<id column="PROD_BANNER_NO" property="prodBannerNo"/>
+		<result column="ORIG_FILE_NAME" property="origFileName"/>
+		<result column="SAVE_FILE_NAME" property="saveFileName"/>
+		<result column="SAVE_PATH" property="savePath"/>
+		<result column="MD_PATH" property="mdPath"/>
+		<result column="BANNER_STATUS" property="bannerStatus"/>
 		<result column="PROD_NO" property="prodNo"/>
 	</resultMap>
 	
@@ -71,6 +83,8 @@
 	               THEN 1
 	               ELSE 0
 	           END AS IS_WISHED
+	          , PB.BANNER_PATH || PB.SAVE_FILE_NAME AS "BANNER_IMG"
+	          , PB.MD_PATH || PB.SAVE_FILE_NAME AS "MD_IMG"
 		  FROM TB_PRODUCT P
 		  LEFT JOIN (
 		      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
@@ -84,6 +98,15 @@
 		       )
 		  ) PA
 		    ON P.PROD_NO = PA.PROD_NO
+		  LEFT JOIN (
+			    SELECT PROD_NO, 
+			           MAX(CASE WHEN BANNER_PATH IS NOT NULL THEN BANNER_PATH END) AS BANNER_PATH,
+			           MAX(CASE WHEN MD_PATH IS NOT NULL THEN MD_PATH END) AS MD_PATH,
+			           MAX(SAVE_FILE_NAME) AS SAVE_FILE_NAME
+			    FROM TB_PRODUCT_BANNER
+			    WHERE BANNER_STATUS = 'Y'
+			    GROUP BY PROD_NO
+			) PB ON P.PROD_NO = PB.PROD_NO
 		  LEFT JOIN TB_OPTION OPT ON P.PROD_NO = OPT.PROD_NO
 		  LEFT JOIN TB_PRODUCT_ORDER PO ON OPT.OPT_NO = PO.OPT_NO
  		  LEFT JOIN TB_REVIEW R ON PO.SERIAL_NO = R.SERIAL_NO AND R.REV_STATUS = 'Y'
@@ -101,7 +124,8 @@
            </if>
 	     GROUP BY P.PROD_NO, P.CATEGORY_NAME, P.SUBCATEGORY_NAME, P.PROD_NAME, 
 	     		  P.PROD_CONTENT, P.PROD_PRICE, P.PROD_COUNT, P.PROD_ENROLL_DATE, 
-	           	  PA.THUMB_PATH, PA.SAVE_FILE_NAME
+	           	  PA.THUMB_PATH, PA.SAVE_FILE_NAME, PB.BANNER_PATH, PB.MD_PATH,
+	           	  PB.SAVE_FILE_NAME
 		<choose>
 	        <when test="sortBy == 'recent'">
 	        	ORDER BY P.PROD_NO DESC

@@ -71,8 +71,7 @@ public class ProductController {
         }
         
 		int listCount = productService.selectProductCount(params);
-		
-		int pageLimit = 2;
+		int pageLimit = 5;
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
 											 pageLimit, boardLimit);
@@ -86,6 +85,7 @@ public class ProductController {
 		model.addAttribute("keyword", keyword);
 	    model.addAttribute("sortBy", sortBy);
 	    model.addAttribute("boardLimit", boardLimit);
+	    
 		
 		return "product/productListView";
 	}
@@ -442,4 +442,42 @@ public class ProductController {
     public String cartAddForm() {
 	    return "product/cartSuccessForm"; // 리뷰 작성 JSP 페이지
     }
+	
+	// 상품 목록보기 요청
+	@GetMapping("adminList.pr")
+	public String adminProductList(@RequestParam(value="ppage", defaultValue="1") int currentPage,
+									@RequestParam(value="category", defaultValue="전체제품") String category,
+									@RequestParam(value="subcategories", required=false) List<String> subcategories,
+									@RequestParam(value="keyword", required=false) String keyword,
+									@RequestParam(value="sortBy", defaultValue="recent") String sortBy,
+							        @RequestParam(value="boardLimit", defaultValue="999") int boardLimit,
+							        HttpSession session,
+									Model model) {
+		
+		
+		// params를 생성하여 전달
+        Map<String, Object> params = new HashMap<>();
+        params.put("category", category);
+        params.put("subcategories", subcategories);
+        params.put("keyword", keyword);
+        params.put("sortBy", sortBy);
+		
+        // 로그인한 유저라면 로그인 아이디도 전달 
+        if(session.getAttribute("loginUser") != null) {
+        	String loginMemberId = ((Member)session.getAttribute("loginUser")).getMemberId();
+        	params.put("memberId", loginMemberId);
+        }
+        
+		int listCount = productService.selectProductCount(params);
+		int pageLimit = 100;
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
+											 pageLimit, boardLimit);
+		
+		ArrayList<Product> pList = productService.selectProductList(pi, params);
+		
+		model.addAttribute("pList", pList);
+	    
+		return "admin/adminProduct";
+	}
 }
