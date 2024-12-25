@@ -231,18 +231,6 @@ $(function() {
         $('#additionalInfo').attr('placeholder', placeholderText);
     });
 
-
-    
-    // 입력 받은 배송 요청들 하나로 합치기
-    $('#enrollDeliForm').on('submit', function(event) {
-        var entryInfo1 = $('input[name="entry"]:checked').val();
-        var entryInfo2 = $('#additionalInfo').val();
-        var fullComment = entryInfo1 + '/' + entryInfo2;
-        
-        $('#deliComment').val(fullComment);
-    });
-
-
     // 아임포트 SDK 초기화
     if (typeof IMP !== "undefined") {
         IMP.init("imp28486016"); // 본인의 아임포트 가맹점 코드
@@ -319,12 +307,18 @@ $(function() {
 
             const memberId = $('#memberId').val();
             const rcvrName = $('#rcvrName').val().trim();
-            const rcvrPhone = $('#hidden-phone-number').val().trim();
             const rcvrAddress = "(" + $('#postCode').val() + ")" + $('#deliAddress').val() + $('#detailAddress').val();
+            const rcvrPhone = $('#hidden-phone-number').val().trim();
+
+            // 라디오 버튼 값과 추가 요청사항 값 합치기
+            var entryMethod = $('input[name="entry"]:checked').val();   // 라디오 버튼 값
+            var additionalInfo = $('#additionalInfo').val();    // 추가 요청 사항
+            const dlvrReqMessage = entryMethod + '/' + (additionalInfo || '');
+            console.log("배송메시지: " + dlvrReqMessage);
+            
             const paymentMethod = payOption;
             const totalAmt = $('#total-amt').text().replace(/[^0-9]/g, "");
             const dlvrFee = parseInt($('#dlvr-fee').text().replace(/[^0-9]/g, ""));
-            const dlvrReqMessage = $('#dlvrReqMessage').val();
 
             if (!rcvrName || !rcvrPhone || !rcvrAddress) { 
                 alert("배송 정보를 모두 입력해주세요.");

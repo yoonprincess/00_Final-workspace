@@ -69,6 +69,16 @@ $(function() {
         let prodPrice = parseInt($(this).data("prod-price"));   /// 상품 단가
         let cartNo = parseInt($(this).data("cart-no")); // 장바구니 번호
         
+        // 옵션 재고 수량
+        var remainQty = parseInt($('#prod-opt-' + cartNo).find("option:selected").data('remainqty'), 10);
+
+        if((currentQty + 1) > remainQty) {
+            // 재고 수량이 넘지 않게
+
+            alert('최대 ' + remainQty + '개 주문 가능합니다. (재고: ' + remainQty + ')');
+            return;
+        }
+
         // 수량 증가 시 총 가격 계산
         let updatedQty = currentQty + 1;  // 수량 1 증가
 
@@ -114,7 +124,10 @@ $(function() {
         const prodPrice = parseInt($(this).data("prod-price"));   /// 상품 단가
         const cartNo = parseInt($(this).data("cart-no")); // 장바구니 번호
 
-        if (currentQty < 2) {	// 1 이하로 내려가지 않게
+        console.log("현재 수량 : " + currentQty);
+
+        if ((currentQty - 1) < 1) {
+            // 1 이하로 내려가지 않게
 
             alert("수량은 1개 이상이어야 합니다.");
             return;

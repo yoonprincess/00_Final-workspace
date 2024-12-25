@@ -29,6 +29,7 @@
 		                   , RCVR_NAME
 		                   , RCVR_PHONE
 		                   , RCVR_ADDRESS
+		                   , DLVR_REQ_MESSAGE
 		                   , DLVR_STATUS
 		                   , DLVR_FEE
 		                   , DLVR_COMPANY
@@ -41,6 +42,7 @@
 		                   , #{rcvrName}
 		                   , #{rcvrPhone}
 		                   , #{rcvrAddress}
+		                   , #{dlvrReqMessage}
 		                   , '배송대기'
 		                   , #{dlvrFee}
 		                   , '대한통운'
@@ -60,23 +62,17 @@
 	
 	<!-- 상품/주문(TB_PRODUCT_ORDER) 정보 생성용 쿼리문 -->
 	<insert id="insertProductOrder" parameterType="map">
-	    INSERT INTO TB_PRODUCT_ORDER (
-	        SERIAL_NO, 
-	        ORDER_QTY, 
-	        TOTAL_AMT, 
-	        ORDER_NO, 
-	        OPT_NO
-	    )
-	    VALUES (
-	        SEQ_SERIAL_NO.NEXTVAL,
-	        #{orderQty},
-	        #{totalAmt},
-	        #{orderNo},
-	        #{optNo}
-	    )
+		INSERT INTO TB_PRODUCT_ORDER (SERIAL_NO
+		                            , ORDER_QTY
+		                            , TOTAL_AMT
+		                            , ORDER_NO
+		                            , OPT_NO)
+		                      VALUES (SEQ_SERIAL_NO.NEXTVAL
+		                            , #{orderQty}
+		                            , #{totalAmt}
+		                            , #{orderNo}
+		                            , #{optNo})
 	</insert>
-
-
 	
 	<!-- 주문 정보(TB_ORDER) 조회용 쿼리문 -->
     <select id="selectOrder" resultMap="orderResultSet">
@@ -84,6 +80,7 @@
 	           RCVR_NAME,
 	           RCVR_PHONE,
 	           RCVR_ADDRESS,
+	           DLVR_REQ_MESSAGE
 	           DLVR_STATUS,
 	           DLVR_FEE,
 	           DLVR_COMPANY,

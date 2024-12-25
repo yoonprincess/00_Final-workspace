@@ -174,8 +174,7 @@
                                     <div class="form-input">
                                         <input type="text"
                                                class="address-input"
-                                               id="dlvrReqMessage"
-                                               name="dlvrReqMessage"
+                                               id="additionalInfo"
                                                placeholder="공동현관 비밀번호를 입력하세요"
                                                value="${selectedDelivery.deliComment}">
                                     </div>
