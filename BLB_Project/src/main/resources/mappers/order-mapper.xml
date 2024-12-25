@@ -33,18 +33,20 @@
 		                   , DLVR_FEE
 		                   , DLVR_COMPANY
 		                   , ORDER_TOTAL_AMT
+                           , PAYMENT_CODE
 		                   , PAYMENT_METHOD
 		                   , ORDER_DATE
 		                   , MEMBER_ID)
 		              VALUES(SEQ_ORDER_NO.NEXTVAL
-		                   , '윤예원'
-		                   , '01099999999'
-		                   , '경기도 부천시 원미구'
+		                   , #{rcvrName}
+		                   , #{rcvrPhone}
+		                   , #{rcvrAddress}
 		                   , '배송대기'
-		                   , 0
+		                   , #{dlvrFee}
 		                   , '대한통운'
 		                   , #{orderTotalAmt}
-		                   , '카카오페이'
+                           , #{impUid}
+		                   , #{paymentMethod}
 		                   , SYSDATE
 		                   , #{memberId})
 	</insert>
@@ -57,18 +59,24 @@
 	</select>
 	
 	<!-- 상품/주문(TB_PRODUCT_ORDER) 정보 생성용 쿼리문 -->
-	<insert id="insertProductOrder"
-			parameterType="productOrder">
-		INSERT INTO TB_PRODUCT_ORDER (SERIAL_NO, ORDER_QTY, TOTAL_AMT, ORDER_NO, OPT_NO)
-		SELECT SEQ_PRODUCT_ORDER_NO.NEXTVAL, C.CART_QTY, (C.CART_QTY * (P.PROD_PRICE + O.OPT_ADD_PRICE)), #{orderNo}, C.OPT_NO
-		  FROM TB_CART C
-		  JOIN TB_OPTION O ON C.OPT_NO = O.OPT_NO
-		  JOIN TB_PRODUCT P ON C.PROD_NO = P.PROD_NO
-		 WHERE C.CART_NO IN 
-		<foreach collection="checkedCartNos" item="cartNo" open="(" separator="," close=")">
-		    #{cartNo}
-		</foreach>
+	<insert id="insertProductOrder" parameterType="map">
+	    INSERT INTO TB_PRODUCT_ORDER (
+	        SERIAL_NO, 
+	        ORDER_QTY, 
+	        TOTAL_AMT, 
+	        ORDER_NO, 
+	        OPT_NO
+	    )
+	    VALUES (
+	        SEQ_SERIAL_NO.NEXTVAL,
+	        #{orderQty},
+	        #{totalAmt},
+	        #{orderNo},
+	        #{optNo}
+	    )
 	</insert>
+
+
 	
 	<!-- 주문 정보(TB_ORDER) 조회용 쿼리문 -->
     <select id="selectOrder" resultMap="orderResultSet">

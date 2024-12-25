@@ -26,7 +26,7 @@ public class ProductOrder {
 	private String serialNo;
 	private int orderQty;
 	private int totalAmt;
-	private String orderNo;
+	private int orderNo;
 	private int optNo;
 	
 	private String prodName;

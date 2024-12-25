@@ -38,7 +38,7 @@
                             <td class="amount">0원</td>
                         </tr>
                         <tr>
-                            <td>적립금 사용</td>
+                            <td>적립 금액</td>
                             <td class="amount negative">-1,460원</td>
                         </tr>
                     </tbody>

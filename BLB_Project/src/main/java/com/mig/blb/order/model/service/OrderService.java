@@ -3,6 +3,9 @@ package com.mig.blb.order.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.order.model.vo.Order;
@@ -26,7 +29,7 @@ public interface OrderService {
 	int selectOrderNo();
 
 	// PRODUCT_ORDER 테이블에 데이터 넣기
-	int insertProductOrder(int orderNo, List<Integer> checkedCartNos);
+	int insertProductOrder(List<ProductOrder> productOrders);
 
 	// ORDER, PRODUCT_ORDER에서 주문 정보 가져오기
 	// ORDER

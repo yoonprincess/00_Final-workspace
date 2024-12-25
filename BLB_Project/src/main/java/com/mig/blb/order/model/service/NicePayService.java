@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 public class NicePayService {
 
     private static final String NICEPAY_API_URL = "https://api.nicepay.co.kr/v1/payments/request";
-    private static final String CLIENT_ID = "S2_af4543a0be4d49a98122e01ec2059a56";
+    private static final String CLIENT_ID = "TC0ONETIME";
 
     public Map<String, Object> preparePayment(String orderNo, int totalAmount) {
         RestTemplate restTemplate = new RestTemplate();

@@ -53,13 +53,13 @@ public class OrderDao {
 		return sqlSession.selectOne("orderMapper.selectOrderNo");
 	}
 
-	public int insertProductOrder(SqlSessionTemplate sqlSession, int orderNo, List<Integer> checkedCartNos) {
+	public int insertProductOrder(SqlSessionTemplate sqlSession, List<ProductOrder> productOrders) {
 
-		Map<String, Object> paramMap = new HashMap<>();
-	    paramMap.put("orderNo", orderNo);           // ORDER_NO 전달
-	    paramMap.put("checkedCartNos", checkedCartNos); // 장바구니 번호 리스트 전달
-
-	    return sqlSession.insert("orderMapper.insertProductOrder", paramMap);
+		int result = 0;
+	    for (ProductOrder productOrder : productOrders) {
+	        result += sqlSession.insert("orderMapper.insertProductOrder", productOrder);
+	    }
+	    return result;
 	}
 
 

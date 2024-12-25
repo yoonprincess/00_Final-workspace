@@ -3,6 +3,7 @@ package com.mig.blb.order.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public int insertProductOrder(int orderNo, List<Integer> checkedCartNos) {
-		return orderDao.insertProductOrder(sqlSession, orderNo, checkedCartNos);
+	public int insertProductOrder(List<ProductOrder> productOrders) {
+		return orderDao.insertProductOrder(sqlSession, productOrders);
 	}
 
 	@Override

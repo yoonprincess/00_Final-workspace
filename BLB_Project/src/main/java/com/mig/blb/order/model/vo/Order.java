@@ -52,6 +52,10 @@ public class Order {
     private String refundReason;       // 환불 사유
     private String memberId;           // 회원 ID
     
+    private String impUid;
+    private String merchantUid;
+    private int paidAmount;
+    
     // 마이바티스에서 collection 연결용
     private ArrayList<ProductOrder> productOrder; 
     

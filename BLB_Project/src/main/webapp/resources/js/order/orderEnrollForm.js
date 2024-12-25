@@ -3,7 +3,7 @@ $(function() {
     // 모든 select 요소에 대해 처리
     $("#deliSelect").each(function() {
         
-        // 선택된 배송지 배송코드드
+        // 선택된 배송지 배송코드
         const deliCode = parseInt($(this).val());
 
         // select 내부의 모든 option 요소 탐색
@@ -37,11 +37,11 @@ $(function() {
                 success: function (response) {
                     if (response) {
                         // 값 업데이트
-                        $('#deliCode').val(response.deliCode);
+                        $('#deliNickname').val(response.deliNickname);
                         $('#rcvrName').val(response.deliName);
                         $('#dlvrPostCode').val(response.postcode);
-                        $('#rcvrAddress').val(response.deliAddress);
-                        $('#rcvrDetailAddress').val(response.detailAddress);
+                        $('#deliAddress').val(response.deliAddress);
+                        $('#detailAddress').val(response.detailAddress);
     
                         const phone = response.deliPhone;
                         if (phone) {
@@ -172,8 +172,23 @@ $(function() {
             totalPrice += prodOrderPrice;
         });
 
+       // 총 판매가
+        $('#total-amt').text(`${totalPrice.toLocaleString()}원`);
+
+        // 총 할인가 (5% 할인)
+        let discount = totalPrice * 0.05; // 총 판매가의 5%
+        $('.discount').text(`${discount.toLocaleString()}원`);
+
+        // 배송비
+        let dlvrFee = totalPrice <= 50000 ? 3000 : 0;
+        $("#dlvr-fee").text(`${dlvrFee.toLocaleString()}원`);
+
+        // 총 결제 예상 금액 최소 ('총 판매가 - 총 할인가 + 배송비')
+        let finalPrice = totalPrice - discount + dlvrFee;
+        $('.final-price').text(`${finalPrice.toLocaleString()}원`);
+
         // 최종 총합 가격 DOM 업데이트
-        $('.final-order-price').text(`총 합계 ${totalPrice.toLocaleString()}원`);
+        $('.final-order-price').text(`${finalPrice.toLocaleString()}원`);
     }
 
     // 초기 계산 수행
@@ -191,22 +206,6 @@ $(function() {
         calculateTotalPrice();
     });
 
-
-
-
-    // 배송비
-    // let dlvrFee = totalAmt <= 50000 ? 3000 : 0;
-
-    // $("#dlvr-fee").text(`${dlvrFee.toLocaleString()}원`);
-
-    // 결제 예상 금액
-    // let finalTotal = (totalAmt + dlvrFee);
-
-    // console.log("결제 예상 금액 : " + finalTotal);
-
-    // $('.final-price span').text(`${finalTotal.toLocaleString()}`);
-    // $('.final-order-price').text(`${finalTotal.toLocaleString()}`);
-    
 
     // 배송지 요청 사항
     $('input[name="entry"]').on('change', function() {
@@ -232,6 +231,8 @@ $(function() {
         $('#additionalInfo').attr('placeholder', placeholderText);
     });
 
+
+    
     // 입력 받은 배송 요청들 하나로 합치기
     $('#enrollDeliForm').on('submit', function(event) {
         var entryInfo1 = $('input[name="entry"]:checked').val();
@@ -241,31 +242,49 @@ $(function() {
         $('#deliComment').val(fullComment);
     });
 
+
+    // 아임포트 SDK 초기화
+    if (typeof IMP !== "undefined") {
+        IMP.init("imp28486016"); // 본인의 아임포트 가맹점 코드
+        console.log("IMP SDK 초기화 완료");
+    } else {
+        console.error("IMP SDK 로드 실패");
+    }
+
+
     // 결제하기 버튼 클릭 이벤트
     $('.payment-button').on('click', function(event) {
 
         event.preventDefault(); // 폼 기본 제출 동작 방지
 
         const orderNo = $("#orderNo").val(); // 주문 No
-        const totalAmount = $("#total-amt").text().replace(/[^0-9]/g, ""); // 결제 금액
+        console.log("주문번호 : " + orderNo);
 
-        var productData = [];
-    
+        
+        const orderTotalAmt = parseInt($(".final-price").text().replace(/[^0-9]/g, "")); // 결제 금액
+        
+        
         // 각 상품의 데이터를 배열에 저장
+        var productData = [];
+
         $('.order-product').each(function() {
-            var productName = $(this).find('.product-title').text().trim();
-            var productOption = $(this).find('.product-option').text().trim();
-            var productQuantity = $(this).find('.product-quantity').text().replace(/[^0-9]/g, "");
-            var productPrice = $(this).find('.product-price').text().replace(/[^0-9]/g, "");
-    
+            // 장바구니 번호
+            const cartNo = $(this).data('cart-no');
+
+            // 각 상품 데이터 추출
+            const orderQty = $(`.product-option-` + cartNo).data('cart-qty'); // 수량
+            const productPrice = $(`.product-price-` + cartNo).text().replace(/[^0-9]/g, ""); // 가격
+            const totalAmt = productPrice * orderQty;
+            const optNo = $(`.product-option-` + cartNo).data('opt-no'); // cartNo를 optNo로 사용
+
             // 상품 데이터를 객체로 저장
             productData.push({
-                name: productName,
-                option: productOption,
-                quantity: parseInt(productQuantity),
-                price: parseInt(productPrice)
+                orderQty: parseInt(orderQty, 10),
+                totalAmt: parseInt(totalAmt, 10),
+                optNo: parseInt(optNo, 10)
             });
         });
+
 
         // if (payOption === '카카오페이') {
         //     // 카카오페이 결제 요청
@@ -295,29 +314,88 @@ $(function() {
         //         }
         //     });
         // } else 
+
         if(payOption === '신용카드') {
-            // 나이스페이 결제 요청
 
-            console.log("넘어가냐?");
+            const memberId = $('#memberId').val();
+            const rcvrName = $('#rcvrName').val().trim();
+            const rcvrPhone = $('#hidden-phone-number').val().trim();
+            const rcvrAddress = "(" + $('#postCode').val() + ")" + $('#deliAddress').val() + $('#detailAddress').val();
+            const paymentMethod = payOption;
+            const totalAmt = $('#total-amt').text().replace(/[^0-9]/g, "");
+            const dlvrFee = parseInt($('#dlvr-fee').text().replace(/[^0-9]/g, ""));
+            const dlvrReqMessage = $('#dlvrReqMessage').val();
 
-            // NicePay Server Auth Payment
-            AUTHNICE.requestPay({
-                clientId: 'S2_af4543a0be4d49a98122e01ec2059a56',
-                method: 'card',
-                orderId: '634d6c22-9aff-43cb-b9b0-d56ce72484be',
-                amount: 1004,
-                goodsName: '나이스페이-상품',
-                returnUrl: 'http://localhost:3000/serverAuth', // API를 호출할 Endpoint 입력
-                fnError: function (result) {
-                    alert('개발자확인용 : ' + result.errorMsg);
-                }
-            });
+            if (!rcvrName || !rcvrPhone || !rcvrAddress) { 
+                alert("배송 정보를 모두 입력해주세요.");
+                event.preventDefault();
+                return;
+            }
+        
+            if (!paymentMethod) {
+                alert("결제 수단을 선택해주세요.");
+                event.preventDefault();
+                return;
+            }
+
+            try {
+                // 나이스페이 요청
+                IMP.request_pay({
+                    pg: "nice",
+                    paymethod: "card",
+                    amount: 100,
+                    name: "뷰라밸",
+                    merchant_uid: "ORD" + new Date().getTime(), // 고유 주문 ID
+                }, async function (rsp) {
+                    if (rsp.success) {
+                        // 결제가 성공하면 서버로 결제 정보 전송
+                        const response = await fetch('payment.or', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                imp_uid: rsp.imp_uid, // 결제 고유 번호
+                                merchant_uid: rsp.merchant_uid, // 주문 번호
+                                paid_amount: rsp.paid_amount, // 결제 금액
+                                rcvrName : rcvrName,
+                                rcvrPhone : rcvrPhone,
+                                rcvrAddress : rcvrAddress,
+                                dlvrReqMessage : dlvrReqMessage,
+                                paymentMethod : paymentMethod,
+                                orderTotalAmt : orderTotalAmt,
+                                dlvrFee: dlvrFee,
+                                products: productData, // productData 배열 추가
+                                memberId : memberId
+                            }
+                        ),
+                        });
+                        
+                        const result = await response.json();
+                        if (result.status === "success") {
+                            
+                            alert("결제가 완료되었습니다!");
+                            location.href = "${pageContext.request.contextPath}/payComplete.or?pno="; // 결제 성공 페이지로 이동
+                        } else {
+                            alert("결제 확인에 실패했습니다.");
+                        }
+                    } else {
+                        alert("결제가 취소되었습니다. " + rsp.error_msg);
+                    }
+                });
+            } catch (error) {
+                console.error("결제 요청 중 오류 발생:", error);
+                alert("결제 처리 중 문제가 발생했습니다.");
+            }
+
         } else if (payOption) {
             alert(`${payOption} 결제는 아직 구현되지 않았습니다.`);
         } else {
             alert('결제 수단을 선택해주세요.');
         }
     });
+
+    // onClickPay();
 
     // 페이지 로딩 시에도 결제하기 버튼 비활성화
     const allChecked = $('.check-term').length === $('.check-term:checked').length;
