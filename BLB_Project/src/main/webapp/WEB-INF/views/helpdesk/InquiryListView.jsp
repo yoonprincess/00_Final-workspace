@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1:1 문의내역</title>
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/helpdesk/InquiryListView.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -37,12 +38,13 @@
                     <th>내용</th>
                     <th>등록일</th>
                     <th>답변상태</th>
+                    <th>작업</th>
                 </tr>
             </thead>
             <tbody>
                 <c:if test="${empty list}">
                     <tr>
-                        <td colspan="5">문의한 내용이 없습니다.</td>
+                        <td colspan="6">문의한 내용이 없습니다.</td>
                     </tr>
                 </c:if>
                 <c:forEach var="i" items="${requestScope.list}">
@@ -56,6 +58,14 @@
 							    <c:when test="${i.inquiryAnsweredYn == 'Y'}">답변 완료</c:when>
 							    <c:otherwise>답변 대기</c:otherwise>
 							</c:choose>
+                        </td>
+                        <td>
+                            <button class="btn-edit" onclick="editInquiry(${i.inquiryNo})">
+                                <i class="material-icons">edit</i>
+                            </button>
+                            <button class="btn-delete" onclick="deleteInquiry(${i.inquiryNo})">
+                                <i class="material-icons">delete</i>
+                            </button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -110,3 +120,4 @@
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>
+

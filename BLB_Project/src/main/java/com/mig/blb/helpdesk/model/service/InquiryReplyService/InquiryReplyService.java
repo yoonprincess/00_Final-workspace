@@ -11,5 +11,10 @@ public interface InquiryReplyService {
 	
 	// 댓글 작성 서비스 (Ajax)
 	int insertInquiryReply(InquiryReply r);
+
+	// 댓글 삭제 서비스
+	int deleteInquiryReply(int ino);
+
+	int updateInquiryReply(InquiryReply ir);
 	
 }

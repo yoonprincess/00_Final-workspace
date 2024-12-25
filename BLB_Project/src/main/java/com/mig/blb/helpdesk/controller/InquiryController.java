@@ -90,7 +90,7 @@ public class InquiryController {
 	@PostMapping("insert.io")
 	public ModelAndView insertInquiry(Inquiry i,
 									  RedirectAttributes ar,
-									  @RequestParam(value="upfile", required=false) MultipartFile[] upfile,
+									  MultipartFile[] upfile,
 									  HttpSession session,
 									  ModelAndView mv){
 		
@@ -246,6 +246,47 @@ public class InquiryController {
 		
 		return (result > 0) ? "success" : "fail";
 	}
+	
+	@PostMapping(value = "rupdate.io")
+	@ResponseBody // AJAX 요청에 대한 응답을 JSON 형태로 반환
+	public String updateInquiryReply(@RequestParam("ino") int inquiryReplyNo,
+	                                 @RequestParam("inquiryReplyContent") String inquiryReplyContent,
+	                                 @RequestParam("memberId") String memberId) {
+	    // InquiryReply 객체에 데이터 설정
+	    InquiryReply ir = new InquiryReply();
+	    ir.setInquiryReplyNo(inquiryReplyNo);
+	    ir.setInquiryReplyContent(inquiryReplyContent);
+	    ir.setMemberId(memberId);
+
+	    // 댓글 수정 로직 호출
+	    int result = inquiryReplyService.updateInquiryReply(ir);
+
+	    // 결과 반환
+	    return result > 0 ? "success" : "fail";
+	}
+
+	
+	
+	// 댓글 삭제 요청
+	@PostMapping(value="rdelete.io")
+	public String deleteInquiryReply(int ino,
+									 Model model,
+								     HttpSession session,
+								     RedirectAttributes ar) {
+		
+		
+		
+		int result = inquiryReplyService.deleteInquiryReply(ino);
+		if(result > 0) {
+			session.setAttribute("aletMsg", "댓글이 성공적으로 삭제되었습니다.");
+			
+			return "redirect:/rlist.io";
+		} else {
+			ar.addFlashAttribute("alertMsg", "댓글 삭제에 실패했습니다.");
+			return "redirect:/rlist.io";
+		}
+	}
+	
 	
 	// 첨부파일을 위한 메소드
 	public String saveFile(MultipartFile upfile,

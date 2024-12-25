@@ -370,6 +370,7 @@
 	  ORDER BY INQUIRY_REPLY_NO
 	</select>
 	
+	<!-- 댓글 등록 -->
 	<insert id="insertInquiryReply" parameterType="inquiryReply">
 	    INSERT INTO TB_INQUIRY_REPLY (
 	        INQUIRY_REPLY_NO,
@@ -388,5 +389,20 @@
 	    )
 	</insert>
 
+	<!-- 댓글 삭제 -->
+	<update id="deleteInquiryReply" parameterType="_int">
+		UPDATE TB_INQUIRY_REPLY
+		   SET INQUIRY_REPLY_STATUS = 'N'
+		 WHERE INQUIRY_REPLY_NO = #{inquiryReplyNo}
+	</update>
+	
+	
+	<!-- 댓글 수정 -->
+	<update id="updateInquiryReply" parameterType="inquiry">
+		UPDATE TB_INQUIRY_REPLY
+    	   SET INQUIRY_REPLY_CONTENT = #{inquiryReplyContent},
+               INQUIRY_REPLY_UPDATE_DATE = SYSDATE
+         WHERE INQUIRY_REPLY_NO = #{inquiryReplyNo}
+	</update>
 	
 </mapper>

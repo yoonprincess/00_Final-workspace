@@ -19,4 +19,14 @@ public class InquiryReplyDao {
 		// insert 문 : insert 메소드
 		return sqlSession.insert("helpdeskMapper.insertInquiryReply", r);
 	}
+
+	public int deleteInquiryReply(SqlSessionTemplate sqlSession, int ino) {
+		// delete 문 : delete 메소드
+		return sqlSession.update("helpdeskMapper.deleteInquiryReply", ino);
+	}
+
+	public int updateInquiryReply(SqlSessionTemplate sqlSession, InquiryReply ir) {
+		// update 문 : update 메소드
+		return sqlSession.update("helpdeskMapper.updateInquiryReply", ir);
+	}
 }

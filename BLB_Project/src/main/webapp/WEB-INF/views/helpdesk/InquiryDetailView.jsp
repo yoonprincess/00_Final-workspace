@@ -19,10 +19,10 @@
         <h1>문의사항 상세조회</h1>
         <div class="inquiry-details">
             <c:choose>
-            	<c:when test="${not empty requestScope.i.prodName}">
-            		<p><span class="label">상품명:</span> ${requestScope.i.prodName}</p>
-            	</c:when>
-            	<c:otherwise></c:otherwise>
+                <c:when test="${not empty requestScope.i.prodName}">
+                    <p><span class="label">상품명:</span> ${requestScope.i.prodName}</p>
+                </c:when>
+                <c:otherwise></c:otherwise>
             </c:choose>
             <p><span class="label">문의 번호:</span> ${requestScope.i.inquiryNo}</p>
             <p><span class="label">문의자:</span> ${requestScope.i.memberId}</p>
@@ -48,6 +48,7 @@
                         <th>작성자</th>
                         <th>내용</th>
                         <th>작성일</th>
+                        <th>관리</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,17 +66,16 @@
                     <button class="btn btn-secondary" disabled>등록하기</button>
                 </c:when>
                 <c:otherwise>
-                    <textarea class="form-control" id="inquiryReplyContent" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
+                    <textarea class="form-control" id="edit-content-${replyNo}" style="resize:none;">${content}</textarea>                    
                     <div class="reply-buttons">
                         <button class="btn btn-secondary" onclick="addReply();">등록하기</button>
                     </div>
                 </c:otherwise>
             </c:choose>
         </div>
-
-        
     </div>
 </div>
+
 <script>
     $(function() {
         selectReplyList();
@@ -90,7 +90,7 @@
         gsap.from("#commentsTable tbody tr", { opacity: 0, y: 30, duration: 0.5, stagger: 0.2 });
         
         // 실시간 댓글 등록 효과
-        setInterval(selectReplyList, 1000);
+        //setInterval(selectReplyList, 1000);
     });
     
     // 댓글 작성용 함수
@@ -125,29 +125,137 @@
 
     // 댓글 목록 조회용 함수
     function selectReplyList() {
-        $.ajax({
-            url : "../rlist.io",
-            type : "get",
-            data : {
-                ino : ${ requestScope.i.inquiryNo }
-            },
-            success : function(result) {
-                let resultStr = "";
-                for(let r = 0; r < result.length; r++) {
-                    resultStr += "<tr>"
-                                    + "<th>" + result[r].memberId + "</th>"
-                                    + "<td>" + result[r].inquiryReplyContent + "</td>"
-                                    + "<td>" + result[r].inquiryReplyCreateDate + "</td>"
-                               + "</tr>";
+    $.ajax({
+        url : "../rlist.io",
+        type : "get",
+        data : {
+            ino : ${ requestScope.i.inquiryNo }
+        },
+        success : function(result) {
+            let resultStr = "";
+            for(let r = 0; r < result.length; r++) {
+                resultStr += "<tr>"
+                                + "<th>" + result[r].memberId + "</th>"
+                                + "<td class='reply-content-" + result[r].inquiryReplyNo + "'>" 
+                                    + result[r].inquiryReplyContent 
+                                + "</td>"
+                                + "<td>" + result[r].inquiryReplyCreateDate + "</td>"
+                                + "<td>";
+                // 댓글 작성자와 로그인한 사용자가 같은 경우에만 버튼 표시
+                if(result[r].memberId === "${sessionScope.loginUser.memberId}") {
+                    resultStr += "<button class='btn btn-sm btn-primary mr-2 edit-btn-" + result[r].inquiryReplyNo + "' onclick='showEditForm("
+                                + result[r].inquiryReplyNo + ", \""
+                                + result[r].inquiryReplyContent + "\")'>수정</button>"
+                                + "<button class='btn btn-sm btn-danger delete-btn-" + result[r].inquiryReplyNo + "' onclick='deleteReply("
+                                + result[r].inquiryReplyNo + ")'>삭제</button>";
                 }
-                $("#replyArea>tbody").html(resultStr);
-                $("#rcount").text(result.length);
+                resultStr += "</td></tr>";
+            }
+            $("#replyArea>tbody").html(resultStr);
+            $("#rcount").text(result.length);
+        },
+        error : function() {
+            console.log("댓글리스트 조회용 ajax 통신 실패!");
+        }
+    });
+}
+
+ // 댓글 수정창 표시
+    function showEditForm(replyNo, content) {
+        const td = $('.reply-content-' + replyNo);  // 해당 댓글의 내용을 감싸고 있는 td를 선택
+        const editBtn = $('.edit-btn-' + replyNo); // 수정 버튼
+        const deleteBtn = $('.delete-btn-' + replyNo); // 삭제 버튼
+
+        // 수정창으로 변환
+        td.html(`
+            <div class="input-group">
+                <textarea class="form-control" id="edit-content-${replyNo}" style="resize:none;">${content}</textarea>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" onclick="updateReply(${replyNo})">저장</button>
+                    <button class="btn btn-secondary" onclick="cancelEdit(${replyNo}, '${content}')">취소</button>
+                </div>
+            </div>
+        `);
+
+        // 수정 중일 때 기존 버튼 숨김
+        editBtn.hide();
+        deleteBtn.hide();
+    }
+
+    // 수정 취소
+    function cancelEdit(replyNo, originalContent) {
+        const td = $('.reply-content-' + replyNo);  // 해당 댓글의 내용을 감싸고 있는 td를 선택
+        const editBtn = $('.edit-btn-' + replyNo); // 수정 버튼
+        const deleteBtn = $('.delete-btn-' + replyNo); // 삭제 버튼
+
+        // 원래 내용으로 복구
+        td.html(originalContent);  // 원래 댓글 내용으로 복구
+
+        // 버튼 다시 표시
+        editBtn.show();
+        deleteBtn.show();
+    }
+
+
+    // 댓글 수정
+    function updateReply(replyNo) {
+    const content = $(`#edit-content-${replyNo}`).val(); // 입력된 댓글 내용
+
+    if (content.trim().length === 0) {
+        alertify.alert("Alert", "댓글 내용을 입력해주세요.");
+        return;
+    }
+
+    $.ajax({
+        url: "../rupdate.io", // 댓글 수정 요청
+        type: "post",
+        data: {
+            ino: replyNo, // 'ino' 파라미터 추가
+            inquiryReplyContent: content // 수정된 내용 전달
+        },
+        success: function(result) {
+            if (result === "success") {
+                // 수정 성공 시 화면에서 수정된 내용 직접 갱신
+                const td = $('.reply-content-' + replyNo);
+                td.text(content); // 수정된 내용으로 갱신
+
+                // 수정/삭제 버튼 다시 표시
+                $('.edit-btn-' + replyNo).show();
+                $('.delete-btn-' + replyNo).show();
+            } else {
+                alertify.alert("Alert", "댓글 수정 실패");
+            }
+        },
+        error: function() {
+            console.log("댓글 수정 ajax 통신 실패!");
+        }
+    });
+}
+
+
+
+function deleteReply(replyArea) {
+    if(confirm("정말 삭제하시겠습니까?")) {
+        $.ajax({
+            url: "../rdelete.io",
+            type: "post",
+            data: {
+                ino: replyArea,
+                memberId: "${sessionScope.loginUser.memberId}"
             },
-            error : function() {
-                console.log("댓글리스트 조회용 ajax 통신 실패!");
+            success: function(result) {
+                if(result === "success") {
+                    selectReplyList();
+                } else {
+                    alertify.alert("Alert", "댓글 삭제 실패");
+                }
+            },
+            error: function() {
+                console.log("댓글 삭제용 ajax 통신 실패!");
             }
         });
     }
+}
 </script>
 
 <script src="${pageContext.request.contextPath}/resources/js/helpdesk/Inquiry.js"></script>

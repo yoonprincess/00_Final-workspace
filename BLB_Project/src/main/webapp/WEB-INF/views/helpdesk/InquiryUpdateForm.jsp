@@ -45,6 +45,11 @@
                 <textarea id="inquiryContent" name="inquiryContent" rows="5" required>${requestScope.i.inquiryContent}</textarea>
             </div>
             
+            <div class="form-group">
+            	<label for="inquiryAtt">첨부파일</label>
+            	<input type="file" id="inquiryAtt" name="inquiryAtt" value="${requestScope.i.inquiryAtt }"/>
+            </div>
+            
             <button type="submit">수정</button>
         </form>
     </div>

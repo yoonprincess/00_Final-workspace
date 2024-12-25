@@ -124,4 +124,30 @@
 		.button-secondary:hover {
 		    background-color: #5a6268;
 		}
+		
+		.btn-edit, .btn-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin: 0 2px;
+    transition: color 0.3s ease;
+}
+
+.btn-edit:hover {
+    color: #4CAF50;
+}
+
+.btn-delete:hover {
+    color: #f44336;
+}
+
+.material-icons {
+    font-size: 18px;
+}
+
+#inquiryList th:last-child,
+#inquiryList td:last-child {
+    text-align: center;
+}
         

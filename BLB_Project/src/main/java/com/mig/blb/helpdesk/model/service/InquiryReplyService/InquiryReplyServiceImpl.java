@@ -29,5 +29,15 @@ public class InquiryReplyServiceImpl implements InquiryReplyService {
 	public int insertInquiryReply(InquiryReply r) {
 		return inquiryReplyDao.insertInquiryReply(sqlSession, r);
 	}
+
+	@Override
+	public int deleteInquiryReply(int ino) {
+		return inquiryReplyDao.deleteInquiryReply(sqlSession, ino);
+	}
+
+	@Override
+	public int updateInquiryReply(InquiryReply ir) {
+		return inquiryReplyDao.updateInquiryReply(sqlSession, ir);
+	}
 	
 }
