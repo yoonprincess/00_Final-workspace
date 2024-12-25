@@ -59,6 +59,9 @@ public interface MemberService {
 	
 	// 비번변경용 회원조회용
 	Member checkMember(String ckMemberId);
+	
+	// 새비번으로변경
+	int updateMemberPwd(String memberId, String encPwd);
 
 	// 내 배송지 목록조회용
 	ArrayList<Delivery> selectDeliveryList(String memberId);
@@ -93,6 +96,12 @@ public interface MemberService {
 	ArrayList<Point> selectMyPoints(HashMap<String, Object> dateMap);
 
 	int myPointListCount(String memberId);
+
+	int deleteAllWish(String memberId);
+
+	Member selectMemberAdmin(String memberId);
+
+	
 	
 	
 }

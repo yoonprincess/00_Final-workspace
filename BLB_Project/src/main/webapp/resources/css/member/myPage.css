@@ -590,33 +590,28 @@ h4{
     padding-top :30px ;
 }
 
-.welcome .badge {
-    background-color: #e8e8e8;
-    color: #666;
-}
-
-.family .badge {
-    background-color: silver;  /* mint */
+.BABY .badge {
+    background-color: silver;  
     color: white;
 }
 
-.silver .badge {
-    background-color: #A4EBF3;  /* grey */
+.MINT .badge {
+    background-color: #A4EBF3;  
     color: white;
 }
 
-.gold .badge {
-    background-color: gold;  /* gold */
+.GOLD .badge {
+    background-color: gold;  
     color: #333;
 }
 
-.vip .badge {
-    background-color: #4A628A;  /* purple */
+.VIP .badge {
+    background-color: #4A628A;  
     color: white;
 }
 
 
-.welcome, .family, .silver, .gold, .vip, .vvip {
+ .BABY, .MINT, .GOLD, .VIP {
     height: auto;
     background: none;
 }

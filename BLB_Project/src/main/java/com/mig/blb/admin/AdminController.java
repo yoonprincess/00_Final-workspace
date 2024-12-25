@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mig.blb.member.model.service.MemberService;
+import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
 
 
@@ -30,7 +32,22 @@ public class AdminController {
 		
 		ArrayList<Member> mList = memberService. selectMemberList();
 		mv.addObject("mList",mList);
-		mv.setViewName("admin/admin_member");
+		mv.setViewName("admin/admin_member2");
+		return mv;
+	}
+	
+	@PostMapping("adminDetailMember.me")
+	public ModelAndView adminDetailMember(ModelAndView mv,
+										String memberId
+										) {
+		
+		System.out.println(memberId);
+		Member member = memberService.selectMemberAdmin(memberId);
+		Delivery d = memberService.selectDefaultDelivery(memberId);
+		mv.addObject("d", d);
+		System.out.println(d);
+		mv.addObject("m",member);
+		mv.setViewName("admin/admin_member_detail");
 		return mv;
 	}
 	

@@ -13,19 +13,6 @@
 
 <script src="resources/js/member/updateMemberForm.js" defer></script>   
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-
-    <!-- 간단한 동작을 정의해둔 js 파일 연동 -->
-    <!-- jQuery 온라인 방식 -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-    <!-- Popper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-  
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- daum 지도검색 api -->
    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -50,7 +37,7 @@
                 <div class="form-input id-input">
                     <div class="input-wrapper">
                         <input type="text" class="input-field" name="memberId" id="memberId" 
-                        value="${loginUser.memberId}" readonly >
+                        value="${loginUser.memberId}" readonly  style="background-color: #F4F4F9;" >
                     </div>
                    
                 </div>              
@@ -59,8 +46,14 @@
             <div class="form-row">
                 <label class="form-label">비밀번호 <span class="required-mark" >*</span></label>
                 <div class="form-input id-input">
+                
                     <div class="input-wrapper" style="flex-direction: column; align-items: flex-start;">
-                      <button class="btn btn-outline-secondary" type="button" id="changePwd"> 비밀번호 변경</button>
+                     <c:if test="${loginUser.loginType == 'kakao'}">
+                      	<button class="btn btn-outline-secondary" type="button" id="changePwd" style="display:none;"> 비밀번호 변경</button>
+                     </c:if>
+                      <c:if test="${loginUser.loginType != 'kakao'}"> 
+                      	<button class="btn btn-outline-secondary" type="button" id="changePwd"> 비밀번호 변경</button>
+                     </c:if>
                        <div class="input-wrapper">
                        <span class="input-label hidden"> 현재 비밀번호</span>
                       <input type="password" class="input-field hidden" name="currentPwd" id="memberPwd" >
@@ -81,41 +74,42 @@
                 </div>
             </div>
 
-            <!--
-            <div class="form-row">
-                <label class="form-label">회원인증 <span class="required-mark" >*</span></label>
-                <div class="form-input">
-                    <button type="button" class="file-button">휴대폰인증</button>
-                    <p class="file-notice">본인 명의의 휴대폰으로 본인인증을 진행합니다. </p>
-                </div>
-            </div>
-            -->    
             <div class="form-row">
                 <label class="form-label">연락처 <span class="required-mark" >*</span></label>
-                <div class="form-input phone-input">
-                    <input type="text" class="input-field" id="phone1" maxlength="3" required>
-                    <span>-</span>
-                    <input type="text" class="input-field" id="phone2" maxlength="4" required>
-                    <span>-</span>
-                    <input type="text" class="input-field" id="phone3" maxlength="4" required>
-                    <input type="hidden" name="phone" id="phone"  maxlength="11"> 
-                    <!-- 
-                    <button type="button" class="confirm-button">본인인증</button>
-                     -->
-                </div>
+                <c:if test="${loginUser.loginType == 'kakao'}">
+	                <div class="form-input phone-input">
+	                    <input type="text" class="input-field" id="phone1" maxlength="3" readonly style="background-color: #F4F4F9;">
+	                    <span>-</span>
+	                    <input type="text" class="input-field" id="phone2" maxlength="4"  readonly style="background-color: #F4F4F9;">
+	                    <span>-</span>
+	                    <input type="text" class="input-field" id="phone3" maxlength="4"  readonly style="background-color: #F4F4F9;">
+	                    <input type="hidden" name="phone" id="phone"  maxlength="11"> 
+	                </div>
+                </c:if>
+                <c:if test="${loginUser.loginType != 'kakao'}">
+	                <div class="form-input phone-input">
+	                    <input type="text" class="input-field" id="phone1" maxlength="3" required>
+	                    <span>-</span>
+	                    <input type="text" class="input-field" id="phone2" maxlength="4"  required>
+	                    <span>-</span>
+	                    <input type="text" class="input-field" id="phone3" maxlength="4"  required>
+	                    <input type="hidden" name="phone" id="phone"  maxlength="11"> 
+	                </div>
+                </c:if>
             </div>
             <div class="form-row">
                 <label class="form-label">이름 <span class="required-mark" ></span></label>
                 <div class="form-input">
-                    <input type="name" class="input-field" name="memberName" value="${loginUser.memberName}" readonly>
+                    <input type="name" class="input-field" name="memberName" value="${loginUser.memberName}" readonly style="background-color: #F4F4F9;">
                 </div>
             </div>
             <div class="form-row">
                 <label class="form-label">이메일 <span class="required-mark" >*</span></label>
+                <c:if test="${loginUser.loginType == 'kakao'}">
                 <div class="form-input" id="email-form-input" >
                 	<div class="input-wrapper" >
-	                    <input type="email" class="input-field" name="email" required id="email" value="${loginUser.email}" >
-	                    <button type="button" class="btn-sm btn-outline-info" id="changebtn">변경</button>
+	                    <input type="email" class="input-field" name="email" required id="email" value="${loginUser.email}" readonly style="background-color: #F4F4F9;">
+	                    <button type="button" class="btn-sm btn-outline-info" id="changebtn" style="display:none;" >변경</button>
 	                    <button type="button" class="btn-sm btn-outline-info" id="certbtn"  onclick="cert();" style="display:none;">인증</button>
                    </div>
                    <div class="input-wrapper" style="display:none;" id="cert-email">
@@ -124,6 +118,21 @@
                    		 <span class="time" >인증시간</span>
                     </div> 
                 </div>
+                </c:if>
+                <c:if test="${loginUser.loginType != 'kakao'}">
+                <div class="form-input" id="email-form-input" >
+                	<div class="input-wrapper" >
+	                    <input type="email" class="input-field" name="email" required id="email" value="${loginUser.email}">
+	                    <button type="button" class="btn-sm btn-outline-info" id="changebtn" >변경</button>
+	                    <button type="button" class="btn-sm btn-outline-info" id="certbtn"  onclick="cert();" style="display:none;">인증</button>
+                   </div>
+                   <div class="input-wrapper" style="display:none;" id="cert-email">
+                         <input type="text" class="input-field" name="checkNo" id="certKey" >
+                         <button type="button" class="btn-sm btn-outline-info" id="vali_email" onclick="validateEmail();">확인</button>
+                   		 <span class="time" >인증시간</span>
+                    </div> 
+                </div>
+                </c:if>
             </div>
              <div class="form-row">
                 <label class="form-label">이메일 수신여부 <span class="required-mark" >*</span></label>

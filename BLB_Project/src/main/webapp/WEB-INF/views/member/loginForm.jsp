@@ -37,7 +37,7 @@
                 <div class="keep-login">
                    <c:choose>
                    		<c:when test="${ not empty cookie.saveId }">
-	                    	<input type="checkbox" id="saveId" name="saveId" value="y">
+	                    	<input type="checkbox" id="saveId" name="saveId" value="y" checked>
 	                    	<label for="saveId" class="inline-label">아이디 저장</label>
 	                    </c:when>
 	                    <c:otherwise>

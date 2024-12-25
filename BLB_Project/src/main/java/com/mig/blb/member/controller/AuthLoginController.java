@@ -1,6 +1,7 @@
 package com.mig.blb.member.controller;
 
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,12 +9,12 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mig.blb.member.model.service.KakaoApi;
@@ -85,7 +86,7 @@ public class AuthLoginController {
 			
 			if(loginUser != null) {
 				session.setAttribute("loginUser", loginUser);
-				
+				session.setAttribute("accessToken", accessToken);
 				String redirectURL = (String) session.getAttribute("beforePage");
 				
 				if(redirectURL != null) {
@@ -141,6 +142,48 @@ public class AuthLoginController {
 	
 		return mv;
 	
+	}
+	
+	@PostMapping("deleteKakao.me")
+	@ResponseBody
+	public Map<String, String> deleteAccount(HttpSession session) {
+		
+		Map<String, String> response = new HashMap<>(); 
+		
+		 try {
+			// 세션에서 액세스 토큰 가져오기
+		    String accessToken = (String) session.getAttribute("accessToken");
+		   
+		    if (accessToken == null || accessToken.isEmpty()) {
+	            response.put("result", "카카오 계정 인증이 필요합니다.");
+	        }
+	
+		    // 서비스에서 탈퇴 API 호출
+		    kakaoApi.kakaoUnlink(accessToken);
+		    
+		    
+		    // 서비스 DB에서 사용자 정보 삭제 (예: ID, 이메일 등)
+		    Member loginUser =(Member)session.getAttribute("loginUser");
+		    int result = memberService.deleteMember(loginUser.getMemberId());
+	
+		   
+	
+		    if (result>0) {
+				  response.put("result", "탈퇴완료");
+				  // 세션 초기화
+				  session.invalidate();
+				 
+			}else {
+				
+				response.put("result", "탈퇴실패");
+			}
+		
+		 } catch (Exception e) {
+		        e.printStackTrace();
+		        response.put("result", "탈퇴 중 에러 발생");
+		 }
+		 
+	    return response;
 	}
 	
 }

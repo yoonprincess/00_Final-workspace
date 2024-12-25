@@ -137,10 +137,31 @@ public class MemberController {
 	@GetMapping("logout.me")
 	public String logoutMember(HttpSession session) {
 		
-		session.removeAttribute("loginUser");
-		
-		return "redirect:/";
+		 Member loginUser = (Member) session.getAttribute("loginUser");
+		//System.out.println("logout 하려는 :" +loginUser);
+		 if (loginUser != null) { // YourUserClass는 loginUser의 실제 클래스
+		        String loginType = ((Member) loginUser).getLoginType();
+		        if ("kakao".equals(loginType)) {
+		        // 카카오 로그아웃 처리
+		        String accessToken = (String) session.getAttribute("accessToken");
+		        if (accessToken != null) {
+		            try {
+		                kakaoApi.kakaoLogout(accessToken); // KakaoApi 서비스 호출
+		            } catch (Exception e) {
+		                e.printStackTrace();
+		                // 필요에 따라 실패 메시지를 추가 처리
+		            }
+		        }
+		    }
+		 }
+		    // 공통 세션 만료 처리
+		    session.removeAttribute("loginUser");
+		    session.removeAttribute("accessToken");
+
+		    return "redirect:/";
 	}
+	
+	
 	
 	//  약관동의 페이지 요청
 	@GetMapping("agreement.me")
@@ -218,7 +239,14 @@ public class MemberController {
 		Member loginUser =(Member)session.getAttribute("loginUser");
 		
 		if( loginUser != null) {
-			mv.setViewName("member/deleteForm");
+			// 로그인한 사용자가 카카오 계정인지 확인
+	        if ("kakao".equals(loginUser.getLoginType())) {
+	            // 카카오 계정일 경우 모달 창을 띄울 수 있는 페이지로 이동
+	            mv.setViewName("member/deleteKakaoForm");
+	        } else {
+	            // 일반 계정일 경우 비밀번호 확인 페이지로 이동
+	            mv.setViewName("member/deleteForm");
+	        }
 		
 		}else {
 			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
@@ -253,6 +281,9 @@ public class MemberController {
 		}
 		 return response;
 	}
+	
+	// 카카오 회원 탈퇴 
+	
 	
 	// 아이디찾기페이지 요청 
 		@GetMapping("findIdForm.me")
@@ -351,8 +382,8 @@ public class MemberController {
 			
 			String encPwd = bcryptPasswordEncoder.encode(newPwd);
 			checkMember.setMemberPwd(encPwd);
-			System.out.println(checkMember);
-			int result = memberService.updateMember(checkMember);
+			//System.out.println(checkMember);
+			int result = memberService.updateMemberPwd(checkMember.getMemberId(), encPwd);
 			
 			if(result>0) {
 				
@@ -397,118 +428,95 @@ public class MemberController {
 		return mv;
 	}
 	
-	// 회원정보 수정 요청( 주소정보 X) 
-	@PostMapping(value="update.me")	
+	// 회원정보 수정 요청
+	@PostMapping(value = "update.me")
 	public ModelAndView updateMember(ModelAndView mv,
-										Member m,
-										Delivery d,
-										HttpSession session,
-										String currentPwd,
-										String newPwd,
-										String ckPwd) {
-			
-		Member loginUser =(Member)session.getAttribute("loginUser");
-		//System.out.println(currentPwd);
-		//System.out.println(newPwd);
-		//System.out.println(ckPwd);
-		
-		if(currentPwd != null && !currentPwd.isEmpty() 
-							&& newPwd != null && !newPwd.isEmpty()
-							&& ckPwd != null &&  !ckPwd.isEmpty()) {
-			// 비번 변경이 있을 경우 
-			//System.out.println(m);
-			if(bcryptPasswordEncoder.matches(currentPwd, loginUser.getMemberPwd())){
-				// 현재비번 매치되면 
-				//System.out.println("현재비번 잘 작성함!");
-				
-				String encPwd = bcryptPasswordEncoder.encode(newPwd);
-				m.setMemberPwd(encPwd);
-				
-				int result = memberService.updateMember(m);
-				int result2 = updateDelivery(d,m);
-				
-				if(result > 0 && result2>0) { 
-				
-					session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
-					
-					loginUser.setMemberPwd(encPwd); // 불러온 로그인 정보 비번에도 넣어주고 
-					session.setAttribute("loginUser", loginUser); // 갱신된 로그인정보 다시 세션에넣고
-					
-					Member newMember = memberService.loginMember(m);
-					Delivery delivery = memberService.selectDefaultDelivery(loginUser.getMemberId());
-					mv.addObject("d", delivery);
-					session.setAttribute("loginUser", newMember);
-					
-					mv.setViewName("member/updateMemberForm"); 
-					
-					//System.out.println("회원정보수정 비번변경포함 완");
-				
-				}else {
-					
-					//System.out.println("비번변경있는 회원정보수정실패?");
-					session.setAttribute("alertMsg", "회원정보 수정 실패..");
-					mv.setViewName("member/updateMemberForm");
-					
-				}
-			
-			} else{
-				// 현재 비번 잘못됨
-				
-				session.setAttribute("alertMsg", "현재 비밀번호가 잘못되었습니다.");
-				mv.setViewName("member/updateMemberForm");
-				//System.out.println("현재비번잘못?");
-			}	
-			
-		} else {
-			// 비번변경없을 경우
-			
-			//System.out.println(m);
-			int result = memberService.updateMember(m);
-			
-			int result2 = updateDelivery(d,m);
-			
-			if(result > 0 && result2>0) { 
-			
-				
-				Member newMember = memberService.loginMember(m);
-				session.setAttribute("loginUser", newMember);// 정보갱신 	
-				
-				Delivery delivery = memberService.selectDefaultDelivery(loginUser.getMemberId());
-				mv.addObject("d", delivery);
-				
-				session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
-				mv.setViewName("member/updateMemberForm");
-				
-			
-			}else {
-			
-				session.setAttribute("alertMsg", "회원정보 수정 실패..");
-				mv.setViewName("member/updateMemberForm");
-				//System.out.println(" 비번변경없이 회원정보수정실패?");
-			}
-		}
-		
-		return mv;
+	                                 Member m,
+	                                 Delivery d,
+	                                 HttpSession session,
+	                                 String currentPwd,
+	                                 String newPwd,
+	                                 String ckPwd) {
+
+	    Member loginUser = (Member) session.getAttribute("loginUser");
+	    int result = 0; // 기본값 설정
+	    int result2 = 0; // 기본값 설정
+
+	    // 1. 비밀번호 변경이 있을 경우
+	    if (currentPwd != null && !currentPwd.isEmpty() 
+	        && newPwd != null && !newPwd.isEmpty() 
+	        && ckPwd != null && !ckPwd.isEmpty()) {
+	        
+	        if (bcryptPasswordEncoder.matches(currentPwd, loginUser.getMemberPwd())) {
+	            // 현재 비밀번호 일치
+	            String encPwd = bcryptPasswordEncoder.encode(newPwd);
+	            m.setMemberPwd(encPwd);
+
+	            result = memberService.updateMember(m);
+
+	            // 주소 변경 처리
+	            if (!d.getPostcode().isEmpty()) {
+	                result2 = updateDelivery(d, m);
+	            } else {
+	                result2 = 1; // 주소 변경이 없더라도 성공 처리
+	            }
+
+	            if (result > 0 && result2 > 0) {
+	                // 세션 갱신 및 알림 처리
+	                loginUser.setMemberPwd(encPwd);
+	                session.setAttribute("loginUser", memberService.loginMember(m));
+	                session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
+	                Delivery delivery = memberService.selectDefaultDelivery(loginUser.getMemberId());
+	                mv.addObject("d", delivery);
+	                mv.setViewName("member/updateMemberForm");
+	            } else {
+	                session.setAttribute("alertMsg", "회원정보 수정 실패..");
+	                mv.setViewName("member/updateMemberForm");
+	            }
+	        } else {
+	            // 현재 비밀번호 불일치
+	            session.setAttribute("alertMsg", "현재 비밀번호가 잘못되었습니다.");
+	            mv.setViewName("member/updateMemberForm");
+	        }
+	    } else {
+	        // 2. 비밀번호 변경이 없는 경우
+	        result = memberService.updateMember(m);
+
+	        if (!d.getPostcode().isEmpty()) {
+	            result2 = updateDelivery(d, m);
+	        } else {
+	            result2 = 1; // 주소 변경이 없더라도 성공 처리
+	        }
+
+	        if (result > 0 && result2 > 0) {
+	            session.setAttribute("loginUser", memberService.loginMember(m));
+	            session.setAttribute("alertMsg", "회원정보가 수정되었습니다.");
+	            Delivery delivery = memberService.selectDefaultDelivery(loginUser.getMemberId());
+	            mv.addObject("d", delivery);
+	            mv.setViewName("member/updateMemberForm");
+	        } else {
+	            session.setAttribute("alertMsg", "회원정보 수정 실패..");
+	            mv.setViewName("member/updateMemberForm");
+	        }
+	    }
+	    return mv;
 	}
-		
-	// 기본주소 변경 메소드 
+
+	// 기본주소 변경 메소드
 	public int updateDelivery(Delivery d, Member m) {
-		
-		int result = 0;
+	    int result = 0;
 
-		 // 로그 추가: Delivery 객체의 값 확인
-		if(!d.getPostcode().isEmpty()) {
+	    if (!d.getPostcode().isEmpty()) {
+	        d.setDeliPhone(m.getPhone());
+	        d.setDeliName(m.getMemberName());
+	        d.setMemberId(m.getMemberId());
+	        d.setDeliNickname(d.getDeliName());
+	        d.setDeliDefault("Y");
 
-			d.setDeliPhone(m.getPhone()); // FK 연결
-			d.setDeliName(m.getMemberName()); // FK 연결
-			d.setMemberId(m.getMemberId());
-			d.setDeliNickname(d.getDeliName());
-			d.setDeliDefault("Y");
-			
-			result = memberService.updateDelivery(d);
-		}
-		
-		return result;
+	        result = memberService.updateDelivery(d);
+	    }
+
+	    return result;
 	}
 }
 

@@ -103,6 +103,16 @@ public class MemberDao {
 	public Member checkMember(SqlSessionTemplate sqlSession, String ckMemberId) {
 		return sqlSession.selectOne("memberMapper.checkMember", ckMemberId);
 	}
+	
+	public int updateMemberPwd(SqlSessionTemplate sqlSession, String memberId, String encPwd) {
+		
+		Map<String, String> params = new HashMap<>();
+		params.put("memberId", memberId);
+		params.put("newPwd", encPwd);
+		
+		return sqlSession.update("memberMapper.updateMemberPwd",params);
+	}
+
 
 	public ArrayList<Delivery> selectDeliveryList(SqlSessionTemplate sqlSession, String memberId) {
 		
@@ -180,5 +190,14 @@ public class MemberDao {
 		return sqlSession.selectOne("memberMapper.myPointListCount", memberId);
 	}
 
+	public int deleteAllWish(SqlSessionTemplate sqlSession, String memberId) {
+		return sqlSession.delete("memberMapper.deleteAllWish",memberId);
+	}
+
+	public Member selectMemberAdmin(SqlSessionTemplate sqlSession, String memberId) {
+		return sqlSession.selectOne("memberMapper.selectMemberAdmin",memberId);
+	}
+
+	
 
 }

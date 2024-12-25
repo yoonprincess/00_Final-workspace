@@ -7,25 +7,11 @@
 <meta charset="UTF-8">
 <title>내 배송목록 |  뷰라밸 (Beauty Life Balance)</title>
 
- <!-- jQuery 라이브러리 -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <link rel="stylesheet" href="resources/css/member/updateDelivery.css">
 
 <script src="resources/js/member/updateDelivery.js" defer></script>   
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-
-    <!-- 간단한 동작을 정의해둔 js 파일 연동 -->
-    <!-- jQuery 온라인 방식 -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-    <!-- Popper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
    
@@ -86,12 +72,14 @@
                      <div class="form-input-addr" >
                        <div class="zipcode-row " >
                         	<input type="text" class="input-field address-field"  id="sample4_postcode" placeholder="우편번호" name="postcode" value="${d.postcode}">
-                       		 <input type="button" class="btn-sm btn-outline-info" onclick="sample4_execDaumPostcode()" value="우편번호"><br>
+                       		 <input type="button" class="btn-sm btn-primary blb-btn" onclick="sample4_execDaumPostcode()" value="우편번호"><br>
 		               </div>
 	                   <div class="address-row ">
 	                        <textarea class="input-field address-field" id="sample4_roadAddress" 
-	                                placeholder="도로명주소" name="deliAddress" >${d.deliAddress}</textarea><br>
+	                                placeholder="도로명주소" name="deliAddress" 
+	                                style="height:100px; width:290px; resize:none; border: 1px solid #ddd;">${d.deliAddress}</textarea><br>
 	                        <input type="text"  class="input-field address-field" 
+	                        		style="width:290px;"
 	                                id="sample4_detailAddress" placeholder="상세주소" name="detailAddress" value="${d.detailAddress}">
 	                   </div>
 	                 </div>

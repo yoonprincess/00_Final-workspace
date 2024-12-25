@@ -280,6 +280,7 @@
 	<update id="deleteMember" parameterType="member">
 		UPDATE TB_MEMBER 
 		   SET 	STATUS = 'N'
+		     , DELETE_DATE= SYSDATE
 	       WHERE MEMBER_ID = #{memberId}
 	       	AND STATUS= 'Y' 
 	</update>
@@ -310,6 +311,15 @@
 		  WHERE MEMBER_ID = #{ckMemberId}
 		   AND STATUS ='Y'
 	</select>
+	
+	
+	
+	<update id="updateMemberPwd" parameterType="map">
+	  UPDATE TB_MEMBER
+	  SET MEMBER_PWD = #{newPwd}
+	  WHERE MEMBER_ID = #{memberId}
+	    AND STATUS = 'Y'
+	</update>
 	
 	<!-- 마이페이지용 내 주문배송조회 (날짜별 생각말고 다뽑아오기)-->
 	<select id="selectAllMyOrders" parameterType="hashmap" resultMap="orderResultSet">
@@ -718,4 +728,19 @@
       FROM TB_POINT 
 	 WHERE MEMBER_ID = #{memberId}  
   	</select>
+  	
+  	<delete id="deleteAllWish" parameterType="string">
+		DELETE 
+		  FROM TB_WISH
+		 WHERE MEMBER_ID = #{memberId}	
+	</delete>
+	
+	<select id="selectMemberAdmin"
+			parameterType="string"
+			resultMap="memberResultSet">
+		SELECT *
+		  FROM TB_MEMBER
+		  WHERE MEMBER_ID = #{ckMemberId}
+		   
+	</select>
 </mapper>

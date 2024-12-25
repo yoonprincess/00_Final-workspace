@@ -61,7 +61,7 @@
         }
         #dropdown{
 	        width:100%;  
-	        color: silver; 
+	        color: #4A628A; 
 	        padding-left:5px; 
 	        height:30px;
 	        border-radius:5px;
@@ -88,7 +88,7 @@
             <div class="form-group">
             <h5>옵션 선택</h5>
             <hr>
-               <select id="dropdown" name="optNo" style="">
+               <select id="dropdown" name="optNo" style="color:#4A628A;">
                   <option style="padding-left:10px;" >옵션을 선택해주세요</option>
                   <c:forEach var="opt" items="${optList}">
                     <option value="${opt.optNo}"

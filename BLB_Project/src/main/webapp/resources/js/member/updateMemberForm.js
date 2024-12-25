@@ -152,9 +152,9 @@
 
 // 이메일 변경 버튼 클릭시 	
 	$("#changebtn").on('click',function(){
-		$("#email").val("");
 		$("#changebtn").hide();
 		$("#certbtn").show();
+		$("#email").select();
 	
 	});
 	

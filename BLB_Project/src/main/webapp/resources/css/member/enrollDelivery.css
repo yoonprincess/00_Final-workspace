@@ -90,10 +90,22 @@
             gap: 10px;
             margin-bottom: 10px;
         }
+        .zipcode-field {
+		    width: 80px; /* 우편번호 입력창 너비 */
+		    box-sizing: border-box;
+		   
+		}
 
         .address-input {
             width: 100%;
         }
+		  .address-field {
+		    width: 50%;
+		    margin-bottom: 5px;
+		    resize: none; /* 텍스트 영역 크기 조정 방지 */
+		    padding: 0 5px;
+		   
+		}
 
         .find-address {
             padding: 8px 16px;
@@ -103,7 +115,13 @@
             border-radius: 4px;
             cursor: pointer;
         }
-
+        
+        .blb-btn{
+         width:80px !important;
+         padding : 10px 4px !important;
+         font-size:15px !important;
+        }
+		
         .radio-group {
             display: flex;
             gap: 20px;

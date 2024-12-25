@@ -108,87 +108,7 @@ public class KakaoApi{
 	        }
 	        return accessToken;
 	    }
-	    
-	    /*
-	    public OAuthToken getOAuthToken(String code) {
-	        String reqUrl = "https://kauth.kakao.com/oauth/token";
-
-	        RestTemplate rt = new RestTemplate();
-
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-	        
-	        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-	        params.add("grant_type", "authorization_code");
-	        params.add("client_id", "d58c294c5294590311266a239d715ed4");
-	        params.add("redirect_uri","http://localhost:80/blb/loginKakao.me");
-	        params.add("code", code);
-	        
-	        System.out.println(code);
-	        System.out.println("Request URL: " + reqUrl);
-	        System.out.println("Request Headers: " + headers);
-	        System.out.println("Request Params: " + params);
-
-	        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
-	        System.out.println(kakaoTokenRequest);
-	        try {
-		        // Http 요청 및 응답 받기
-		        ResponseEntity<String> response = rt.exchange(reqUrl, HttpMethod.POST, kakaoTokenRequest, String.class);
-	
-		        // 응답 내용 출력
-		        String responseBody = response.getBody();
-		        System.out.println("Response Status: " + response.getStatusCode());
-		        System.out.println("Response Body: " + responseBody);
-	
-		        // 응답을 OAuthToken 객체로 변환
-		        Gson gson = new Gson();
-		        OAuthToken oAuthToken = gson.fromJson(responseBody, OAuthToken.class);
-		       
-		        if (oAuthToken != null && oAuthToken.getAccessToken() != null) {
-	                System.out.println("Access Token: " + oAuthToken.getAccessToken());
-	            } else {
-	                System.err.println("Failed to retrieve access token.");
-	            }
-		        
-		        return oAuthToken;
-	        } catch (HttpClientErrorException e) { 
-	        	System.err.println("Error Response: " + e.getResponseBodyAsString());
-	        	System.err.println("Status Code: " + e.getStatusCode());
-	        	System.err.println("Error Message: " + e.getMessage());
-	        	e.printStackTrace();
-	        	throw e; // 예외 던지기 (원하는 대로 추가 처리 가능)
-	        } catch (Exception e) {
-            // 그 외의 예외 처리
-            System.err.println("Unexpected error occurred.");
-            e.printStackTrace();
-            throw new RuntimeException("Failed to get OAuth token", e);
-	        }
-	    }
-		*/
-	    /*
-	    public KakaoProfile getUserInfo(OAuthToken accessToken) {
-	        String reqUrl = "https://kapi.kakao.com/v2/user/me";
-
-	        RestTemplate rt = new RestTemplate();
-
-	        //HttpHeader 오브젝트
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.add("Authorization", "Bearer " + accessToken);
-	        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-	        //http 헤더(headers)를 가진 엔티티
-	        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest =
-	                new HttpEntity<>(headers);
-
-	        //reqUrl로 Http 요청 , POST 방식
-	        ResponseEntity<String> response =
-	                rt.exchange(reqUrl, HttpMethod.POST, kakaoProfileRequest, String.class);
-
-	        KakaoProfile kakaoProfile = new KakaoProfile(response.getBody());
-
-	        return kakaoProfile;
-	    }    
-	   */
+	   
 	    public HashMap<String, Object> getUserInfo(String accessToken) {
 	        HashMap<String, Object> userInfo = new HashMap<>();
 	        String reqUrl = "https://kapi.kakao.com/v2/user/me";
@@ -273,7 +193,7 @@ public class KakaoApi{
 	            conn.setRequestProperty("Authorization", "Bearer " + accessToken);
 
 	            int responseCode = conn.getResponseCode();
-	            System.out.println(responseCode);
+	            //System.out.println("responseCode:"+responseCode);
 	            BufferedReader br;
 	            if (responseCode >= 200 && responseCode <= 300) {
 	                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -287,10 +207,45 @@ public class KakaoApi{
 	                responseSb.append(line);
 	            }
 	            String result = responseSb.toString();
-	           System.out.println(result);
+	           //System.out.println(result);
 
 	        }catch (Exception e){
 	            e.printStackTrace();
 	        }
 	    }
+	    
+	    public void kakaoUnlink(String accessToken) {
+	        String reqUrl = "https://kapi.kakao.com/v1/user/unlink";
+
+	        try {
+	            URL url = new URL(reqUrl);
+	            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	            conn.setRequestMethod("POST");
+	            conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+
+	            int responseCode = conn.getResponseCode();
+	            //System.out.println("Response Code: " + responseCode);
+
+	            BufferedReader br;
+	            if (responseCode >= 200 && responseCode <= 300) {
+	                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+	            } else {
+	                br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+	            }
+
+	            String line = "";
+	            StringBuilder responseSb = new StringBuilder();
+	            while ((line = br.readLine()) != null) {
+	                responseSb.append(line);
+	            }
+	            br.close();
+
+	            String result = responseSb.toString();
+	            //System.out.println("탈퇴 결과: " + result);
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    } 
+	    
 }

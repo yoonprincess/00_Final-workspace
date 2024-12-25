@@ -587,6 +587,36 @@ public class MyPageController {
 			return mv;
 		}	
 		
+		// 찜 전체 삭제 요청 
+		@PostMapping("deleteAllWish.me")
+		public ModelAndView deleteWish(ModelAndView mv
+										, HttpSession session){
+			
+			Member loginUser =(Member)session.getAttribute("loginUser");
+			
+			if( loginUser != null) {
+				
+				int result = memberService.deleteAllWish(loginUser.getMemberId());
+				
+				if (result>0) {
+					
+					session.setAttribute("alertMsg", "찜 해제");
+					mv.setViewName("member/myWishList");
+				
+				}else {
+					
+					session.setAttribute("alertMsg", "찜 해제 실패");
+					mv.setViewName("member/myWishList");
+					
+				}
+				
+			}else {
+				session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
+				mv.setViewName("/main");
+			}
+				
+			return mv;
+		}	
 		// 장바구니 넣기전 상품 옵션 불러오기 
 		@GetMapping("selectCartOption.me")			
 		public ModelAndView selectCartOption(ModelAndView mv

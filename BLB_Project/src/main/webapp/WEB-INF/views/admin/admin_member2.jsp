@@ -139,12 +139,12 @@
 
                         <!-- Page Heading -->
                         <h1 class="h3 mb-2 text-gray-800">Admin-회원관리</h1>
-                        <p class="mb-4">뷰라밸 상세정보</p>
+                        <p class="mb-4">회원관리테이블입니다</p>
     
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
-                                <span class="m-0 font-weight-bold text-primary">회원 상세조회</span>
+                                <span class="m-0 font-weight-bold text-primary">뷰라밸 회원목록</span>
                                 <div class="button-group" style="float:right;">
                                     <button  class="btn btn-outline-info"type="button" onclick="updateMember();">수정</button>
                                     <button class=" btn btn-outline-danger" type="button" onclick="deleteMember();">탈퇴</button>
@@ -161,7 +161,6 @@
                                                 <th>아이디</th>
                                                 <th>이름</th>
                                                 <th>전화번호</th>
-                                                <th>주소</th>
                                                 <th>생일</th>
                                                 <th>가입일</th>
                                                 <th>탈퇴일</th>
@@ -173,73 +172,35 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                               <td>
-                                                  <input type="checkbox" value="Y" class="memberCheckbox" style="width:20px; height:20px;"> 
-                                               </td>
-                                               <td>${m.memberId}</td>
-                                               <td>${m.memberName}</td>
-                                               <td>${m.phone}</td>
-                                               <td>${d.d }
-                                               <td>
-                                               	<c:set var="dateParts" value="${fn:split(m.birthdate, ' ')}" />
-												${dateParts[0]}
-                                               </td>
-                                               <td>${m.createDate}</td>
-                                               <td>${m.deleteDate}</td>
-                                               <td>${m.totalPoints}</td>
-                                               <td>${m.gradeName}</td>
-                                               <td>${m.snsId}</td>
-                                               <td>${m.loginType}</td>
-                                               <td>${m.status}</td>
-                                               <td>
-                                                <form action="${pageContext.request.contextPath}/adminDetailMember.me" method="POST" id="detailForm">
-												    <input type="hidden" name="memberId" value="${m.memberId}">
-												    <button type="submit">상세조회</button>
-												</form>
-                                               </td>
-                                            </tr>
-                                        </tbody>
-                                        <thead>
-                                            <tr>
-                                             	<th>배송지명</th>
-                                                <th colspan="2">우편번호</th>
-                                                <th colspan="3">주소</th>
-                                                <th colspan="2">상세주소</th>
-                                                <th colspan="3">배송시 요청사항</th>
-                                                <th>기본주소지여부</th>
-                                               
-                                                <th></th>
-                                                
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                               <td>
-                                                 ${d.deliCode}
-                                               </td>
-                                               <td>${m.memberId}</td>
-                                               <td>${m.memberName}</td>
-                                               <td>${m.phone}</td>
-                                               <td>${d.d }
-                                               <td>
-                                               	<c:set var="dateParts" value="${fn:split(m.birthdate, ' ')}" />
-												${dateParts[0]}
-                                               </td>
-                                               <td>${m.createDate}</td>
-                                               <td>${m.deleteDate}</td>
-                                               <td>${m.totalPoints}</td>
-                                               <td>${m.gradeName}</td>
-                                               <td>${m.snsId}</td>
-                                               <td>${m.loginType}</td>
-                                               <td>${m.status}</td>
-                                               <td>
-                                                <form action="${pageContext.request.contextPath}/adminDetailMember.me" method="POST" id="detailForm">
-												    <input type="hidden" name="memberId" value="${m.memberId}">
-												    <button type="submit">상세조회</button>
-												</form>
-                                               </td>
-                                            </tr>
+                                        
+                                           <c:forEach var="m" items="${mList}">
+                                           
+                                                <tr>
+                                                   <td>
+                                                      <input type="checkbox" value="Y" class="memberCheckbox" style="width:20px; height:20px;"> 
+                                                   </td>
+                                                   <td>${m.memberId}</td>
+                                                   <td>${m.memberName}</td>
+                                                   <td>${m.phone}</td>
+                                                   <td>
+                                                  	<c:set var="dateParts" value="${fn:split(m.birthdate, ' ')}" />
+													${dateParts[0]}
+                                                   </td>
+                                                   <td>${m.createDate}</td>
+                                                   <td>${m.deleteDate}</td>
+                                                   <td>${m.totalPoints}</td>
+                                                   <td>${m.gradeName}</td>
+                                                   <td>${m.snsId}</td>
+                                                   <td>${m.loginType}</td>
+                                                   <td>${m.status}</td>
+                                                   <td>
+	                                                   <form action="${pageContext.request.contextPath}/adminDetailMember.me" method="POST" id="detailForm">
+														    <input type="hidden" name="memberId" value="${m.memberId}">
+														    <button type="submit">상세조회</button>
+														</form>
+                                                   </td>
+                                                </tr>
+                                            </c:forEach>
                                         </tbody>
                                     </table>
                                 </div>

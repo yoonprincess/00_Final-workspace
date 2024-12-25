@@ -122,6 +122,12 @@ public class MemberServiceImpl implements MemberService {
 	
 		return memberDao.checkMember(sqlSession,ckMemberId);
 	}
+	@Transactional
+	@Override
+	public int updateMemberPwd(String memberId, String encPwd) {
+		return memberDao.updateMemberPwd(sqlSession,memberId,encPwd);
+	}
+	
 	@Override
 	public ArrayList<Delivery> selectDeliveryList(String memberId) {
 		
@@ -202,6 +208,15 @@ public class MemberServiceImpl implements MemberService {
 	public int myPointListCount(String memberId) {
 		return memberDao.myPointListCount(sqlSession, memberId);
 	}
+	@Override
+	public int deleteAllWish(String memberId) {
+		return memberDao.deleteAllWish(sqlSession,memberId);
+	}
+	@Override
+	public Member selectMemberAdmin(String memberId) {
+		return memberDao.selectMemberAdmin(sqlSession,memberId);
+	}
+	
 
 }
 
