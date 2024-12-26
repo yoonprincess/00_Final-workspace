@@ -13,7 +13,7 @@
     width: 100%;
     margin: 0 auto;
     padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #faf7f7;
     display: flex; /* 플렉스 박스를 사용하여 가로 배치 */
     align-items: center; /* 세로 방향으로 중앙 정렬 */
     justify-content: space-between; /* 두 요소를 양 끝으로 배치 */
@@ -22,7 +22,6 @@
 
 .breadcrumb {
     font-size: 14px;
-    color: #888;
     display: flex;
     align-items: center;
     gap: 10px;

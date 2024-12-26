@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <title>주문서 작성/결제 | 뷰라밸</title>
 
-<link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/order/orderEnrollForm.css">
+<link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/order/directOrderEnrollForm.css">
 <!-- 부트스트랩 -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
@@ -193,31 +193,25 @@
                 <h3>주문 상품</h3>
                 <hr class="custom-hr">
 
-                <c:forEach var="cl" items="${selectedCartList}">
-                        
-                    <div class="order-product"
-                          data-cart-no="${cl.cartNo}">
-                        <img src="${ pageContext.request.contextPath }${cl.thumbImg}" alt="${cl.prodName}" style="width: 100px; height: 100px;">
+                <c:forEach var="opt" items="${selectedOptionList}"> <!-- option 리스트 기반 -->
+                    <div class="order-product" data-opt-no="${opt.optNo}">
+                        <img src="${ pageContext.request.contextPath }${opt.thumbImg}" alt="${opt.prodName}" style="width: 100px; height: 100px;">
                         <div class="product-detail">
-                            <p class="product-title-${cl.cartNo}">${cl.prodName}</p>
-                            <p class="product-option-${cl.cartNo}"
-                               data-opt-no="${cl.optNo}"
-                               data-cart-qty="${cl.cartQty}">[옵션: ${cl.prodName} (+ 
-                                <fmt:formatNumber value="${cl.optAddPrice}" pattern="###,###,###"/> 원)]</p>
-                            <p class="product-price-${cl.cartNo}"
-                               data-prod-price="${cl.prodPrice}">상품 가격: 
-                                <fmt:formatNumber value="${cl.prodPrice}" />원
+                            <p class="product-title-${opt.optNo}">${option.prodName}</p>
+                            <p class="product-option-${opt.optNo}" data-opt-no="${opt.optNo}">
+                                옵션: ${opt.optName} (+ 
+                                <fmt:formatNumber value="${opt.optAddPrice}" pattern="###,###,###"/> 원)
                             </p>
-                            <p class="product-quantity-${cl.cartNo}"
-                               value="${cl.cartNo}">
-                               수량: ${cl.cartQty}개
+                            <p class="product-price-${opt.optNo}" data-prod-price="${optoption.prodPrice}">
+                                상품 가격: <fmt:formatNumber value="${opt.prodPrice}" />원
                             </p>
-                            <p class="product-order-price-${cl.cartNo}"></p>
+                            <p class="product-quantity-${opt.optNo}" data-quantity="${opt.quantity}">
+                                수량: ${option.quantity}개
+                            </p>
+                            <p class="product-order-price-${opt.optNo}"></p>
                         </div>
-                        <button class="delete-button" aria-label="상품 삭제">×</button>
                     </div>
                     <hr class="custom-hr">
-
                 </c:forEach>
                 
             </div>
@@ -475,6 +469,6 @@
     </div>
 
 <!-- js 파일 -->
-<script src="resources/js/order/orderEnrollForm.js"></script>    
+<script src="resources/js/order/directOrderEnrollForm.js"></script>    
 </body>
 </html>

@@ -276,81 +276,94 @@ $(function() {
             });
         });
 
+        const memberId = $('#memberId').val();
+        const rcvrName = $('#rcvrName').val().trim();
+        const rcvrAddress = "(" + $('#postCode').val() + ") " + $('#deliAddress').val() + $('#detailAddress').val();
+        const rcvrPhone = $('#phone-prefix').find('option:selected').val().trim() + $('#phone-middle').val() + $('#phone-last').val();
 
-        // if (payOption === '카카오페이') {
-        //     // 카카오페이 결제 요청
-        //     $.ajax({
-        //         url: 'v1/payment/ready', // 서버의 카카오페이 결제 준비 API 엔드포인트
-        //         method: 'POST',
-        //         contentType: 'application/json',
-        //         headers: {
-        //             'Authorization': 'DEV7F8D16F135E2B2B199BDF7E690CB3BF9CC676' // 적절한 토큰 추가
-        //         },
-        //         data: JSON.stringify({
-        //             orderId: $('#orderId').val(), // 예: hidden 필드에서 가져오는 주문 ID
-        //             totalAmount: $('#total-amt').text().replace(',', ''), // 총 금액
-        //             items: productData // 상품 데이터
-        //         }),
-        //         success: function(response) {
-        //             if (response && response.next_redirect_pc_url) {
-        //                 // 카카오페이 결제 페이지로 이동
-        //                 window.location.href = response.next_redirect_pc_url;
-        //             } else {
-        //                 alert('카카오페이 결제를 준비하는 중 오류가 발생했습니다.');
-        //             }
-        //         },
-        //         error: function(xhr, status, error) {
-        //             console.error('카카오페이 API 요청 오류:', error);
-        //             alert('결제 요청 중 오류가 발생했습니다. 다시 시도해주세요.');
-        //         }
-        //     });
-        // } else 
-
-        if(payOption === '신용카드') {
-
-            const memberId = $('#memberId').val();
-            const rcvrName = $('#rcvrName').val().trim();
-            const rcvrAddress = "(" + $('#postCode').val() + ") " + $('#deliAddress').val() + $('#detailAddress').val();
-            const rcvrPhone = $('#phone-prefix').find('option:selected').val().trim() + $('#phone-middle').val() + $('#phone-last').val();
-
-            // 라디오 버튼 값과 추가 요청사항 값 합치기
-            var entryMethod = $('input[name="entry"]:checked').val();   // 라디오 버튼 값
-            var additionalInfo = $('#additionalInfo').val();    // 추가 요청 사항
-            const dlvrReqMessage = entryMethod + ' / ' + (additionalInfo || '');
-            console.log("배송메시지: " + dlvrReqMessage);
-            
-            const paymentMethod = payOption;
-            const totalAmt = $('#total-amt').text().replace(/[^0-9]/g, "");
-
-            console.log("총 판매가 : " + totalAmt);
-
-            const discount = parseInt($('.discount').text().replace(/[^0-9]/g, "")); // 총 판매가의 5%
-
-            console.log("할인가 : " + discount);
-
-            const dlvrFee = parseInt($('#dlvr-fee').text().replace(/[^0-9]/g, ""));
-
-            console.log("배송비 : " + dlvrFee);
-
-            console.log("최종 가격 : " + orderTotalAmt);
-
-            // 문자열로 출력된 경우 JSON.parse로 변환
-            // const checkedCartNos = JSON.parse('${checkedCartNos}');
-            // console.log(checkedCartNos); // 배열 출력
-            // console.log("장바구니 번호들: " + checkedCartNos);
-
-
-            if (!rcvrName || !rcvrPhone || !rcvrAddress) { 
-                alert("배송 정보를 모두 입력해주세요.");
-                event.preventDefault();
-                return;
-            }
+        // 라디오 버튼 값과 추가 요청사항 값 합치기
+        var entryMethod = $('input[name="entry"]:checked').val();   // 라디오 버튼 값
+        var additionalInfo = $('#additionalInfo').val();    // 추가 요청 사항
+        const dlvrReqMessage = entryMethod + ' / ' + (additionalInfo || '');
         
-            if (!paymentMethod) {
-                alert("결제 수단을 선택해주세요.");
-                event.preventDefault();
-                return;
+        const paymentMethod = payOption;
+        const totalAmt = $('#total-amt').text().replace(/[^0-9]/g, "");
+        const discount = parseInt($('.discount').text().replace(/[^0-9]/g, "")); // 총 판매가의 5%
+        const dlvrFee = parseInt($('#dlvr-fee').text().replace(/[^0-9]/g, ""));
+
+        if (!rcvrName || !rcvrPhone || !rcvrAddress) { 
+            alert("배송 정보를 모두 입력해주세요.");
+            event.preventDefault();
+            return;
+        }
+    
+        if (!paymentMethod) {
+            alert("결제 수단을 선택해주세요.");
+            event.preventDefault();
+            return;
+        }
+
+
+        if (payOption === '카카오페이') {
+
+            try {
+                // 나이스페이 요청
+                IMP.request_pay({
+                    pg: "kakaopay",
+                    paymethod: "card",
+                    amount: totalAmt - discount + dlvrFee,
+                    name: "뷰라밸",
+                    merchant_uid: "616" + new Date().getTime(), // 고유 주문 ID
+                }, async function (rsp) {
+                    if (rsp.success) {
+                        // 결제가 성공하면 서버로 결제 정보 전송
+                        const response = await fetch('payment.or', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                imp_uid: rsp.imp_uid, // 결제 고유 번호
+                                merchant_uid: rsp.merchant_uid, // 주문 번호
+                                paid_amount: rsp.paid_amount, // 결제 금액
+                                rcvrName : rcvrName,
+                                rcvrPhone : rcvrPhone,
+                                rcvrAddress : rcvrAddress,
+                                dlvrReqMessage : dlvrReqMessage,
+                                paymentMethod : paymentMethod,
+                                orderTotalAmt : orderTotalAmt,
+                                dlvrFee: dlvrFee,
+                                products: productData, // productData 배열 추가
+                                memberId : memberId,
+                                totalAmt: totalAmt
+                            }),
+                        });
+                        
+                        const result = await response.json();
+                        if (result.status === "success") {
+
+                            alert("결제가 완료되었습니다!");
+
+                            // 결제 완료 정보를 URL로 전달
+                            // 배열에서 cartNo만 추출
+                            const cartNos = productData.map(product => product.cartNo);
+
+                            // URL 생성
+                            const url = `orderComplete.or?paymentCode=${encodeURIComponent(rsp.merchant_uid)}&orderCartNos=${cartNos.join(',')}`;
+                            window.location.href = url; // GET 요청으로 이동
+                        } else {
+                            alert("결제 확인에 실패했습니다.");
+                        }
+                    } else {
+                        alert("결제가 취소되었습니다. " + rsp.error_msg);
+                    }
+                });
+            } catch (error) {
+                console.error("결제 요청 중 오류 발생:", error);
+                alert("결제 처리 중 문제가 발생했습니다.");
             }
+
+        } else if(payOption === '신용카드') {
 
             try {
                 // 나이스페이 요청
@@ -397,8 +410,6 @@ $(function() {
                             // URL 생성
                             const url = `orderComplete.or?paymentCode=${encodeURIComponent(rsp.merchant_uid)}&orderCartNos=${cartNos.join(',')}`;
                             window.location.href = url; // GET 요청으로 이동
-                            // 서버로 결제 정보 전송
-                            // location.href = 'orderComplete.or';
                         } else {
                             alert("결제 확인에 실패했습니다.");
                         }
@@ -417,8 +428,6 @@ $(function() {
             alert('결제 수단을 선택해주세요.');
         }
     });
-
-    // onClickPay();
 
     // 페이지 로딩 시에도 결제하기 버튼 비활성화
     const allChecked = $('.check-term').length === $('.check-term:checked').length;
