@@ -58,9 +58,23 @@ public class OrderController {
 	    // 저장된 배송 정보 조회
 	    List<Delivery> deliveryList = memberService.selectDeliveryList(memberId);
 	    
+	    Delivery selectedDelivery = null;
+	    
+	    for (Delivery d : deliveryList) {
+	    	
+	        if (d.getDeliDefault().equals("Y")) {
+	        	
+	            selectedDelivery = d; // 기본배송지를 저장
+	        } else {
+	        	
+	            d.setDeliDefault("");
+	        }
+	    }
+	    
 	    // 상품 정보와 배송 정보를 모델에 추가
 	    model.addAttribute("selectedCartList", selectedCartList);
 	    model.addAttribute("deliveryList", deliveryList);
+	    model.addAttribute("selectedDelivery", selectedDelivery);
 
 	    return "order/orderEnrollForm"; // 주문서 화면 JSP 경로
 	}
