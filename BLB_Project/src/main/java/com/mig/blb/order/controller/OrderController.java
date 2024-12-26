@@ -1,9 +1,11 @@
 package com.mig.blb.order.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -118,12 +119,6 @@ public class OrderController {
 		session.setAttribute("totalAmt", (String) paymentData.get("totalAmt"));
 		session.setAttribute("merchantUid",(String) paymentData.get("merchant_uid"));
 		
-		// 세션에서 전달받은 checkedCartNos
-//	    List<Integer> checkedCartNos = (List<Integer>) paymentData.get("checkedCartNos");
-
-	    // 기타 처리 로직...
-//	    System.out.println("Checked Cart Nos: " + checkedCartNos);
-		
 		// 1. ORDER 테이블에 데이터 넣기
 		Order order = new Order();
 	    order.setRcvrName((String) paymentData.get("rcvrName"));
@@ -152,6 +147,8 @@ public class OrderController {
 	    // > products 데이터 추출
 	    List<ProductOrder> productOrders = new ArrayList<>();
 
+	    List<Cart> checkedCartNos = new ArrayList<>();
+	    
 	    for (Map<String, Object> product : productList) {
 	        
 	        ProductOrder productOrder = new ProductOrder();
@@ -159,6 +156,13 @@ public class OrderController {
 	        productOrder.setTotalAmt((Integer)product.get("totalAmt"));
 	        productOrder.setOptNo((Integer)product.get("optNo"));
 	        productOrder.setOrderNo(orderNo); // String 타입
+	        
+	        // 장바구니 번호가 존재하면 Cart 객체 생성 및 추가
+	        if (product.get("cartNo") != null) {
+	            Cart cart = new Cart();
+	            cart.setCartNo((Integer) product.get("cartNo")); // cartNo 설정
+	            checkedCartNos.add(cart); // 리스트에 추가
+	        }
 	        
 	        // productOrder 추가
 	        productOrders.add(productOrder);
@@ -179,6 +183,7 @@ public class OrderController {
 	// 결제 완료
 	@GetMapping("orderComplete.or")
 	public String updateOrderSuccess(@RequestParam("paymentCode") String merchantUid,
+            						 @RequestParam("orderCartNos") String orderCartNos,
 									 HttpSession session,
 									 Model model,
 									 Order order) {
@@ -186,6 +191,9 @@ public class OrderController {
 		// 1. TB_ORDER 테이블에서 채번한 ORDER_NO 가져오기
 	    int orderNoInt = orderService.selectOrderNo(); // selectOrderNo()는 int 반환
 	    String orderNo = String.valueOf(orderNoInt);  // int를 String으로 변환
+	    List<Integer> checkedCartNos = Arrays.stream(orderCartNos.split(","))
+                							 .map(Integer::parseInt)
+                							 .collect(Collectors.toList()); // 장바구니 번호 리스트
 		
 	    // 2. 결제 코드 업데이트
 	    int result1 = orderService.updateOrderStatus(merchantUid, orderNo);
@@ -198,19 +206,14 @@ public class OrderController {
 	    }
 
 	    // 3. 장바구니에서 결제된 상품 삭제
-//	    session.getAttribute(checkedCartNos);
-//	    int result2 = cartService.deleteSelectedCartItems(checkedCartNos);
-//
-//	    Map<String, String> response = new HashMap<>();
-//	    if (updateResult && deleteCartResult) {
-//	        response.put("status", "success");
-//	        response.put("message", "주문이 완료되었습니다.");
-//	    } else {
-//	        response.put("status", "fail");
-//	        response.put("message", "주문 완료 처리 중 오류가 발생했습니다.");
-//	    }
+	    int result2 = cartService.deleteSelectedCarts(checkedCartNos);
 	    
-	    
+	    if(result2 < 1) {
+	    	
+	    	model.addAttribute("errorMsg", "장바구니 삭제 실패");
+	        return "common/errorPage";
+	    }
+
 	    // 마지막. order 객체에 담아서 조회
 	    Order o = orderService.selectOrderComplete(orderNo);
 	    

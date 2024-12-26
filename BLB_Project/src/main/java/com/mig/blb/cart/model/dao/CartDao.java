@@ -76,4 +76,8 @@ public class CartDao {
 		return sqlSession.selectOne("memberMapper.selectCartQty", cartNo);
 	}
 
+	public int deleteSelectedCarts(SqlSessionTemplate sqlSession, List<Integer> checkedCartNos) {
+		return sqlSession.delete("cartMapper.deleteSelectedCarts", checkedCartNos);
+	}
+
 }

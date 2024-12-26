@@ -37,5 +37,8 @@ public interface CartService {
 
 	int selectCartQty(int cartNo);
 
+	// 장바구니 결제 > 결제 완료 장바구니 상품 삭제
+	int deleteSelectedCarts(List<Integer> checkedCartNos);
+
 	
 }

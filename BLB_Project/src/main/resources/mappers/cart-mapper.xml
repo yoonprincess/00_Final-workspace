@@ -119,6 +119,16 @@
 		</foreach>
 		 ORDER BY CART_NO DESC
 	</select>
+	
+	<!-- 결제 완료된 상품 삭제용 쿼리문 -->
+	<delete id="deleteSelectedCarts"
+			parameterType="list">
+	    DELETE FROM TB_CART
+	     WHERE CART_NO IN
+	    <foreach item="cartNo" collection="list" open="(" separator="," close=")">
+	        #{cartNo}
+	    </foreach>
+	</delete>
 		
 	 
 </mapper>

@@ -77,4 +77,9 @@ public class CartServiceImpl implements CartService {
 		return cartDao.selectCartQty(sqlSession,cartNo);
 	}
 
+	@Override
+	public int deleteSelectedCarts(List<Integer> checkedCartNos) {
+		return cartDao.deleteSelectedCarts(sqlSession, checkedCartNos);
+	}
+
 }

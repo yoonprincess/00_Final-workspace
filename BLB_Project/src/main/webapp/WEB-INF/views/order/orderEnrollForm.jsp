@@ -57,6 +57,7 @@
                         <th>배송지 선택 </th>
                         <td>
                             <select id="deliSelect">
+                                <option value="-1">- [필수] 배송지를 선택해 주세요. -</option>
                                 <c:forEach var="d" items="${deliveryList}">
                                     <option value="${d.deliCode}" 
                                         <c:if test="${d.deliDefault == 'Y'}">selected</c:if>>

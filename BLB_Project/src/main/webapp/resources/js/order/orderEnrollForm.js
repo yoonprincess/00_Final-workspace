@@ -271,7 +271,8 @@ $(function() {
             productData.push({
                 orderQty: parseInt(orderQty, 10),
                 totalAmt: parseInt(totalAmt, 10),
-                optNo: parseInt(optNo, 10)
+                optNo: parseInt(optNo, 10),
+                cartNo: parseInt(cartNo, 10)
             });
         });
 
@@ -390,7 +391,11 @@ $(function() {
                             alert("결제가 완료되었습니다!");
 
                             // 결제 완료 정보를 URL로 전달
-                            const url = `orderComplete.or?paymentCode=${encodeURIComponent(rsp.merchant_uid)}`;
+                            // 배열에서 cartNo만 추출
+                            const cartNos = productData.map(product => product.cartNo);
+
+                            // URL 생성
+                            const url = `orderComplete.or?paymentCode=${encodeURIComponent(rsp.merchant_uid)}&orderCartNos=${cartNos.join(',')}`;
                             window.location.href = url; // GET 요청으로 이동
                             // 서버로 결제 정보 전송
                             // location.href = 'orderComplete.or';
