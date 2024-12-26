@@ -29,11 +29,14 @@
 	              <div class="steps-container outer" align="center" id="checkPassword">
 	                  <span>회원님의 정보를 안전하게 보호하기 위해<br> 비밀번호를 다시한번 확인합니다 </span>
 	                  <div >
-	                    <input type="password" class="input-field" name="checkPwd" id="checkPwd" required>
+	                    <input type="password" 
+	                    style="height:45px;"
+	                    class="input-field" name="checkPwd" 
+	                    id="checkPwd" required>
 	              	</div>
 	              </div>
 	              <div class="submit-row">
-	                  <button type="button" class="btn back" onclick="goBack()">취소</button>
+	                  <button type="button" class="btn btn-primary blb-btn back" onclick="goBack()">취소</button>
 	                  <button class="btn btn-outline-danger next" type="submit">탈퇴</button>
 	              </div>
              </form>

@@ -124,8 +124,7 @@ public class AuthLoginController {
 			int result2 = memberService.insertKakao(m);
 			
 			if(result2>0) {
-				
-				session.setAttribute("alertMsg", "환영합니다-*^^*");
+				int result3 = memberService.insertWelcomePoint(m.getMemberId());
 				
 				mv.addObject("memberId", m.getMemberId());
 				mv.addObject("memberName", m.getMemberName());

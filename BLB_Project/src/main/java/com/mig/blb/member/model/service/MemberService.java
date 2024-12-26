@@ -109,6 +109,8 @@ public interface MemberService {
 
 	List<Map<String, Object>> selectMemberCount();
 
+	int insertWelcomePoint(String memberId);
+
 
 
 	

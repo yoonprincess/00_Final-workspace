@@ -715,7 +715,7 @@
 	       POINT_REASON 
 	   FROM TB_POINT 
 	   WHERE MEMBER_ID = #{memberId}
-	   AND POINT_DATE BETWEEN #{startDate} AND #{endDate}                    
+	   AND TRUNC(POINT_DATE) BETWEEN #{startDate} AND #{endDate}                    
 	  ORDER BY POINT_DATE DESC
   	</select>
   	
@@ -752,4 +752,17 @@
 	ORDER BY 
 	    YEAR DESC, MONTH DESC 
 	</select>
+	
+	<insert id="insertWelcomePoint" parameterType="string">
+	  	INSERT INTO TB_POINT (POINT_NO
+	                       ,POINT_AMT
+	                       ,POINT_REASON
+	                       ,POINT_DATE
+	                       ,MEMBER_ID)
+	                  VALUES(SEQ_POINT_NO.NEXTVAL
+	                        ,300
+	                        ,'신규가입'
+	                        ,SYSDATE
+	                        ,#{memberId})         
+  	</insert>
 </mapper>

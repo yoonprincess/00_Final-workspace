@@ -106,11 +106,9 @@
 	        let memberPwd=$(this).val();
 	        let validate = /^(?=(.*[A-Za-z].*[0-9]))(?=(.*[0-9].*[!@#$%^&*-_]))(?=(.*[A-Za-z].*[!@#$%^&*-_])).{8,16}$/
 	        
-		if(memberPwd.length >= 8){		
+		if(memberPwd.length >=1){		
 	     
 	        if(validate.test(memberPwd)){
-	        
-	       
 	         
 	         $("#validatePwd").show()
 	         				  .css({

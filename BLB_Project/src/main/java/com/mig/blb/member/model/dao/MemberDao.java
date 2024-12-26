@@ -214,6 +214,10 @@ public class MemberDao {
 		return sqlSession.selectList("memberMapper.selectMemberCount");
 	}
 
+	public int insertWelcomePoint(SqlSessionTemplate sqlSession, String memberId) {
+		return sqlSession.insert("memberMapper.insertWelcomePoint",memberId);
+	}
+
 	
 	
 

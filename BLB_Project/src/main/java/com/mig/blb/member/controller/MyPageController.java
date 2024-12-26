@@ -279,8 +279,6 @@ public class MyPageController {
 			
 			mv.addObject("dlist",dlist);
 			mv.setViewName("member/myDeliveryList");
-			
-			
 		
 		}else {
 			session.setAttribute("alertMsg", "로그인한 회원만 접근 가능합니다");
@@ -336,8 +334,6 @@ public class MyPageController {
 			}
 			
 			d.setHomeAddressYN("N");
-			
-			//System.out.println(d);
 			
 			int result = memberService.insertDelivery(d);
 			
@@ -405,12 +401,27 @@ public class MyPageController {
 				Delivery updateDelivery = memberService.selectMemberDelivery(deliCode);
 				mv.addObject("d",updateDelivery);
 				session.setAttribute("alertMsg", "배송지 정보가 수정되었습니다.");
+				
+				ArrayList<Delivery> dlist =  memberService.selectDeliveryList(loginUser.getMemberId());
+				
+				for(Delivery deli : dlist) {
+					String maskingPhone = masking(d.getDeliPhone());
+					deli.setDeliPhone(maskingPhone);
+					
+					if(deli.getDeliDefault().equals("Y")) {
+						deli.setDeliDefault("기본배송지");
+					}else {
+						deli.setDeliDefault("");
+					}
+				}
+				
+				mv.addObject("dlist",dlist);
 				mv.setViewName("member/myDeliveryList");
 			
 			}else {
 				
 				session.setAttribute("alertMsg", "배송지수정실패");
-				mv.setViewName("member/myDeliveryList");
+				mv.setViewName("member/updateDelivery");
 			}
 			return mv;
 		}
@@ -499,13 +510,11 @@ public class MyPageController {
 				// 한 번에 보여줄 페이지 수
 				int pageLimit = 5;
 				int listCount = reviewService.myReviewListCount(loginUser.getMemberId());
-				//System.out.println("리뷰갯수 :"  + listCount);
 				
 				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
 							 pageLimit, boardLimit);
 				
 				ArrayList<Review> rlist = reviewService.selectMyReviewList(loginUser.getMemberId(),pi); 
-			    //System.out.println(rlist);
 			
 				mv.addObject("pi",pi);
 				mv.addObject("rlist",rlist);
@@ -631,13 +640,11 @@ public class MyPageController {
 			Member loginUser =(Member)session.getAttribute("loginUser");
 				
 			if( loginUser != null) {
-				//System.out.println(prodNo);
 				
 				ArrayList<Option> optList = optionService.selectCartOption(prodNo);
 				
 				if (optList != null) {
 					mv.addObject("optList", optList);
-					//System.out.println(optList);
 					mv.setViewName("member/optForm");
 					
 				}else {
@@ -675,7 +682,6 @@ public class MyPageController {
 				checkCart.setOptNo(optNo);
 				
 				Integer cartNo = cartService.selectCart(checkCart);
-				//System.out.println(cartNo);
 				
 				if (cartNo == null) {
 					
@@ -699,7 +705,6 @@ public class MyPageController {
 				}else {
 					
 		            int cartQty = cartService.selectCartQty(cartNo); // 현재 장바구니에 있는 수량을 조회
-		            //System.out.println(cartQty);
 		            int updatedQty = cartQty + 1;  // 수량을 1 증가시킴
 					int result2 = cartService.updateCartQty(cartNo, updatedQty);
 					
@@ -751,7 +756,6 @@ public class MyPageController {
 		        month1 = dateParts[1];
 		        day1 = dateParts[2];
 
-		        // 1개월 전 날짜 계산
 		        Calendar calendar = Calendar.getInstance();
 		        calendar.add(Calendar.MONTH, -1);
 		        String startDate = sdf.format(calendar.getTime());
@@ -783,11 +787,9 @@ public class MyPageController {
 			    dateMap.put("startDate", startDate);
 			    dateMap.put("endDate", endDate);
 				
-			    //System.out.println("dateMap 전달 데이터: " + dateMap);
 			    
 				ArrayList<Point> plist = memberService.selectMyPoints(dateMap);
 				
-				//System.out.println(plist);		
 				
 				Map<String, List<Point>>  pointDateList = new LinkedHashMap<>();
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -803,12 +805,10 @@ public class MyPageController {
 				int pageLimit = 10;
 				
 				int listCount = memberService.myPointListCount(loginUser.getMemberId());
-				//System.out.println("적립갯수 :"  + listCount);
 				
 				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
 							 pageLimit, boardLimit);
 				
-				//System.out.println(pointDateList);
 				mv.addObject("pi",pi);
 				mv.addObject("plist",plist);
 				mv.addObject("pointDateList", pointDateList); 

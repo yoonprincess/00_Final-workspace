@@ -235,6 +235,11 @@ public class MemberServiceImpl implements MemberService {
 	public List<Map<String, Object>> selectMemberCount() {
 		return memberDao.selectMemberCount(sqlSession);
 	}
+	@Override
+	public int insertWelcomePoint(String memberId) {
+		
+		return memberDao.insertWelcomePoint(sqlSession,memberId);
+	}
 	
 	
 

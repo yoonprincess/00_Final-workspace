@@ -48,7 +48,7 @@ public class MemberController {
 								HttpServletRequest request,
 								HttpSession session) {
 		
-		// 이전페이지 url 가져오기
+		
 		String redirectURL = request.getParameter("redirectURL");
 		
 		
@@ -58,12 +58,12 @@ public class MemberController {
 		}
 		
 		 String kakaoAuthUrl = "https://kauth.kakao.com/oauth/authorize?client_id=" 
-	                + kakaoApi.getKakaoApiKey()  // kakaoApi 객체를 통해 값 가져오기
-	                + "&redirect_uri=" + kakaoApi.getKakaoRedirectUri()  // kakaoApi 객체를 통해 값 가져오기
+	                + kakaoApi.getKakaoApiKey()  
+	                + "&redirect_uri=" + kakaoApi.getKakaoRedirectUri()  
 	                + "&response_type=code";    
 		
 		mv.addObject("kakaoAuthUrl",kakaoAuthUrl);
-		//System.out.println(kakaoAuthUrl);
+		
 			mv.setViewName("member/loginForm");
 		
 		return mv;
@@ -116,11 +116,11 @@ public class MemberController {
 			if(redirectURL != null) {
 
 			    if ("POST".equalsIgnoreCase(request.getMethod())) {
-			        // POST 메서드인 경우 메인 페이지로 이동
+			      
 			    	mv.setViewName("redirect:/");
 			    	
 			    } else {
-			        // GET 메서드인 경우 redirectURL로 이동
+			       
 			        mv.setViewName("redirect:" + redirectURL);
 			    }
 			}else {
@@ -140,18 +140,17 @@ public class MemberController {
 	public String logoutMember(HttpSession session) {
 		
 		 Member loginUser = (Member) session.getAttribute("loginUser");
-		//System.out.println("logout 하려는 :" +loginUser);
-		 if (loginUser != null) { // YourUserClass는 loginUser의 실제 클래스
+		 if (loginUser != null) { 
 		        String loginType = ((Member) loginUser).getLoginType();
 		        if ("kakao".equals(loginType)) {
 		        // 카카오 로그아웃 처리
 		        String accessToken = (String) session.getAttribute("accessToken");
 		        if (accessToken != null) {
 		            try {
-		                kakaoApi.kakaoLogout(accessToken); // KakaoApi 서비스 호출
+		                kakaoApi.kakaoLogout(accessToken); 
 		            } catch (Exception e) {
 		                e.printStackTrace();
-		                // 필요에 따라 실패 메시지를 추가 처리
+		              
 		            }
 		        }
 		    }
@@ -197,20 +196,21 @@ public class MemberController {
 		
 		int result = memberService.insertMember(m);
 			
-		int result2 = 0; // Delivery 결과 초기화
+		int result2 = 0; 
 		
 		if(!d.getPostcode().isEmpty() ) {
 				
-			d.setMemberId(m.getMemberId()); // FK 연결
-			d.setDeliPhone(m.getPhone()); // FK 연결
-			d.setDeliName(m.getMemberName()); // FK 연결
+			d.setMemberId(m.getMemberId()); 
+			d.setDeliPhone(m.getPhone()); 
+			d.setDeliName(m.getMemberName()); 
 			d.setDeliNickname(m.getMemberName());
 			result2 = memberService.insertDelivery(d);
 		}
 		
 		if(result > 0 && (result2 > 0 || d.getPostcode().isEmpty())) { 
 			
-			session.setAttribute("alertMsg", "환영합니다-*^^*");
+			int result3 = memberService.insertWelcomePoint(m.getMemberId());
+			
 			mv.addObject("memberId", m.getMemberId());
 			mv.addObject("memberName", m.getMemberName());
 			mv.addObject("email", m.getEmail());
@@ -283,9 +283,6 @@ public class MemberController {
 		}
 		 return response;
 	}
-	
-	// 카카오 회원 탈퇴 
-	
 	
 	// 아이디찾기페이지 요청 
 		@GetMapping("findIdForm.me")
@@ -529,9 +526,6 @@ public class MemberController {
 			 						@RequestBody Member m,                                 
 	                                 HttpSession session) {
 		
-		System.out.println(m.getMemberId());
-		//System.out.println(m.getGradeName());
-		
 		Member member = new Member();
 		member.setMemberId(m.getMemberId());
 		member.setGradeName(m.getGradeName());
@@ -606,7 +600,7 @@ public class MemberController {
 	     
 	        } else {
 	        	response.put("success", false);
-	        	 response.put("message", "회원배송정보가 수정실패.");
+	        	response.put("message", "회원배송정보가 수정실패.");
 	        }
 	    
 	        return response;

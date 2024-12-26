@@ -49,8 +49,8 @@
 		                </div>
 	              	</div>
 	             	<div class="submit-row">
-	             		<button type="button" id="validateBtn" class="btn btn-outline-info" onclick="validateEmail()">확인</button>
-	             		<button type="reset"  class="btn btn-outline-info" onclick="goBack();">취소</button>
+	             		<button type="button" id="validateBtn" class="btn btn-outline-primary blb-btn" onclick="validateEmail()">확인</button>
+	             		<button type="reset"  class="btn btn-outline-primary blb-btn" onclick="goBack();">취소</button>
 			       </div>
 	              </div>
              
@@ -84,8 +84,8 @@
 		                </div>
 		            </div>
 		            <div class="btn-wrapper">
-		                <button type="submit" class="submit-btn">비밀번호 변경</button>
-		                <button type="button" class="btn btn-outline-secondary cancel-btn">취소</button>
+		                <button type="submit" class="btn-primary blb-btn">비밀번호 변경</button>
+		                <button type="button" class="btn btn-outline-secondary cancel-btn" style="width:130px;">취소</button>
 		            </div>
 		        </form>
 		        </div>

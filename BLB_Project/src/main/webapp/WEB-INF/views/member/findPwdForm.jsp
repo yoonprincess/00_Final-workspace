@@ -32,8 +32,6 @@
 	                 <div  id="radio-input" >
 	                    <input type="radio" class="radio-field" name="checkType" id="email" value="email" checked >
 	                    <label for="email">이메일</label>
-	                    <input type="radio" class="radio-field" name="checkType" id="phone" value="phone" >
-	              		<label for="phone">휴대번호</label>
 	              	</div>
 	              	<div id="inputAndBtn" >
 		                 <div id="input-wrapper" >
@@ -48,8 +46,11 @@
 		              	</div>
 	              	</div>
 	             	<div class="submit-row">
-	             		<button type="submit" id="findPwdBtn" class="btn btn-outline-info">확인</button>
-	             		<button type="button" id="findPwdBtn" class="btn btn-outline-secondary" onclick="goMain();">취소</button>
+	             		<button type="submit" id="findPwdBtn" class="btn btn-primary blb-btn">확인</button>
+	             		<button type="button" id="findPwdBtn" 
+	             				class="btn btn-outline-secondary" 
+	             				style="width:70px;"
+	             				onclick="goMain();">취소</button>
 			       </div>
 	              </div>
              </form>

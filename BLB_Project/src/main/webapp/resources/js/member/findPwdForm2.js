@@ -111,7 +111,7 @@
 	        alert('인증번호 발송 요청이 접수되었습니다. 잠시만 기다려주세요.');
 	        
 	        clearInterval(countdown);
-	        seconds = 100;
+	        seconds = 300;
 	
 	        updateCountdown();
 	        

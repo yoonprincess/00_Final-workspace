@@ -31,8 +31,7 @@
 	                 <div  id="radio-input" sty>
 	                    <input type="radio" class="radio-field" name="checkType" id="email" value="email" checked >
 	                    <label for="email">이메일</label>
-	                    <input type="radio" class="radio-field" name="checkType" id="phone" value="phone">
-	              		<label for="phone">휴대번호</label>
+	                    
 	              	</div>
 	              	<div id="input-group">
 		              	<div class="inputAndBtn" >

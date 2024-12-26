@@ -38,7 +38,7 @@
                     <label class="form-label">배송지명</label>
                     <div class="form-input">
                         <input type="text" placeholder="최대 10자" name="deliNickname" value="${d.deliNickname}">
-                        <input type="hidden" name="deliDefault" value="N">
+                        <input type="hidden" name="deliDefault" value="${d.deliDefault}">
                     </div>
                 </div>
                 
@@ -57,11 +57,11 @@
                 <div class="form-group">
                     <label class="form-label required">연락처</label>
                     <div class="form-input phone-group">
-                        <input type="text" class="phone-input" id="phone1">
+                        <input type="text" class="phone-input" id="phone1" maxlength="3">
                         <span>-</span>
-                        <input type="text" class="phone-input" id="phone2">
+                        <input type="text" class="phone-input" id="phone2" maxlength="4">
                         <span>-</span>
-                        <input type="text" class="phone-input" id="phone3">
+                        <input type="text" class="phone-input" id="phone3" maxlength="4">
                          <input type="hidden" name="deliPhone" id="deliPhone"  maxlength="11"> 
                     </div>
                 </div>

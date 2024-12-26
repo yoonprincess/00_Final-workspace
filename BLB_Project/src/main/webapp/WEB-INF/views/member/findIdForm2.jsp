@@ -32,7 +32,7 @@
 	                  <p style="font-size:20px;"><b>${findId} </b>입니다.</p>
 	              	</div>
 	             	<div class="submit-row">
-			            <button type="button" class="btn btn-outline-info findPwd" onclick="goFindPwd()">비밀번호 찾기</button>
+			            <button type="button" class="btn btn-outline-primary blb-btn findPwd" onclick="goFindPwd()">비밀번호 찾기</button>
 			            <button class="btn btn-outline-info goLogin" type="button" onclick="goLogin">로그인하기</button>
 			       </div>
 	             </div>
