@@ -36,6 +36,18 @@
             </c:choose>
         </div>
 
+        <!-- 관리자 권한이 있을 경우 수정 버튼 표시 -->
+        <c:if test="${sessionScope.loginUser.memberId eq requestScope.i.memberId}">
+        
+            <div style="text-align: center;">
+            <form id="inquiryUpdate" action="InquiryUpdateForm.io" method="post" >	
+            	<input type="hidden" name="ino" value="${ requestScope.i.inquiryNo }">
+                <input type="hidden" name="filePath" value="${ requestScope.p.saveFileName }">
+            	<button type="submit" class="btn btn-edit">수정</button>
+            </form>
+            </div>
+        </c:if>
+
         <!-- 댓글 목록 섹션 -->
         <div class="comments-section">
             <table id="replyArea" class="table" align="center">
@@ -130,8 +142,6 @@
         setInterval(selectReplyList, 1000);
     });
 
-    
-
     // 댓글 목록 조회용 함수
     function selectReplyList() {
         $.ajax({
@@ -186,8 +196,8 @@
             });
         }
     }
-    
- // 댓글 작성용 함수
+
+    // 댓글 작성용 함수
     function addReply() {
         let replyContent = $("#inquiryReplyContent").val();
         if(replyContent.trim().length != 0) {
@@ -210,7 +220,7 @@
                         alertify.alert("Alert", "댓글 작성 실패");
                     }
                 },
-                error : function() {
+                error: function() {
                     console.log("댓글 작성용 ajax 통신 실패!");
                 }
             });
@@ -249,7 +259,6 @@
             "<tr><td>시스템</td><td>" + message + "</td><td>" + new Date().toLocaleString() + "</td><td></td></tr>"
         );
     }
-
 </script>
 
 <script src="${pageContext.request.contextPath}/resources/js/helpdesk/Inquiry.js"></script>

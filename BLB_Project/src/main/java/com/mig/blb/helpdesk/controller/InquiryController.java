@@ -186,8 +186,10 @@ public class InquiryController {
 	public String InquiryUpdateForm(@RequestParam int ino,
 								    Model model) {
 		Inquiry i = inquiryService.selectInquiry(ino);
+		ArrayList<InquiryAtt> ia = inquiryService.selectInquiryAtt(ino);
 		
 		model.addAttribute("i",i);
+		model.addAttribute("ia",ia);
 		return "helpdesk/InquiryUpdateForm";
 	}
 			

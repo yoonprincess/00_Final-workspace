@@ -251,7 +251,31 @@
 		 WHERE NOTICE_ATT_NO = #{noticeAttNo}
 		   AND NOTICE_NO = #{noticeNo}
 	</update>	
+					
+	<!-- 공지사항 첨부파일 삭제 -->
+	<delete id="deleteAtt" parameterType="string">
+    	DELETE
+		  FROM TB_NOTICE_ATTACHMENT
+		 WHERE SAVE_FILE_NAME = #{saveFileName}
+		   AND NOTICE_ATT_STATUS = 'Y'
+    </delete>
+    
+    <!-- 공지사항 수정 -->
+	<insert id="updateAtt" parameterType="noticeAtt">
+    INSERT INTO TB_NOTICE_ATTACHMENT(NOTICE_ATT_NO,
+                             ORIG_FILE_NAME,
+                             SAVE_FILE_NAME,
+                             SAVE_PATH,
+                             NOTICE_NO)
+                      VALUES(SEQ_NOTICE_ATT_NO.NEXTVAL,
+                             #{origFileName},
+                             #{saveFileName},
+                             #{savePath},
+                             #{noticeNo})
+    </insert>
+	
 													<!-- 1:1 문의 관련 매퍼 -->
+	
 	<!-- 문의 관련 -->												
 	<resultMap id="inquiryResultSet" type="inquiry">
 		<id column="INQUIRY_NO" property="inquiryNo"/>

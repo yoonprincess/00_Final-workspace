@@ -99,6 +99,14 @@ public class NoticeDao {
 		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectAdminNoticeList");
 	}
 
+	public int deleteAtt(SqlSessionTemplate sqlSession, String deleteFileName) {
+		return sqlSession.delete("helpdeskMapper.deleteAtt", deleteFileName);
+	}
+
+	public int updateAtt(SqlSessionTemplate sqlSession, NoticeAtt na) {
+		return sqlSession.update("helpdeskMapper.updateAtt", na);
+	}
+
 	
 
 }
