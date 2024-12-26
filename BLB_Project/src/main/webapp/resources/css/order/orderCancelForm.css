@@ -81,50 +81,79 @@ table th, table td {
     border-bottom: 1px solid #ddd;
 }
 
-#refund-reason {
-    width: 100%;
-    box-sizing: border-box;
-    margin : 5px;
-    gap: 10px;
-    border-collapse: collapse;
+/* 취소 사유 선택 */
+.refund-reason {
+    width: 100%; /* 테이블 전체 너비 */
+    border-collapse: collapse; /* 테이블 경계선 합치기 */
+    margin: 20px 0;
 }
 
-#refund-reason th {
-    width: 20%;
-    font-weight: bold;
-    font-size: 14px;
-    border-right: 1px solid #ddd;
-}
-
-#refund-reason td {
-    width: 80%;
-}
-
-#refund-reason td {
+.refund-reason td {
     padding: 10px;
-    text-align: left;
     vertical-align: middle;
-    border-bottom: 1px solid #ddd;
-    border-top: 1px solid #ddd;
 }
 
-#reasonSelect {
-    width: 100%;
+.refund-reason select {
+    width: 100%; /* select 박스가 셀 너비만큼 가득 차도록 설정 */
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     box-sizing: border-box;
-    margin : 5px;
-    gap: 10px;
-    border-collapse: collapse;
 }
 
-.refund-details table {
+.refund-reason select:focus {
+    border-color: #007bff; /* 포커스 시 테두리 색 변경 */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* 포커스 시 테두리 외곽 효과 */
+    outline: none;
+}
+
+.required {
+    color: #7AB2D3;
+}
+
+/* 결제 예상 금액 영역 */
+#refund-details {
     width: 100%;
+    margin: 40px auto;
+    border-top: 2px solid #4A628A;
     border-collapse: collapse;
+    table-layout: fixed; /* 고정된 열 너비 사용 */
+    text-align: center;
 }
 
-.refund-details th, .refund-details td {
+#refund-details tbody td {
     padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #4A628A;
+}
+
+#refund-details tbody .value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4A628A;
+}
+
+#refund-details tfoot .footer {
+    padding: 15px;
     text-align: center;
-    border-bottom: 1px solid #ddd;
+    background-color: #F4F4F9;
+    font-size: 14px;
+    color: #555;
+    border-bottom: 2px solid #ddd;
+}
+
+.final-refund {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.final-refund {
+    color: #4A628A;
+    font-size: 20px;
 }
 
 /* 버튼 스타일 */
@@ -152,7 +181,8 @@ table th, table td {
 }
 
 .btn-secondary:hover {
-    background-color: #f0f0f0;
+    background-color: #4A628A;
+    color: #fff;
 }
 
 .btn-primary {

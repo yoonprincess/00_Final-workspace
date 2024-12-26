@@ -90,6 +90,11 @@ public class OrderServiceImpl implements OrderService {
 		return orderDao.selectCancelProductOrders(sqlSession, orderNo);
 	}
 
+	@Override
+	public int updateOrderCancel(String orderNo, String refundReason) {
+		return orderDao.updateOrderCancel(sqlSession, orderNo, refundReason);
+	}
+
 
 	
 }

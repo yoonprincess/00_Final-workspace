@@ -142,10 +142,17 @@
 	     WHERE PO.ORDER_NO = CAST(#{orderNo} AS VARCHAR2(30))
 	     ORDER BY PO.SERIAL_NO ASC
 	</select>
-
-		
 	
 	<!-- 주문 취소 - 환불일, 환불사유 업데이트 -->
+	<update id="updateOrderCancel"
+			parameterType="map">
+	    UPDATE TB_ORDER
+	       SET REFUND_DATE = SYSDATE,
+	           REFUND_REASON = #{refundReason}
+	     WHERE ORDER_NO = CAST(#{orderNo} AS VARCHAR2(30))
+	</update>
+		
+	
 	
 
 

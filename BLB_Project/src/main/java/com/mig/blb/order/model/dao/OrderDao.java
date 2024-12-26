@@ -111,4 +111,13 @@ public class OrderDao {
 		return sqlSession.selectOne("orderMapper.selectOptNo", orderNo);
 	}
 
+	public int updateOrderCancel(SqlSessionTemplate sqlSession, String orderNo, String refundReason) {
+		
+		Map<String, String> params = new HashMap<>();
+		params.put("orderNo", orderNo);
+		params.put("refundReason", refundReason);
+		
+		return sqlSession.update("orderMapper.updateOrderCancel", params);
+	}
+
 }

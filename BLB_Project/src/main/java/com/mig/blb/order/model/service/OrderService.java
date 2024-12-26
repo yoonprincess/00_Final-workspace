@@ -47,7 +47,10 @@ public interface OrderService {
 	// 바로 구매 상품 리스트 조회
 	List<Product> getSelectedProducts(String memberId, List<Integer> optNos);
 
-	// 주문 취소 폼(환불) 
+	// 주문 취소/환불 요청 화면
 	List<Product> selectCancelProductOrders(String orderNo);
+
+	// 취소/환불 시 환불일, 환불사유 업데이트
+	int updateOrderCancel(String orderNo, String refundReason);
 
 }

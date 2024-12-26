@@ -8,8 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문 취소 | 뷰라밸</title>
 
-    <link rel="stylesheet" type="text/css" href="<c:url value='resources/css/order/orderCancleCompleteView.css'/>">
-    
+    <!-- css 파일 -->
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/order/orderCancelCompleteView.css">
+    <!-- jQuery 라이브러리 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 </head>
 <body class="body-offset">
 
@@ -25,7 +28,7 @@
             자세한 문의사항은 고객센터(1522-0882) 또는 1:1 상담으로 문의주시기 바랍니다.
         </p>
         <div class="action-buttons">
-            <button class="btn-primary">취소 내역 조회</button>
+            <a class="btn btn-primary blb-btn" href="${pageContext.request.contextPath}/orderList.me">취소 내역 조회</a>
         </div>
     </div>
     

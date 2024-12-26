@@ -289,9 +289,8 @@ public class OrderController {
 	    return "order/directOrderEnrollForm"; // 주문서 화면 JSP 경로
 	}
 	
-	// 주문 취소 폼(환불)
 	/**
-	 * 주문 환불/취소 요청
+	 * 주문 환불/취소 요청 화면
 	 * - 예원_24.12.26
 	 * @param orderNo
 	 * @param session
@@ -304,7 +303,6 @@ public class OrderController {
 	                              Model model) {
 
 	    // 로그인된 사용자 확인
-	    String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
 	    if (session.getAttribute("loginUser") == null) {
 	        session.setAttribute("alertMsg", "로그인이 필요합니다.");
 	        return "redirect:/loginForm.me";
@@ -321,6 +319,46 @@ public class OrderController {
 	    return "order/orderCancelForm";
 	}
 	
+	// 취소/환불 시 환불일, 환불사유 업데이트
+	@ResponseBody
+	@PostMapping("cancelForm.or")
+	public Map<String, Object> updateOrderCancel(@RequestBody Map<String, Object> requestData,
+												 HttpSession session,
+												 Model model) {
+		
+	    Map<String, Object> response = new HashMap<>();
+	    
+	    if (session.getAttribute("loginUser") == null) {
+	    	response.put("success", true);
+	        response.put("message", "로그인 후 이용 가능한 서비스입니다.");
+	        return response;
+	    }
+	    
+	    String orderNo = (String) requestData.get("orderNo");
+	    String refundReason = (String) requestData.get("refundReason");
+
+	    System.out.println("Order No: " + orderNo);
+	    System.out.println("Refund Reason: " + refundReason);
+
+	    int result = orderService.updateOrderCancel(orderNo, refundReason);
+	    
+	    if(result > 0) {
+	    	response.put("success", true);
+	    	response.put("message", "주문 취소가 성공적으로 처리되었습니다.");
+        } else {
+        	response.put("success", false);
+        	response.put("message", "주문 취소에 실패되었습니다.");
+        }
+	    
+        return response;
+	}
+	
+	// 취소 완료 화면
+	@GetMapping("cancelComplete.or")
+	public String selectCancelComplete(HttpSession session) {
+		
+		return "order/orderCancelCompleteView";
+	}
 	
 	
 	
