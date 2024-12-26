@@ -51,6 +51,7 @@
                    </c:forEach>
             </tbody>
         </table>
+
         <!-- 페이지네이션 -->
 			<nav>
 				<ul class="pagination">
@@ -85,7 +86,7 @@
 					<c:if test="${ pi.endPage < pi.maxPage }">
 						<li class="page-item">
 							<a href="list.no?cpage=${ pi.startPage + pi.pageLimit }&searchKeyword=${searchKeyword}">
-								＞
+								＞ 
 							</a>
 						</li>
 					</c:if>
@@ -96,5 +97,6 @@
 </div>
 	<script src="${ pageContext.request.contextPath }/resources/js/helpdesk/Notice.js"></script> <!-- JS 파일 경로 -->
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
 </body>
 </html>

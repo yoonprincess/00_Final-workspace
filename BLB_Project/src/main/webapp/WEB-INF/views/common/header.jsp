@@ -250,118 +250,120 @@
     <script src="${ pageContext.request.contextPath }/resources/js/common/header.js"></script>
     
     <script>
-        const contextPath = "${pageContext.request.contextPath}";
-        
-        document.addEventListener('DOMContentLoaded', function() {
-		    const notificationToggle = document.getElementById('notification-toggle');
-		    const notificationDropdown = document.querySelector('.notification-dropdown');
-		    const notificationCount = document.querySelector('.notification-count');
-		    const notificationList = document.querySelector('.notification-list');
-		    const markAllReadBtn = document.getElementById('mark-all-read');
-		    const deleteAllBtn = document.getElementById('delete-all');
-		
-		    // 알림 토글 기능
-		    notificationToggle.addEventListener('click', function(e) {
-		        e.preventDefault();
-		        const expanded = this.getAttribute('aria-expanded') === 'true' || false;
-		        this.setAttribute('aria-expanded', !expanded);
-		        notificationDropdown.style.display = expanded ? 'none' : 'block';
-		    });
-		
-		 	// 개별 알림 삭제 및 읽음 표시 기능
-		    notificationList.addEventListener('click', function(e) {
-		        const notificationItem = e.target.closest('.notification-item');
-		        if (!notificationItem) return; // 알림 항목 외의 클릭은 무시합니다
+    const contextPath = "${pageContext.request.contextPath}";
 
-		        if (e.target.closest('.delete-notification')) {
-		            notificationItem.remove();
-		            updateNotificationCount();
-		        } else if (e.target.closest('.read-notification')) {
-		            notificationItem.classList.add('read');
-		            updateNotificationCount();
-		        }
-		    });
-		
-		    // 모든 알림 읽기 기능
-		    markAllReadBtn.addEventListener('click', function() {
-		        const notifications = notificationList.querySelectorAll('.notification-item');
-		        notifications.forEach(notification => {
-		            notification.classList.add('read');
-		        });
-		        updateNotificationCount();
-		    });
-		
-		    // 모든 알림 삭제 기능
-		    deleteAllBtn.addEventListener('click', function() {
-		        notificationList.innerHTML = '';
-		        updateNotificationCount();
-		    });
-		
-		    // 알림 개수 업데이트 함수
-		    function updateNotificationCount() {
-		        const unreadCount = notificationList.querySelectorAll('.notification-item:not(.read)').length;
-		        notificationCount.textContent = unreadCount;
-		        notificationCount.style.display = unreadCount > 0 ? 'inline-block' : 'none';
-		    }
-			
-		    // 초기 알림 개수 설정
-		    updateNotificationCount();
-		
-		    // 실시간 알림 시뮬레이션 (실제 구현 시 이 부분을 서버와의 통신으로 대체)
-		    setInterval(function() {
-		        const newNotification = document.createElement('li');
-		        newNotification.className = 'notification-item';
-		        newNotification.innerHTML = `
-		            <p class="notification-message">새로운 실시간 알림입니다.</p>
-		            <div class="notification-actions">
-		                <button class="read-notification" aria-label="알림 읽음">
-		                    <span class="material-symbols-outlined">done</span>
-		                </button>
-		                <button class="delete-notification" aria-label="알림 삭제">
-		                    <span class="material-symbols-outlined">close</span>
-		                </button>
-		            </div>
-		        `;
-		        notificationList.prepend(newNotification);
-		        updateNotificationCount();
-		    }, 10000); // 10초마다 새 알림 추가 (테스트용)
-		});
-		
-	    
-		// 웹소켓 객체를 담을 전역변수
-		let socket2;
-		
-		$(function(){
-			connect2();
-		});
-		
-		// 접속용 함수
-		function connect2() {
-			
-			// 접속할 주소
-			let url = "ws://localhost:80/blb/noty.blb";
-			
-			socket2 = new WebSocket(url);
-			// > 객체가 생성된 동시에 채팅방에 입장됨!!
-			
-			socket2.onopen = function() {
-				console.log("연결 완료!");
-			};
-			
-			socket2.onclose = function() {
-				console.log("연결 종료!");
-			};
-			
-			socket2.onerror = function() {
-				console.log("에러 발생!");
-			};
-			
-			socket2.onmessage = function(e) {
-				
-				console.log("메세지 전송 완료");
-			};
-			
-		}
+    $(document).ready(function() {
+        const $notificationToggle = $('#notification-toggle');
+        const $notificationDropdown = $('.notification-dropdown');
+        const $notificationCount = $('.notification-count');
+        const $notificationList = $('.notification-list');
+        const $markAllReadBtn = $('#mark-all-read');
+        const $deleteAllBtn = $('#delete-all');
+        
+        // 알림 토글 기능
+        $notificationToggle.on('click', toggleNotificationDropdown);
+        
+        // 개별 알림 삭제 및 읽음 표시 기능
+        $notificationList.on('click', handleNotificationAction);
+        
+        // 모든 알림 읽기 기능
+        $markAllReadBtn.on('click', markAllAsRead);
+        
+        // 모든 알림 삭제 기능
+        $deleteAllBtn.on('click', deleteAllNotifications);
+
+        // 웹소켓 객체를 담을 전역변수
+        let socket;
+
+        // 웹소켓 연결 함수
+        connectWebSocket();
+
+        // 초기 알림 개수 설정
+        updateNotificationCount();
+
+        // 알림 개수 업데이트 함수
+        function updateNotificationCount() {
+            const unreadCount = $notificationList.find('.notification-item:not(.read)').length;
+            $notificationCount.text(unreadCount);
+            $notificationCount.css('display', unreadCount > 0 ? 'inline-block' : 'none');
+        }
+
+        // 알림 목록에 새 알림 추가
+        function addNotification(msg) {
+            const newNotification = $('<li class="notification-item"></li>');
+            newNotification.html(`
+                <div id="message_wrap3">${msg}</div>
+                <div class="notification-actions">
+                    <button class="read-notification" aria-label="알림 읽음">
+                        <span class="material-symbols-outlined">done</span>
+                    </button>
+                    <button class="delete-notification" aria-label="알림 삭제">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+            `);
+            $notificationList.prepend(newNotification);
+            updateNotificationCount();
+        }
+
+        // 알림 토글 기능
+        function toggleNotificationDropdown(e) {
+            e.preventDefault();
+            const expanded = $(this).attr('aria-expanded') === 'true';
+            $(this).attr('aria-expanded', !expanded);
+            $notificationDropdown.css('display', expanded ? 'none' : 'block');
+        }
+
+        // 개별 알림 삭제 및 읽음 표시 기능
+        function handleNotificationAction(e) {
+            const $notificationItem = $(e.target).closest('.notification-item');
+            if (!$notificationItem.length) return;
+
+            if ($(e.target).closest('.delete-notification').length) {
+                $notificationItem.remove();
+                updateNotificationCount();
+            } else if ($(e.target).closest('.read-notification').length) {
+                $notificationItem.addClass('read');
+                updateNotificationCount();
+            }
+        }
+
+        // 모든 알림 읽음 표시 기능
+        function markAllAsRead() {
+            $notificationList.find('.notification-item').addClass('read');
+            updateNotificationCount();
+        }
+
+        // 모든 알림 삭제 기능
+        function deleteAllNotifications() {
+            $notificationList.empty();
+            updateNotificationCount();
+        }
+
+        // 웹소켓 연결
+        function connectWebSocket() {
+            const url = "ws://localhost:80/blb/noty.blb";
+            socket = new WebSocket(url);
+
+            socket.onopen = function() {
+                console.log("웹소켓 연결 완료!");
+            };
+
+            socket.onclose = function() {
+                console.log("웹소켓 연결 종료!");
+            };
+
+            socket.onerror = function() {
+                console.log("웹소켓 에러 발생!");
+            };
+
+            socket.onmessage = function(e) {
+                const obj = JSON.parse(e.data);
+                addNotification(obj.msg);
+            };
+        }
+    });
+
         
     </script>
 

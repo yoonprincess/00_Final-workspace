@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -7,15 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공지사항 등록</title>
     <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/helpdesk/NoticeEnrollForm.css"> <!-- 스타일 시트 링크 -->
-    
+
 </head>
 <body class="body-offset">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
     <div class="container-fluid">
     <div class="container">
-        <form id="NoticeEnrollForm" method="post" 
-            					  action="insert.no" 
-            					  enctype="multipart/form-data" >
+        <form id="NoticeEnrollForm" method="post" action="insert.no" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">제목</label>
                 <input type="text" id="title" name="noticeTitle" placeholder="공지사항 제목을 입력하세요">
@@ -40,7 +37,7 @@
 			</div>
 
             <div class="button-group">
-                <button type="button" class="btn btn-list">목록</button>
+                <button type="button" class="btn btn-list" onclick="goList();">목록</button>
                 <button type="submit" class="btn btn-submit">등록</button>
             </div>
         </form>
@@ -48,5 +45,6 @@
 	</div>
 	<script src="${ pageContext.request.contextPath }/resources/js/helpdesk/Notice.js"></script> <!-- JS 파일 경로 -->
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
 </body>
 </html>

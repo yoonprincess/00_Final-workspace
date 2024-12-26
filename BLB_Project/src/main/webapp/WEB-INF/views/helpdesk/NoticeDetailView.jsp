@@ -29,31 +29,33 @@
                </c:when>
                <c:otherwise>
                    <c:forEach var="a" items="${ requestScope.na }">
-                       <img src="${pageContext.request.contextPath }/${ a.savePath }${a.saveFileName}" alt="첨부된 파일 이미지">
-                   </c:forEach>
+					    <div class="attachment-img-container">
+					        <img src="${pageContext.request.contextPath }/${ a.savePath }${a.saveFileName}" 
+					             alt="첨부된 파일 이미지" 
+					             class="attachment-img">
+					    </div>
+					</c:forEach>
+
                </c:otherwise>
            </c:choose>
        </div>
     </div>
-    
+
     <c:if test="${ sessionScope.loginUser.memberId eq 'admin' }">
                     <div align="center">
-                        <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
                         <button type="button" class="btn btn-edit" onclick="postFormSubmit(1);">수정</button>
                         <button type="button" class="btn btn-delete" onclick="postFormSubmit(2);">삭제</button>
                     </div>
-                    
                     <form id="postForm" action="" method="post">
                         <input type="hidden" name="nno" value="${ requestScope.n.noticeNo }">
                         <input type="hidden" name="filePath" value="${ requestScope.a.saveFileName }">
                     </form>
-                    
                     <script>
                     function postFormSubmit(num) {
-                        if (num === 1) { // 수정하기를 클릭했을 경우
+                        if (num === 1) { 
                             $("#postForm").attr("action", "../NoticeUpdateForm.no").submit();
-                        } else { // 삭제하기를 클릭했을 경우
-                            if (confirm("삭제하시겠습니까?")) { // 사용자 확인
+                        } else {
+                            if (confirm("삭제하시겠습니까?")) { 
                                 $("#postForm").attr("action", "../NoticeDelete.no").submit();
                                 alert("공지사항이 삭제되었습니다.")
                             } else {
@@ -78,14 +80,14 @@
 	    </a>
 	</c:if>
 
-
-
     <div class="button-container">
-        <button type="button" class="list-button" onclick="goList();">목록보기</button>
+        <button type="button" class="list-button" onclick="goBack();">목록보기</button>
     </div>
     </div>
     </div>
     <script src="${ pageContext.request.contextPath }/resources/js/helpdesk/Notice.js"></script>
     <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
 </body>
 </html>
+	

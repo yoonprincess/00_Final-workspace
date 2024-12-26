@@ -60,12 +60,12 @@
 							</c:choose>
                         </td>
                         <td>
-                            <button class="btn-edit" onclick="editInquiry(${i.inquiryNo})">
-                                <i class="material-icons">edit</i>
+                        <form action="InquiryDelete.io" method="post">
+                        	<input type="hidden" name="ino" value="${i.inquiryNo }"/>
+                        	<button class="btn-delete">
+                            	<i class="material-icons">delete</i>
                             </button>
-                            <button class="btn-delete" onclick="deleteInquiry(${i.inquiryNo})">
-                                <i class="material-icons">delete</i>
-                            </button>
+                        </form>
                         </td>
                     </tr>
                 </c:forEach>
@@ -118,6 +118,6 @@
 </div>
 <script src="${ pageContext.request.contextPath }/resources/js/helpdesk/Inquiry.js"></script> <!-- JS 파일 경로 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
 </body>
 </html>
-

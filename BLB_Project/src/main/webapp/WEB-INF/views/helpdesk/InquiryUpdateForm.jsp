@@ -47,7 +47,7 @@
             
             <div class="form-group">
             	<label for="inquiryAtt">첨부파일</label>
-            	<input type="file" id="inquiryAtt" name="inquiryAtt" value="${requestScope.i.inquiryAtt }"/>
+            	<input type="file" id="inquiryAtt" name="inquiryAtt" value="${requestScope.i.inquiryAtt }" multiple/>
             </div>
             
             <button type="submit">수정</button>
