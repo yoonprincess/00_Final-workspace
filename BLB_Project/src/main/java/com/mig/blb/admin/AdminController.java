@@ -1,11 +1,15 @@
 package com.mig.blb.admin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mig.blb.helpdesk.model.service.FaqService.FaqService;
@@ -17,9 +21,6 @@ import com.mig.blb.helpdesk.model.vo.Notice;
 import com.mig.blb.member.model.service.MemberService;
 import com.mig.blb.member.model.vo.Delivery;
 import com.mig.blb.member.model.vo.Member;
-
-
-
 
 @Controller
 public class AdminController {
@@ -38,9 +39,15 @@ public class AdminController {
 	
 	
 	@GetMapping("admin.blb")
-	public String admin() {
+	public ModelAndView admin(ModelAndView mv) {
+		// 회원 수 관련
+		List<Map<String,Object>> memberCounts = memberService.selectMemberCount();
 		
-		return "admin/admin";
+		mv.addObject("memberCounts",memberCounts);
+		
+		mv.setViewName( "admin/admin");
+		
+		return mv;
 	}
 	
 	@GetMapping("adminMember.me")
@@ -48,20 +55,27 @@ public class AdminController {
 		
 		ArrayList<Member> mList = memberService.selectMemberList();
 		mv.addObject("mList",mList);
-		mv.setViewName("admin/admin_member2");
+		ArrayList<Delivery> dList = memberService.selectDeliveryListAll();
+		
+		Map<String, String> addressMap = new HashMap<>();
+		for (Delivery d : dList) {
+		    addressMap.put(d.getMemberId(), d.getDeliAddress());
+		}
+		mv.addObject("addressMap", addressMap);
+		
+		mv.setViewName("admin/admin_member");
 		return mv;
 	}
 	
-	@PostMapping("adminDetailMember.me")
+	@GetMapping("adminDetailMember.me")
 	public ModelAndView adminDetailMember(ModelAndView mv,
-										String memberId
-										) {
+										@RequestParam String memberId) {
 		
-		System.out.println(memberId);
 		Member member = memberService.selectMemberAdmin(memberId);
+		ArrayList<Delivery> dlist = memberService.selectDeliveryList(memberId);
 		Delivery d = memberService.selectDefaultDelivery(memberId);
-		mv.addObject("d", d);
-		System.out.println(d);
+		mv.addObject("d",d);
+		mv.addObject("dList", dlist);
 		mv.addObject("m",member);
 		mv.setViewName("admin/admin_member_detail");
 		return mv;

@@ -107,7 +107,7 @@ public class AuthLoginController {
 			}
 		
 		}else { // 카카오 가입 이력 없을 경우 
-				
+			
 			Member m = new Member();
 			m.setMemberId("kakao_"+snsId);
 			m.setMemberName(name);

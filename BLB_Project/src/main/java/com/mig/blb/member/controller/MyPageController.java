@@ -405,7 +405,7 @@ public class MyPageController {
 				Delivery updateDelivery = memberService.selectMemberDelivery(deliCode);
 				mv.addObject("d",updateDelivery);
 				session.setAttribute("alertMsg", "배송지 정보가 수정되었습니다.");
-				mv.setViewName("member/updateDelivery");
+				mv.setViewName("member/myDeliveryList");
 			
 			}else {
 				
@@ -478,6 +478,7 @@ public class MyPageController {
 			
 		return mv;
 	}
+	
 	
 	// 내 리뷰 목록 페이지요청 
 		@GetMapping("reviewList.me")

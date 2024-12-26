@@ -101,6 +101,16 @@ public interface MemberService {
 
 	Member selectMemberAdmin(String memberId);
 
+	ArrayList<Delivery> selectDeliveryListAll();
+
+	int updateAdminMember(Member member);
+
+	int updateDeliveryAdmin(Delivery deli);
+
+	List<Map<String, Object>> selectMemberCount();
+
+
+
 	
 	
 	

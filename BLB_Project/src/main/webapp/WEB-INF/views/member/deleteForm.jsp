@@ -46,7 +46,7 @@
 	                    <h6>뷰라밸을 이용해 주시고 사랑해주셔서 감사합니다.</h6>
 	                    <h6>더욱더 노력하고 발전하는 뷰라밸이 되겠습니다.</h6>
 	                    <br><br>
-	                    <button type="button" class="btn btn-outline-info main" onclick="goMain()">메인으로</button>
+	                    <button type="button" class="btn-outline-primary blb-btn main" onclick="goMain()">메인으로</button>
 	                    
 	                </div>
 			 </div>

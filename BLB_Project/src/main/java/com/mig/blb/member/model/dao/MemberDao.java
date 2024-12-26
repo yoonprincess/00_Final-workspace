@@ -198,6 +198,23 @@ public class MemberDao {
 		return sqlSession.selectOne("memberMapper.selectMemberAdmin",memberId);
 	}
 
+	public ArrayList<Delivery> selectDeliveryListAll(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("memberMapper.selectDeliveryListAll");
+	}
+
+	public int updateAdminMember(SqlSessionTemplate sqlSession, Member member) {
+		return sqlSession.update("memberMapper.updateAdminMember",member);
+	}
+
+	public int updateDeliveryAdmin(SqlSessionTemplate sqlSession, Delivery deli) {
+		return sqlSession.update("memberMapper.updateDeliveryAdmin",deli);
+	}
+
+	public List<Map<String, Object>> selectMemberCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectList("memberMapper.selectMemberCount");
+	}
+
+	
 	
 
 }

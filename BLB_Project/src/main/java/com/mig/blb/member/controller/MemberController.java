@@ -10,11 +10,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -518,6 +520,97 @@ public class MemberController {
 
 	    return result;
 	}
+
+
+	// 관리자페이지 회원정보변경
+	@PostMapping("updateAdmin.me")
+	@ResponseBody
+	public Map<String, Object> updateMemberAdmin(ModelAndView mv,
+			 						@RequestBody Member m,                                 
+	                                 HttpSession session) {
+		
+		System.out.println(m.getMemberId());
+		//System.out.println(m.getGradeName());
+		
+		Member member = new Member();
+		member.setMemberId(m.getMemberId());
+		member.setGradeName(m.getGradeName());
+		member.setStatus(m.getStatus());
+		member.setTotalPoints(m.getTotalPoints());
+		
+		
+	    Member loginUser = (Member) session.getAttribute("loginUser");
+	    Map<String, Object> response = new HashMap<>(); 
+	    int result = memberService.updateAdminMember(member);
+	    
+	        if (result > 0 ) {
+	         
+	        	 response.put("success", true);
+	        	 response.put("message", "회원정보가 수정되었습니다.");
+	      
+	     
+	        } else {
+	        	response.put("success", false);
+	        	 response.put("message", "회원정보가 수정실패.");
+	        }
+	    
+	        return response;
+	    }
+	
+	// 관리자페이지 배송지정보변경
+		@PostMapping("updateDeliveryAdmin.me")
+		@ResponseBody
+		public Map<String, Object> updateDeliveryAdmin(ModelAndView mv,
+				 						@RequestBody Delivery d,                                 
+		                                 HttpSession session) {
+			
+			Delivery deli = new Delivery();
+			deli.setDeliCode(d.getDeliCode());
+			deli.setDeliNickname(d.getDeliNickname());
+			deli.setDeliDefault(d.getDeliDefault());
+			
+		    Member loginUser = (Member) session.getAttribute("loginUser");
+		    Map<String, Object> response = new HashMap<>(); 
+		    int result = memberService.updateDeliveryAdmin(deli);
+		    
+		        if (result > 0 ) {
+		         
+		        	 response.put("success", true);
+		        	 response.put("message", "회원배송정보가 수정되었습니다.");
+		      
+		     
+		        } else {
+		        	response.put("success", false);
+		        	 response.put("message", "회원배송정보가 수정실패.");
+		        }
+		    
+		        return response;
+		    }
+		
+		// 배송지 삭제 관리자 요청
+		@ResponseBody
+		@PostMapping("deleteDeliveryAdmin.me")
+		public  Map<String, Object> deleteDeliveryAdmin (ModelAndView mv
+										, HttpSession session
+										,@RequestBody Delivery d ){
+			
+			System.out.println(d.getDeliCode());
+			Map<String, Object> response = new HashMap<>(); 
+			int result = memberService.deleteDelivery(d.getDeliCode());
+			
+			 if (result > 0 ) {
+		         
+	        	 response.put("success", true);
+	        	 response.put("message", "회원배송정보가 수정되었습니다.");
+	      
+	     
+	        } else {
+	        	response.put("success", false);
+	        	 response.put("message", "회원배송정보가 수정실패.");
+	        }
+	    
+	        return response;
+	    }
 }
 
 

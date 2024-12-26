@@ -23,22 +23,43 @@
 <body  class="body-offset" id="custom">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 			<br><br><br><br><br><br>
-            <div class="container-fluid" id="check-page" >    
-             	<h2 align="center"> 회원탈퇴 </h2>
+            <div class="container-fluid" id="check-page" align="center" >    
+             	<h2 align="center"> 회원 탈퇴 </h2>
+             	<br>
              	<p>카카오 계정을 탈퇴하면 복구할 수 없습니다. 계속 진행하시겠습니까?</p>
              	
-             	<div id="deleteConfirmModal" class="modal" style="display: none;">
+             	<div id="deleteConfirmModal" class="modal" style="margin:0;">
 				    <div class="modal-content">
 				        <h2>정말 탈퇴하시겠습니까?</h2>
-				        <p>카카오 계정을 탈퇴하면 복구할 수 없습니다. 탈퇴를 진행하시겠습니까?</p>
-				        <button id="confirmDeleteBtn" class="btn-confirm">탈퇴</button>
-				        <button id="cancelDeleteBtn" class="btn-cancel">취소</button>
+				        <p >카카오 계정을 탈퇴하면 복구할 수 없습니다. 탈퇴를 진행하시겠습니까?</p>
+				        <br>
+				        <div style="display:flex; flex-direction:row;  justify-content: center; 
+				        			align-items: center; margin: 0;
+				        			gap:10px;">
+				         <button id="confirmDeleteBtn" class="btn-confirm"
+				         		style="background-color:#FFCD00;">
+				          <i class="fa fa-comment"></i>
+				          탈퇴
+				          </button>
+				         <button id="cancelDeleteBtn" class="btn-cancel">취소</button>
+				        </div>
 				    </div>
+				    <br>
 				</div>
-               <button id="deleteAccountBtn">카카오 계정 탈퇴</button>
+				    <div style="display:flex; flex-direction:row;  justify-content: center; align-items: center; margin: 0; gap:10px;">
+	              		<button class="btn-outline-primary blb-btn" 
+	              				style="width:200px;
+	              				 display: flex; align-items: center;  height: 60px; 
+	              				 justify-content: center;"
+	              		onclick="showDeleteConfirmModal();">
+						    탈퇴
+		                 </button>
+		                 <button class="btn-primary blb-btn" style="width:200px;  height: 60px;" 
+	              		onclick="goBack();">
+						    취소
+		                 </button>
+	                 </div>
             </div>
-            
-            
             
 			<div class="container-fluid" id="result-page" style="display:none;">
 			 <div class="outer" align="center">
@@ -48,7 +69,7 @@
 	                    <h6>뷰라밸을 이용해 주시고 사랑해주셔서 감사합니다.</h6>
 	                    <h6>더욱더 노력하고 발전하는 뷰라밸이 되겠습니다.</h6>
 	                    <br><br>
-	                    <button type="button" class="btn btn-outline-info main" onclick="goMain()">메인으로</button>
+	                    <button type="button" class="btn-outline-primary blb-btn main" onclick="goMain()">메인으로</button>
 	                    
 	                </div>
 			 </div>

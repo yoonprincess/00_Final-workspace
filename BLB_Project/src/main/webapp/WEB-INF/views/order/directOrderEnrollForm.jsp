@@ -75,7 +75,7 @@
                                    required
                                    id="deliNickname"
                                    value="${selectedDelivery.deliNickname}"
-                                   disabled>
+                                   >
                         </td>
                     </tr>
                     <tr>
@@ -98,7 +98,7 @@
                                        style="width: 120px;"
                                        id="postCode"
                                        value="${selectedDelivery.postcode}"
-                                       disabled>
+                                       >
                                 <button type="button" class="btn-search">주소검색</button>
                             </div>
                             <input type="text"
@@ -106,13 +106,13 @@
                                    style="width: 100%; margin-top: 10px;"
                                    id="deliAddress"
                                    value="${selectedDelivery.deliAddress}"
-                                   disabled>
+                                   >
                             <input type="text"
                                    placeholder="상세 주소"
                                    style="width: 100%; margin-top: 10px;"
                                    id="detailAddress"
                                    value="${selectedDelivery.detailAddress}"
-                                   disabled>
+                                   >
                         </td>
                     </tr>
                     <tr>

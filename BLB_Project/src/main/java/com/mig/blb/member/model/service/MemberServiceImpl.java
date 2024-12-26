@@ -216,6 +216,26 @@ public class MemberServiceImpl implements MemberService {
 	public Member selectMemberAdmin(String memberId) {
 		return memberDao.selectMemberAdmin(sqlSession,memberId);
 	}
+	@Override
+	public ArrayList<Delivery> selectDeliveryListAll() {
+		return memberDao.selectDeliveryListAll(sqlSession);
+	}
+	
+	@Transactional
+	@Override
+	public int updateAdminMember(Member member) {
+		return memberDao.updateAdminMember(sqlSession,member);
+	}
+	
+	@Override
+	public int updateDeliveryAdmin(Delivery deli) {
+		return memberDao.updateDeliveryAdmin(sqlSession,deli);
+	}
+	@Override
+	public List<Map<String, Object>> selectMemberCount() {
+		return memberDao.selectMemberCount(sqlSession);
+	}
+	
 	
 
 }

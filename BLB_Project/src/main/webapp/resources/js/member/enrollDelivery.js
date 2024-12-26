@@ -48,7 +48,6 @@ $(document).ready(function() {
 		
         document.getElementById('deliComment').value = fullComment;
         
-
     });
 		
 		

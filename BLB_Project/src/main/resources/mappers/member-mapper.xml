@@ -259,6 +259,13 @@
 	       WHERE MEMBER_ID = #{memberId}
 	       	AND STATUS= 'Y'                
 	</update>
+	<update id="updateAdminMember" parameterType="member">
+		UPDATE TB_MEMBER 
+		   SET 	GRADE_NAME = #{gradeName},
+		   		TOTAL_POINTS = #{totalPoints},
+		   		STATUS = #{status}	           
+	       WHERE MEMBER_ID = #{memberId}
+	</update>
 	
 	<select id="selectDefaultDelivery" parameterType="delivery" resultMap="deliveryResultSet">
 		SELECT POSTCODE, DELI_ADDRESS, DETAIL_ADDRESS
@@ -437,6 +444,12 @@
 	 WHERE MEMBER_ID = #{memberId}	
 	</select>
 	
+	<select id="selectDeliveryListAll" resultMap="deliveryResultSet">
+	SELECT *
+	  FROM TB_DELIVERY 
+	 WHERE HOME_ADDRESS_YN = 'Y'
+	</select>
+	
 	<delete id="deleteDelivery" parameterType="int">
 		DELETE 
 		  FROM TB_DELIVERY
@@ -462,6 +475,13 @@
 	            HOME_ADDRESS_YN = #{homeAddressYN}
 	      WHERE DELI_CODE = #{deliCode}
 	      
+	</update>
+	
+	<update id="updateDeliveryAdmin" parameterType="delivery">
+		UPDATE  TB_DELIVERY
+		   SET 	DELI_DEFAULT = #{deliDefault},
+		   		DELI_NICKNAME = #{deliNickname}
+	      WHERE DELI_CODE = #{deliCode}
 	</update>
 	
 	<update id="updateDeliDefault1" parameterType="delivery">
@@ -553,31 +573,7 @@
 		     AND INQUIRY_STATUS =  'Y'
              AND INQUIRY_TYPE= '상품'
 	</select>
-	<!-- 
-	<select id="selectMyProdQnaList" parameterType="string" resultType="java.util.HashMap">
-	SELECT R.REV_NO
-		     , R.REV_CONTENT
-		     , TO_CHAR(R.REV_ENROLL_DATE,'YYYY.MM.DD') AS "REV_ENROLL_DATE"
-		     , R.REV_RATING
-		     , R.MEMBER_ID
-		     , R.SERIAL_NO
-		     , P.PROD_NAME
-             ,P.PROD_NO
-		     , OP.OPT_NAME
-		     , TO_CHAR(O.ORDER_DATE,'YYYY.MM.DD') AS "ORDER_DATE",
-		     PA.THUMB_PATH || SAVE_FILE_NAME AS "THUMB_IMG"
-		  FROM TB_REVIEW R
-		   JOIN TB_PRODUCT_ORDER PO ON R.SERIAL_NO = PO.SERIAL_NO
-		   JOIN TB_OPTION OP ON PO.OPT_NO = OP.OPT_NO
-           JOIN TB_ORDER O ON PO.ORDER_NO = O.ORDER_NO
-           JOIN TB_PRODUCT P ON P.PROD_NO = OP.PROD_NO
-           JOIN TB_PRODUCT_ATTACHMENT PA ON PA.PROD_NO = P.PROD_NO
-		 WHERE R.REV_STATUS = 'Y'
-           AND R.MEMBER_ID= #{memberId}
-           AND PA.THUMB_PATH IS NOT NULL
-		ORDER BY O.ORDER_DATE DESC
-	</select>
-	 -->
+	
 	<select id="selectMyOrder" parameterType="string" resultMap="orderResultSet">
 		SELECT O.ORDER_NO,
 			   O.REFUND_DATE,
@@ -742,5 +738,18 @@
 		  FROM TB_MEMBER
 		  WHERE MEMBER_ID = #{ckMemberId}
 		   
+	</select>
+	<select id="selectMemberCount" resultType="map">
+	SELECT 
+	    EXTRACT(YEAR FROM CREATE_DATE) AS YEAR,   -- 년도
+	    EXTRACT(MONTH FROM CREATE_DATE) AS MONTH, -- 월
+	    COUNT(*) AS MEMBER_COUNT                   -- 회원 수
+	FROM 
+	    TB_MEMBER
+	GROUP BY 
+	    EXTRACT(YEAR FROM CREATE_DATE),           -- 연도 기준 그룹화
+	    EXTRACT(MONTH FROM CREATE_DATE)           -- 월 기준 그룹화
+	ORDER BY 
+	    YEAR DESC, MONTH DESC 
 	</select>
 </mapper>
