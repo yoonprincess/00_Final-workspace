@@ -97,9 +97,10 @@
                                        placeholder="우편번호"
                                        style="width: 120px;"
                                        id="postCode"
-                                       value="${selectedDelivery.postcode}"
-                                       >
-                                <button type="button" class="btn-search">주소검색</button>
+                                       disabled>
+                                <button type="button"
+                                        class="btn-search"
+                                        onclick="sample4_execDaumPostcode()">우편번호</button>
                             </div>
                             <input type="text"
                                    placeholder="기본 주소"

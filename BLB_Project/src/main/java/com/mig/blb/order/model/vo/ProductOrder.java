@@ -29,6 +29,7 @@ public class ProductOrder {
 	private int orderNo;
 	private int optNo;
 	
+	private int prodNo;
 	private String prodName;
 	private String optName;
 	private int optAddPrice;

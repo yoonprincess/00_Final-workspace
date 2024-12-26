@@ -43,7 +43,7 @@
 		                   , #{rcvrPhone}
 		                   , #{rcvrAddress}
 		                   , #{dlvrReqMessage}
-		                   , '결제완료'
+		                   , '배송대기'
 		                   , #{dlvrFee}
 		                   , '대한통운'
 		                   , #{orderTotalAmt}
@@ -143,6 +143,9 @@
 	     ORDER BY PO.SERIAL_NO ASC
 	</select>
 
+		
+	
+	<!-- 주문 취소 - 환불일, 환불사유 업데이트 -->
 	
 
 

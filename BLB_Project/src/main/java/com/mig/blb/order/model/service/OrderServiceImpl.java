@@ -13,6 +13,7 @@ import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.order.model.dao.OrderDao;
 import com.mig.blb.order.model.vo.Order;
 import com.mig.blb.order.model.vo.ProductOrder;
+import com.mig.blb.product.model.vo.Product;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -60,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<ProductOrder> selectProductOrderList(int orderNo) {
+	public List<ProductOrder> selectProductOrderList(String orderNo) {
 		return orderDao.selectProductOrderList(sqlSession, orderNo);
 	}
 
@@ -78,5 +79,17 @@ public class OrderServiceImpl implements OrderService {
 	public Order selectOrderComplete(String orderNo) {
 		return orderDao.selectOrderComplete(sqlSession, orderNo);
 	}
+
+	@Override
+	public List<Product> getSelectedProducts(String memberId, List<Integer> optNos) {
+		return orderDao.getSelectedProducts(sqlSession, optNos);
+	}
+
+	@Override
+	public List<Product> selectCancelProductOrders(String orderNo) {
+		return orderDao.selectCancelProductOrders(sqlSession, orderNo);
+	}
+
+
 	
 }

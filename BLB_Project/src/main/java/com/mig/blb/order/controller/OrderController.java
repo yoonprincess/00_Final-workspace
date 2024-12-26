@@ -26,6 +26,8 @@ import com.mig.blb.member.model.vo.Member;
 import com.mig.blb.order.model.service.OrderService;
 import com.mig.blb.order.model.vo.Order;
 import com.mig.blb.order.model.vo.ProductOrder;
+import com.mig.blb.product.model.service.ProductService;
+import com.mig.blb.product.model.vo.Product;
 
 
 @Controller
@@ -39,7 +41,7 @@ public class OrderController {
 	
 	@Autowired
 	private MemberService memberService;
-
+	
 	/**
 	 * 주문서 폼 화면 조회
 	 * - 예원 24.12.20
@@ -55,7 +57,12 @@ public class OrderController {
 		
 	    String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
 	    
-	    session.setAttribute("checkedCartNos", checkedCartNos);
+	    if (session.getAttribute("loginUser") == null) {	// 로그인 전
+	    	
+	    	session.setAttribute("alertMsg", "로그인 후 이용 가능한 서비스입니다.");
+	        return "redirect:/loginForm.me";
+	        
+	    }
 	    
 	    // 장바구니에서 선택된 상품 정보 조회
 	    List<Cart> selectedCartList = cartService.getSelectedCartItems(memberId, checkedCartNos);
@@ -114,6 +121,16 @@ public class OrderController {
 		
 		// 로그인된 회원아이디 가져오기
 		String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
+			
+		Map<String, String> response = new HashMap<>();
+		
+	    if (session.getAttribute("loginUser") == null) {	// 로그인 전
+	    	
+	    	response.put("status", "fail");
+	        response.put("message", "로그인 후 이용 가능한 서비스입니다.");
+	        return response;
+	        
+	    }
 		
 		// 0. 총 상품 가격은 따로 세션에 저장
 		session.setAttribute("totalAmt", (String) paymentData.get("totalAmt"));
@@ -132,7 +149,6 @@ public class OrderController {
 	    
 		int result1 = orderService.insertOrder(order);
 		
-		Map<String, String> response = new HashMap<>();
 		if(result1 < 1) {
 			
 			response.put("message", "주문 실패.");
@@ -180,7 +196,16 @@ public class OrderController {
 	    return response;
 	}
 	
-	// 결제 완료
+	/**
+	 * 결제 완료
+	 * - 예원_24.12.26
+	 * @param merchantUid
+	 * @param orderCartNos
+	 * @param session
+	 * @param model
+	 * @param order
+	 * @return
+	 */
 	@GetMapping("orderComplete.or")
 	public String updateOrderSuccess(@RequestParam("paymentCode") String merchantUid,
             						 @RequestParam("orderCartNos") String orderCartNos,
@@ -222,37 +247,88 @@ public class OrderController {
 	    return "order/orderCompleteView";
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 4. ORDER, PRODUCT_ORDER에서 주문 정보 가져오기
-	//	order = orderService.selectOrder(orderNo);
-	//	
-	//	if(order == null) {
-	//		
-	//		model.addAttribute("errorMsg", "주문 정보를 찾을 수 없습니다.");
-	//		return "common/errorPage";
-	//	}
-	//	
-	//	List<ProductOrder> productOrderList = orderService.selectProductOrderList(orderNo);
-	//	
-	//	System.out.println(productOrderList);
-	//	
-	//	// 4. 조회된 정보를 뷰로 전달
-	//    model.addAttribute("order", order);
-	//    model.addAttribute("productOrderList", productOrderList);
+	// 바로 주문하기
+	@PostMapping("directForm.or")
+	public String directOrderForm(@RequestParam("optNos") List<Integer> optNos,
+								  HttpSession session,
+								  Model model) {
 		
-		// 결제 확인 로직 추가 (예: 아임포트 서버와 통신)
+	    String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
+	    
+	    if (session.getAttribute("loginUser") == null) {	// 로그인 전
+	    	
+	    	session.setAttribute("alertMsg", "로그인 후 이용 가능한 서비스입니다.");
+	        return "redirect:/loginForm.me";
+	        
+	    }
+	    
+	    // 선택된 옵션들의 상품 정보 조회
+	    List<Product> productList = orderService.getSelectedProducts(memberId, optNos);
+
+	    // 저장된 배송 정보 조회
+	    List<Delivery> deliveryList = memberService.selectDeliveryList(memberId);
+	    
+	    Delivery selectedDelivery = null;
+	    
+	    for (Delivery d : deliveryList) {
+	    	
+	        if (d.getDeliDefault().equals("Y")) {
+	        	
+	            selectedDelivery = d; // 기본배송지를 저장
+	        } else {
+	        	
+	            d.setDeliDefault("");
+	        }
+	    }
+	    
+	    // 상품 정보와 배송 정보를 모델에 추가
+	    model.addAttribute("productList", productList);
+	    model.addAttribute("deliveryList", deliveryList);
+	    model.addAttribute("selectedDelivery", selectedDelivery);
+
+	    return "order/directOrderEnrollForm"; // 주문서 화면 JSP 경로
+	}
+	
+	// 주문 취소 폼(환불)
+	/**
+	 * 주문 환불/취소 요청
+	 * - 예원_24.12.26
+	 * @param orderNo
+	 * @param session
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("cancelForm.or")
+	public String orderCancelForm(@RequestParam("orderNo") String orderNo,
+	                              HttpSession session,
+	                              Model model) {
+
+	    // 로그인된 사용자 확인
+	    String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
+	    if (session.getAttribute("loginUser") == null) {
+	        session.setAttribute("alertMsg", "로그인이 필요합니다.");
+	        return "redirect:/loginForm.me";
+	    }
+
+	    // 1. 주문 정보(TB_ORDER) 가져오기
+	    Order order = orderService.selectOrderComplete(orderNo);
+	    model.addAttribute("order", order);
+	    
+	    //2. 상품 정보 가져오기
+	    List<ProductOrder> productList = orderService.selectProductOrderList(orderNo);
+	    model.addAttribute("productList", productList);
+
+	    return "order/orderCancelForm";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

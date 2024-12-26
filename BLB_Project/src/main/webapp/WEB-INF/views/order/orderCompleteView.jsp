@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/order/orderCompleteView.css">
     <!-- jQuery 라이브러리 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
 </head>
 <body class="body-offset">
 

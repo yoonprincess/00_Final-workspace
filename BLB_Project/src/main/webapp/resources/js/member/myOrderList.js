@@ -185,11 +185,34 @@ $(document).ready(function() {
     $three.on('click', handleButtonClick(3));
     $six.on('click', handleButtonClick(6));
     $twelve.on('click', handleButtonClick(12));
-    
   
 });
 
-// 배송상태 필터링 
+$(document).on("click", "#cancelBtn", function () {
+
+    const orderNo = $(this).data("order-no");
+    console.log("주문 번호: " + orderNo);
+
+    if (!orderNo) {
+        alert("주문 번호가 유효하지 않습니다.");
+        return;
+    }
+
+    $.ajax({
+        url: 'cancelForm.or', // URL에 orderNo 포함
+        type: "GET",
+        data: { orderNo: orderNo },
+        success: function (response) {
+            window.location.href = `cancelForm.or?orderNo=${orderNo}`;
+        },
+        error: function (xhr, status, error) {
+            console.error("취소 요청 중 오류 발생:", error);
+            alert("오류가 발생했습니다. 다시 시도해주세요.");
+        },
+    });
+});
+
+// 배송 상태 필터링 
 function filterStatus() {
         var filterValue = document.getElementById("statusFilter").value;
         var rows = document.querySelectorAll("tr");  

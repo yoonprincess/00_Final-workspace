@@ -16,6 +16,9 @@
   
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" defer></script> -->
+
+
 </head>
 <body class="body-offset">
     <div class="outer container-fluid">
@@ -300,7 +303,8 @@
 									        <span class="delivery-waiting">${myOrder.dlvrStatus}</span>
 										          <button 
 							                        class="btn-outline-primary blb-btn" 
-							                        id="cancelBtn" 
+							                        id="cancelBtn"
+                                                    data-order-no="${myOrder.orderNo}"
 							                        style="width:70px; font-size:13px; padding:5px 2px;">
 							                        취소 신청
 							                    </button>
@@ -389,5 +393,7 @@
 	      </div>
 	    </div>
    <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
   </body>
 </html>

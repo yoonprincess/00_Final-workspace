@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mig.blb.cart.model.vo.Cart;
+import com.mig.blb.product.model.vo.Product;
 
 public interface CartService {
 	
@@ -40,5 +41,4 @@ public interface CartService {
 	// 장바구니 결제 > 결제 완료 장바구니 상품 삭제
 	int deleteSelectedCarts(List<Integer> checkedCartNos);
 
-	
 }

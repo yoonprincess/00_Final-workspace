@@ -7,15 +7,15 @@
 <head>
 <meta charset="UTF-8">
 <title>장바구니 | 뷰라밸</title>
+
 <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/cart/cartListView.css">
-<!-- css 파일 프리뷰 확인용 -->
-<!-- <link rel="stylesheet" type="text/css" href="../../../resources/css/cart/cartListView.css"> -->
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <!-- jQuery 라이브러리 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 </head>
 <body class="body-offset">
 
@@ -68,7 +68,7 @@
 	                            <p class="product-title">${ct.prodName}</p>
 	                            <p class="product-option-${ct.cartNo}">[옵션: ${ct.optName} ${opt.optValue} (+ 
 									<fmt:formatNumber pattern="###,###,###" value="${ct.optAddPrice}" />원)]</p>
-	                            <p class="product-quantity-${ct.cartNo}">수량: ${ ct.cartQty }</p>
+	                            <p class="product-quantity-${ct.cartNo}">수량: ${ ct.cartQty } (재고: ${opt.remainQty})</p>
 	                            <p class="product-price">
 	                            	<fmt:formatNumber pattern="###,###,###" value="${ct.prodPrice}" />원
 	                            </p>

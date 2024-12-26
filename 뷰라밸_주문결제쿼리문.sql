@@ -97,5 +97,65 @@ SELECT PO.*
 SELECT *
   FROM TB_ORDER
  WHERE ORDER_NO = CAST(#{orderNo} AS VARCHAR2(30))
+ 
+-- 바로 구매 (옵션 번호들에 따른 상품 조회)
+SELECT P.PROD_NO
+     , P.PROD_NAME
+     , O.OPT_NO
+     , O.OPT_NAME
+     , O.OPT_ADD_PRICE
+     , O.REMAIN_QTY
+     , P.PROD_PRICE
+     , PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
+  FROM PRODUCT P
+LEFT JOIN OPTION O ON P.PROD_NO = O.PROD_NO
+LEFT JOIN (
+            SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+              FROM TB_PRODUCT_ATTACHMENT
+             WHERE (PROD_NO, PROD_ATT_NO) IN (
+		           SELECT PROD_NO, MIN(PROD_ATT_NO)
+		             FROM TB_PRODUCT_ATTACHMENT
+		            WHERE PROD_ATT_STATUS = 'Y'
+		              AND THUMB_PATH IS NOT NULL
+		            GROUP BY PROD_NO
+		       )
+		  ) PA
+		    ON P.PROD_NO = PA.PROD_NO
+WHERE O.OPT_NO IN
+<foreach item="optNo" collection="optNos" open="(" separator="," close=")">
+    #{optNo}
+</foreach>
+
+-- 주문번호로 옵션번호 가져오기
+SELECT PO.SERIAL_NO,
+	           PO.ORDER_QTY,
+	           PO.TOTAL_AMT,
+	           PO.ORDER_NO,
+	           PO.OPT_NO,
+	           P.PROD_NO,
+	           P.PROD_NAME,
+	           O.OPT_NAME,
+	           O.OPT_VALUE,
+	           O.OPT_ADD_PRICE,
+	           PA.THUMB_PATH || PA.SAVE_FILE_NAME AS THUMB_IMG,
+	           P.PROD_PRICE
+	      FROM TB_PRODUCT_ORDER PO
+	      LEFT JOIN TB_OPTION O ON PO.OPT_NO = O.OPT_NO
+	      LEFT JOIN TB_PRODUCT P ON O.PROD_NO = P.PROD_NO
+	      LEFT JOIN (
+		      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+		        FROM TB_PRODUCT_ATTACHMENT
+		       WHERE (PROD_NO, PROD_ATT_NO) IN (
+		           SELECT PROD_NO, MIN(PROD_ATT_NO)
+		             FROM TB_PRODUCT_ATTACHMENT
+		            WHERE PROD_ATT_STATUS = 'Y'
+		              AND THUMB_PATH IS NOT NULL
+		            GROUP BY PROD_NO
+		       )
+		  ) PA
+		    ON P.PROD_NO = PA.PROD_NO
+	     WHERE PO.ORDER_NO = 321
+	     ORDER BY PO.SERIAL_NO ASC
+
 
 commit;

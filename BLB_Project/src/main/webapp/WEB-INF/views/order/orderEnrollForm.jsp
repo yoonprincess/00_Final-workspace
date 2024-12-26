@@ -17,6 +17,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- 아임포트 SDK -->
 <script src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js" defer></script>
+<!-- daum 지도검색 api -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 </head>
 <body class="body-offset">
@@ -99,7 +101,9 @@
                                        id="postCode"
                                        value="${selectedDelivery.postcode}"
                                        disabled>
-                                <button type="button" class="btn-search">주소검색</button>
+                                <button type="button"
+                                        class="btn-search"
+                                        onclick="sample4_execDaumPostcode()">우편번호</button>
                             </div>
                             <input type="text"
                                    placeholder="기본 주소"

@@ -3,13 +3,10 @@ package com.mig.blb.order.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.order.model.vo.Order;
 import com.mig.blb.order.model.vo.ProductOrder;
+import com.mig.blb.product.model.vo.Product;
 
 public interface OrderService {
 
@@ -35,7 +32,7 @@ public interface OrderService {
 	// ORDER
 	Order selectOrder(int orderNo);
 	// PRODUCT_ORDER
-	List<ProductOrder> selectProductOrderList(int orderNo);
+	List<ProductOrder> selectProductOrderList(String orderNo);
 
 	// 내 주문,배송 상세조회
 	ArrayList<Order> selectMyOrder(String orderNo);
@@ -47,5 +44,10 @@ public interface OrderService {
 	// 주문 성공 조회
 	Order selectOrderComplete(String orderNo);
 	
-	
+	// 바로 구매 상품 리스트 조회
+	List<Product> getSelectedProducts(String memberId, List<Integer> optNos);
+
+	// 주문 취소 폼(환불) 
+	List<Product> selectCancelProductOrders(String orderNo);
+
 }

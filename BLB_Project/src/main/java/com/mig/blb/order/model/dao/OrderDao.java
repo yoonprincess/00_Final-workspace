@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.order.model.vo.Order;
 import com.mig.blb.order.model.vo.ProductOrder;
+import com.mig.blb.product.model.vo.Product;
 
 @Repository
 public class OrderDao {
@@ -68,7 +69,7 @@ public class OrderDao {
 	}
 
 
-	public List<ProductOrder> selectProductOrderList(SqlSessionTemplate sqlSession, int orderNo) {
+	public List<ProductOrder> selectProductOrderList(SqlSessionTemplate sqlSession, String orderNo) {
 		return sqlSession.selectList("orderMapper.selectProductOrderList", orderNo);
 	}
 
@@ -89,4 +90,25 @@ public class OrderDao {
 	public Order selectOrderComplete(SqlSessionTemplate sqlSession, String orderNo) {
 		return sqlSession.selectOne("orderMapper.selectOrderComplete", orderNo);
 	}
+
+
+	public List<Product> getSelectedProducts(SqlSessionTemplate sqlSession, List<Integer> optNos) {
+		return sqlSession.selectList("productMapper.getSelectedProducts", optNos);
+	}
+
+
+	public Order selectCancelOrder(SqlSessionTemplate sqlSession, String orderNo) {
+		return sqlSession.selectOne("orderMapper.selectOrderComplete", orderNo);
+	}
+
+
+	public List<Product> selectCancelProductOrders(SqlSessionTemplate sqlSession, String orderNo) {
+		return sqlSession.selectOne("orderMapper.selectProductOrderList", orderNo);
+	}
+
+
+	public int selectOptNo(SqlSessionTemplate sqlSession, String orderNo) {
+		return sqlSession.selectOne("orderMapper.selectOptNo", orderNo);
+	}
+
 }
