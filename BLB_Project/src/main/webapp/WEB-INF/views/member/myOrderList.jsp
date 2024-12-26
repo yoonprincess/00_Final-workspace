@@ -42,7 +42,7 @@
                       <div class="arrow"><i class="fas fa-chevron-right"></i></div>
                       <div class="status-item">
                           <span class="status-count">${myOrderWait}</span>
-                          <span class="status-label">배송준비중</span>
+                          <span class="status-label">배송대기</span>
                       </div>
                       <div class="arrow"><i class="fas fa-chevron-right"></i></div>
                       <div class="status-item">
@@ -287,32 +287,43 @@
                                 </td>
                                 <td>
                                     <div class="status">
+                                    
                                      <c:if test="${not empty myOrder.refundDate}">
                                       <span class="delivery-cancel" >환불/취소</span>
 									  <p >취소일</p>
 									  <span id="refund-date"> ${myOrder.refundDate}</span>
 									 </c:if>
+									 
 									 <c:if test="${empty myOrder.refundDate}">
+									 
                                          <c:if test="${myOrder.dlvrStatus == '배송대기'}">
 									        <span class="delivery-waiting">${myOrder.dlvrStatus}</span>
-									    </c:if>
-									    <c:if test="${myOrder.dlvrStatus == '배송완료'}">
-									        <span class="delivery-complete">${myOrder.dlvrStatus}</span>
-									        	<c:if test="${productOrder.isWritten == 0}">
 										          <button 
 							                        class="btn-outline-primary blb-btn" 
-							                        id="writeReviewBtn" 
-							                        style="width:70px; font-size:13px; padding:5px 2px;"
-							                        data-prodno="${product.prodNo}" 
-							                        data-serialno="${productOrder.serialNo}"
-							                        data-memberid="${sessionScope.loginUser.memberId}">
-							                        리뷰 작성
+							                        id="cancelBtn" 
+							                        style="width:70px; font-size:13px; padding:5px 2px;">
+							                        취소 신청
 							                    </button>
-						                      </c:if>
-									    </c:if>
-									    <c:if test="${myOrder.dlvrStatus == '배송중'}">
-									        <span class="delivery-other">${myOrder.dlvrStatus}</span>
-									    </c:if>
+										    </c:if>
+										    
+										    <c:if test="${myOrder.dlvrStatus == '배송완료'}">
+										        <span class="delivery-complete">${myOrder.dlvrStatus}</span>
+										        	<c:if test="${productOrder.isWritten == 0}">
+											          <button 
+								                        class="btn-outline-primary blb-btn" 
+								                        id="writeReviewBtn" 
+								                        style="width:70px; font-size:13px; padding:5px 2px;"
+								                        data-prodno="${product.prodNo}" 
+								                        data-serialno="${productOrder.serialNo}"
+								                        data-memberid="${sessionScope.loginUser.memberId}">
+								                        리뷰 작성
+								                    </button>
+							                      </c:if>
+										    </c:if>
+										    
+										    <c:if test="${myOrder.dlvrStatus == '배송중'}">
+										        <span class="delivery-other">${myOrder.dlvrStatus}</span>
+										    </c:if>
 									</c:if>
                                     </div>
                                 </td>
