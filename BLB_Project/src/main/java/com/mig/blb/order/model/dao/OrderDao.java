@@ -76,4 +76,17 @@ public class OrderDao {
 	public ArrayList<Order> selectMyOrder(SqlSessionTemplate sqlSession, String orderNo) {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectMyOrder", orderNo);
 	}
+
+
+	public int updateOrderStatus(SqlSessionTemplate sqlSession, String merchantUid, String orderNo) {
+
+		Map<String, String> params = new HashMap<>();
+		params.put("orderNo", orderNo);
+		params.put("merchantUid", merchantUid);
+        return sqlSession.update("orderMapper.updateOrderStatus", params);
+	}
+
+	public Order selectOrderComplete(SqlSessionTemplate sqlSession, String orderNo) {
+		return sqlSession.selectOne("orderMapper.selectOrderComplete", orderNo);
+	}
 }

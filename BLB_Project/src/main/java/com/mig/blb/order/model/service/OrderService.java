@@ -39,6 +39,13 @@ public interface OrderService {
 
 	// 내 주문,배송 상세조회
 	ArrayList<Order> selectMyOrder(String orderNo);
+
+	// 결제 완료
+	// 결제 고유 번호 업데이트
+	int updateOrderStatus(String merchantUid, String orderNo);
+
+	// 주문 성공 조회
+	Order selectOrderComplete(String orderNo);
 	
 	
 }

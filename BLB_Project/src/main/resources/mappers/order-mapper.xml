@@ -43,7 +43,7 @@
 		                   , #{rcvrPhone}
 		                   , #{rcvrAddress}
 		                   , #{dlvrReqMessage}
-		                   , '배송대기'
+		                   , '결제완료'
 		                   , #{dlvrFee}
 		                   , '대한통운'
 		                   , #{orderTotalAmt}
@@ -61,7 +61,8 @@
 	</select>
 	
 	<!-- 상품/주문(TB_PRODUCT_ORDER) 정보 생성용 쿼리문 -->
-	<insert id="insertProductOrder" parameterType="map">
+	<insert id="insertProductOrder"
+			parameterType="map">
 		INSERT INTO TB_PRODUCT_ORDER (SERIAL_NO
 		                            , ORDER_QTY
 		                            , TOTAL_AMT
@@ -75,19 +76,9 @@
 	</insert>
 	
 	<!-- 주문 정보(TB_ORDER) 조회용 쿼리문 -->
-    <select id="selectOrder" resultMap="orderResultSet">
-	    SELECT ORDER_NO,
-	           RCVR_NAME,
-	           RCVR_PHONE,
-	           RCVR_ADDRESS,
-	           DLVR_REQ_MESSAGE
-	           DLVR_STATUS,
-	           DLVR_FEE,
-	           DLVR_COMPANY,
-	           ORDER_TOTAL_AMT,
-	           PAYMENT_METHOD,
-	           ORDER_DATE,
-	           MEMBER_ID
+    <select id="selectOrderComplete"
+    		resultMap="orderResultSet">
+	    SELECT *
 	      FROM TB_ORDER
 	     WHERE ORDER_NO = CAST(#{orderNo} AS VARCHAR2(30))
 	</select>
@@ -108,10 +99,18 @@
 		<result column="PROD_PRICE" property="prodPrice" />
 		<result column="THUMB_IMG" property="thumbImg" />
 	</resultMap>
+	
+	<!-- 결제 완료 - 결제 고유 번호 업데이트 -->
+	<update id="updateOrderStatus"
+			parameterType="map">
+	    UPDATE TB_ORDER
+	       SET PAYMENT_CODE = #{merchantUid}
+    	 WHERE ORDER_NO = #{orderNo}
+	</update>
 
 	
     <select id="selectProductOrderList"
-    		parameterType="int"
+    		parameterType="string"
     		resultMap="productOrderResultMap">
 	    SELECT PO.SERIAL_NO,
 	           PO.ORDER_QTY,

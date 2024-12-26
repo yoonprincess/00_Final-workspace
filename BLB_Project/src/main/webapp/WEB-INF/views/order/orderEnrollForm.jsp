@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +11,6 @@
 <title>주문서 작성/결제 | 뷰라밸</title>
 
 <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/order/orderEnrollForm.css">
-<!-- <link rel="stylesheet" type="text/css" href="../../../resources/css/order/orderEnrollForm.css"> -->
 <!-- 부트스트랩 -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
@@ -192,6 +193,7 @@
                 <h3>주문 상품</h3>
                 <hr class="custom-hr">
 
+                <c:set var="checkedCartNosJson" value="${fn:escapeXml(checkedCartNos)}" />
                 <c:forEach var="cl" items="${selectedCartList}">
                         
                     <div class="order-product"
@@ -262,10 +264,6 @@
             <!-- 결제 수단 영역 -->
             <div class="payment-container">
                 <h3>결제수단 선택</h3>
-
-                <!-- 테스트용 -->
-                <p>주문 날짜: <fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd" /></p>
-
                 <ul class="payment-options">
                     <li class="payment-option" data-value="무통장입금">무통장입금</li>
                     <li class="payment-option" data-value="신용카드">신용카드</li>
@@ -466,13 +464,14 @@
 
             <p>주문 내용을 확인하였으며 약관에 동의합니다.</p>
 
-            <!-- 결제하기 버튼 -->
-            <button type="submit" class="btn btn-primary payment-button">
-                최종 결제 금액
-                <span class="final-order-price">
-                </span>
-            </button>        
         </form>
+
+        <!-- 결제하기 버튼 -->
+        <button type="submit" class="btn btn-primary payment-button">
+            최종 결제 금액
+            <span class="final-order-price">
+            </span>
+        </button>
 
     </div>
 

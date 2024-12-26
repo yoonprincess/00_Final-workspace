@@ -68,5 +68,15 @@ public class OrderServiceImpl implements OrderService {
 	public ArrayList<Order> selectMyOrder(String orderNo) {
 		return orderDao.selectMyOrder(sqlSession, orderNo);
 	}
+
+	@Override
+	public int updateOrderStatus(String merchantUid, String orderNo) {
+		return orderDao.updateOrderStatus(sqlSession, merchantUid, orderNo);
+	}
+
+	@Override
+	public Order selectOrderComplete(String orderNo) {
+		return orderDao.selectOrderComplete(sqlSession, orderNo);
+	}
 	
 }

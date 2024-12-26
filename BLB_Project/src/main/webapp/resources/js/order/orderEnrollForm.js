@@ -39,7 +39,7 @@ $(function() {
                         // 값 업데이트
                         $('#deliNickname').val(response.deliNickname);
                         $('#rcvrName').val(response.deliName);
-                        $('#dlvrPostCode').val(response.postcode);
+                        $('#postCode').val(response.postcode);
                         $('#deliAddress').val(response.deliAddress);
                         $('#detailAddress').val(response.detailAddress);
     
@@ -250,6 +250,8 @@ $(function() {
 
         
         const orderTotalAmt = parseInt($(".final-price").text().replace(/[^0-9]/g, "")); // 결제 금액
+
+        console.log("결제금액: " + orderTotalAmt);
         
         
         // 각 상품의 데이터를 배열에 저장
@@ -307,18 +309,35 @@ $(function() {
 
             const memberId = $('#memberId').val();
             const rcvrName = $('#rcvrName').val().trim();
-            const rcvrAddress = "(" + $('#postCode').val() + ")" + $('#deliAddress').val() + $('#detailAddress').val();
-            const rcvrPhone = $('#hidden-phone-number').val().trim();
+            const rcvrAddress = "(" + $('#postCode').val() + ") " + $('#deliAddress').val() + $('#detailAddress').val();
+            const rcvrPhone = $('#phone-prefix').find('option:selected').val().trim() + $('#phone-middle').val() + $('#phone-last').val();
 
             // 라디오 버튼 값과 추가 요청사항 값 합치기
             var entryMethod = $('input[name="entry"]:checked').val();   // 라디오 버튼 값
             var additionalInfo = $('#additionalInfo').val();    // 추가 요청 사항
-            const dlvrReqMessage = entryMethod + '/' + (additionalInfo || '');
+            const dlvrReqMessage = entryMethod + ' / ' + (additionalInfo || '');
             console.log("배송메시지: " + dlvrReqMessage);
             
             const paymentMethod = payOption;
             const totalAmt = $('#total-amt').text().replace(/[^0-9]/g, "");
+
+            console.log("총 판매가 : " + totalAmt);
+
+            const discount = parseInt($('.discount').text().replace(/[^0-9]/g, "")); // 총 판매가의 5%
+
+            console.log("할인가 : " + discount);
+
             const dlvrFee = parseInt($('#dlvr-fee').text().replace(/[^0-9]/g, ""));
+
+            console.log("배송비 : " + dlvrFee);
+
+            console.log("최종 가격 : " + orderTotalAmt);
+
+            // 문자열로 출력된 경우 JSON.parse로 변환
+            // const checkedCartNos = JSON.parse('${checkedCartNos}');
+            // console.log(checkedCartNos); // 배열 출력
+            // console.log("장바구니 번호들: " + checkedCartNos);
+
 
             if (!rcvrName || !rcvrPhone || !rcvrAddress) { 
                 alert("배송 정보를 모두 입력해주세요.");
@@ -337,9 +356,9 @@ $(function() {
                 IMP.request_pay({
                     pg: "nice",
                     paymethod: "card",
-                    amount: 100,
+                    amount: totalAmt - discount + dlvrFee,
                     name: "뷰라밸",
-                    merchant_uid: "ORD" + new Date().getTime(), // 고유 주문 ID
+                    merchant_uid: "616" + new Date().getTime(), // 고유 주문 ID
                 }, async function (rsp) {
                     if (rsp.success) {
                         // 결제가 성공하면 서버로 결제 정보 전송
@@ -360,16 +379,21 @@ $(function() {
                                 orderTotalAmt : orderTotalAmt,
                                 dlvrFee: dlvrFee,
                                 products: productData, // productData 배열 추가
-                                memberId : memberId
-                            }
-                        ),
+                                memberId : memberId,
+                                totalAmt: totalAmt
+                            }),
                         });
                         
                         const result = await response.json();
                         if (result.status === "success") {
-                            
+
                             alert("결제가 완료되었습니다!");
-                            location.href = "${pageContext.request.contextPath}/payComplete.or?pno="; // 결제 성공 페이지로 이동
+
+                            // 결제 완료 정보를 URL로 전달
+                            const url = `orderComplete.or?paymentCode=${encodeURIComponent(rsp.merchant_uid)}`;
+                            window.location.href = url; // GET 요청으로 이동
+                            // 서버로 결제 정보 전송
+                            // location.href = 'orderComplete.or';
                         } else {
                             alert("결제 확인에 실패했습니다.");
                         }
