@@ -17,14 +17,16 @@
             <!-- 상품 이미지 -->
             <div class="col-lg-6 mb-4">
                 <div id="productCarousel" class="carousel slide" data-ride="carousel">
+                    <c:set var="firstActive" value="true" />
                     <div class="carousel-inner">
-                    	<c:forEach var="pa" items="${ requestScope.paList }" varStatus="status">
+                    	<c:forEach var="pa" items="${ requestScope.paList }">
 					        <c:if test="${ not empty pa.thumbPath }">
-							    <div class="carousel-item ${status.first ? 'active' : ''}">
+							    <div class="carousel-item ${ firstActive ? 'active' : '' }">
 						            <img src="${ pageContext.request.contextPath }${ pa.thumbPath }${ pa.saveFileName }" 
 						                 class="d-block w-100 product-image" 
 						                 alt="${ pa.origFileName }">
 							    </div>
+                                <c:set var="firstActive" value="false" />
 					        </c:if>
 						</c:forEach>
                     </div>

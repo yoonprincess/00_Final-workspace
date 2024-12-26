@@ -71,9 +71,9 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <a class="nav-link" href="${ pageContext.request.contextPath }">
+                            <a class="nav-link" href="${ pageContext.request.contextPath }/admin.blb">
                                 <div class="sb-nav-link-icon">
-                                    메인페이지로 이동
+                                    관리자페이지 메인
                                 </div>
                             </a>
                             <div class="sb-sidenav-menu-heading">관리메뉴</div>
@@ -94,7 +94,10 @@
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="${ pageContext.request.contextPath}/adminList.pr">전체 상품</a>
+                                    <a class="nav-link" href="${ pageContext.request.contextPath}/adminList.pr">상품관리</a>
+                                </nav>
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="${ pageContext.request.contextPath}/adminStock.opt">옵션별 재고관리</a>
                                 </nav>
                             </div>
                             <!-- 리뷰 메뉴 -->

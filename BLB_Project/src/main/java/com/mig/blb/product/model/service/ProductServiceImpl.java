@@ -151,4 +151,24 @@ public class ProductServiceImpl implements ProductService {
 	public int insertProductAtt(ProductAtt pa) {
 		return productDao.insertProductAtt(sqlSession, pa);
 	}
+
+	@Override
+	public int getProdNoCurrval() {
+		return productDao.getProdNoCurrval(sqlSession);
+	}
+
+	@Override
+	public List<ProductAtt> selectProductThumb(int prodNo) {
+		return productDao.selectProductThumb(sqlSession, prodNo);
+	}
+
+	@Override
+	public List<ProductAtt> selectProductImg(int prodNo) {
+		return productDao.selectProductImg(sqlSession, prodNo);
+	}
+
+	@Override
+	public int deleteProductAtt(String deleteFileName) {
+		return productDao.deleteProductAtt(sqlSession, deleteFileName);
+	}
 }

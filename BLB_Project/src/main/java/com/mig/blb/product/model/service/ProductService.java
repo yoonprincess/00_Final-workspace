@@ -72,6 +72,14 @@ public interface ProductService {
 	int insertProduct(Product product);
 	// 첨부파일 등록
 	int insertProductAtt(ProductAtt pa);
+	// 커발로 최근 prodNo 가져오기
+	int getProdNoCurrval();
+	// 썸네일만 가져오기
+	List<ProductAtt> selectProductThumb(int prodNo);
+	// 상세이미지만 가져오기
+	List<ProductAtt> selectProductImg(int prodNo);
+	// 파일 데이터 삭제
+	int deleteProductAtt(String deleteFileName);
 	
 	
 }

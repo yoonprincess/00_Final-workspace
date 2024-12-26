@@ -9,6 +9,8 @@
 		<result column="OPT_ADD_PRICE" property="optAddPrice" />
 		<result column="REMAIN_QTY" property="remainQty" />
 		<result column="PROD_NO" property="prodNo" />
+		<result column="PROD_NAME" property="prodName" />
+		<result column="PROD_PRICE" property="prodPrice" />
 	</resultMap>
 	
 	<!-- 장바구니 상품 각각의 옵션 목록 조회 -->
@@ -25,4 +27,45 @@
 		 WHERE PROD_NO = #{prodNo}
 		 ORDER BY OPT_NO DESC
 	</select>
+	
+	<!-- 상품 등록 시 옵션 등록 -->
+	<insert id="insertOption" parameterType="map">
+	    INSERT INTO TB_OPTION (OPT_NO, 
+	    					 OPT_NAME, 
+	    					 OPT_VALUE, 
+	    					 OPT_ADD_PRICE, 
+	    					 PROD_NO)
+	    			 VALUES (SEQ_OPT_NO.NEXTVAL,
+	    			 		 #{optName}, 
+	    			 		 #{optValue}, 
+	    			 		 #{optAddPrice}, 
+	    			 		 #{prodNo})
+	</insert>
+	
+	<!-- 전체 옵션정보 및 추가 정보 -->
+	<select id="selectOptionList"
+			resultMap="optionResultSet">
+		SELECT P.PROD_NO
+			 , P.PROD_NAME
+			 , P.PROD_PRICE
+			 , O.OPT_NO
+		     , O.OPT_NAME
+		     , O.OPT_VALUE
+		     , O.OPT_ADD_PRICE
+		     , O.REMAIN_QTY
+		  FROM TB_OPTION O
+		  JOIN TB_PRODUCT P ON O.PROD_NO = P.PROD_NO
+		 ORDER BY P.PROD_NO DESC
+	</select>
+	
+	<!-- 옵션 및 재고 업데이트 -->
+	<update id="updateOption" parameterType="option">
+	    UPDATE TB_OPTION
+	    SET OPT_NAME = #{optName},
+	        OPT_VALUE = #{optValue},
+	        OPT_ADD_PRICE = #{optAddPrice},
+	        REMAIN_QTY = #{remainQty}
+	    WHERE OPT_NO = #{optNo}
+	</update>
+	
 </mapper>

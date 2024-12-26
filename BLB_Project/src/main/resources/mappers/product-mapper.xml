@@ -19,6 +19,7 @@
 		<result column="REVIEW_COUNT" property="reviewCount"/>
 		<result column="IS_WISHED" property="isWished"/>
 		<result column="TOTAL_SALES" property="totalSales"/>
+		<result column="TOTAL_QTY" property="totalQty"/>
 		<result column="BANNER_IMG" property="bannerImg"/>
 		<result column="MD_IMG" property="mdImg"/>
 	</resultMap>
@@ -78,6 +79,7 @@
 		     , NVL(ROUND(AVG(R.REV_RATING), 1), 0) AS AVG_RATING
            	 , NVL(COUNT(R.REV_NO), 0) AS REVIEW_COUNT
            	 , NVL(SUM(PO.ORDER_QTY), 0) AS TOTAL_SALES
+           	 , NVL(SUM(OPT.REMAIN_QTY), 0) AS TOTAL_QTY
            	 , CASE
 	               WHEN (SELECT COUNT(*)
 	                     FROM TB_WISH W
@@ -175,6 +177,7 @@
 		     , PROD_CAUTION
 		     , PROD_COUNT
 		     , PROD_ENROLL_DATE
+		     , PROD_STATUS
 		  FROM TB_PRODUCT
 		 WHERE PROD_NO = #{prodNo}
 		   AND PROD_STATUS = 'Y'
@@ -212,6 +215,29 @@
 		   AND PROD_ATT_STATUS = 'Y'
 	</select>
 	
+	<select id="selectProductThumb" parameterType="_int"
+			resultMap="productAttResultSet">
+		SELECT PROD_ATT_NO
+		     , ORIG_FILE_NAME
+		     , SAVE_FILE_NAME
+		     , THUMB_PATH || SAVE_FILE_NAME AS "THUMB_PATH"
+		  FROM TB_PRODUCT_ATTACHMENT
+		 WHERE PROD_NO = #{prodNo}
+		   AND PROD_ATT_STATUS = 'Y'
+		   AND THUMB_PATH IS NOT NULL
+	</select>
+	<select id="selectProductImg" parameterType="_int"
+			resultMap="productAttResultSet">
+		SELECT PROD_ATT_NO
+		     , ORIG_FILE_NAME
+		     , SAVE_FILE_NAME
+		     , SAVE_PATH || SAVE_FILE_NAME AS "SAVE_PATH"
+		  FROM TB_PRODUCT_ATTACHMENT
+		 WHERE PROD_NO = #{prodNo}
+		   AND PROD_ATT_STATUS = 'Y'
+		   AND THUMB_PATH IS NULL
+	</select>
+	
 	<update id="updateProduct" parameterType="product">
 	    UPDATE TB_PRODUCT
 	    SET CATEGORY_NAME = #{categoryName},
@@ -221,7 +247,6 @@
 	        PROD_PRICE = #{prodPrice},
 	        PROD_ORIGIN = #{prodOrigin},
 	        PROD_CAUTION = #{prodCaution},
-	        PROD_COUNT = #{prodCount},
 	        PROD_STATUS = #{prodStatus}
 	    WHERE PROD_NO = #{prodNo}
 	</update>
@@ -244,6 +269,9 @@
 		                       #{prodOrigin},
 		                       #{prodCaution})
     </insert>
+    <select id="getProdNoCurrval" resultType="int">
+	    SELECT SEQ_PROD_NO.CURRVAL FROM DUAL
+	</select>
     
     <insert id="insertProductAtt" parameterType="productAtt">
         INSERT INTO TB_PRODUCT_ATTACHMENT(PROD_ATT_NO,
@@ -257,10 +285,10 @@
                                  #{saveFileName},
                                  #{savePath},
                                  #{thumbPath},
-                                 PROD_NO.CURRVAL)
+                                 #{prodNo})
     </insert>
     
-    <delete id="deleteProductwAtt" parameterType="string">
+    <delete id="deleteProductAtt" parameterType="string">
     	DELETE
 		  FROM TB_PRODUCT_ATTACHMENT
 		 WHERE SAVE_FILE_NAME = #{saveFileName}

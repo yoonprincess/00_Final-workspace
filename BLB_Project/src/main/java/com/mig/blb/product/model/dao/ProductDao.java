@@ -135,4 +135,20 @@ public class ProductDao {
 		return sqlSession.insert("productMapper.insertProductAtt", pa);
 	}
 
+	public int getProdNoCurrval(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("productMapper.getProdNoCurrval");
+	}
+
+	public List<ProductAtt> selectProductThumb(SqlSessionTemplate sqlSession, int prodNo) {
+		return sqlSession.selectList("productMapper.selectProductThumb", prodNo);
+	}
+
+	public List<ProductAtt> selectProductImg(SqlSessionTemplate sqlSession, int prodNo) {
+		return sqlSession.selectList("productMapper.selectProductImg", prodNo);
+	}
+
+	public int deleteProductAtt(SqlSessionTemplate sqlSession, String deleteFileName) {
+		return sqlSession.delete("productMapper.deleteProductAtt", deleteFileName);
+	}
+
 }

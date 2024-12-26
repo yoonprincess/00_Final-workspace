@@ -1,14 +1,18 @@
 package com.mig.blb.product.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mig.blb.cart.model.vo.Cart;
 import com.mig.blb.common.model.vo.PageInfo;
@@ -442,4 +447,394 @@ public class ProductController {
     public String cartAddForm() {
 	    return "product/cartSuccessForm"; // 리뷰 작성 JSP 페이지
     }
+	// 상품 목록보기 요청
+	@GetMapping("adminList.pr")
+	public String adminProductList(@RequestParam(value="ppage", defaultValue="1") int currentPage,
+									@RequestParam(value="category", defaultValue="전체제품") String category,
+									@RequestParam(value="subcategories", required=false) List<String> subcategories,
+									@RequestParam(value="keyword", required=false) String keyword,
+									@RequestParam(value="sortBy", defaultValue="recent") String sortBy,
+							        @RequestParam(value="boardLimit", defaultValue="999") int boardLimit,
+							        HttpSession session,
+									Model model) {
+		
+		
+		// params를 생성하여 전달
+        Map<String, Object> params = new HashMap<>();
+        params.put("category", category);
+        params.put("subcategories", subcategories);
+        params.put("keyword", keyword);
+        params.put("sortBy", sortBy);
+		
+		int listCount = productService.selectProductCount(params);
+		int pageLimit = 100;
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
+											 pageLimit, boardLimit);
+		
+		ArrayList<Product> pList = productService.selectProductList(pi, params);
+		
+		model.addAttribute("pList", pList);
+	    
+		return "admin/adminProduct";
+	}
+	
+	@PostMapping("update.pr")
+	@ResponseBody
+    public Map<String, Object> updateProduct(@RequestBody Product product) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            int result = productService.updateProduct(product);
+
+            if (result > 0) {
+                response.put("success", true);
+                response.put("message", "상품 정보가 성공적으로 업데이트되었습니다.");
+            } else {
+                response.put("success", false);
+                response.put("message", "업데이트 실패.");
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "서버 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+        return response;
+    }
+	
+	@PostMapping("insert.pr")
+	@ResponseBody
+    public Map<String, Object> insertProduct(Product product,
+								    		 @RequestParam("optionNames[]") String[] optNames,
+								             @RequestParam("optionValues[]") String[] optValues,
+								             @RequestParam("optionAddPrices[]") String[] optAddPrices,
+    									  	 @RequestParam(value = "thumbImages", required = false) List<MultipartFile> thumbImages,
+    									  	 @RequestParam(value = "detailImages", required = false) List<MultipartFile> detailImages,
+    									  	 HttpSession session) {
+		Map<String, Object> resultMap = new HashMap<>();
+		
+	    // 상품 등록
+	    int result = productService.insertProduct(product);
+	    int imgResult = 1;
+	    int prodNo = 0;
+	    if (result > 0) {
+	        prodNo = productService.getProdNoCurrval();
+	    } else {
+	    	resultMap.put("success", false);
+            resultMap.put("message", "상품 등록에 실패했습니다.");
+            return resultMap;
+	    }
+	    
+	    // 옵션명과 옵션값을 세트로 매핑하여 처리
+        List<Map<String, String>> options = new ArrayList<>();
+        
+        for (int i = 0; i < optNames.length; i++) {
+            Map<String, Object> option = new HashMap<>();
+            option.put("optName", optNames[i]);
+            option.put("optValue", optValues[i]);
+            option.put("optAddPrice", Integer.parseInt(optAddPrices[i]));
+            option.put("prodNo", prodNo);
+            
+            result = result * optionService.insertOption(option);
+        }
+	    
+	    // 상품 등록 성공 시 첨부파일 처리 
+	    if(result > 0 && thumbImages != null && detailImages != null) {
+			// 첨부파일 데이터 리스트 생성
+			for(MultipartFile upfile : thumbImages) {
+				if(!upfile.isEmpty()) {
+					String thumbPath = "/resources/uploadFiles/product/thumb/";
+					String origFileName = upfile.getOriginalFilename();
+					String saveFileName = saveFile(upfile, thumbPath, session); // 서버에 파일 저장 및 파일명 수정
+					
+					// 첨부파일 객체 생성
+					ProductAtt pa = new ProductAtt();
+					pa.setOrigFileName(origFileName);
+					pa.setSaveFileName(saveFileName);
+					pa.setSavePath("/resources/uploadFiles/product/");
+					pa.setThumbPath(thumbPath);
+					pa.setProdNo(prodNo);
+					// 첨부파일 데이터 등록
+					imgResult = imgResult * productService.insertProductAtt(pa);
+				}
+			}
+			
+			for(MultipartFile upfile : detailImages) {
+				if(!upfile.isEmpty()) {
+					String imgPath = "/resources/uploadFiles/product/";
+					String origFileName = upfile.getOriginalFilename();
+					String saveFileName = saveFile(upfile, imgPath, session); // 서버에 파일 저장 및 파일명 수정
+					
+					// 첨부파일 객체 생성
+					ProductAtt pm = new ProductAtt();
+					pm.setOrigFileName(origFileName);
+					pm.setSaveFileName(saveFileName);
+					pm.setSavePath(imgPath);
+					pm.setProdNo(prodNo);
+					// 첨부파일 데이터 등록
+					imgResult = imgResult * productService.insertProductAtt(pm);
+				}
+			}
+			
+			if(imgResult <= 0) {
+	        	resultMap.put("success", false);
+	            resultMap.put("message", "상품이 등록되었으나, 이미지 등록에 실패했습니다.");
+	        } else {
+	        	resultMap.put("success", true);
+	            resultMap.put("message", "상품이 성공적으로 등록되었습니다.");
+	        }
+			
+		} else if(result > 0) {
+        	resultMap.put("success", true);
+            resultMap.put("message", "상품이 성공적으로 등록되었습니다.");
+            
+        } else {
+        	resultMap.put("success", false);
+            resultMap.put("message", "상품 등록에 실패했습니다.");
+        }
+
+        return resultMap;
+    }
+
+	
+	// 상품 상세 수정 페이지
+    @GetMapping("adminDetail.pr")
+    @ResponseBody
+    public Map<String, Object> adminProductDetail(@RequestParam("prodNo") int prodNo) {
+        Map<String, Object> response = new HashMap<>();
+        
+        Product product = productService.selectProduct(prodNo);
+        ArrayList<Option> options = optionService.selectCartOption(prodNo);
+        List<ProductAtt> thumbImgs = productService.selectProductThumb(prodNo);
+        List<ProductAtt> detailImgs = productService.selectProductImg(prodNo);
+        
+        if (product != null) {
+        	
+            response.put("success", true);
+            response.put("product", product);
+            response.put("options", options);
+            response.put("thumbImgs", thumbImgs);
+            response.put("detailImgs", detailImgs);
+            
+        } else {
+            response.put("success", false);
+            response.put("message", "상품 정보를 불러오지 못했습니다.");
+        }
+        return response;
+    }
+
+    @PostMapping("updateDetail.pr")
+    @ResponseBody
+    public Map<String, Object> updateProduct(Product product,
+		   		 @RequestParam(value = "optionNames[]", required = false) String[] optNames,
+		         @RequestParam(value = "optionValues[]", required = false) String[] optValues,
+		         @RequestParam(value = "optionAddPrices[]", required = false) String[] optAddPrices,
+		         @RequestParam(value = "removeThumbs", required = false) List<String> removeThumbs,
+		         @RequestParam(value = "removeImgs", required = false) List<String> removeImgs,
+			  	 @RequestParam(value = "thumbImages", required = false) List<MultipartFile> thumbImages,
+			  	 @RequestParam(value = "detailImages", required = false) List<MultipartFile> detailImages,
+			  	 HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        // 상품 정보 수정
+        int result = productService.updateProduct(product);
+        
+        if(result < 0) {
+        	response.put("success", false);
+            response.put("message", "상품 등록에 실패했습니다.");
+            return response;
+        }
+        
+        int imgResult = 1;
+        String thumbPath = "/resources/uploadFiles/product/thumb/";
+        String imgPath = "/resources/uploadFiles/product/";
+        int prodNo = product.getProdNo();
+        
+        // 삭제 썸네일이 있을 경우
+	    if(removeThumbs != null) {
+	    	for(String deleteFileName : removeThumbs) {
+	    		
+	    		// 실제 파일 삭제
+	    		deleteFile(deleteFileName, thumbPath, session);
+	    		
+	    		// DB 삭제
+	    		int resultDel = productService.deleteProductAtt(deleteFileName);
+	    		
+	    		if(resultDel == 0) {
+	    			System.out.println("첨부썸네일 삭제 실패");
+	    			response.put("success", false);
+	    			response.put("message", "첨부썸네일 삭제 실패");
+	    			return response;
+	    		}
+	    	}
+	    }
+	    // 삭제 이미지가 있을 경우
+	    if(removeImgs != null) {
+	    	for(String deleteFileName : removeImgs) {
+	    		
+	    		// 실제 파일 삭제
+	    		deleteFile(deleteFileName, imgPath, session);
+	    		
+	    		// DB 삭제
+	    		int resultDel = productService.deleteProductAtt(deleteFileName);
+	    		
+	    		if(resultDel == 0) {
+	    			System.out.println("첨부이미지 삭제 실패");
+	    			response.put("success", false);
+	    			response.put("message", "첨부이미지 삭제 실패");
+	    			return response;
+	    		}
+	    	}
+	    }
+	    // 옵션명과 옵션값을 세트로 매핑하여 처리
+        List<Map<String, String>> options = new ArrayList<>();
+        
+        if(optNames != null && optNames.length > 0) {
+	        for (int i = 0; i < optNames.length; i++) {
+	            Map<String, Object> option = new HashMap<>();
+	            option.put("optName", optNames[i]);
+	            option.put("optValue", optValues[i]);
+	            option.put("optAddPrice", Integer.parseInt(optAddPrices[i]));
+	            option.put("prodNo", prodNo);
+	            
+	            result = result * optionService.insertOption(option);
+	        }
+        }
+        if(result < 0) {
+        	response.put("success", false);
+            response.put("message", "상품 등록에 실패했습니다.");
+            return response;
+        }
+	    // 상품 등록 성공 시 썸네일파일 처리 
+	    if(result > 0 && thumbImages != null) {
+			// 첨부파일 데이터 리스트 생성
+			for(MultipartFile upfile : thumbImages) {
+				if(!upfile.isEmpty()) {
+					
+					String origFileName = upfile.getOriginalFilename();
+					String saveFileName = saveFile(upfile, thumbPath, session); // 서버에 파일 저장 및 파일명 수정
+					
+					// 첨부파일 객체 생성
+					ProductAtt pa = new ProductAtt();
+					pa.setOrigFileName(origFileName);
+					pa.setSaveFileName(saveFileName);
+					pa.setSavePath(imgPath);
+					pa.setThumbPath(thumbPath);
+					pa.setProdNo(prodNo);
+					// 첨부파일 데이터 등록
+					imgResult = imgResult * productService.insertProductAtt(pa);
+				}
+			}
+	    }
+		if(result > 0 && detailImages != null) {
+			for(MultipartFile upfile : detailImages) {
+				if(!upfile.isEmpty()) {
+					String origFileName = upfile.getOriginalFilename();
+					String saveFileName = saveFile(upfile, imgPath, session); // 서버에 파일 저장 및 파일명 수정
+					
+					// 첨부파일 객체 생성
+					ProductAtt pm = new ProductAtt();
+					pm.setOrigFileName(origFileName);
+					pm.setSaveFileName(saveFileName);
+					pm.setSavePath(imgPath);
+					pm.setProdNo(prodNo);
+					// 첨부파일 데이터 등록
+					imgResult = imgResult * productService.insertProductAtt(pm);
+				}
+			}
+		}
+		if(imgResult <= 0) {
+        	response.put("success", false);
+            response.put("message", "상품이 등록되었으나, 이미지 등록에 실패했습니다.");
+        } else if(result > 0 && imgResult >0) {
+        	response.put("success", true);
+            response.put("message", "상품이 성공적으로 등록되었습니다.");
+        } else {
+			response.put("success", true);
+            response.put("message", "상품이 성공적으로 등록되었습니다.");
+        } 
+
+        return response;
+    }
+    
+	// 옵션 목록보기 요청
+	@GetMapping("adminStock.opt")
+	public String adminOptionList(HttpSession session,
+								 Model model) {
+		
+		
+		List<Object> oList = optionService.selectOptionList();
+		
+		model.addAttribute("oList", oList);
+	    
+		return "admin/adminStock";
+	}
+	
+	// 옵션 수정 요청
+	@PostMapping("update.opt")
+	@ResponseBody
+    public Map<String, Object> updateOption(@RequestBody Option option) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            int result = optionService.updateOption(option);
+
+            if (result > 0) {
+                response.put("success", true);
+                response.put("message", "상품 정보가 성공적으로 업데이트되었습니다.");
+            } else {
+                response.put("success", false);
+                response.put("message", "업데이트 실패.");
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "서버 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+        return response;
+    }
+	
+
+	
+    
+    
+    
+    // 첨부파일 저장 메소드
+ 	public String saveFile(MultipartFile upfile, String path, HttpSession session) {
+ 		
+ 	    String originName = upfile.getOriginalFilename();
+ 	    
+ 	    String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+ 	    String ext = originName.substring(originName.lastIndexOf("."));
+ 	    
+ 	    String changeName = currentTime + "_" + UUID.randomUUID() + ext;
+ 	    
+ 	    String savePath = session.getServletContext().getRealPath(path);
+ 	    
+ 	    try {
+ 			upfile.transferTo(new File(savePath + changeName));
+ 		} catch (IllegalStateException | IOException e) {
+ 			e.printStackTrace();
+ 		}
+ 	    
+ 	    return changeName;
+ 	}
+ 	
+ 	// 첨부파일 삭제 메소드
+ 	public boolean deleteFile(String delfile, String path, HttpSession session) {
+ 		
+ 		String savePath = session.getServletContext().getRealPath(path);
+ 		
+ 		File delFile = new File(savePath + delfile);
+ 		
+ 		try {
+ 			if(delFile.exists() && delFile.delete()) {
+ 				System.out.println("서버파일 삭제성공");
+ 				return true;
+ 			} else {
+ 				System.out.println("서버파일 삭제실패");
+ 				return false;
+ 			}
+ 		} catch(Exception e) {
+ 			e.printStackTrace();
+ 			return false;
+ 		}
+ 	}
 }
