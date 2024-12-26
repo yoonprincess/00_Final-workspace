@@ -393,6 +393,10 @@ public class MyPageController {
 	
 			d.setMemberId(loginUser.getMemberId());
 			d.setDeliDefault(deliDefault);
+			if(d.getDeliNickname() == null || d.getDeliNickname().isEmpty()) {
+				
+				d.setDeliNickname(d.getDeliName());
+			}
 			
 			int result = memberService.updateMyDelivery(d);
 			
