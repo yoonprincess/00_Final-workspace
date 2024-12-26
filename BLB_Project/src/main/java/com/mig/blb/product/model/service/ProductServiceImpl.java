@@ -15,6 +15,7 @@ import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.product.model.dao.ProductDao;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
+import com.mig.blb.product.model.vo.ProductBanner;
 import com.mig.blb.wish.model.vo.Wish;
 
 @Service
@@ -168,7 +169,35 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@Transactional
 	public int deleteProductAtt(String deleteFileName) {
 		return productDao.deleteProductAtt(sqlSession, deleteFileName);
+	}
+
+	@Override
+	@Transactional
+	public int insertBanner(ProductBanner pb) {
+		return productDao.insertBanner(sqlSession, pb);
+	}
+
+	@Override
+	@Transactional
+	public int insertMdBanner(ProductBanner pb) {
+		return productDao.insertMdBanner(sqlSession, pb);
+	}
+
+	@Override
+	public int deleteBanner(String saveFileName) {
+		return productDao.deleteBanner(sqlSession, saveFileName);
+	}
+
+	@Override
+	public int deleteMdBanner(String saveFileName) {
+		return productDao.deleteMdBanner(sqlSession, saveFileName);
+	}
+
+	@Override
+	public List<ProductBanner> selectBannerList() {
+		return productDao.selectBannerList(sqlSession);
 	}
 }

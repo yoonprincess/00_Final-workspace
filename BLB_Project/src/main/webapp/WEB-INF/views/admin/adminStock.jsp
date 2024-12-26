@@ -100,9 +100,9 @@
                                     <i class="fas fa-table me-1"></i>
                                     전체조회
                                 </div>
-                                <button id="addProductBtn" class="btn btn-primary btn-sm">
+                                <!-- <button id="addProductBtn" class="btn btn-primary btn-sm">
                                     <i class="fas fa-plus me-1"></i> 상품 추가
-                                </button>
+                                </button> -->
                             </div>
                             
                             

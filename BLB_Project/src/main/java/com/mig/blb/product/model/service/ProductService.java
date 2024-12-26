@@ -9,6 +9,7 @@ import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
+import com.mig.blb.product.model.vo.ProductBanner;
 import com.mig.blb.wish.model.vo.Wish;
 
 public interface ProductService {
@@ -80,6 +81,16 @@ public interface ProductService {
 	List<ProductAtt> selectProductImg(int prodNo);
 	// 파일 데이터 삭제
 	int deleteProductAtt(String deleteFileName);
+	// 배너 등록
+	int insertBanner(ProductBanner pb);
+	// MD배너 등록
+	int insertMdBanner(ProductBanner pb);
+	// 배너 삭제
+	int deleteBanner(String saveFileName);
+	// MD배너 삭제
+	int deleteMdBanner(String saveFileName);
+	// 배너 전체 검색
+	List<ProductBanner> selectBannerList();
 	
 	
 }

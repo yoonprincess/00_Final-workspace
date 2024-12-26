@@ -34,8 +34,10 @@ public class Product {
     private int isWished;				// IS_WISHED 찜한 상태
     private int totalSales;				// TOTAL_SALES 전체 판매수
     private int totalQty;				// TOTAL_QTY 전체 재고수
-    private String bannerImg;			//	PB.BANNER_PATH || PB.SAVE_FILE_NAME AS "BANNER_IMG"
-    private String mdImg;				//	PM.MD_PATH || PM.SAVE_FILE_NAME AS "MD_IMG"
+    private String bannerPath;			//	PB.BANNER_PATH || PB.SAVE_FILE_NAME AS "BANNER_IMG"
+    private String mdPath;				//	PM.MD_PATH || PM.SAVE_FILE_NAME AS "MD_IMG"
+    private String bannerFileName;		//	PB.SAVE_FILE_NAME
+    
     
 		
 }

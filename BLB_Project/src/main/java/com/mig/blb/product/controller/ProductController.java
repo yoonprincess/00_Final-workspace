@@ -33,6 +33,7 @@ import com.mig.blb.option.model.vo.Option;
 import com.mig.blb.product.model.service.ProductService;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
+import com.mig.blb.product.model.vo.ProductBanner;
 import com.mig.blb.review.model.service.ReviewService;
 import com.mig.blb.review.model.vo.Review;
 import com.mig.blb.review.model.vo.ReviewAtt;
@@ -789,6 +790,102 @@ public class ProductController {
             e.printStackTrace();
         }
         return response;
+    }
+	
+	
+	// 배너 이미지 추가
+    @PostMapping("/addBanner.pr")
+    @ResponseBody
+    public Map<String, Object> addBanner(@RequestParam("prodNo") int prodNo,
+                                         @RequestParam("bannerImage") MultipartFile bannerImage,
+                                         HttpSession session) {
+        
+        Map<String, Object> result = new HashMap<>();
+        String bannerPath = "/resources/uploadFiles/banner/";
+        
+        boolean isSuccess = false;
+        
+        if(bannerImage != null) {
+        	String origFileName = bannerImage.getOriginalFilename();
+			String saveFileName = saveFile(bannerImage, bannerPath, session); // 서버에 파일 저장 및 파일명 수정
+			
+			// 첨부파일 객체 생성
+			ProductBanner pb = new ProductBanner();
+			pb.setOrigFileName(origFileName);
+			pb.setSaveFileName(saveFileName);
+			pb.setBannerPath(bannerPath);
+			pb.setProdNo(prodNo);
+			
+			isSuccess = productService.insertBanner(pb) > 0;
+			
+        }
+        
+        
+        result.put("success", isSuccess);
+        return result;
+    }
+
+    // MD 배너 이미지 추가
+    @PostMapping("/addMdBanner.pr")
+    @ResponseBody
+    public Map<String, Object> addMdBanner(@RequestParam("prodNo") int prodNo,
+                                           @RequestParam("mdImage") MultipartFile mdImage,
+                                           HttpSession session) {
+		Map<String, Object> result = new HashMap<>();
+		String mdPath = "/resources/uploadFiles/md/";
+		
+		boolean isSuccess = false;
+		
+		if(mdImage != null) {
+			String origFileName = mdImage.getOriginalFilename();
+			String saveFileName = saveFile(mdImage, mdPath, session); // 서버에 파일 저장 및 파일명 수정
+			
+			// 첨부파일 객체 생성
+			ProductBanner pb = new ProductBanner();
+			pb.setOrigFileName(origFileName);
+			pb.setSaveFileName(saveFileName);
+			pb.setMdPath(mdPath);
+			pb.setProdNo(prodNo);
+			
+			isSuccess = productService.insertMdBanner(pb) > 0;
+			
+		}
+		 
+		 
+		result.put("success", isSuccess);
+		return result;
+        
+    }
+
+    // 배너 이미지 삭제
+    @PostMapping("/deleteBanner.pr")
+    @ResponseBody
+    public Map<String, Object> deleteBanner(@RequestParam("filename") String saveFileName) {
+    	
+    	Map<String, Object> result = new HashMap<>();
+    	String bannerPath = "/resources/uploadFiles/banner/";
+    	boolean isSuccess = false;
+    	
+    	if(saveFileName != null) {
+    		isSuccess = productService.deleteBanner(saveFileName) > 0;
+    	}
+        result.put("success", isSuccess);
+        return result;
+    }
+
+    // MD 배너 이미지 삭제
+    @PostMapping("/deleteMdBanner.pr")
+    @ResponseBody
+    public Map<String, Object> deleteMdBanner(@RequestParam("filename") String saveFileName) {
+    	
+    	Map<String, Object> result = new HashMap<>();
+    	String mdPath = "/resources/uploadFiles/md/";
+        boolean isSuccess = false; 
+        if(saveFileName != null) {
+        	isSuccess = productService.deleteMdBanner(saveFileName) > 0;
+        }
+        result.put("success", isSuccess);
+        return result;
     }
 	
 

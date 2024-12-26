@@ -73,8 +73,11 @@
                         <span class="text-muted small">(${reviewStats.totalReviews})</span>
                     </div>
                     <h2 class="mb-3">
-                        <fmt:formatNumber value="${ requestScope.p.prodPrice }" type="number" pattern="#,###" /><small>원</small>
-                        <small class="text-danger">21% 할인</small>
+                        <fmt:formatNumber value="${ p.prodPrice }" type="number" pattern="#,###" /><small>원</small>
+                        <small class="text-danger" style="text-decoration: line-through;">
+                            <fmt:formatNumber value="${ p.prodPrice * 1.2 }" type="number" pattern="#,###" />원
+                        </small>
+                        <small class="text-danger">20% 할인</small>
                     </h2>
                     <input type="hidden" id="base-price" value="${ requestScope.p.prodPrice }">
                     <p>배송비: 3,000원 (50,000원 이상 구매 시 무료)</p>

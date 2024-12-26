@@ -20,8 +20,9 @@
 		<result column="IS_WISHED" property="isWished"/>
 		<result column="TOTAL_SALES" property="totalSales"/>
 		<result column="TOTAL_QTY" property="totalQty"/>
-		<result column="BANNER_IMG" property="bannerImg"/>
-		<result column="MD_IMG" property="mdImg"/>
+		<result column="BANNER_PATH" property="bannerPath"/>
+		<result column="MD_PATH" property="mdPath"/>
+		<result column="BANNER_FILE_NAME" property="bannerFileName"/>
 	</resultMap>
 	
 	<resultMap id="productAttResultSet" type="productAtt">
@@ -38,7 +39,7 @@
 		<id column="PROD_BANNER_NO" property="prodBannerNo"/>
 		<result column="ORIG_FILE_NAME" property="origFileName"/>
 		<result column="SAVE_FILE_NAME" property="saveFileName"/>
-		<result column="SAVE_PATH" property="savePath"/>
+		<result column="BANNER_PATH" property="bannerPath"/>
 		<result column="MD_PATH" property="mdPath"/>
 		<result column="BANNER_STATUS" property="bannerStatus"/>
 		<result column="PROD_NO" property="prodNo"/>
@@ -88,8 +89,9 @@
 	               THEN 1
 	               ELSE 0
 	           END AS IS_WISHED
-	          , PB.BANNER_PATH || PB.SAVE_FILE_NAME AS "BANNER_IMG"
-	          , PB.MD_PATH || PB.SAVE_FILE_NAME AS "MD_IMG"
+	          , PB.BANNER_PATH
+	          , PB.MD_PATH
+	          , PB.SAVE_FILE_NAME AS "BANNER_FILE_NAME"
 		  FROM TB_PRODUCT P
 		  LEFT JOIN (
 		      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
@@ -562,4 +564,42 @@
 		    #{optNo}
 		</foreach>
 	</select>
+	
+	
+	<!-- 배너 이미지 추가 -->
+    <insert id="insertBanner" parameterType="map">
+        INSERT INTO TB_PRODUCT_BANNER
+        (PROD_BANNER_NO, PROD_NO, ORIG_FILE_NAME, SAVE_FILE_NAME, BANNER_PATH, BANNER_STATUS)
+        VALUES
+        (SEQ_PROD_BANNER_NO.NEXTVAL, #{prodNo}, #{origFileName}, #{saveFileName}, #{bannerPath}, 'Y')
+    </insert>
+
+    <!-- MD 배너 이미지 추가 -->
+    <insert id="insertMdBanner" parameterType="map">
+        INSERT INTO TB_PRODUCT_BANNER
+        (PROD_BANNER_NO, PROD_NO, ORIG_FILE_NAME, SAVE_FILE_NAME, MD_PATH, BANNER_STATUS)
+        VALUES
+        (SEQ_PROD_BANNER_NO.NEXTVAL, #{prodNo}, #{origFileName}, #{saveFileName}, #{mdPath}, 'Y')
+    </insert>
+
+    <!-- 배너 이미지 삭제 -->
+    <delete id="deleteBanner" parameterType="string">
+        DELETE FROM TB_PRODUCT_BANNER
+        WHERE SAVE_FILE_NAME = #{saveFileName} AND BANNER_PATH IS NOT NULL
+    </delete>
+
+    <!-- MD 배너 이미지 삭제 -->
+    <delete id="deleteMdBanner" parameterType="string">
+        DELETE FROM_PRODUCT_BANNER
+        WHERE SAVE_FILE_NAME = #{saveFileName} AND MD_PATH IS NOT NULL
+    </delete>
+    
+    <!-- 배너 전체 리스트 -->
+    <select id="selectBannerList" resultMap="productBannerSet">
+    	SELECT *
+    	  FROM TB_PRODUCT_BANNER
+    	 WHERE BANNER_STATUS = 'Y'
+    </select>
+    
+	
 </mapper>

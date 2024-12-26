@@ -14,6 +14,7 @@ import com.mig.blb.common.model.vo.PageInfo;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.product.model.vo.Product;
 import com.mig.blb.product.model.vo.ProductAtt;
+import com.mig.blb.product.model.vo.ProductBanner;
 import com.mig.blb.wish.model.vo.Wish;
 
 @Repository
@@ -147,8 +148,28 @@ public class ProductDao {
 		return sqlSession.selectList("productMapper.selectProductImg", prodNo);
 	}
 
-	public int deleteProductAtt(SqlSessionTemplate sqlSession, String deleteFileName) {
-		return sqlSession.delete("productMapper.deleteProductAtt", deleteFileName);
+	public int deleteProductAtt(SqlSessionTemplate sqlSession, String saveFileName) {
+		return sqlSession.delete("productMapper.deleteProductAtt", saveFileName);
+	}
+
+	public int insertBanner(SqlSessionTemplate sqlSession, ProductBanner pb) {
+		return sqlSession.insert("productMapper.insertBanner", pb);
+	}
+
+	public int insertMdBanner(SqlSessionTemplate sqlSession, ProductBanner pb) {
+		return sqlSession.insert("productMapper.insertMdBanner", pb);
+	}
+
+	public int deleteBanner(SqlSessionTemplate sqlSession, String saveFileName) {
+		return sqlSession.delete("productMapper.deleteBanner", saveFileName);
+	}
+
+	public int deleteMdBanner(SqlSessionTemplate sqlSession, String saveFileName) {
+		return sqlSession.delete("productMapper.deleteMdBanner", saveFileName);
+	}
+
+	public List<ProductBanner> selectBannerList(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectList("productMapper.selectBannerList");
 	}
 
 }

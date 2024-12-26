@@ -18,6 +18,7 @@ import com.mig.blb.common.template.Pagination;
 import com.mig.blb.member.model.vo.Member;
 import com.mig.blb.product.model.service.ProductService;
 import com.mig.blb.product.model.vo.Product;
+import com.mig.blb.product.model.vo.ProductBanner;
 
 @Controller
 public class MainController {
@@ -70,9 +71,13 @@ public class MainController {
 		
 		ArrayList<Product> nList = productService.selectProductList(newPi, newParams);
 		
+		// 전체 배너
+		List<ProductBanner> pbList = productService.selectBannerList();
+		
 		
 		model.addAttribute("pList", pList);
 		model.addAttribute("nList", nList);
+		model.addAttribute("pbList", pbList);
 
         // main.jsp로 데이터 전달
         return "main";

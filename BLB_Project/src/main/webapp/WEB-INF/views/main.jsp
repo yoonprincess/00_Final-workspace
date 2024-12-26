@@ -239,27 +239,22 @@
         <li data-target="#mainBanner" data-slide-to="2" aria-label="Slide 3"></button>
     </div>
     <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="https://via.placeholder.com/1920x400/C4EFF8/ffffff?text=Banner+1" class="d-block w-100" alt="배너1">
-            <div class="carousel-caption">
-                <h5>유기농 스킨케어 세트</h5>
-                <p>89,000원</p>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="https://via.placeholder.com/1920x400/C4EFF8/ffffff?text=Banner+2" class="d-block w-100" alt="배너2">
-            <div class="carousel-caption">
-                <h5>프리미엄 마스크팩</h5>
-                <p>32,000원</p>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="https://via.placeholder.com/1920x400/C4EFF8/ffffff?text=Banner+3" class="d-block w-100" alt="배너3">
-            <div class="carousel-caption">
-                <h5>비타민 세럼</h5>
-                <p>45,000원</p>
-            </div>
-        </div>
+        <c:set var="firstActive" value="true" />
+        <c:forEach var="pb" items="${ requestScope.pbList }">
+            <c:if test="${ not empty pb.bannerPath }">
+                <div class="carousel-item ${ firstActive ? 'active' : '' }">
+                    <a href="detail.pr?pno=${ pb.prodNo }">
+                        <img src="${ pageContext.request.contextPath }${ pb.bannerPath }${ pb.saveFileName }" 
+                            class="d-block w-100" alt="${ pb.origFileName }">
+                    </a>
+                </div>
+                <!-- <div class="carousel-caption">
+                    <h5>유기농 스킨케어 세트</h5>
+                    <p>89,000원</p>
+                </div> -->
+                <c:set var="firstActive" value="false" />
+            </c:if>
+        </c:forEach>
     </div>
     <div class="container-fluid">
     <a class="carousel-control-prev" href="#mainBanner" role="button" data-slide="prev">
@@ -313,8 +308,13 @@
                                 <h5 class="card-title">${ p.prodName }</h5>
                                 <p class="card-text text-muted">${ p.prodContent }</p>
                                 
-                                <p class="card-text font-weight-bold"><fmt:formatNumber value="${ p.prodPrice }" type="number" pattern="#,###" /><small>원</small>
-                                <small class="text-danger">${product.discountRate}% 할인</small></p>
+                                <p class="card-text font-weight-bold">
+                                    <fmt:formatNumber value="${ p.prodPrice }" type="number" pattern="#,###" /><small>원</small><br>
+                                    <small class="text-danger" style="text-decoration: line-through;">
+                                        <fmt:formatNumber value="${ p.prodPrice * 1.2 }" type="number" pattern="#,###" />원
+                                    </small>
+                                    <span class="text-danger">20% 할인</span>
+                                </p>
                                 <p class="card-text">
                                     <span class="review-stars">
                                         <c:forEach begin="1" end="5" var="i">
@@ -413,34 +413,20 @@
 </div>
 <div class="container-fluid">
     <div class="md-picks">
-        <div class="md-item">
-            <img src="https://via.placeholder.com/400x350/ffffff/000000?text=MD+Pick+1" alt="MD추천1">
-            <div class="md-caption">
-                <h5>겨울철 수분 케어 아이템</h5>
-                <p>건조한 겨울 피부를 위한 특별 케어</p>
-            </div>
-        </div>
-        <div class="md-item">
-            <img src="https://via.placeholder.com/400x350/ffffff/000000?text=MD+Pick+2" alt="MD추천2">
-            <div class="md-caption">
-                <h5>민감성 피부 추천</h5>
-                <p>자극없이 순하게 관리하세요</p>
-            </div>
-        </div>
-        <div class="md-item">
-            <img src="https://via.placeholder.com/400x350/ffffff/000000?text=MD+Pick+3" alt="MD추천3">
-            <div class="md-caption">
-                <h5>여름 필수 선케어</h5>
-                <p>강력한 자외선 차단 효과</p>
-            </div>
-        </div>
-        <div class="md-item">
-            <img src="https://via.placeholder.com/400x350/ffffff/000000?text=MD+Pick+4" alt="MD추천4">
-            <div class="md-caption">
-                <h5>안티에이징 세트</h5>
-                <p>탄력있는 피부를 위한 특별 구성</p>
-            </div>
-        </div>
+        <c:forEach var="pb" items="${ requestScope.pbList }">
+            <c:if test="${ not empty pb.mdPath }">
+                <div class="md-item">
+                    <a href="detail.pr?pno=${ pb.prodNo }">
+                        <img src="${ pageContext.request.contextPath }${ pb.mdPath }${ pb.saveFileName }" 
+                            alt="${ pb.origFileName }">
+                        <!-- <div class="md-caption">
+                            <h5>겨울철 수분 케어 아이템</h5>
+                            <p>건조한 겨울 피부를 위한 특별 케어</p>
+                        </div> -->
+                    </a>
+                </div>
+            </c:if>
+        </c:forEach>
     </div>
 </div>
 

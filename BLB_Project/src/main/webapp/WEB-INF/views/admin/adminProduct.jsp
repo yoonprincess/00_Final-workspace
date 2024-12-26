@@ -153,16 +153,22 @@
                                                 <td>${p.totalSales}</td>
                                                 <td>${p.totalQty}</td>
                                                 <td>
-                                                    <c:if test="${ not empty p.bannerImg }">
-                                                        <img src="${ pageContext.request.contextPath }${p.bannerImg}" alt="thumbImg" style="width: 50px; height: auto;">
+                                                    <c:if test="${ not empty p.bannerPath }">
+                                                        <img src="${ pageContext.request.contextPath }${p.bannerPath}${p.bannerFileName}" alt="thumbImg" style="width: 50px; height: auto;">
+                                                        <button class="banner-delete-btn btn btn-danger btn-sm" data-filename="${p.bannerFileName}">삭제</button>
                                                     </c:if>
-                                                    <button class="banner-add-btn btn btn-primary btn-sm">추가</button>
+                                                    <c:if test="${ empty p.bannerPath }">
+                                                        <button class="banner-add-btn btn btn-primary btn-sm" data-prodno="${p.prodNo}">추가</button>
+                                                    </c:if>
                                                 </td>
                                                 <td>
-                                                    <c:if test="${ not empty p.bannerImg }">
-                                                        <img src="${ pageContext.request.contextPath }${p.mdImg}" alt="thumbImg" style="width: 50px; height: auto;">
+                                                    <c:if test="${ not empty p.mdPath }">
+                                                        <img src="${ pageContext.request.contextPath }${p.mdPath}${p.bannerFileName}" alt="thumbImg" style="width: 50px; height: auto;">
+                                                        <button class="md-delete-btn btn btn-danger btn-sm" data-filename="${p.bannerFileName}">삭제</button>
                                                     </c:if>
-                                                    <button class="md-add-btn btn btn-primary btn-sm">추가</button>
+                                                    <c:if test="${ empty p.mdPath }">
+                                                        <button class="md-add-btn btn btn-primary btn-sm" data-prodno="${p.prodNo}">추가</button>
+                                                    </c:if>
                                                 </td>
                                                 <td><button class="detail-btn btn btn-primary btn-sm">상세수정</button></td>
                                                 <td><button class="save-btn btn btn-primary btn-sm">저장</button></td>
@@ -821,6 +827,120 @@
                             alert('서버 오류가 발생했습니다.');
                         }
                     });
+                });
+
+                // 배너 이미지 추가
+                $('#productTable').on('click', '.banner-add-btn', function () {
+                    const prodNo = $(this).data('prodno');
+                    const fileInput = $('<input type="file" accept="image/*">'); // 이미지 파일 선택기
+
+                    fileInput.on('change', function () {
+                        const formData = new FormData();
+                        formData.append('prodNo', prodNo);
+                        formData.append('bannerImage', fileInput[0].files[0]);
+
+                        $.ajax({
+                            url: 'addBanner.pr', // 배너 추가 요청 URL
+                            method: 'POST',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                if (response.success) {
+                                    alert('배너 이미지가 추가되었습니다.');
+                                    location.reload(); // 페이지 새로고침
+                                } else {
+                                    alert('배너 이미지 추가에 실패했습니다.');
+                                }
+                            },
+                            error: function () {
+                                alert('서버 오류가 발생했습니다.');
+                            }
+                        });
+                    });
+
+                    fileInput.click(); // 파일 선택창 열기
+                });
+
+                // MD 이미지 추가
+                $('#productTable').on('click', '.md-add-btn', function () {
+                    const prodNo = $(this).data('prodno');
+                    const fileInput = $('<input type="file" accept="image/*">'); // 이미지 파일 선택기
+
+                    fileInput.on('change', function () {
+                        const formData = new FormData();
+                        formData.append('prodNo', prodNo);
+                        formData.append('mdImage', fileInput[0].files[0]);
+
+                        $.ajax({
+                            url: 'addMdBanner.pr', // MD 배너 추가 요청 URL
+                            method: 'POST',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                if (response.success) {
+                                    alert('MD 이미지가 추가되었습니다.');
+                                    location.reload(); // 페이지 새로고침
+                                } else {
+                                    alert('MD 이미지 추가에 실패했습니다.');
+                                }
+                            },
+                            error: function () {
+                                alert('서버 오류가 발생했습니다.');
+                            }
+                        });
+                    });
+
+                    fileInput.click(); // 파일 선택창 열기
+                });
+
+                // 배너 이미지 삭제
+                $('#productTable').on('click', '.banner-delete-btn', function () {
+                    const filename = $(this).data('filename');
+
+                    if (confirm('정말 삭제하시겠습니까?')) {
+                        $.ajax({
+                            url: 'deleteBanner.pr',
+                            method: 'POST',
+                            data: { filename: filename },
+                            success: function (response) {
+                                if (response.success) {
+                                    alert('배너 이미지가 삭제되었습니다.');
+                                    location.reload(); // 페이지 새로고침
+                                } else {
+                                    alert('배너 이미지 삭제에 실패했습니다.');
+                                }
+                            },
+                            error: function () {
+                                alert('서버 오류가 발생했습니다.');
+                            }
+                        });
+                    }
+                });
+
+                // MD 이미지 삭제
+                $('#productTable').on('click', '.md-delete-btn', function () {
+                    const filename = $(this).data('filename');
+
+                    if (confirm('정말 삭제하시겠습니까?')) {
+                        $.ajax({
+                            url: 'deleteMdBanner.pr',
+                            method: 'POST',
+                            data: { filename: filename },
+                            success: function (response) {
+                                if (response.success) {
+                                    alert('MD 이미지가 삭제되었습니다.');
+                                    location.reload(); // 페이지 새로고침
+                                } else {
+                                    alert('MD 이미지 삭제에 실패했습니다.');
+                                }
+                            },
+                            error: function () {
+                                alert('서버 오류가 발생했습니다.');
+                            }
+                        });
+                    }
                 });
 
                 

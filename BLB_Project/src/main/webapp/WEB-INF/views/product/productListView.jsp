@@ -307,8 +307,13 @@
 				                        <h5 class="card-title">${ p.prodName }</h5>
 				                        <p class="card-text text-muted">${ p.prodContent }</p>
 				                        
-				                        <p class="card-text font-weight-bold"><fmt:formatNumber value="${ p.prodPrice }" type="number" pattern="#,###" /><small>원</small>
-		                    			<small class="text-danger">${product.discountRate}% 할인</small></p>
+				                        <p class="card-text font-weight-bold">
+											<fmt:formatNumber value="${ p.prodPrice }" type="number" pattern="#,###" /><small>원</small><br>
+		                    				<small class="text-danger" style="text-decoration: line-through;">
+												<fmt:formatNumber value="${ p.prodPrice * 1.2 }" type="number" pattern="#,###" />원
+											</small>
+											<span class="text-danger">20% 할인</span>
+										</p>
 				                        <p class="card-text">
 											<span class="review-stars">
 		                                        <c:forEach begin="1" end="5" var="i">
