@@ -67,7 +67,7 @@
                     </tr>
 
                     <tr>
-                        <th>배송지명 <div class="badge">${d.deliDefault}</div></th>
+                        <th>배송지명 <div class="badge"><c:if test="${d.deliDefault == 'Y'}">기본배송지</c:if></div></th>
                         <td>
                             <input type="text"
                                    placeholder="배송지를 선택하세요"
