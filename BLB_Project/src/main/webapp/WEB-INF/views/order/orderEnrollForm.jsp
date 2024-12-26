@@ -58,7 +58,7 @@
                             <select id="deliSelect">
                                 <c:forEach var="d" items="${deliveryList}">
                                     <option value="${d.deliCode}" 
-                                        <c:if test="${d.deliDefault == '기본배송지'}">selected</c:if>>
+                                        <c:if test="${d.deliDefault == 'Y'}">selected</c:if>>
                                         ${d.deliNickname}
                                     </option>
                                 </c:forEach>
