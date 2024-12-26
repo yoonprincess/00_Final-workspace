@@ -36,16 +36,18 @@
             </c:choose>
         </div>
 
-        <!-- 관리자 권한이 있을 경우 수정 버튼 표시 -->
+        
         <c:if test="${sessionScope.loginUser.memberId eq requestScope.i.memberId}">
         
             <div style="text-align: center;">
-            <form id="inquiryUpdate" action="InquiryUpdateForm.io" method="post" >	
+            	<button type="button" class="btn btn-edit" onclick="postFormSubmit(1)">수정</button>
+            	<button type="button" class="btn btn-delete" onclick="postFormSubmit(2)">삭제</button>
+            </div>
+            
+            <form id="postForm" action="" method="post" >	
             	<input type="hidden" name="ino" value="${ requestScope.i.inquiryNo }">
                 <input type="hidden" name="filePath" value="${ requestScope.p.saveFileName }">
-            	<button type="submit" class="btn btn-edit">수정</button>
             </form>
-            </div>
         </c:if>
 
         <!-- 댓글 목록 섹션 -->
@@ -93,6 +95,18 @@
 </div>
 
 <script>
+		function postFormSubmit(num) {
+		    if (num === 1) { 
+		        $("#postForm").attr("action", "../InquiryUpdateForm.io").submit();
+		    } else {
+		        if (confirm("삭제하시겠습니까?")) { 
+		            $("#postForm").attr("action", "../InquiryDelete.io").submit();
+		        } else {
+		            return "redirect://../list.io";
+		        }
+		    }
+		}
+
     // 웹소켓 연결 객체
     let socket;
 

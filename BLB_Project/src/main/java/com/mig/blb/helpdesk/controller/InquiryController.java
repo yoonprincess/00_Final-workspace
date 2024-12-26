@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -28,6 +30,8 @@ import com.mig.blb.helpdesk.model.service.InquiryService.InquiryService;
 import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.helpdesk.model.vo.InquiryAtt;
 import com.mig.blb.helpdesk.model.vo.InquiryReply;
+import com.mig.blb.helpdesk.model.vo.Notice;
+import com.mig.blb.helpdesk.model.vo.NoticeAtt;
 import com.mig.blb.member.model.vo.Member;
 
 @Controller
@@ -137,8 +141,7 @@ public class InquiryController {
 	// 문의 상세조회 요청
 	@GetMapping("inquiry/{inquiryNo}")
 	public ModelAndView selectInquiry(@PathVariable(value = "inquiryNo") int ino,
-	                                 ModelAndView mv,
-	                                 RedirectAttributes ra) {
+	                                 ModelAndView mv) {
 	        Inquiry i = inquiryService.selectInquiry(ino);
 	        ArrayList<InquiryAtt> iatt = inquiryService.selectInquiryAtt(ino);
 	        mv.addObject("i", i).setViewName("helpdesk/InquiryDetailView");
@@ -148,37 +151,25 @@ public class InquiryController {
 		
 	// 문의글 삭제 요청
 	@PostMapping("InquiryDelete.io")
-	public String deleteInquiry(int ino,
+	public String deleteNotice(int ino,
 							   String filePath,
 							   Model model,
 							   HttpSession session,
 							   RedirectAttributes ar) {
-		
 		int result = inquiryService.deleteInquiry(ino);
-		
-		session.setAttribute("aletMsg", "문의글이 성공적으로 삭제되었습니다.");		
-		return "redirect:/list.io";
-		/*
 		if(result > 0) {
 			if(!filePath.equals("")) {
 				String realPath = session.getServletContext().getRealPath(filePath);
 				
 				new File(realPath).delete();
 			}
-			
-			System.out.println("문의글 삭제 성공 :" + ino);
-			
-			session.setAttribute("aletMsg", "문의글이 성공적으로 삭제되었습니다.");
+			session.setAttribute("aletMsg", "문의글 성공적으로 삭제되었습니다.");
 			
 			return "redirect:/list.io";
 		} else {
-			
-			System.out.println("문의글 삭제 실패 :" + ino);
-			
-			ar.addFlashAttribute("alertMsg", "문의글 삭제에 실패했습니다.");
+			ar.addFlashAttribute("alertMsg", "공지사항 삭제에 실패했습니다.");
 			return "redirect:/list.io";
 		}
-		*/
 	}
 		
 	// 문의글 수정 페이지 요청
@@ -195,37 +186,66 @@ public class InquiryController {
 			
 	// 문의글 수정 요청
 	@PostMapping("InquiryUpdate.io")
-	public String updateInquiry(Inquiry i,
-							   /*InquiryAtt ia,*/
-							   RedirectAttributes ar,
-							   MultipartFile reupfile,
-							   HttpSession session,
-							   Model model) {
-		/*
-		if(!reupfile.getOriginalFilename().equals("")) {
-			if(ia.getOriginName() != null) {
-				String realPath = session.getServletContext().getRealPath(ia.getChangeName());
-				
-				new File(realPath).delete();
-			}
-			
-			String changeName = saveFile(reupfile, session);
-			ia.setOriginName(reupfile.getOriginalFilename());
-			ia.setChangeName("resources/uploadFiles/" + changeName);
-		}
-		*/
+	public ModelAndView updateInquiry(
+	        @RequestParam(value = "ino", defaultValue = "0") int ino, // 기본값을 0으로 설정
+	        Inquiry i,
+	        @RequestParam(value = "upfile", required = false) List<MultipartFile> upfile,
+	        @RequestParam(value = "deleteFiles", required = false) List<String> deleteFiles,
+	        RedirectAttributes ar,
+	        HttpSession session,
+	        ModelAndView mv) {
 		
-		int result = inquiryService.updateInquiry(i);
+		// 문의 본문 및 제목 수정
+	    i.setInquiryNo(ino);
+		int result = inquiryService.updateInquiry(i);	
+		int attResult = 1;
 		
-		if(result > 0) {
-			session.setAttribute("alertMsg", "문의글이 성공적으로 수정되었습니다.");
-			
-			return "redirect:/inquiry/" + i.getInquiryNo();
-		} else {
-			ar.addFlashAttribute("alertMsg", "문의글 수정에 실패했습니다.");
-			return "redirect:/list.io";
-		} 
-	}		
+	    // 삭제파일 있는 경우
+	    if(deleteFiles != null) {
+	    	for(String deleteFileName : deleteFiles) {
+	    		
+	    		// 실제 파일 삭제
+	    		deleteFile(deleteFileName, session);
+	    		
+	    		// DB 삭제
+	    		int resultDel = inquiryService.deleteAtt(deleteFileName);
+	    		
+	    		if(resultDel == 0) {
+	    			mv.setViewName("redirect:/inquiry/" + ino);
+	    		}
+	    	}
+	    	
+	    }
+	    
+	    // 문의 저장 성공 시 첨부파일 처리
+	    if(result > 0 && upfile != null) {
+	    	for(MultipartFile newUpfile : upfile) {
+	    		if(!newUpfile.isEmpty()) {
+	    			String origFileName = newUpfile.getOriginalFilename();
+	    			String saveFileName = saveFile(newUpfile, session);
+	    			
+	    			// 첨부파일 객체 생성
+	    			InquiryAtt ia = new InquiryAtt();
+	    			ia.setOrigFileName(origFileName);
+					ia.setSaveFileName(saveFileName);
+					ia.setSavePath("/resources/uploadFiles/inquiry/");
+					ia.setInquiryNo(i.getInquiryNo());
+					// 첨부파일 데이터 등록
+					attResult = attResult * inquiryService.updateAtt(ia);
+	    		}
+	    	}
+	    }
+
+	    if (result > 0) {
+	        ar.addFlashAttribute("message", "문의글이 성공적으로 수정되었습니다.");
+	        mv.setViewName("redirect:/inquiry/" + ino); // 상세 페이지로 이동
+	    } else {
+	        ar.addFlashAttribute("message", "문의글 수정에 실패했습니다.");
+	        mv.setViewName("redirect:/errorPage");
+	    }
+
+	    return mv;
+	}
 		
 	// 댓글 목록 조회 요청 (ajax)
 	@ResponseBody
@@ -249,25 +269,6 @@ public class InquiryController {
 		return (result > 0) ? "success" : "fail";
 	}
 	
-	@PostMapping(value = "rupdate.io")
-	@ResponseBody // AJAX 요청에 대한 응답을 JSON 형태로 반환
-	public String updateInquiryReply(@RequestParam("ino") int inquiryReplyNo,
-	                                 @RequestParam("inquiryReplyContent") String inquiryReplyContent,
-	                                 @RequestParam("memberId") String memberId) {
-	    // InquiryReply 객체에 데이터 설정
-	    InquiryReply ir = new InquiryReply();
-	    ir.setInquiryReplyNo(inquiryReplyNo);
-	    ir.setInquiryReplyContent(inquiryReplyContent);
-	    ir.setMemberId(memberId);
-
-	    // 댓글 수정 로직 호출
-	    int result = inquiryReplyService.updateInquiryReply(ir);
-
-	    // 결과 반환
-	    return result > 0 ? "success" : "fail";
-	}
-
-	
 	
 	// 댓글 삭제 요청
 	@PostMapping(value="rdelete.io")
@@ -290,27 +291,44 @@ public class InquiryController {
 	}
 	
 	
-	// 첨부파일을 위한 메소드
-	public String saveFile(MultipartFile upfile,
-						   HttpSession session) {
-		
-		String originName = upfile.getOriginalFilename();
-		
-		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		
-		int ranNum = (int)(Math.random() * 90000 + 10000);
-		String ext = originName.substring(originName.lastIndexOf("."));
-		
-		String changeName = currentTime + ranNum + ext;
-		
-		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/inquiry/");
-		
-		try {
-			upfile.transferTo(new File(savePath + changeName));
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
-		
-		return changeName;
-	}
+	// 첨부파일 저장 메소드
+			public String saveFile(MultipartFile upfile, HttpSession session) {
+				
+			    String originName = upfile.getOriginalFilename();
+			    
+			    String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+			    String ext = originName.substring(originName.lastIndexOf("."));
+			    
+			    String changeName = currentTime + "_" + UUID.randomUUID() + ext;
+			    
+			    String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/inquiry/");
+			    
+			    try {
+					upfile.transferTo(new File(savePath + changeName));
+				} catch (IllegalStateException | IOException e) {
+					e.printStackTrace();
+				}
+			    
+			    return changeName;
+			}
+
+			
+			// 첨부파일 삭제 메소드
+			public boolean deleteFile(String delfile, HttpSession session) {
+				
+				String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/inquiry/");
+				
+				File delFile = new File(savePath + delfile);
+				
+				try {
+					if(delFile.exists() && delFile.delete()) {
+						return true;
+					} else {
+						return false;
+					}
+				} catch(Exception e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
 }

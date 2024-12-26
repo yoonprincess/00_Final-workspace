@@ -35,8 +35,7 @@
 		     , FAQ_CONTENT
 		  FROM TB_FAQ
       ORDER BY FAQ_NO DESC
-	</select>
-	
+	</select>	
 	
 	<!-- FAQ 목록조회 -->
 	<select id="selectFaqList" resultMap="FaqResultSet">
@@ -399,6 +398,29 @@
 		<result column="SAVE_PATH" property="savePath"/>
 		<result column="INQUIRY_ATT_STATUS" property="inquiryAttStatus"/>
 	</resultMap>
+	
+	<!-- 문의 첨부파일 삭제 -->
+	<delete id="deleteInquiryAtt" parameterType="string">
+    	DELETE
+		  FROM TB_INQUIRY_ATTACHMENT
+		 WHERE SAVE_FILE_NAME = #{saveFileName}
+		   AND INQUIRY_ATT_STATUS = 'Y'
+    </delete>
+    
+    <!-- 문의글 수정 -->
+	<insert id="updateInquiryAtt" parameterType="inquiryAtt">
+    INSERT INTO TB_INQUIRY_ATTACHMENT(INQUIRY_ATT_NO,
+                             ORIG_FILE_NAME,
+                             SAVE_FILE_NAME,
+                             SAVE_PATH,
+                             INQUIRY_NO)
+                      VALUES(SEQ_INQUIRY_ATT_NO.NEXTVAL,
+                             #{origFileName},
+                             #{saveFileName},
+                             #{savePath},
+                             #{inquiryNo})
+    </insert>
+	
 	
 	
 	<!-- 문의 댓글 작성 관련 -->
