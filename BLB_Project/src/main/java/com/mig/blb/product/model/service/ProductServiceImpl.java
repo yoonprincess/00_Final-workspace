@@ -133,4 +133,22 @@ public class ProductServiceImpl implements ProductService {
 	public int insertCart(Cart cart) {
 		return productDao.insertCart(sqlSession, cart);
 	}
+
+	@Override
+	@Transactional
+	public int updateProduct(Product product) {
+		return productDao.updateProduct(sqlSession, product);
+	}
+
+	@Override
+	@Transactional
+	public int insertProduct(Product product) {
+		return productDao.insertProduct(sqlSession, product);
+	}
+
+	@Override
+	@Transactional
+	public int insertProductAtt(ProductAtt pa) {
+		return productDao.insertProductAtt(sqlSession, pa);
+	}
 }

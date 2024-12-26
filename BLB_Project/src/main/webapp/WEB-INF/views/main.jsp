@@ -12,217 +12,221 @@
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/product/product.css">
 <style>
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px 15px;
-}
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px 15px;
+    }
 
-/* 메인 배너 스타일 */
-.main-banner .carousel-item {
-    height: 40vh;
-}
+    /* 메인 배너 스타일 */
+    .main-banner .carousel-item {
+        height: 40vh;
+    }
 
-.main-banner .carousel-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center; /* 이미지 가운데 정렬 */
-}
+    .main-banner .carousel-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center; /* 이미지 가운데 정렬 */
+    }
 
-.main-banner .carousel-caption {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    color: #333;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: auto;
-    max-width: 80%;
-}
+    .main-banner .carousel-caption {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        color: #333;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+        max-width: 80%;
+    }
 
-.main-banner .carousel-caption h5 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
+    .main-banner .carousel-caption h5 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
 
-.main-banner .carousel-caption p {
-    font-size: 1.2em;
-    margin-bottom: 0;
-}
+    .main-banner .carousel-caption p {
+        font-size: 1.2em;
+        margin-bottom: 0;
+    }
 
-.carousel-indicators {
-    gap: 5px;
-    z-index: 3;
-    margin-bottom: 0px;
-}
-.carousel-indicators li {
-    background-color: #7AB2D3 !important;
-    width: 10px; /* 버튼의 너비와 높이 동일 설정 */
-    height: 10px; /* 버튼의 높이 */
-    border-radius: 50%; /* 완전한 원형 */
-    opacity: 0.5;
-    border: none;
-}
-.carousel-indicators .active {
-    opacity: 1;
-}
-.carousel-control-next, .carousel-control-prev {
-		width: 5% !important;    
-}
+    .carousel-indicators {
+        gap: 5px;
+        z-index: 3;
+        margin-bottom: 0px;
+    }
+    .carousel-indicators li {
+        background-color: #7AB2D3 !important;
+        width: 10px; /* 버튼의 너비와 높이 동일 설정 */
+        height: 10px; /* 버튼의 높이 */
+        border-radius: 50%; /* 완전한 원형 */
+        opacity: 0.5;
+        border: none;
+    }
+    .carousel-indicators .active {
+        opacity: 1;
+    }
+    .carousel-control-next, .carousel-control-prev {
+        width: 5% !important;    
+    }
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        padding: 15px;
+    }
 
     /* 좌우 화살표 위치를 container-fluid 안으로 조정 */
-.carousel-control-prev {
-    left: calc(50% - min(720px, 50%)) !important; /* 최대 1200px까지 유지하고, 창 크기에 맞춰서 줄어듦 */
-}
+    .carousel-control-prev {
+        left: calc(50% - min(720px, 50%)) !important; /* 최대 1200px까지 유지하고, 창 크기에 맞춰서 줄어듦 */
+    }
 
-.carousel-control-next {
-    right: calc(50% - min(720px, 50%)) !important; /* 최대 1200px까지 유지하고, 창 크기에 맞춰서 줄어듦 */
-}
+    .carousel-control-next {
+        right: calc(50% - min(720px, 50%)) !important; /* 최대 1200px까지 유지하고, 창 크기에 맞춰서 줄어듦 */
+    }
 
-/* 베스트 상품 스타일 */
-.tab-main {
-    height: 60px; /* 버튼 높이 */
-    display: flex; /* 텍스트 정렬을 위한 Flexbox */
-    align-items: flex-end; /* 하단 정렬 */
-    justify-content: center; /* 가로 가운데 정렬 */
-    font-size: 20px; /* 글자 크기 */
-    font-weight: bold;
-    color: gray;
-}
-.tab-main.active {
-    font-size: 24px; /* 글자 크기 */
-    text-decoration: underline; /* 밑줄 */
-    text-underline-offset: 5px; /* 밑줄과 글자 간격 조절 */
-    text-decoration-thickness: 1px; /* 밑줄 두께 조절 */
-    text-decoration-color: #4A628A; /* 밑줄 색상 */
-    /* transition: all 0.3s ease; 호버 시 부드러운 전환 효과 */
-    color: #4A628A;
-}
+    /* 베스트 상품 스타일 */
+    .tab-main {
+        height: 60px; /* 버튼 높이 */
+        display: flex; /* 텍스트 정렬을 위한 Flexbox */
+        align-items: flex-end; /* 하단 정렬 */
+        justify-content: center; /* 가로 가운데 정렬 */
+        font-size: 20px; /* 글자 크기 */
+        font-weight: bold;
+        color: gray;
+    }
+    .tab-main.active {
+        font-size: 24px; /* 글자 크기 */
+        text-decoration: underline; /* 밑줄 */
+        text-underline-offset: 5px; /* 밑줄과 글자 간격 조절 */
+        text-decoration-thickness: 1px; /* 밑줄 두께 조절 */
+        text-decoration-color: #4A628A; /* 밑줄 색상 */
+        /* transition: all 0.3s ease; 호버 시 부드러운 전환 효과 */
+        color: #4A628A;
+    }
 
-.product-section {
-    margin-bottom: 30px;
-}
+    .product-section {
+        margin-bottom: 30px;
+    }
 
-/* MD 추천 스타일 */
-.md-picks {
-    margin: 0px 0;
-    margin-bottom: 50px
-}
+    /* MD 추천 스타일 */
+    .md-picks {
+        margin: 0px 0;
+        margin-bottom: 50px
+    }
 
-.md-picks .slick-slide {
-    margin: 0 15px;
-}
+    .md-picks .slick-slide {
+        margin: 0 15px;
+    }
 
-.md-item {
-    position: relative;
-    height: 350px;
-}
+    .md-item {
+        position: relative;
+        height: 350px;
+    }
 
-.md-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* border-radius: 15px; */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
+    .md-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* border-radius: 15px; */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
 
-.md-caption {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    /* background: rgba(255, 255, 255, 0.9); */
-    padding: 15px;
-    /* border-radius: 10px; */
-    text-align: center;
-    width: 80%;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+    .md-caption {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        /* background: rgba(255, 255, 255, 0.9); */
+        padding: 15px;
+        /* border-radius: 10px; */
+        text-align: center;
+        width: 80%;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-.md-caption h5 {
-    margin-bottom: 5px;
-    font-size: 1.2em;
-    color: #333;
-}
+    .md-caption h5 {
+        margin-bottom: 5px;
+        font-size: 1.2em;
+        color: #333;
+    }
 
-.md-caption p {
-    margin-bottom: 0;
-    font-size: 0.9em;
-    color: #666;
-}
+    .md-caption p {
+        margin-bottom: 0;
+        font-size: 0.9em;
+        color: #666;
+    }
 
-.slick-prev, .slick-next {
-    z-index: 1;
-    width: 40px;
-    height: 40px;
-    opacity: 0.5;
-}
+    .slick-prev, .slick-next {
+        z-index: 1;
+        width: 40px;
+        height: 40px;
+        opacity: 0.5;
+    }
 
-.slick-prev {
-    left: -20px;
-}
+    .slick-prev {
+        left: -20px;
+    }
 
-.slick-next {
-    right: -20px;
-}
+    .slick-next {
+        right: -20px;
+    }
 
-.slick-prev:before, .slick-next:before {
-    font-size: 40px;
-    color: #7AB2D3;
-    opacity: 0.3;
-}
+    .slick-prev:before, .slick-next:before {
+        font-size: 40px;
+        color: #7AB2D3;
+        opacity: 0.3;
+    }
 
-.slick-center {
-    transform: scale(1.1);
-    transition: transform 0.3s ease-in-out;
-}
+    .slick-center {
+        transform: scale(1.1);
+        transition: transform 0.3s ease-in-out;
+    }
 
-.section-title {
-    text-align: left;
-    padding-left: 16px;
-    margin-bottom: 0;
-}
+    .section-title {
+        text-align: left;
+        padding-left: 16px;
+        margin-bottom: 0;
+    }
 
-.section-title p {
-    font-size: 24px;
-    color: #4A628A;
-    position: relative;
-    display: inline-block;
-    text-decoration: underline; /* 밑줄 */
-    text-underline-offset: 5px; /* 밑줄과 글자 간격 조절 */
-    text-decoration-thickness: 1px; /* 밑줄 두께 조절 */
-    text-decoration-color: #4A628A; /* 밑줄 색상 */
-}
+    .section-title p {
+        font-size: 24px;
+        color: #4A628A;
+        position: relative;
+        display: inline-block;
+        text-decoration: underline; /* 밑줄 */
+        text-underline-offset: 5px; /* 밑줄과 글자 간격 조절 */
+        text-decoration-thickness: 1px; /* 밑줄 두께 조절 */
+        text-decoration-color: #4A628A; /* 밑줄 색상 */
+    }
 
-.more-btn-container {
-    text-align: center;
-    margin-top: 20px;
-}
+    .more-btn-container {
+        text-align: center;
+        margin-top: 20px;
+    }
 
-.more-btn {
-    display: inline-flex; /* 텍스트와 아이콘 정렬을 위해 flex 사용 */
-    justify-content: center; /* 가로 가운데 정렬 */
-    align-items: center; /* 세로 가운데 정렬 */
-    width: 200px; /* 버튼 너비 */
-    height: 50px; /* 버튼 높이 */
-    font-size: 18px; /* 텍스트 크기 */
-    font-weight: bold; /* 텍스트 굵기 */
-    color: #4A628A; /* 텍스트 색상 */
-    text-decoration: none; /* 밑줄 제거 */
-    background-color: #C4EFF8; /* 버튼 배경색 */
-    border: none; /* 테두리 없음 */
-    border-radius: 50px; /* 둥근 테두리 */
-    cursor: pointer; /* 클릭 가능한 커서 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* 호버 및 클릭 효과 */
-}
-.more-btn:hover {
-    background-color: #A8D8E9; /* 호버 시 배경색 변경 */
-    transform: translateY(-2px); /* 약간의 상승 효과 */
-    text-decoration: none;
-}
+    .more-btn {
+        display: inline-flex; /* 텍스트와 아이콘 정렬을 위해 flex 사용 */
+        justify-content: center; /* 가로 가운데 정렬 */
+        align-items: center; /* 세로 가운데 정렬 */
+        width: 200px; /* 버튼 너비 */
+        height: 50px; /* 버튼 높이 */
+        font-size: 18px; /* 텍스트 크기 */
+        font-weight: bold; /* 텍스트 굵기 */
+        color: #4A628A; /* 텍스트 색상 */
+        text-decoration: none; /* 밑줄 제거 */
+        background-color: #C4EFF8; /* 버튼 배경색 */
+        border: none; /* 테두리 없음 */
+        border-radius: 50px; /* 둥근 테두리 */
+        cursor: pointer; /* 클릭 가능한 커서 */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* 호버 및 클릭 효과 */
+    }
+    .more-btn:hover {
+        background-color: #A8D8E9; /* 호버 시 배경색 변경 */
+        transform: translateY(-2px); /* 약간의 상승 효과 */
+        text-decoration: none;
+    }
 </style>
 </head>
 <body>

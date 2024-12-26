@@ -1,22 +1,28 @@
 package com.mig.blb.product.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mig.blb.cart.model.vo.Cart;
 import com.mig.blb.common.model.vo.PageInfo;
@@ -480,4 +486,143 @@ public class ProductController {
 	    
 		return "admin/adminProduct";
 	}
+	
+	@PostMapping("update.pr")
+	@ResponseBody
+    public Map<String, Object> updateProduct(@RequestBody Product product) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            int result = productService.updateProduct(product);
+
+            if (result > 0) {
+                response.put("success", true);
+                response.put("message", "상품 정보가 성공적으로 업데이트되었습니다.");
+            } else {
+                response.put("success", false);
+                response.put("message", "업데이트 실패.");
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "서버 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+        return response;
+    }
+	
+	@PostMapping("insert.pr")
+	@ResponseBody
+    public Map<String, Object> insertProduct(Product product, 
+    									  	 @RequestParam(value = "thumbImages", required = false) List<MultipartFile> thumbImages,
+    									  	 @RequestParam(value = "detailImages", required = false) List<MultipartFile> detailImages,
+    									  	 HttpSession session) {
+		Map<String, Object> resultMap = new HashMap<>();
+		
+	    // 리뷰 저장
+	    int result = productService.insertProduct(product);
+	    int imgResult = 1;
+	    
+	    // 리뷰 저장 성공 시 첨부파일 처리 
+	    if(result > 0 && thumbImages != null && detailImages != null) {
+			// 첨부파일 데이터 리스트 생성
+			for(MultipartFile upfile : thumbImages) {
+				if(!upfile.isEmpty()) {
+					String origFileName = upfile.getOriginalFilename();
+					String saveFileName = saveFile(upfile, session); // 서버에 파일 저장 및 파일명 수정
+					
+					// 첨부파일 객체 생성
+					ProductAtt pa = new ProductAtt();
+					pa.setOrigFileName(origFileName);
+					pa.setSaveFileName(saveFileName);
+					pa.setSavePath("/resources/uploadFiles/product/");
+					pa.setThumbPath("/resources/uploadFiles/product/thumb/");
+					// 첨부파일 데이터 등록
+					imgResult = imgResult * productService.insertProductAtt(pa);
+				}
+			}
+			
+			for(MultipartFile upfile : detailImages) {
+				if(!upfile.isEmpty()) {
+					String origFileName = upfile.getOriginalFilename();
+					String saveFileName = saveFile(upfile, session); // 서버에 파일 저장 및 파일명 수정
+					
+					// 첨부파일 객체 생성
+					ProductAtt pa = new ProductAtt();
+					pa.setOrigFileName(origFileName);
+					pa.setSaveFileName(saveFileName);
+					pa.setSavePath("/resources/uploadFiles/product/");
+					// 첨부파일 데이터 등록
+					imgResult = imgResult * productService.insertProductAtt(pa);
+				}
+			}
+			
+			if(imgResult <= 0) {
+	        	resultMap.put("success", false);
+	            resultMap.put("message", "상품이 등록되었으나, 이미지 등록에 실패했습니다.");
+	        } else {
+	        	resultMap.put("success", true);
+	            resultMap.put("message", "상품이 성공적으로 등록되었습니다.");
+	        }
+			
+		} else if(result > 0) {
+        	resultMap.put("success", true);
+            resultMap.put("message", "상품이 성공적으로 등록되었습니다.");
+            
+        } else {
+        	resultMap.put("success", false);
+            resultMap.put("message", "상품 등록에 실패했습니다.");
+        }
+
+        return resultMap;
+    }
+
+    @GetMapping("getProductDetail")
+    public Map<String, Object> getProductDetail(@RequestParam("prodNo") int prodNo) {
+        Map<String, Object> response = new HashMap<>();
+//        Product product = productService.getProductDetail(prodNo);
+        if (product != null) {
+            response.put("success", true);
+            response.put("data", product);
+        } else {
+            response.put("success", false);
+            response.put("message", "상품 정보를 불러오지 못했습니다.");
+        }
+        return response;
+    }
+
+    @PostMapping("updateDetail.pr")
+    public Map<String, Object> updateProduct(@RequestBody Product product, 
+    										 @RequestParam("prodFile") MultipartFile prodFile) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+//            boolean result = productService.updateProduct(product, prodFile);
+            response.put("success", result);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+        }
+        return response;
+    }
+    
+    
+    
+    // 첨부파일 저장 메소드
+ 	public String saveFile(MultipartFile upfile, HttpSession session) {
+ 		
+ 	    String originName = upfile.getOriginalFilename();
+ 	    
+ 	    String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+ 	    String ext = originName.substring(originName.lastIndexOf("."));
+ 	    
+ 	    String changeName = currentTime + "_" + UUID.randomUUID() + ext;
+ 	    
+ 	    String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/review/");
+ 	    
+ 	    try {
+ 			upfile.transferTo(new File(savePath + changeName));
+ 		} catch (IllegalStateException | IOException e) {
+ 			e.printStackTrace();
+ 		}
+ 	    
+ 	    return changeName;
+ 	}
 }

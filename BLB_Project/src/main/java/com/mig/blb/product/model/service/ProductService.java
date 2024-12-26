@@ -65,4 +65,13 @@ public interface ProductService {
 	// 장바구니 등록
 	int insertCart(Cart cart);
 	
+	// 상품정보 등록/수정/삭제 관련
+	// 상품정보 수정
+	int updateProduct(Product product);
+	// 상품정보 등록
+	int insertProduct(Product product);
+	// 첨부파일 등록
+	int insertProductAtt(ProductAtt pa);
+	
+	
 }

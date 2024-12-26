@@ -123,4 +123,16 @@ public class ProductDao {
 		return sqlSession.insert("productMapper.insertCart", cart);
 	}
 
+	public int updateProduct(SqlSessionTemplate sqlSession, Product product) {
+		return sqlSession.update("productMapper.updateProduct", product);
+	}
+
+	public int insertProduct(SqlSessionTemplate sqlSession, Product product) {
+		return sqlSession.insert("productMapper.insertProduct", product);
+	}
+
+	public int insertProductAtt(SqlSessionTemplate sqlSession, ProductAtt pa) {
+		return sqlSession.insert("productMapper.insertProductAtt", pa);
+	}
+
 }
