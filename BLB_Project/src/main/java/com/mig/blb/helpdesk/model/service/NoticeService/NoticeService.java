@@ -39,5 +39,9 @@ public interface NoticeService {
 	int selectAdminListCount();
 
 	ArrayList<Notice> selectAdminList(PageInfo pi);
+
+	ArrayList<Notice> selectAdminNoticeList();
+	
+	
 	
 }

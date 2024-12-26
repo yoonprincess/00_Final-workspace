@@ -35,4 +35,8 @@ public class FaqDao {
         return sqlSession.update("helpdeskMapper.updateFaq", n);
     }
 
+	public ArrayList<Faq> selectFaqList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectAdminFaqList");
+	}
+
 }

@@ -90,6 +90,7 @@ public class FaqController {
 		public ModelAndView updateFaq(@RequestParam("fno") int fno, // FAQ 번호
 									  @RequestParam("faqTitle") String faqTitle, // FAQ 제목
 									  @RequestParam("faqContent") String faqContent, // FAQ 내용
+									  
 		                              Faq f,
 		                              RedirectAttributes ar,
 		                              HttpSession session,

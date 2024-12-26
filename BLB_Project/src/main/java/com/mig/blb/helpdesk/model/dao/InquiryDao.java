@@ -93,6 +93,10 @@ public class InquiryDao {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectProdQnaTop4", memberId);
 	}
 
+	public ArrayList<Inquiry> selectAdminInquiryList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectAdminInquiryList");
+	}
+
 	
 
 	

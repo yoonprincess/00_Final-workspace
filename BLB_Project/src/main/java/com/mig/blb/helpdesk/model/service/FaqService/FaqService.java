@@ -17,4 +17,6 @@ public interface FaqService {
 
 	int updateFaq(Faq f);
 
+	ArrayList<Faq> selectFaqList();
+
 }

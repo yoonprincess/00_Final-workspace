@@ -9,7 +9,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tables - SB Admin</title>
+        <title></title>
+        <style>
+            /* 클릭할 때마다 색상이 변하도록 스타일 추가 */
+            tr:hover {
+                cursor: pointer;
+                background-color: #f1f1f1;
+            }
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <div id="layoutSidenav">
@@ -29,28 +36,26 @@
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
-                                            <th>문의번호</th>
-                                            <th>문의내용</th>
-                                            <th>문의유형</th>
-                                            <th>문의일</th>
-                                            <th>답변여부</th>
+                                            <th>글번호</th>
+                                            <th>제목</th>
+                                            <th>내용</th>
+                                            <th>분류</th>
                                             <th>게시여부</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       <c:forEach var="i" items="${iList}">
-                                            <tr data-inquiry-no="${i.inquiryNo}">
-                                               <td contenteditable="true">${i.inquiryNo}</td>
-                                               <td contenteditable="true">${i.inquiryContent}</td>
-                                               <td contenteditable="true">${i.inquiryType}</td>
-                                               <td contenteditable="true">${i.inquiryCreateDate}</td>
-                                               <td contenteditable="true">${i.inquiryAnsweredYn}</td>
-                                               <td contenteditable="true">${i.inquiryStatus}</td>
+                                       <c:forEach var="f" items="${fList}">
+                                            <tr data-faq-no="${f.faqNo}">
+                                               <td contenteditable="true">${f.faqNo}</td>
+                                               <td contenteditable="true">${f.faqTitle}</td>
+                                               <td contenteditable="true">${f.faqContent}</td>
+                                               <td contenteditable="true">${f.faqType}</td>
+                                               <td contenteditable="true">${f.faqStatus}</td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
                                 </table>
-                            </div>
+                            </div> 
                         </div>
                     </div>
                 </main>
@@ -59,9 +64,9 @@
         <script>
             // 테이블의 행을 클릭했을 때 디테일 페이지로 이동
             $(document).on("click", "#datatablesSimple tbody tr", function() {
-                const inquiryNo = $(this).data("inquiry-no"); // 클릭한 행의 inquiryNo 가져오기
+                const faqNo = $(this).data("faq-no"); // 클릭한 행의 faqNo 가져오기
                 // 디테일 페이지로 이동
-                window.location.href = "list.io";
+                window.location.href = "list.fo";
             });
         </script>
     </body>

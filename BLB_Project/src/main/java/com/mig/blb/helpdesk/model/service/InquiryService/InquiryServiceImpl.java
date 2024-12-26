@@ -95,7 +95,12 @@ public class InquiryServiceImpl implements InquiryService {
 	@Override
 	public List<Map<String, Object>> selectMyProdQnaList(String memberId, PageInfo pi) {
 		
-		return inquiryDao. selectMyProdQnaList(sqlSession,memberId,pi);
+		return inquiryDao.selectMyProdQnaList(sqlSession,memberId,pi);
+	}
+
+	@Override
+	public ArrayList<Inquiry> selectAdminInquiryList() {
+		return inquiryDao.selectAdminInquiryList(sqlSession);
 	}
 
 

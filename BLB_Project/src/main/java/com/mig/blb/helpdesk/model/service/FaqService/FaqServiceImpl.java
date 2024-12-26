@@ -44,4 +44,9 @@ public class FaqServiceImpl implements FaqService{
 		return faqDao.updateFaq(sqlSession, f);
 	}
 
+	@Override
+	public ArrayList<Faq> selectFaqList() {
+		return faqDao.selectFaqList(sqlSession);
+	}
+
 }

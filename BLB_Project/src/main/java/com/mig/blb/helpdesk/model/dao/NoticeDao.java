@@ -95,6 +95,10 @@ public class NoticeDao {
 		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectAdminList", pi);
 	}
 
+	public ArrayList<Notice> selectAdminNoticeList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectAdminNoticeList");
+	}
+
 	
 
 }

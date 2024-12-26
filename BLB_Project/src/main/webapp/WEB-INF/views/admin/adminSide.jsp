@@ -123,9 +123,7 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseFAQ" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="login.html">전체 조회</a>
-                                            <a class="nav-link" href="register.html">Register</a>
-                                            <a class="nav-link" href="password.html">Forgot Password</a>
+                                            <a class="nav-link" href="adminFAQ.blb">전체 조회</a>
                                         </nav>
                                     </div>
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseInquiry" aria-expanded="false" aria-controls="pagesCollapseInquiry">
@@ -134,9 +132,7 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseInquiry" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="401.html">전체 조회</a>
-                                            <a class="nav-link" href="404.html">404 Page</a>
-                                            <a class="nav-link" href="500.html">500 Page</a>
+                                            <a class="nav-link" href="adminInquiry.blb">전체 조회</a>
                                         </nav>
                                     </div>
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseNotice" aria-expanded="false" aria-controls="pagesCollapseNotice">
@@ -145,9 +141,7 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseNotice" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="adminList.no">전체 조회</a>
-                                            <a class="nav-link" href="register.html">Register</a>
-                                            <a class="nav-link" href="password.html">Forgot Password</a>
+                                            <a class="nav-link" href="adminNotice.blb">전체 조회</a>
                                         </nav>
                                     </div>
                                 </nav>

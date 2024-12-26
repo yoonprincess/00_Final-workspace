@@ -100,6 +100,11 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDao.selectAdminList(sqlSession, pi);
 	}
 
+	@Override
+	public ArrayList<Notice> selectAdminNoticeList() {
+		return noticeDao.selectAdminNoticeList(sqlSession);
+	}
+
 	
 
 	
