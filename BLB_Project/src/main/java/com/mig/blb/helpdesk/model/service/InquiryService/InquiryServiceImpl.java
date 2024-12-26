@@ -103,5 +103,15 @@ public class InquiryServiceImpl implements InquiryService {
 		return inquiryDao.selectAdminInquiryList(sqlSession);
 	}
 
+	@Override
+	public int deleteAtt(String deleteFileName) {
+		return inquiryDao.deleteAtt(sqlSession, deleteFileName);
+	}
+
+	@Override
+	public int updateAtt(InquiryAtt ia) {
+		return inquiryDao.updateAtt(sqlSession, ia);
+	}
+
 
 }

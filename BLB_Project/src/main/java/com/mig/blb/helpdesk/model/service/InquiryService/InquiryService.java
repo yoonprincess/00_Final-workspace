@@ -39,5 +39,9 @@ public interface InquiryService {
 
 	ArrayList<Inquiry> selectAdminInquiryList();
 
+	int deleteAtt(String deleteFileName);
+
+	int updateAtt(InquiryAtt ia);
+
 	
 }

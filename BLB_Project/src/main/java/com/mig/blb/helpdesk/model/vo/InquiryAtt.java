@@ -18,6 +18,7 @@ public class InquiryAtt {
 	private String saveFileName;
 	private String savePath;
 	private String InquiryAttStatus;
+	private int InquiryNo;
 	
 }
 	

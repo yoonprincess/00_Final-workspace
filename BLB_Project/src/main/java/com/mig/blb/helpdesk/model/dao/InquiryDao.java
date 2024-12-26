@@ -97,6 +97,14 @@ public class InquiryDao {
 		return (ArrayList)sqlSession.selectList("helpdeskMapper.selectAdminInquiryList");
 	}
 
+	public int deleteAtt(SqlSessionTemplate sqlSession, String deleteFileName) {
+		return sqlSession.delete("helpdeskMapper.deleteInquiryAtt", deleteFileName);
+	}
+
+	public int updateAtt(SqlSessionTemplate sqlSession, InquiryAtt ia) {
+		return sqlSession.update("helpdeskMapper.updateInquiryAtt", ia);
+	}
+
 	
 
 	

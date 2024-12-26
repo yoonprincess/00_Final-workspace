@@ -41,6 +41,10 @@ public interface NoticeService {
 	ArrayList<Notice> selectAdminList(PageInfo pi);
 
 	ArrayList<Notice> selectAdminNoticeList();
+
+	int deleteAtt(String deleteFileName);
+
+	int updateAtt(NoticeAtt na);
 	
 	
 	

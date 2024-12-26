@@ -105,6 +105,16 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDao.selectAdminNoticeList(sqlSession);
 	}
 
+	@Override
+	public int deleteAtt(String deleteFileName) {
+		return noticeDao.deleteAtt(sqlSession, deleteFileName);
+	}
+
+	@Override
+	public int updateAtt(NoticeAtt na) {
+		return noticeDao.updateAtt(sqlSession, na);
+	}
+
 	
 
 	

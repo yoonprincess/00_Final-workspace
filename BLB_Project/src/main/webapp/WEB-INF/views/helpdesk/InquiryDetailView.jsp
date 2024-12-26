@@ -36,6 +36,20 @@
             </c:choose>
         </div>
 
+        
+        <c:if test="${sessionScope.loginUser.memberId eq requestScope.i.memberId}">
+        
+            <div style="text-align: center;">
+            	<button type="button" class="btn btn-edit" onclick="postFormSubmit(1)">수정</button>
+            	<button type="button" class="btn btn-delete" onclick="postFormSubmit(2)">삭제</button>
+            </div>
+            
+            <form id="postForm" action="" method="post" >	
+            	<input type="hidden" name="ino" value="${ requestScope.i.inquiryNo }">
+                <input type="hidden" name="filePath" value="${ requestScope.p.saveFileName }">
+            </form>
+        </c:if>
+
         <!-- 댓글 목록 섹션 -->
         <div class="comments-section">
             <table id="replyArea" class="table" align="center">
@@ -81,6 +95,18 @@
 </div>
 
 <script>
+		function postFormSubmit(num) {
+		    if (num === 1) { 
+		        $("#postForm").attr("action", "../InquiryUpdateForm.io").submit();
+		    } else {
+		        if (confirm("삭제하시겠습니까?")) { 
+		            $("#postForm").attr("action", "../InquiryDelete.io").submit();
+		        } else {
+		            return "redirect://../list.io";
+		        }
+		    }
+		}
+
     // 웹소켓 연결 객체
     let socket;
 
@@ -129,8 +155,6 @@
         // 실시간 댓글 등록 효과
         setInterval(selectReplyList, 1000);
     });
-
-    
 
     // 댓글 목록 조회용 함수
     function selectReplyList() {
@@ -186,8 +210,8 @@
             });
         }
     }
-    
- // 댓글 작성용 함수
+
+    // 댓글 작성용 함수
     function addReply() {
         let replyContent = $("#inquiryReplyContent").val();
         if(replyContent.trim().length != 0) {
@@ -210,7 +234,7 @@
                         alertify.alert("Alert", "댓글 작성 실패");
                     }
                 },
-                error : function() {
+                error: function() {
                     console.log("댓글 작성용 ajax 통신 실패!");
                 }
             });
@@ -249,7 +273,6 @@
             "<tr><td>시스템</td><td>" + message + "</td><td>" + new Date().toLocaleString() + "</td><td></td></tr>"
         );
     }
-
 </script>
 
 <script src="${pageContext.request.contextPath}/resources/js/helpdesk/Inquiry.js"></script>
