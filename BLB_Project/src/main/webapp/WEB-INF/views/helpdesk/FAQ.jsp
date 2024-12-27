@@ -9,6 +9,14 @@
     <title>FAQ</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/helpdesk/FAQ.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.0/gsap.min.js"></script>
+
+    <style>
+        /* 줄바꿈을 제대로 표시하기 위한 스타일 */
+        .faq-display pre {
+            white-space: pre-wrap; /* 긴 줄도 줄바꿈 처리 */
+            word-wrap: break-word; /* 긴 단어가 줄넘김을 하게 함 */
+        }
+    </style>
 </head>
 <body class="body-offset">
     <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -51,7 +59,8 @@
 
                         <div class="content">
                             <div class="faq-display">
-                                <p>${faq.faqContent}</p>
+                                <!-- FAQ 내용 줄바꿈을 제대로 반영하기 위한 <pre> 사용 -->
+                                <pre>${faq.faqContent}</pre>
                                 <c:if test="${sessionScope.loginUser != null && sessionScope.loginUser.memberId == 'admin'}">
                                     <div class="faq-actions">
                                         <button type="button" class="update-button" onclick="editFaq(this)">수정</button>

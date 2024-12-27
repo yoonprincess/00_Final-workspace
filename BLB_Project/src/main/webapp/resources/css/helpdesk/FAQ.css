@@ -1,3 +1,28 @@
+		.add-faq-button {
+    display: inline-block;
+    background-color: #4CAF50; /* 녹색 */
+    color: white; /* 텍스트 색상 */
+    padding: 10px 20px; /* 여백 */
+    border: none;
+    border-radius: 5px; /* 둥근 모서리 */
+    cursor: pointer;
+    font-size: 16px; /* 글자 크기 */
+    margin-bottom: 20px; /* 아래 여백 */
+    transition: background-color 0.3s, transform 0.2s; /* 호버 및 클릭 애니메이션 */
+}
+
+.add-faq-button:hover {
+    background-color: #45a049; /* 더 진한 녹색 */
+    transform: scale(1.05); /* 살짝 커짐 */
+}
+
+.add-faq-button:active {
+    background-color: #388E3C; /* 클릭 시 진한 색상 */
+    transform: scale(0.95); /* 살짝 작아짐 */
+}
+
+		
+		
 		.faq-actions {
             margin-top: 10px;
         }
