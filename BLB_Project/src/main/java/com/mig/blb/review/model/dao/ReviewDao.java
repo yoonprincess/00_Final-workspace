@@ -85,4 +85,21 @@ public class ReviewDao {
 	public int deleteReview(SqlSessionTemplate sqlSession, int revNo) {
 		return sqlSession.update("reviewMapper.deleteReview", revNo);
 	}
+
+	public ArrayList<Review> selectReviewAll(SqlSessionTemplate sqlSession, PageInfo revPi) {
+		int offset = (revPi.getCurrentPage() - 1) * revPi.getBoardLimit();
+		int limit = revPi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("reviewMapper.selectReviewAll", null, rowBounds);
+	}
+
+	public List<ReviewAtt> allReviewAtt(SqlSessionTemplate sqlSession) {
+		return (List)sqlSession.selectList("reviewMapper.allReviewAtt");
+	}
+
+	public int selectReviewAllCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("reviewMapper.selectReviewAllCount");
+	}
 }

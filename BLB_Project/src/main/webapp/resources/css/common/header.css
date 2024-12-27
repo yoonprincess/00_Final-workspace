@@ -391,8 +391,8 @@ body {
 /* 위로가기 버튼 */
 #backToTop {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 90px;
+    right: 30px;
     background-color: #7AB2D3;
     color: #e0def3;
     border: none;

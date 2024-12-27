@@ -200,4 +200,9 @@ public class ProductServiceImpl implements ProductService {
 	public List<ProductBanner> selectBannerList() {
 		return productDao.selectBannerList(sqlSession);
 	}
+
+	@Override
+	public ArrayList<Product> selectProductAdmin() {
+		return productDao.selectProductAdmin(sqlSession);
+	}
 }

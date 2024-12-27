@@ -117,8 +117,8 @@
                                             <th>상품명</th>
                                             <th>상품설명</th>
                                             <th>상품가격</th>
-                                            <th>주요성분</th>
-                                            <th>주의사항</th>
+                                            <!-- <th>주요성분</th>
+                                            <th>주의사항</th> -->
                                             <th>조회수</th>
                                             <th>등록일</th>
                                             <th>상태</th>
@@ -142,8 +142,8 @@
                                                 <td contenteditable="true">${p.prodName}</td>
                                                 <td contenteditable="true">${p.prodContent}</td>
                                                 <td contenteditable="true">${p.prodPrice}</td>
-                                                <td contenteditable="true">${p.prodOrigin}</td>
-                                                <td contenteditable="true">${p.prodCaution}</td>
+                                                <!-- <td contenteditable="true">${p.prodOrigin}</td>
+                                                <td contenteditable="true">${p.prodCaution}</td> -->
                                                 <td>${p.prodCount}</td>
                                                 <td><fmt:formatDate value="${p.prodEnrollDate}" pattern="yyyy-MM-dd hh:mm" /></td>
                                                 <td contenteditable="true">${p.prodStatus}</td>
@@ -245,7 +245,7 @@
                                 <div id="optionsContainer">
                                     <div class="d-flex align-items-center mb-2 option-pair">
                                         <input type="text" class="form-control me-2" name="optionNames[]" placeholder="옵션명" required>
-                                        <input type="text" class="form-control me-2" name="optionValues[]" placeholder="옵션값" required>
+                                        <input type="text" class="form-control me-2" name="optionValues[]" placeholder="옵션값">
                                         <input type="number" class="form-control me-2" name="optionAddPrices[]" placeholder="옵션추가금액" value="0" required>
                                         <button type="button" class="btn btn-outline-primary btn-sm add-option-btn">+</button>
                                     </div>
@@ -396,6 +396,17 @@
                     order: [[0, 'desc']], // 첫 번째 컬럼(0-indexed)을 내림차순(desc)으로 정렬
                     pageLength: 25, // 기본값: 10
                     lengthMenu: [10, 25, 50, 100],
+                    scrollX: true, // 가로 스크롤 활성화
+                    // scrollY: '400px', // 세로 스크롤 높이 (px 단위로 설정)
+                    fixedHeader: true, // 헤더 고정
+                    fixedColumns: {
+                        left: 2 // 왼쪽에서 두 번째 열까지 고정
+                    },
+                    // columnDefs: [
+                    //     { targets: 6, width: '300px'},
+                    //     { targets: 7, width: '300px'}
+                    // ],
+                    autoWidth: false
                     
                 });
 
@@ -435,9 +446,9 @@
                         prodName: row.find('td').eq(3).text(),
                         prodContent: row.find('td').eq(4).text(),
                         prodPrice: parseInt(row.find('td').eq(5).text().trim(), 10) || 0, // 숫자 변환
-                        prodOrigin: row.find('td').eq(6).text(),
-                        prodCaution: row.find('td').eq(7).text(),
-                        prodStatus: row.find('td').eq(10).text()
+                        // prodOrigin: row.find('td').eq(6).text(),
+                        // prodCaution: row.find('td').eq(7).text(),
+                        prodStatus: row.find('td').eq(8).text()
                     };
 
                     // AJAX 요청으로 수정된 데이터 전송
@@ -571,7 +582,7 @@
                     const optionHtml = `
                         <div class="d-flex align-items-center mb-2 option-pair">
                             <input type="text" class="form-control me-2" name="optionNames[]" placeholder="옵션명" required>
-                            <input type="text" class="form-control me-2" name="optionValues[]" placeholder="옵션값" required>
+                            <input type="text" class="form-control me-2" name="optionValues[]" placeholder="옵션값">
                             <input type="number" class="form-control me-2" name="optionAddPrices[]" placeholder="옵션추가금액" value="0" required>
                             <button type="button" class="btn btn-outline-danger btn-sm remove-option-btn">-</button>
                         </div>`;
@@ -600,7 +611,7 @@
                             <div class="d-flex align-items-center mb-2 option-pair">
                                 <input type="hidden" name="optionNos[]" value="\${option.optNo}">
                                 <input type="text" class="form-control me-2" name="optionOriginNames[]" value="\${option.optName}" placeholder="옵션명" required disabled>
-                                <input type="text" class="form-control me-2" name="optionOriginValues[]" value="\${option.optValue}" placeholder="옵션값" required disabled>
+                                <input type="text" class="form-control me-2" name="optionOriginValues[]" value="\${option.optValue}" placeholder="옵션값" disabled>
                                 <input type="number" class="form-control me-2" name="optionOriginAddPrices[]" value="\${option.optAddPrice}" placeholder="옵션추가금액" required disabled>
                             </div>`
                         optionContainer.append(optionOrigin);
@@ -612,7 +623,7 @@
                     const optionHtml = `
                         <div class="d-flex align-items-center mb-2 option-pair">
                             <input type="text" class="form-control me-2" name="optionNames[]" placeholder="옵션명" required>
-                            <input type="text" class="form-control me-2" name="optionValues[]" placeholder="옵션값" required>
+                            <input type="text" class="form-control me-2" name="optionValues[]" placeholder="옵션값">
                             <input type="number" class="form-control me-2" name="optionAddPrices[]" placeholder="옵션추가금액" value="0" required>
                             <button type="button" class="btn btn-outline-danger btn-sm remove-option-btn">-</button>
                         </div>`;

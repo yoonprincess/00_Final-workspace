@@ -57,6 +57,14 @@
 		   AND R.REV_STATUS = 'Y'
 	</select>
 	
+	<select id="selectReviewAllCount" resultType="_int">
+		SELECT COUNT(*) AS COUNT
+		  FROM TB_REVIEW R
+		  LEFT JOIN TB_PRODUCT_ORDER PO ON R.SERIAL_NO = PO.SERIAL_NO
+		  LEFT JOIN TB_OPTION OPT ON PO.OPT_NO = OPT.OPT_NO
+		 WHERE R.REV_STATUS = 'Y'
+	</select>
+	
 	<select id="selectReviewList" parameterType="_int"
 			resultMap="reviewResultSet">
 		SELECT R.REV_NO
@@ -80,6 +88,29 @@
 		 WHERE OPT.PROD_NO = #{prodNo}
 		   AND R.REV_STATUS = 'Y'
 		ORDER BY R.REV_NO DESC
+	</select>
+	
+	<select id="selectReviewAll" resultMap="reviewResultSet">
+		SELECT R.REV_NO
+		     , R.REV_CONTENT
+		     , R.REV_ENROLL_DATE
+		     , R.REV_RATING
+		     , R.MEMBER_ID
+		     , R.SERIAL_NO
+		     , PO.OPT_NO
+		     , OPT.OPT_NAME
+		     , OPT.OPT_VALUE
+		     , RA.REV_ATT_NO
+		     , RA.ORIG_FILE_NAME
+		     , RA.SAVE_FILE_NAME
+		     , RA.SAVE_PATH
+		     , RA.REV_NO AS ATT_REV_NO
+		  FROM TB_REVIEW R
+		  LEFT JOIN TB_PRODUCT_ORDER PO ON R.SERIAL_NO = PO.SERIAL_NO
+		  LEFT JOIN TB_OPTION OPT ON PO.OPT_NO = OPT.OPT_NO
+		  LEFT JOIN TB_REVIEW_ATTACHMENT RA ON R.REV_NO = RA.REV_NO
+		 WHERE R.REV_STATUS = 'Y'
+		 ORDER BY R.REV_NO DESC
 	</select>
 	
 	<select id="selectReview" parameterType="_int"
@@ -185,7 +216,7 @@
 		   AND REV_STATUS = 'Y'
     </update>
     
-    <!-- 모든 리뷰 이미지 가져오기 -->
+    <!-- 상품별 리뷰 이미지 가져오기 -->
 	<select id="getAllReviewAtt" parameterType="int"
 			resultMap="reviewAttResultSet">
 	    SELECT ORIG_FILE_NAME,
@@ -204,5 +235,17 @@
 		    )
 		  AND REV_ATT_STATUS = 'Y'
 	</select>
+	
+	<!-- 전체 리뷰 이미지 가져오기 -->
+	<select id="allReviewAtt" resultMap="reviewAttResultSet">
+	    SELECT ORIG_FILE_NAME,
+		       SAVE_FILE_NAME,
+		       SAVE_PATH,
+		       REV_NO
+		  FROM TB_REVIEW_ATTACHMENT
+		 WHERE REV_ATT_STATUS = 'Y'
+	</select>
+	
+	
 	
 </mapper>

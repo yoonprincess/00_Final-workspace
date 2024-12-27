@@ -91,6 +91,7 @@ public interface ProductService {
 	int deleteMdBanner(String saveFileName);
 	// 배너 전체 검색
 	List<ProductBanner> selectBannerList();
+	ArrayList<Product> selectProductAdmin();
 	
 	
 }

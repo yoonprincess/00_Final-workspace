@@ -78,7 +78,7 @@ public class ProductController {
         
 		int listCount = productService.selectProductCount(params);
 		
-		int pageLimit = 2;
+		int pageLimit = 5;
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
 											 pageLimit, boardLimit);
@@ -121,7 +121,7 @@ public class ProductController {
 			
 			// 리뷰 목록조회
 			int revListCount = reviewService.selectReviewCount(prodNo);
-			int revPageLimit = 3;
+			int revPageLimit = 5;
 			int revBoardLimit = 10;
 			PageInfo revPi = Pagination.getPageInfo(revListCount, revPage, 
 												 revPageLimit, revBoardLimit);
@@ -450,30 +450,11 @@ public class ProductController {
     }
 	// 상품 목록보기 요청
 	@GetMapping("adminList.pr")
-	public String adminProductList(@RequestParam(value="ppage", defaultValue="1") int currentPage,
-									@RequestParam(value="category", defaultValue="전체제품") String category,
-									@RequestParam(value="subcategories", required=false) List<String> subcategories,
-									@RequestParam(value="keyword", required=false) String keyword,
-									@RequestParam(value="sortBy", defaultValue="recent") String sortBy,
-							        @RequestParam(value="boardLimit", defaultValue="999") int boardLimit,
-							        HttpSession session,
+	public String adminProductList(HttpSession session,
 									Model model) {
 		
 		
-		// params를 생성하여 전달
-        Map<String, Object> params = new HashMap<>();
-        params.put("category", category);
-        params.put("subcategories", subcategories);
-        params.put("keyword", keyword);
-        params.put("sortBy", sortBy);
-		
-		int listCount = productService.selectProductCount(params);
-		int pageLimit = 100;
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
-											 pageLimit, boardLimit);
-		
-		ArrayList<Product> pList = productService.selectProductList(pi, params);
+		ArrayList<Product> pList = productService.selectProductAdmin();
 		
 		model.addAttribute("pList", pList);
 	    

@@ -160,6 +160,57 @@
     	</choose>
 	</select>
 	
+	<select id="selectProductAdmin" resultMap="productResultSet">
+		SELECT P.PROD_NO
+		     , P.CATEGORY_NAME
+		     , P.SUBCATEGORY_NAME
+		     , P.PROD_NAME
+		     , P.PROD_CONTENT
+		     , P.PROD_PRICE
+		     , P.PROD_ORIGIN
+		     , P.PROD_CAUTION
+		     , P.PROD_COUNT
+		     , P.PROD_ENROLL_DATE
+		     , P.PROD_STATUS
+		     , PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
+		     , NVL(ROUND(AVG(R.REV_RATING), 1), 0) AS AVG_RATING
+           	 , NVL(COUNT(R.REV_NO), 0) AS REVIEW_COUNT
+           	 , NVL(SUM(PO.ORDER_QTY), 0) AS TOTAL_SALES
+           	 , NVL(SUM(OPT.REMAIN_QTY), 0) AS TOTAL_QTY
+	          , PB.BANNER_PATH
+	          , PB.MD_PATH
+	          , PB.SAVE_FILE_NAME AS "BANNER_FILE_NAME"
+		  FROM TB_PRODUCT P
+		  LEFT JOIN (
+		      SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+		        FROM TB_PRODUCT_ATTACHMENT
+		       WHERE (PROD_NO, PROD_ATT_NO) IN (
+		           SELECT PROD_NO, MIN(PROD_ATT_NO)
+		             FROM TB_PRODUCT_ATTACHMENT
+		            WHERE THUMB_PATH IS NOT NULL
+		            GROUP BY PROD_NO
+		       )
+		  ) PA
+		    ON P.PROD_NO = PA.PROD_NO
+		  LEFT JOIN (
+			    SELECT PROD_NO, 
+			           MAX(CASE WHEN BANNER_PATH IS NOT NULL THEN BANNER_PATH END) AS BANNER_PATH,
+			           MAX(CASE WHEN MD_PATH IS NOT NULL THEN MD_PATH END) AS MD_PATH,
+			           MAX(SAVE_FILE_NAME) AS SAVE_FILE_NAME
+			    FROM TB_PRODUCT_BANNER
+			    GROUP BY PROD_NO
+			) PB ON P.PROD_NO = PB.PROD_NO
+		  LEFT JOIN TB_OPTION OPT ON P.PROD_NO = OPT.PROD_NO
+		  LEFT JOIN TB_PRODUCT_ORDER PO ON OPT.OPT_NO = PO.OPT_NO
+ 		  LEFT JOIN TB_REVIEW R ON PO.SERIAL_NO = R.SERIAL_NO
+	     GROUP BY P.PROD_NO, P.CATEGORY_NAME, P.SUBCATEGORY_NAME, P.PROD_NAME, 
+	     		  P.PROD_CONTENT, P.PROD_PRICE,
+	     		  P.PROD_ORIGIN, P.PROD_CAUTION,
+	     		  P.PROD_COUNT, P.PROD_ENROLL_DATE, P.PROD_STATUS,
+	           	  PA.THUMB_PATH, PA.SAVE_FILE_NAME, PB.BANNER_PATH, PB.MD_PATH,
+	           	  PB.SAVE_FILE_NAME
+	</select>
+	
 	<select id="increaseViewCount" parameterType="_int">
 		UPDATE TB_PRODUCT
 		   SET PROD_COUNT = PROD_COUNT + 1
@@ -590,7 +641,7 @@
 
     <!-- MD 배너 이미지 삭제 -->
     <delete id="deleteMdBanner" parameterType="string">
-        DELETE FROM_PRODUCT_BANNER
+        DELETE FROM TB_PRODUCT_BANNER
         WHERE SAVE_FILE_NAME = #{saveFileName} AND MD_PATH IS NOT NULL
     </delete>
     

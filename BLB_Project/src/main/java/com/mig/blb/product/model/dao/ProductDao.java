@@ -172,4 +172,8 @@ public class ProductDao {
 		return sqlSession.selectList("productMapper.selectBannerList");
 	}
 
+	public ArrayList<Product> selectProductAdmin(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("productMapper.selectProductAdmin");
+	}
+
 }

@@ -3,6 +3,7 @@ package com.mig.blb.review.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,12 +22,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mig.blb.common.model.vo.PageInfo;
+import com.mig.blb.common.template.Pagination;
+import com.mig.blb.helpdesk.model.vo.Inquiry;
 import com.mig.blb.member.model.vo.Member;
 import com.mig.blb.option.model.service.OptionService;
+import com.mig.blb.option.model.vo.Option;
 import com.mig.blb.product.model.service.ProductService;
+import com.mig.blb.product.model.vo.Product;
+import com.mig.blb.product.model.vo.ProductAtt;
 import com.mig.blb.review.model.service.ReviewService;
 import com.mig.blb.review.model.vo.Review;
 import com.mig.blb.review.model.vo.ReviewAtt;
+import com.mig.blb.wish.model.vo.Wish;
 
 @Controller
 public class ReviewController {
@@ -266,6 +274,29 @@ public class ReviewController {
         // Referer가 없으면 루트 페이지로 리다이렉트
 		session.setAttribute("successMsg", "게시글을 삭제했습니다.");
         return "redirect:/";
+	}
+	
+	// 상품 상세보기 요청
+	@GetMapping("listAll.rv")
+	public String selectProduct(@RequestParam(value="rpage", defaultValue="1")int revPage,
+								Model model,
+								HttpSession session) {
+		
+			
+			// 리뷰 목록조회
+			int revListCount = reviewService.selectReviewAllCount();
+			int revPageLimit = 5;
+			int revBoardLimit = 10;
+			PageInfo revPi = Pagination.getPageInfo(revListCount, revPage, 
+												 revPageLimit, revBoardLimit);
+			ArrayList<Review> revList = reviewService.selectReviewAll(revPi);
+			List<ReviewAtt> allRevAttList = reviewService.allReviewAtt();
+			
+			model.addAttribute("revList", revList);
+			model.addAttribute("revPi", revPi);
+			model.addAttribute("allRevAttList", allRevAttList);
+			
+			return "review/reviewListView";
 	}
 	
 	// 첨부파일 저장 메소드

@@ -241,7 +241,7 @@
                         <a class="nav-link" href="${ pageContext.request.contextPath }/list.pr?sortBy=recent">신제품</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${ pageContext.request.contextPath }/reviewList.me">리뷰</a>
+                        <a class="nav-link" href="${ pageContext.request.contextPath }/listAll.rv">리뷰</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="${ pageContext.request.contextPath }/list.fo">고객센터</a>

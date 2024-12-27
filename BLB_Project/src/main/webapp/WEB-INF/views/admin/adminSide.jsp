@@ -39,6 +39,22 @@
 
         <!-- GSAP CDN 연동 구문 -->
         <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>	
+
+        <style>
+            table.dataTable thead .sorting {
+                background-image: url('https://cdn.datatables.net/1.13.5/images/sort_both.png');
+                background-repeat: no-repeat;
+                background-position: center right;
+            }
+
+            table.dataTable thead .sorting_asc {
+                background-image: url('https://cdn.datatables.net/1.13.5/images/sort_asc.png');
+            }
+
+            table.dataTable thead .sorting_desc {
+                background-image: url('https://cdn.datatables.net/1.13.5/images/sort_desc.png');
+            }
+        </style>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">

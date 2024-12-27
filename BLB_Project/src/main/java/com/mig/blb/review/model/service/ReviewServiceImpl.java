@@ -101,4 +101,19 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDao.deleteReview(sqlSession, revNo);
 	}
 
+	@Override
+	public ArrayList<Review> selectReviewAll(PageInfo revPi) {
+		return reviewDao.selectReviewAll(sqlSession, revPi);
+	}
+
+	@Override
+	public List<ReviewAtt> allReviewAtt() {
+		return reviewDao.allReviewAtt(sqlSession);
+	}
+
+	@Override
+	public int selectReviewAllCount() {
+		return reviewDao.selectReviewAllCount(sqlSession);
+	}
+
 }

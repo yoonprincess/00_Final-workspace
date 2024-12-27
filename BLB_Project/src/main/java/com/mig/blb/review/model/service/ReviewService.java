@@ -38,4 +38,7 @@ public interface ReviewService {
 	int updateReviewAtt(ReviewAtt ra);
 	// 리뷰 삭제
 	int deleteReview(int revNo);
+	ArrayList<Review> selectReviewAll(PageInfo revPi);
+	List<ReviewAtt> allReviewAtt();
+	int selectReviewAllCount();
 }

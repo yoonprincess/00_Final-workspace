@@ -170,15 +170,16 @@ public class MyPageController {
 			Date startDate = sdf.parse(String.format("%s-%s-%s", year, month, day));
 		    Date endDate = sdf.parse(String.format("%s-%s-%s", year1, month1, day1));
 		    
-		    dateMap.put("startDate", startDate);
-		    dateMap.put("endDate", endDate);
-			    
+		    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			    String formattedStartDate = formatter.format(startDate);
+			    String formattedEndDate = formatter.format(endDate);
+		    dateMap.put("startDate", formattedStartDate);
+		    dateMap.put("endDate", formattedEndDate);
+			    System.out.println(dateMap);
 			ArrayList<Order> myOrders = orderService.selectAllMyOrders(dateMap);
-			
+			System.out.println(myOrders);
 			LinkedHashMap<String, ArrayList<Order>> myListbyDate = new LinkedHashMap<>();
 						
-			System.out.println(myListbyDate);
-			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 			for (Order order : myOrders) {
 				String orderDate = dateFormat.format(order.getOrderDate());
