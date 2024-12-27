@@ -35,29 +35,33 @@ $(document).ready(function () {
             return;
         }
 
-        // 서버로 데이터 전송
-        $.ajax({
-            url: "cancelForm.or", // 취소 요청 URL
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                orderNo: orderNo,
-                refundReason: refundReason,
-            }),
-            success: function (response) {
-                if (response.success) {
-                    alert("취소 요청이 완료되었습니다.");
-                    location.href = 'cancelComplete.or';
-                    console.log("성공:", response);
-                } else {
-                    alert("취소 요청에 실패했습니다. 다시 시도해주세요.");
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error("취소 요청 중 오류 발생:", error);
-                alert("오류가 발생했습니다. 다시 시도해주세요.");
-            },
-        });
+        if (confirm("정말로 취소하시겠습니까?")) {
+
+            // 서버로 데이터 전송
+            $.ajax({
+                url: "cancelForm.or", // 취소 요청 URL
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    orderNo: orderNo,
+                    refundReason: refundReason,
+                }),
+                success: function (response) {
+                    if (response.success) {
+                        alert("취소 요청이 완료되었습니다.");
+                        location.href = 'cancelComplete.or';
+                        console.log("성공:", response);
+                    } else {
+                        alert("취소 요청에 실패했습니다. 다시 시도해주세요.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("취소 요청 중 오류 발생:", error);
+                    alert("오류가 발생했습니다. 다시 시도해주세요.");
+                },
+            });
+
+        }
     });
     
 });

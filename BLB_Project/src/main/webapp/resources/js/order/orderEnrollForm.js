@@ -423,6 +423,8 @@ $(function() {
                 alert("결제 처리 중 문제가 발생했습니다.");
             }
 
+        } else if(payOption === '무통장입금') {
+            alert("[우리은행 1002-848-470984]로 입금해 주세요.");
         } else if (payOption) {
             alert(`${payOption} 결제는 아직 구현되지 않았습니다.`);
         } else {
