@@ -35,10 +35,9 @@ public class KakaoApi{
 
 	@Value("${kakao.redirect_uri}")
 	private String kakaoRedirectUri;
-
 	
-		private static final String KAKAO_API_KEY  = "d58c294c5294590311266a239d715ed4";
-		private static final String KAKAO_REDIRECT_URL = "http://localhost/blb/loginKakao.me"; 
+		private static final String KAKAO_API_KEY  = "c52e3719bd1faa0fc5a344a16e296f16";
+		private static final String KAKAO_REDIRECT_URL = "http://eden0316.iptime.org/blb/loginKakao.me"; 
 		 
 		private static final String KAKAO_AUTH_URL = "https://kauth.kakao.com/oauth/authorize";
 		private static final String KAKAO_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
@@ -73,8 +72,8 @@ public class KakaoApi{
 	            
 	            //필수 쿼리 파라미터 세팅
 	            sb.append("grant_type=authorization_code");
-	            sb.append("&client_id=").append("d58c294c5294590311266a239d715ed4");
-	            sb.append("&redirect_uri=").append("http://localhost/blb/loginKakao.me");
+	            sb.append("&client_id=").append("c52e3719bd1faa0fc5a344a16e296f16");
+	            sb.append("&redirect_uri=").append("http://eden0316.iptime.org/blb/loginKakao.me");
 	            sb.append("&code=").append(code);
 
 	            bw.write(sb.toString());

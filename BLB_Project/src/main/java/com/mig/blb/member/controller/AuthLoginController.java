@@ -47,8 +47,6 @@ public class AuthLoginController {
 							HttpServletRequest request) {
 		
 		String accessToken = kakaoApi.getAccessToken(code);
-		//System.out.println("code값 잘 넘어왔나? " + code);
-		//System.out.println("토큰은?"+ accessToken);
 		
 		Map<String, Object> userInfo = kakaoApi.getUserInfo(accessToken);
 		
@@ -60,9 +58,6 @@ public class AuthLoginController {
 		        				  .replace("-", "")     
 		        				  .replace(" ", "");  
 		
-		//System.out.println(phone);
-		//System.out.println(email);
-		//System.out.println(snsId);
 		
 		String birthyear =(String)userInfo.get("birthyear");
 		String birthday =(String)userInfo.get("birthday");
@@ -76,7 +71,6 @@ public class AuthLoginController {
 			birthDate = year + "/" + month + "/" + day;
 		}
 		
-		//System.out.println(birthDate);
 		
 		int result1 = memberService.findSnsId(snsId);
 		
