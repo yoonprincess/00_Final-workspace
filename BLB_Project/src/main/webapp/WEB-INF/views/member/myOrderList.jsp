@@ -313,7 +313,7 @@
 										        <span class="delivery-complete">${myOrder.dlvrStatus}</span>
 										        	<c:if test="${productOrder.isWritten == 0}">
 											          <button 
-								                        class="btn-outline-primary blb-btn" 
+								                        class="btn-primary blb-btn" 
 								                        id="writeReviewBtn" 
 								                        style="width:70px; font-size:13px; padding:5px 2px;"
 								                        data-prodno="${product.prodNo}" 
