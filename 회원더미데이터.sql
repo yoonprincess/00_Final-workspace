@@ -291,4 +291,224 @@ INSERT INTO TB_DELIVERY (
     'user11'
 );
 
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/11/21', 'YY/MM/DD'), 
+    'user05'
+);
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/11/01', 'YY/MM/DD'), 
+    'user06'
+);
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/11/10', 'YY/MM/DD'), 
+    'user07'
+);
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/11/17', 'YY/MM/DD'), 
+    'user08'
+);
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/11/16', 'YY/MM/DD'), 
+    'user09'
+);
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/11/03', 'YY/MM/DD'), 
+    'user10'
+);
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/11/28', 'YY/MM/DD'), 
+    'user11'
+);
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/11/13', 'YY/MM/DD'), 
+    'user12'
+);
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/11/08', 'YY/MM/DD'), 
+    'user13'
+);
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/11/11', 'YY/MM/DD'), 
+    'user14'
+);
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/08/19', 'YY/MM/DD'), 
+    'user15'
+);
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/09/17', 'YY/MM/DD'), 
+    'user16'
+);
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/08/23', 'YY/MM/DD'), 
+    'user17'
+);
+
+INSERT INTO TB_POINT (
+    POINT_NO, 
+    POINT_AMT, 
+    POINT_REASON, 
+    POINT_DATE, 
+    MEMBER_ID
+) VALUES (
+    SEQ_POINT_NO.NEXTVAL, 
+    300, 
+    '신규 가입', 
+    TO_DATE('24/09/19', 'YY/MM/DD'), 
+    'user18'
+);
 COMMIT;
+
+INSERT INTO TB_ORDER (
+    ORDER_NO, RCVR_NAME, RCVR_PHONE, RCVR_ADDRESS, 
+    DLVR_REQ_MESSAGE, DLVR_STATUS, DLVR_FEE, DLVR_COMPANY, 
+    DISPATCH_DATE, COMPLETE_DATE, ORDER_TOTAL_AMT, PAYMENT_CODE, 
+    PAYMENT_METHOD, ORDER_DATE, REFUND_DATE, REFUND_REASON, MEMBER_ID
+) VALUES (
+    SEQ_ORDER_NO.NEXTVAL, '최민준', '01012345678', '서울특별시 송파구 잠실동 100번지', 
+    '부재 시 문 앞에 두고 사진을 찍어주세요.', '환불/취소', 3000, 'CJ대한통운', 
+    TO_DATE('2024-12-20', 'YYYY-MM-DD'), TO_DATE('2024-12-25', 'YYYY-MM-DD'), 150000, 'PAY12345', 
+    '신용카드', TO_DATE('2024-12-15', 'YYYY-MM-DD'), TO_DATE('2024-12-26', 'YYYY-MM-DD'), '상품에 하자가 있어 반품 요청', 'user05'
+);
+
+INSERT INTO TB_ORDER (
+    ORDER_NO, RCVR_NAME, RCVR_PHONE, RCVR_ADDRESS, 
+    DLVR_REQ_MESSAGE, DLVR_STATUS, DLVR_FEE, DLVR_COMPANY, 
+    DISPATCH_DATE, COMPLETE_DATE, ORDER_TOTAL_AMT, PAYMENT_CODE, 
+    PAYMENT_METHOD, ORDER_DATE, REFUND_DATE, REFUND_REASON, MEMBER_ID
+) VALUES (
+    SEQ_ORDER_NO.NEXTVAL, '수령자013', '01098765432', '서울특별시 강북구 미아동 200번지', 
+    '부재 시 경비실에 맡겨주세요.', '환불/취소', 2500, '한진택배', 
+    TO_DATE('2024-12-22', 'YYYY-MM-DD'), NULL, 80000, 'PAY67890', 
+    '계좌이체', TO_DATE('2024-12-18', 'YYYY-MM-DD'), TO_DATE('2024-12-26', 'YYYY-MM-DD'), '배송 지연으로 인한 환불 요청', 'user04'
+);

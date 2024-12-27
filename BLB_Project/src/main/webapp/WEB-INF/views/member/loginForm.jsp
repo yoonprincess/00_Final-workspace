@@ -57,16 +57,6 @@
                 <br>
                 <hr>
                 <br>
-                <div class="sub-title">또는</div>
-                <br>
-                <div class="social-login">
-               	 <a href="${kakaoAuthUrl}">
-	                 <div class="kakao-logo">
-					    <i class="fa fa-comment"></i>
-					    카카오 1초 로그인/회원가입
-	                 </div>
-               	 </a>
-                </div>
             </form>
         </div>
     </div>
