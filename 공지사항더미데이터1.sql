@@ -88,4 +88,6 @@ VALUES (29, '[공지] BLB 멤버십 포인트 소멸 안내', 'BLB 멤버십 포인트 소멸일이 20
 INSERT INTO TB_NOTICE (NOTICE_NO, NOTICE_TITLE, NOTICE_CONTENT, NOTICE_REG_DATE, NOTICE_PINNED_YN, NOTICE_STATUS)
 VALUES (30, '[공지] BLB 새해 맞이 이벤트 안내', 'BLB는 2025년 새해를 맞이하여 특별 이벤트를 준비했습니다. 많은 관심과 참여 부탁드립니다.', '24/12/28', 'N', 'Y');
 
+
+SELECT SEQ_NOTICE_NO.NEXTVAL FROM DUAL;
 COMMIT;

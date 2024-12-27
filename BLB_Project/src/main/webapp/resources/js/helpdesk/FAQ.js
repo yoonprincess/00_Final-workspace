@@ -78,5 +78,3 @@ faqData.forEach(item => {
     // 서브탭 클릭 시 '상품' 카테고리 FAQ 로드
     loadFAQs('product');
 });
-
-

@@ -78,7 +78,7 @@ public class ProductController {
         
 		int listCount = productService.selectProductCount(params);
 		
-		int pageLimit = 5;
+		int pageLimit = 3;
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 
 											 pageLimit, boardLimit);
@@ -121,7 +121,7 @@ public class ProductController {
 			
 			// 리뷰 목록조회
 			int revListCount = reviewService.selectReviewCount(prodNo);
-			int revPageLimit = 5;
+			int revPageLimit = 3;
 			int revBoardLimit = 10;
 			PageInfo revPi = Pagination.getPageInfo(revListCount, revPage, 
 												 revPageLimit, revBoardLimit);
@@ -130,7 +130,7 @@ public class ProductController {
 			
 			// 상품문의 목록(상세, 댓글포함)조회
 			int qnaListCount = productService.selectProdInquiryCount(prodNo);
-			int qnaPageLimit = 5;
+			int qnaPageLimit = 3;
 			int qnaBoardLimit = 5;
 			PageInfo qnaPi = Pagination.getPageInfo(qnaListCount, qnaPage, 
 												 qnaPageLimit, qnaBoardLimit);

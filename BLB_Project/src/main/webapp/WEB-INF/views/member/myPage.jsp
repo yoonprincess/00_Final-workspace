@@ -138,7 +138,7 @@
                       </div>
                       <div class="arrow"><i class="fas fa-chevron-right"></i></div>
                       <div class="status-item">
-                          <span class="status-count">0</span>
+                          <span class="status-count">${myOrderDelivery}</span>
                           <span class="status-label">배송중</span>
                       </div>
                       <div class="arrow"><i class="fas fa-chevron-right"></i></div>

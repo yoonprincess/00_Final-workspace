@@ -66,7 +66,7 @@
 	                    <td class="product-info">
 	                        <div class="product-detail">
 	                            <p class="product-title">${ct.prodName}</p>
-	                            <p class="product-option-${ct.cartNo}">[옵션: ${ct.optName} ${ct.optValue} (+ 
+	                            <p class="product-option-${ct.cartNo}">[옵션: ${ct.optName} (+ 
 									<fmt:formatNumber pattern="###,###,###" value="${ct.optAddPrice}" />원)]</p>
 	                            <p class="product-quantity-${ct.cartNo}">수량: ${ ct.cartQty }</p>
 	                            <p class="product-price">

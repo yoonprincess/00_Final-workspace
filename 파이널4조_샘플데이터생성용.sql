@@ -1086,7 +1086,7 @@ BEGIN
     -- ORDER_NO를 기준으로 상품 주문 데이터 삽입
     FOR order_rec IN (SELECT DISTINCT ORDER_NO FROM TB_ORDER) LOOP
         -- 상품 주문 생성: 하나의 ORDER_NO당 여러 옵션을 추가
-        FOR opt_no IN 70..72 LOOP
+        FOR opt_no IN 81..98 LOOP
             INSERT INTO TB_PRODUCT_ORDER VALUES(
                 SEQ_SERIAL_NO.NEXTVAL, -- SERIAL_NO
                 1,                     -- 주문 수량
@@ -1146,7 +1146,7 @@ BEGIN
     -- ORDER_NO를 기준으로 상품 주문 데이터 삽입
     FOR order_rec IN (SELECT DISTINCT ORDER_NO FROM TB_ORDER) LOOP
         -- 상품 주문 생성: 하나의 ORDER_NO당 여러 옵션을 추가
-        FOR opt_no IN 34..36 LOOP
+        FOR opt_no IN 49..50 LOOP
             INSERT INTO TB_PRODUCT_ORDER VALUES(
                 SEQ_SERIAL_NO.NEXTVAL, -- SERIAL_NO
                 1,                     -- 주문 수량

@@ -234,9 +234,16 @@
 <!-- 메인 배너 섹션 -->
 <div id="mainBanner" class="carousel slide main-banner" data-ride="carousel">
     <div class="carousel-indicators">
-        <li data-target="#mainBanner" data-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <li data-target="#mainBanner" data-slide-to="1" aria-label="Slide 2"></button>
-        <li data-target="#mainBanner" data-slide-to="2" aria-label="Slide 3"></button>
+        <c:set var="index" value="0" />
+        <c:forEach var="pb" items="${ requestScope.pbList }">
+            <c:if test="${ not empty pb.bannerPath }">
+                <li data-target="#mainBanner" 
+                    data-slide-to="${ index }" 
+                    class="${ index == 0 ? 'active' : '' }" 
+                    aria-label="Slide ${ index + 1 }"></li>
+                <c:set var="index" value="${ index + 1 }" />
+            </c:if>
+        </c:forEach>
     </div>
     <div class="carousel-inner">
         <c:set var="firstActive" value="true" />

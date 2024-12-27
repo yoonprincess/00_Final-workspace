@@ -245,7 +245,7 @@
                                 <div id="optionsContainer">
                                     <div class="d-flex align-items-center mb-2 option-pair">
                                         <input type="text" class="form-control me-2" name="optionNames[]" placeholder="옵션명" required>
-                                        <input type="text" class="form-control me-2" name="optionValues[]" placeholder="옵션값">
+                                        <input type="text" class="form-control me-2" name="optionValues[]" placeholder="옵션값" required>
                                         <input type="number" class="form-control me-2" name="optionAddPrices[]" placeholder="옵션추가금액" value="0" required>
                                         <button type="button" class="btn btn-outline-primary btn-sm add-option-btn">+</button>
                                     </div>
@@ -582,7 +582,7 @@
                     const optionHtml = `
                         <div class="d-flex align-items-center mb-2 option-pair">
                             <input type="text" class="form-control me-2" name="optionNames[]" placeholder="옵션명" required>
-                            <input type="text" class="form-control me-2" name="optionValues[]" placeholder="옵션값">
+                            <input type="text" class="form-control me-2" name="optionValues[]" placeholder="옵션값" required>
                             <input type="number" class="form-control me-2" name="optionAddPrices[]" placeholder="옵션추가금액" value="0" required>
                             <button type="button" class="btn btn-outline-danger btn-sm remove-option-btn">-</button>
                         </div>`;
@@ -611,7 +611,7 @@
                             <div class="d-flex align-items-center mb-2 option-pair">
                                 <input type="hidden" name="optionNos[]" value="\${option.optNo}">
                                 <input type="text" class="form-control me-2" name="optionOriginNames[]" value="\${option.optName}" placeholder="옵션명" required disabled>
-                                <input type="text" class="form-control me-2" name="optionOriginValues[]" value="\${option.optValue}" placeholder="옵션값" disabled>
+                                <input type="text" class="form-control me-2" name="optionOriginValues[]" value="\${option.optValue}" placeholder="옵션값" required disabled>
                                 <input type="number" class="form-control me-2" name="optionOriginAddPrices[]" value="\${option.optAddPrice}" placeholder="옵션추가금액" required disabled>
                             </div>`
                         optionContainer.append(optionOrigin);
@@ -623,7 +623,7 @@
                     const optionHtml = `
                         <div class="d-flex align-items-center mb-2 option-pair">
                             <input type="text" class="form-control me-2" name="optionNames[]" placeholder="옵션명" required>
-                            <input type="text" class="form-control me-2" name="optionValues[]" placeholder="옵션값">
+                            <input type="text" class="form-control me-2" name="optionValues[]" placeholder="옵션값" required>
                             <input type="number" class="form-control me-2" name="optionAddPrices[]" placeholder="옵션추가금액" value="0" required>
                             <button type="button" class="btn btn-outline-danger btn-sm remove-option-btn">-</button>
                         </div>`;

@@ -113,7 +113,7 @@
                                     <a class="nav-link" href="${ pageContext.request.contextPath}/adminList.pr">상품관리</a>
                                 </nav>
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="${ pageContext.request.contextPath}/adminStock.opt">옵션별 재고관리</a>
+                                    <a class="nav-link" href="${ pageContext.request.contextPath}/adminStock.opt">옵션 및 재고관리</a>
                                 </nav>
                             </div>
                             <!-- 리뷰 메뉴 -->

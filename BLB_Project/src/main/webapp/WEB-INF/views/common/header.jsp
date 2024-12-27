@@ -103,21 +103,6 @@
 	           		</c:when>
 	           		
 	           		<c:when test="${not empty sessionScope.loginUser && sessionScope.loginUser.memberId eq 'admin' }">	           			
-						
-						<!--Start of Tawk.to Script-->
-						<script type="text/javascript">
-							var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-							(function(){
-							var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-							s1.async=true;
-							s1.src='https://embed.tawk.to/6724699c2480f5b4f59728e5/1ibj3p3lr';
-							s1.charset='UTF-8';
-							s1.setAttribute('crossorigin','*');
-							s0.parentNode.insertBefore(s1,s0);
-							})();
-						</script>
-						<!--End of Tawk.to Script-->
-						
 	                	<a class="menu-btn" href="${ pageContext.request.contextPath }/admin.blb">
 	                		<span class="material-symbols-outlined menu-icon">
 								construction
@@ -165,6 +150,19 @@
 		              	</a>
 			        </c:when>
 	                <c:otherwise>
+	                	<!--Start of Tawk.to Script-->
+						<script type="text/javascript">
+							var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+							(function(){
+							var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+							s1.async=true;
+							s1.src='https://embed.tawk.to/6724699c2480f5b4f59728e5/1ibj3p3lr';
+							s1.charset='UTF-8';
+							s1.setAttribute('crossorigin','*');
+							s0.parentNode.insertBefore(s1,s0);
+							})();
+						</script>
+						<!--End of Tawk.to Script-->
                         <!-- 알림 -->
 						<div class="menu-btn notification-system">
 						    <a id="notification-toggle" href="#" aria-label="알림 토글" aria-expanded="false">
