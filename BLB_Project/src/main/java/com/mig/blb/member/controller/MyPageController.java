@@ -177,6 +177,7 @@ public class MyPageController {
 			
 			LinkedHashMap<String, ArrayList<Order>> myListbyDate = new LinkedHashMap<>();
 						
+			System.out.println(myListbyDate);
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 			for (Order order : myOrders) {
 				String orderDate = dateFormat.format(order.getOrderDate());
