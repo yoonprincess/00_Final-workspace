@@ -38,13 +38,12 @@
                     <th>내용</th>
                     <th>등록일</th>
                     <th>답변상태</th>
-                    <th>작업</th>
                 </tr>
             </thead>
             <tbody>
                 <c:if test="${empty list}">
                     <tr>
-                        <td colspan="6">문의한 내용이 없습니다.</td>
+                        <td colspan="6" style="pointer-events: none;">문의한 내용이 없습니다.</td>
                     </tr>
                 </c:if>
                 <c:forEach var="i" items="${requestScope.list}">
@@ -58,14 +57,6 @@
 							    <c:when test="${i.inquiryAnsweredYn == 'Y'}">답변 완료</c:when>
 							    <c:otherwise>답변 대기</c:otherwise>
 							</c:choose>
-                        </td>
-                        <td>
-                        <form action="InquiryDelete.io" method="post">
-                        	<input type="hidden" name="ino" value="${i.inquiryNo }"/>
-                        	<button class="btn-delete">
-                            	<i class="material-icons">delete</i>
-                            </button>
-                        </form>
                         </td>
                     </tr>
                 </c:forEach>

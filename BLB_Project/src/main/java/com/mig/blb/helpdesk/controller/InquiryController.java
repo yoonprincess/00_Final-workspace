@@ -151,7 +151,7 @@ public class InquiryController {
 		
 	// 문의글 삭제 요청
 	@PostMapping("InquiryDelete.io")
-	public String deleteNotice(int ino,
+	public String deleteInquiry(int ino,
 							   String filePath,
 							   Model model,
 							   HttpSession session,

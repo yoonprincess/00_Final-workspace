@@ -41,6 +41,11 @@
                 </tr>
             </thead>
             <tbody>
+            	<c:if test="${empty list}">
+                    <tr>
+                        <td colspan="6" style="pointer-events: none;">문의한 내용이 없습니다.</td>
+                    </tr>
+                </c:if>
                 <c:forEach var="n" items="${ requestScope.list }">
                     <tr>
                         <td class="nno">${ n.noticeNo }</td>
