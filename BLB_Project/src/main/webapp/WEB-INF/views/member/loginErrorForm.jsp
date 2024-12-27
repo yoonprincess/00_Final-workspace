@@ -58,17 +58,7 @@
                 <br>
                 <hr>
                 <br>
-                <div class="sub-title">간편로그인</div>
-                <br>
-                <div class="social-login">
-                    <div class="kakao-logo">
-                        <span><i class="fa fa-comment"></i></span> 
-                    </div>
-                    <span class="separator">또는</span>
-                    <div class="naver-logo">
-                        <span>N</span> 
-                    </div>
-                </div>
+                
             </form>
         </div>
     </div>
