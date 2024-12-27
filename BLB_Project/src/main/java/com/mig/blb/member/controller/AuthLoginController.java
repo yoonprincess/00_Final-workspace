@@ -53,24 +53,6 @@ public class AuthLoginController {
 		String email = (String)userInfo.get("email");
 		String snsId = (String)userInfo.get("id");
 		String name =(String)userInfo.get("name");
-		String phoneNumber =(String)userInfo.get("phoneNumber");
-		String phone = phoneNumber.replace("+82 ", "0")  
-		        				  .replace("-", "")     
-		        				  .replace(" ", "");  
-		
-		
-		String birthyear =(String)userInfo.get("birthyear");
-		String birthday =(String)userInfo.get("birthday");
-		
-		String birthDate = null;
-		if (birthyear != null && !birthyear.isEmpty() 
-			&& birthday != null && !birthday.isEmpty()) {
-			String year = birthyear.substring(2); 
-			String month = birthday.substring(0, 2); 
-			String day = birthday.substring(2);  
-			birthDate = year + "/" + month + "/" + day;
-		}
-		
 		
 		int result1 = memberService.findSnsId(snsId);
 		
@@ -107,13 +89,7 @@ public class AuthLoginController {
 			m.setMemberName(name);
 			m.setEmail(email);
 			m.setSnsId(snsId);
-			m.setPhone(phone); //+82 10-4773-5572
 			m.setLoginType("kakao");
-			
-			if(birthDate !=null) {
-				
-				m.setBirthdate(birthDate);
-			}
 			
 			int result2 = memberService.insertKakao(m);
 			
@@ -131,8 +107,6 @@ public class AuthLoginController {
 			}
 		}
 		
-		//System.out.println("access:"+ accessToken);
-	
 		return mv;
 	
 	}

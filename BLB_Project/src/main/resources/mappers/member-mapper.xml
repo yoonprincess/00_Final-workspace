@@ -662,16 +662,12 @@
 	<insert id="insertKakao" parameterType="member">
 	  	INSERT INTO TB_MEMBER (MEMBER_ID
 	                       ,MEMBER_NAME
-	                       ,PHONE
 	                       ,EMAIL
-	                       ,BIRTHDATE
 	                       ,SNS_ID
 	                       ,LOGIN_TYPE)                                                                                             
 	                  VALUES(#{memberId}
 	                        ,#{memberName}
-	                        ,#{phone}
 	                        ,#{email}
-	                        ,#{birthdate}
 	                        ,#{snsId}
 	                        ,#{loginType})            
   	</insert>
