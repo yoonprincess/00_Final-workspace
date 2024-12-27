@@ -18,6 +18,7 @@ $(function() {
             location.href="../list.no";
         }
         
+        
         function goBack(){
             location.href="../list.no";
         }
