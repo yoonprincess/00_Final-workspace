@@ -16,9 +16,6 @@
   
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" integrity="sha512-10/jx2EXwxxWqCLX/hHth/vu2KY3jCF70dCQB8TSgNjbCVAC/8vai53GfMDrO2Emgwccf2pJqxct9ehpzG+MTw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" defer></script> -->
-
-
 </head>
 <body class="body-offset">
     <div class="outer container-fluid">
@@ -222,9 +219,11 @@
 				    <tr style="text-align:center;">
 				        <td colspan="5">
 				            <div style="display: flex; flex-direction: column; align-items: center;">
-				               <span class="material-symbols-outlined" style="font-size:140px; color:#7AB2D3;">error</span>
+				              <br>
+				               <span class="material-symbols-outlined" style="font-size:90px; color:#7AB2D3;">error</span>
 				                <br>
 				                 <div style="color:#7AB2D3"> 조회하신 기간 내 주문내역이 없습니다.</div>
+				                 <br>
 				            </div>
 				        </td>
 				    </tr>

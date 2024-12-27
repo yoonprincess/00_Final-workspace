@@ -32,17 +32,19 @@
     <thead>
         <tr>
             <th colspan="1">상품</th>
-            <th colspan="2">리뷰</th>
+            <th colspan="4">리뷰</th>
         </tr>
     </thead>
     <tbody>
         <c:if test="${empty rlist}">
             <tr class="result">
-                <td colspan="3">
+                <td colspan="5">
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <span class="material-symbols-outlined" style="font-size:140px; color:#7AB2D3;">error</span>
+                    	<br>
+                        <span class="material-symbols-outlined" style="font-size:90px; color:#7AB2D3;">error</span>
                         <br>
                         <div style="color:#7AB2D3"> 작성하신 리뷰가 없습니다.</div>
+                        <br>
                     </div>
                 </td>
             </tr>
@@ -63,7 +65,7 @@
                             </div>
                         </a>  
                     </td>
-                    <td>
+                    <td colspan="3">
                         <div><span>작성일자</span> 
                         <fmt:formatDate value="${r.revEnrollDate}" pattern="yyyy-MM-dd hh:mm" />
                         </div>
@@ -91,20 +93,19 @@
                     <td>
                         <div class="button-group">
                             <button 
-                                  class="btn btn-sm btn-outline-primary mr-2"
+                                  class="btn btn-sm btn-outline-primary blb-btn mr-2"
                                   id="editReviewBtn"
+                                  style="padding: 0px; width:50px; font-size:14px;"
                                   data-revno="${r.revNo}"
                                   data-prodno="${r.prodNo}" 
                                   data-memberid="${r.memberId}"
                                   >
                                   수정
                               </button>
-                                                    
-                        </div>
-                        <div class="button-group">
-                            <button 
+                             <button 
                               class="btn btn-sm btn-outline-danger mr-2"
                               id="deleteReviewBtn"
+                              style="font-weight:800;'"
                              data-revno="${r.revNo}"
                                   data-prodno="${r.prodNo}" 
                                   data-memberid="${r.memberId}">

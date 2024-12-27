@@ -49,9 +49,11 @@
             <tr class="result">
                 <td colspan="4">
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <span class="material-symbols-outlined" style="font-size:100px; color:#7AB2D3;">error</span>
+                        <br>
+                        <span class="material-symbols-outlined" style="font-size:90px; color:#7AB2D3;">error</span>
                         <br>
                          <div style="color:#7AB2D3"> 찜한 상품이 없습니다. </div>
+                         <br>
                     </div>
                 </td>
             </tr>

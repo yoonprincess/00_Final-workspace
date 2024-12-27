@@ -158,9 +158,9 @@
                     </div>
                     <c:if test="${empty wlist}">
                    <div style="display: flex; flex-direction: column; align-items: center;">
-                        <span class="material-symbols-outlined" style="font-size:40px;">error</span>
+                        <span class="material-symbols-outlined" style="font-size:40px; color:#7AB2D3;">error</span>
                         <br>
-                        <div> 찜한 상품이 없습니다. </div>
+                        <div style="color:#7AB2D3;"> 찜한 상품이 없습니다. </div>
                     </div>
                   </c:if>
                   <div class="product-grid">
@@ -230,12 +230,11 @@
 			                    </c:if>
 			                    <c:if test="${empty list}">
 			                     	<div style="display: flex; flex-direction: column; align-items: center;">
-			                          <span class="material-symbols-outlined" style="font-size:40px;">error</span>
+			                          <span class="material-symbols-outlined" style="font-size:40px; color:#7AB2D3;"">error</span>
 			                           <br>
-			                          <div> 최근 1개월간 문의하신 내용이 없습니다.</div>
+			                          <div style="color:#7AB2D3;"> 최근 1개월간 문의하신 내용이 없습니다.</div>
 			                        </div>
 			                    </c:if>
-			                  
 		                     </div>
 	                  </div>
 	                  <div class="section inquiry" style="border:none;">
@@ -268,9 +267,9 @@
 			                    </c:if>
 			                    <c:if test="${empty qlist}">
 			                     	<div  style="display: flex; flex-direction: column; align-items: center;">
-			                          <span class="material-symbols-outlined" style="font-size:40px;">error</span>
+			                          <span class="material-symbols-outlined" style="font-size:40px; color:#7AB2D3;">error</span>
 			                          <br>
-			                          <div> 최근 1개월간 문의하신 내용이 없습니다.</div>
+			                          <div style="color:#7AB2D3;"> 최근 1개월간 문의하신 내용이 없습니다.</div>
 			                        </div>
 			                    </c:if>
                         </div>

@@ -103,12 +103,11 @@
 		            </div>
 		            <div class="payment-details">
 		                <div class="detail-row">
-		                    <span class="detail-label">└ 적립금</span>
-		                    <span class="detail-amount">6,180원</span>
+		                    
 		                </div>
 		                <div class="detail-row">
-		                    <span class="detail-label">└ 신용카드</span>
-		                    <span class="detail-amount">19,020원</span>
+		                    <span class="detail-label">└ ${olist[0].paymentMethod}</span>
+		                    <span class="detail-amount">${olist[0].orderTotalAmt}원</span>
 		                </div>
 		            </div>
 		        </div>
@@ -133,7 +132,7 @@
 		            </div>
 		        </div>
 		        <div class="payment-column">
-		            <div class="column-title">쿠폰할인금액</div>
+		            <div class="column-title">배송비</div>
 		            <div class="amount">0<span class="unit">원</span></div>
 		        </div>
 		        <div class="payment-column">
@@ -143,11 +142,10 @@
 		            </div>
 		            <div class="payment-details">
 		                <div class="detail-row">
-		                    <span class="detail-label">└ 적립금</span>
-		                    <span class="detail-amount">6,180원</span>
+		                  
 		                </div>
 		                <div class="detail-row">
-		                    <span class="detail-label">└ 신용카드</span>
+		                  
 		                    <span class="detail-amount">19,020원</span>
 		                </div>
 		            </div>
@@ -163,10 +161,9 @@
 		    </div>
 		</section>
 		</c:if>
-        <p class="notice">* 매장에서 구매하신 상품의 교환 및 환불은 온라인 구매확인증으로 불가능합니다.</p>
 		
 		<div class="btn-container">
-			<button class="confirm-btn" onclick="history.back()" >확인</button>
+			<button class="confirm-btn" onclick="history.back();" >확인</button>
 		</div>
         
       </div>

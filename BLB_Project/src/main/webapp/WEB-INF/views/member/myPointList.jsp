@@ -180,10 +180,12 @@
 				    <tr style="text-align:center;">
 				        <td colspan="3">
 				            <div style="display: flex; flex-direction: column; align-items: center;">
-		                        <span class="material-symbols-outlined" style="font-size:140px; color:#7AB2D3;">error</span>
-		                        <br>
-		                        <div style="color:#7AB2D3"> 조회하신 기간내 적립내역이 없습니다.</div>
-		                    </div>
+                    	<br>
+                        <span class="material-symbols-outlined" style="font-size:90px; color:#7AB2D3;">error</span>
+                        <br>
+                        <div style="color:#7AB2D3"> 조회된 적립금 내역이 없습니다.</div>
+                        <br>
+                    </div>
 				        </td>
 				    </tr>
 				</c:if>
