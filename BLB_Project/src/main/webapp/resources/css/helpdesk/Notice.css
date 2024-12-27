@@ -114,9 +114,4 @@ text-align: center;
      text-align: center;
  }
 
- /* 공지사항 강조 */
- table tbody tr:first-child td {
-     font-weight: bold;
- }
-
         
