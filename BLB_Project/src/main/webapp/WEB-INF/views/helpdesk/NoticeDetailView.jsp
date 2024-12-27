@@ -65,6 +65,7 @@
                     }
                     </script>
                 </c:if>
+                
 
     <c:if test="${ previousNotice != null }">
 	    <a href="${pageContext.request.contextPath}/notice/${previousNotice.noticeNo}" class="nav-item">
