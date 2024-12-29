@@ -147,14 +147,14 @@
                                                 <td>${p.prodCount}</td>
                                                 <td><fmt:formatDate value="${p.prodEnrollDate}" pattern="yyyy-MM-dd hh:mm" /></td>
                                                 <td contenteditable="true">${p.prodStatus}</td>
-                                                <td><img src="${ pageContext.request.contextPath }${p.thumbImg}" alt="thumbImg" style="width: 50px; height: auto;"></td>
+                                                <td><img src="${ pageContext.request.contextPath }${p.thumbImg}" alt="thumbImg" style="width: 80px; height: auto;"></td>
                                                 <td>${p.avgRating}</td>
                                                 <td>${p.reviewCount}</td>
                                                 <td>${p.totalSales}</td>
                                                 <td>${p.totalQty}</td>
                                                 <td>
                                                     <c:if test="${ not empty p.bannerPath }">
-                                                        <img src="${ pageContext.request.contextPath }${p.bannerPath}${p.bannerFileName}" alt="thumbImg" style="width: 50px; height: auto;">
+                                                        <img src="${ pageContext.request.contextPath }${p.bannerPath}${p.bannerFileName}" alt="thumbImg" style="width: 200px; height: auto;"><br>
                                                         <button class="banner-delete-btn btn btn-danger btn-sm" data-filename="${p.bannerFileName}">삭제</button>
                                                     </c:if>
                                                     <c:if test="${ empty p.bannerPath }">
@@ -163,7 +163,7 @@
                                                 </td>
                                                 <td>
                                                     <c:if test="${ not empty p.mdPath }">
-                                                        <img src="${ pageContext.request.contextPath }${p.mdPath}${p.bannerFileName}" alt="thumbImg" style="width: 50px; height: auto;">
+                                                        <img src="${ pageContext.request.contextPath }${p.mdPath}${p.bannerFileName}" alt="thumbImg" style="width: 100px; height: auto;"><br>
                                                         <button class="md-delete-btn btn btn-danger btn-sm" data-filename="${p.bannerFileName}">삭제</button>
                                                     </c:if>
                                                     <c:if test="${ empty p.mdPath }">
@@ -343,8 +343,8 @@
 
                             <!-- 옵션명과 옵션값 -->
                             <div class="mb-3">
-                                <label for="options" class="form-label">옵션</label>
-                                <span>옵션 수정은 옵션 메뉴에서 가능합니다.</span>
+                                <label for="options" class="form-label">옵션(추가만 가능)</label><br>
+                                <span>※ 옵션 수정은 옵션 메뉴에서 가능합니다.</span>
                                 <div id="optionsOriginContainer">
                                 </div>
                                 <div id="optionsNewContainer">
@@ -396,16 +396,17 @@
                     order: [[0, 'desc']], // 첫 번째 컬럼(0-indexed)을 내림차순(desc)으로 정렬
                     pageLength: 25, // 기본값: 10
                     lengthMenu: [10, 25, 50, 100],
-                    scrollX: true, // 가로 스크롤 활성화
-                    // scrollY: '400px', // 세로 스크롤 높이 (px 단위로 설정)
+                    // scrollX: true, // 가로 스크롤 활성화
+                    scrollY: '700px', // 세로 스크롤 높이 (px 단위로 설정)
                     fixedHeader: true, // 헤더 고정
-                    fixedColumns: {
-                        left: 2 // 왼쪽에서 두 번째 열까지 고정
-                    },
-                    // columnDefs: [
-                    //     { targets: 6, width: '300px'},
-                    //     { targets: 7, width: '300px'}
-                    // ],
+                    // fixedColumns: {
+                    //     left: 2 // 왼쪽에서 두 번째 열까지 고정
+                    // },
+                    columnDefs: [
+                        { targets: 3, width: '300px'},
+                        { targets: 4, width: '350px'},
+                        { targets: 5, width: '100px'}
+                    ],
                     autoWidth: false
                     
                 });

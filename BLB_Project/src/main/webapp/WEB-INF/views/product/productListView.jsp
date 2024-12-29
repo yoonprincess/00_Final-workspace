@@ -345,7 +345,7 @@
 							<!-- 이전 페이지 그룹 -->
 							<c:if test="${ pi.startPage > 1 }">
 								<li class="page-item">
-									<a href="list.pr?category=${ category }&keyword=${ keyword }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage - pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }</c:forEach>">
+									<a href="list.pr?category=${ category }&keyword=${ keyword }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage - pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
 										＜
 									</a>
 								</li>
@@ -362,7 +362,7 @@
 								</c:if>
 								<c:if test="${ p != pi.currentPage }">
 									<li class="page-item">
-										<a href="list.pr?category=${ category }&keyword=${ keyword }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }</c:forEach>">
+										<a href="list.pr?category=${ category }&keyword=${ keyword }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ p }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
 											${ p }
 										</a>
 									</li>
@@ -372,7 +372,7 @@
 							<!-- 다음 페이지 그룹 -->
 							<c:if test="${ pi.endPage < pi.maxPage }">
 								<li class="page-item">
-									<a href="list.pr?category=${ category }&keyword=${ keyword }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage + pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }</c:forEach>">
+									<a href="list.pr?category=${ category }&keyword=${ keyword }&sortBy=${ param.sortBy }&boardLimit=${ param.boardLimit }&ppage=${ pi.startPage + pi.pageLimit }&<c:forEach var='sub' items='${ paramValues.subcategories }'>subcategories=${ sub }&</c:forEach>">
 										＞
 									</a>
 								</li>
