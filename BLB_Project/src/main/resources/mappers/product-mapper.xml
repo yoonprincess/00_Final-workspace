@@ -432,7 +432,7 @@
 	</select>
 	
 	
-	<!-- 1:1 문의 관련 매퍼 -->
+	<!-- 상품 문의 관련 매퍼 -->
     <!-- QnA와 답글 resultMap -->
     <resultMap id="inquiryResultMap" type="inquiry">
         <id column="INQUIRY_NO" property="inquiryNo"/>
