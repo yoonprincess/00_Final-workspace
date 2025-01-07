@@ -4,7 +4,7 @@ $(function() {
     // 체크된 상품의 총 가격 계산
     checkedTotalPrice();
     // 체크된 상품의 수량 결제하기 버튼에 출력
-    cartByeButton();
+    cartBuyButton();
 
     // 모든 select 요소에 대해 처리
     $(".prod-opt").each(function() {
@@ -28,10 +28,11 @@ $(function() {
     });
 
     // 체크박스 클릭 이벤트
+
     // 전체 선택 체크/해제
     $("#check-all").on("change", function() {
 
-        const isChecked = $(this).is(":checked");   // 전체선택 체크박스 선택 여부
+        const isChecked = $(this).is(":checked");   // 전체 선택 체크박스 선택 여부
 
         $(".check-one").prop("checked", isChecked); // 선택 여부에 따른 요소의 속성을 가져옴
 
@@ -39,7 +40,7 @@ $(function() {
         checkedTotalPrice();
 
         // 체크된 상품의 수량 결제하기 버튼에 출력
-        cartByeButton();
+        cartBuyButton();
     });
 
     // 개별 상품 체크
@@ -58,7 +59,7 @@ $(function() {
         checkedTotalPrice();
 
         // 체크된 상품의 수량 결제하기 버튼에 출력
-        cartByeButton();
+        cartBuyButton();
     });
 
     // 수량 증가 버튼 클릭 이벤트
@@ -337,7 +338,7 @@ function checkedTotalPrice() {
 }
 
 // 결제하기 버튼에 결제할 상품 수량 담기
-function cartByeButton() {
+function cartBuyButton() {
 
     const checked = $(".check-one:checked").length; // 체크된 상품 개수
 
