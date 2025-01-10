@@ -223,7 +223,7 @@ $(document).ready(function () {
         alert('구매 페이지로 이동합니다.');
     });
 
-    // 상품정보 별점 클릭 시 이동동
+    // 상품정보 별점 클릭 시 이동
     $('.top-review').on('click', function (e) {
         let tabsOffset = $('.origin-tab-location').offset().top || 0; // 탭 메뉴의 위치
         // 부드러운 스크롤 이동
