@@ -3,6 +3,7 @@ $(function() {
     // 페이지 로드 시
     // 체크된 상품의 총 가격 계산
     checkedTotalPrice();
+
     // 체크된 상품의 수량 결제하기 버튼에 출력
     cartBuyButton();
 
@@ -33,7 +34,6 @@ $(function() {
     $("#check-all").on("change", function() {
 
         const isChecked = $(this).is(":checked");   // 전체 선택 체크박스 선택 여부
-
         $(".check-one").prop("checked", isChecked); // 선택 여부에 따른 요소의 속성을 가져옴
 
         // 체크박스 동작 시에도 총 가격 업데이트
@@ -62,11 +62,11 @@ $(function() {
         cartBuyButton();
     });
 
-    // 수량 증가 버튼 클릭 이벤트
+    // 수량 증가 + 요소 클릭 이벤트
     $('.quantity-increase').on("click", function() {
 
         let $input = $(this).siblings('.quantity-input'); // 형제인 input 요소 선택
-        let currentQty = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기
+        let currentQty = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기S
         let prodPrice = parseInt($(this).data("prod-price"));   /// 상품 단가
         let cartNo = parseInt($(this).data("cart-no")); // 장바구니 번호
         
@@ -75,7 +75,6 @@ $(function() {
 
         if((currentQty + 1) > remainQty) {
             // 재고 수량이 넘지 않게
-
             alert('최대 ' + remainQty + '개 주문 가능합니다. (재고: ' + remainQty + ')');
             return;
         }
@@ -84,7 +83,6 @@ $(function() {
         let updatedQty = currentQty + 1;  // 수량 1 증가
 
         const optPrice = parseInt($("#prod-opt-" + cartNo).find("option:selected").data("price")) || 0;
-
         const updatedPrice = (prodPrice + optPrice) * updatedQty;   // 총 가격 계산
 
         // ajax로 장바구니 테이블에 적용
@@ -117,15 +115,13 @@ $(function() {
         });
     });
 
-    // 수량 감소 버튼 클릭 이벤트
+    // 수량 감소 - 요소 클릭 이벤트
     $('.quantity-decrease').on("click", function() {
 
-        const $input = $(this).siblings('.quantity-input'); // input 요소 선택
-        const currentQty = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기
-        const prodPrice = parseInt($(this).data("prod-price"));   /// 상품 단가
-        const cartNo = parseInt($(this).data("cart-no")); // 장바구니 번호
-
-        console.log("현재 수량 : " + currentQty);
+        let $input = $(this).siblings('.quantity-input'); // input 요소 선택
+        let currentQty = parseInt($input.val(), 10); // 10진법으로 현재 값 가져오기
+        let prodPrice = parseInt($(this).data("prod-price"));   /// 상품 단가
+        let cartNo = parseInt($(this).data("cart-no")); // 장바구니 번호
 
         if ((currentQty - 1) < 1) {
             // 1 이하로 내려가지 않게
@@ -135,9 +131,9 @@ $(function() {
         }
 
         // 수량 감소 시 총 가격 계산
-        const updatedQty = currentQty - 1;  // 수량 1 감소
-        const optPrice = parseInt($("#prod-opt-" + cartNo).find("option:selected").data("price")) || 0;
+        let updatedQty = currentQty - 1;  // 수량 1 감소
 
+        const optPrice = parseInt($("#prod-opt-" + cartNo).find("option:selected").data("price")) || 0;
         const updatedPrice = (prodPrice + optPrice) * updatedQty;   // 총 가격 계산
         
         // ajax로 장바구니 테이블에 적용
@@ -281,7 +277,7 @@ function checkDelete() {
 
     const $checkDeleteForm = $("#checkDeleteForm");
     const $checkItems = $(".check-one:checked");
-
+    
     if($checkItems.length === 0) {
 
         alert("선택한 상품이 없습니다.");

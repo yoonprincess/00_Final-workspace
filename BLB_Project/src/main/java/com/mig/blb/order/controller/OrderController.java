@@ -61,7 +61,6 @@ public class OrderController {
 	    	
 	    	session.setAttribute("alertMsg", "로그인 후 이용 가능한 서비스입니다.");
 	        return "redirect:/loginForm.me";
-	        
 	    }
 	    
 	    // 장바구니에서 선택된 상품 정보 조회

@@ -86,7 +86,7 @@ $(function() {
     $(".payment-option").on("click", function () {
         
         $(".payment-option").removeClass("selected");   // 모든 옵션에서 selected 제거
-        $(this).addClass("selected");   // 클릭된 옵션에 seleceted 클래스 추가가
+        $(this).addClass("selected");   // 클릭된 옵션에 seleceted 클래스 추가
 
         payOption = $(this).data("value");  // 클릭된 옵션의 value
     
@@ -246,15 +246,10 @@ $(function() {
 
         event.preventDefault(); // 폼 기본 제출 동작 방지
 
-        const orderNo = $("#orderNo").val(); // 주문 No
-        console.log("주문번호 : " + orderNo);
-
+        const orderNo = $("#orderNo").val();
         
         const orderTotalAmt = parseInt($(".final-price").text().replace(/[^0-9]/g, "")); // 결제 금액
 
-        console.log("결제금액: " + orderTotalAmt);
-        
-        
         // 각 상품의 데이터를 배열에 저장
         var productData = [];
 
@@ -306,15 +301,17 @@ $(function() {
 
 
         if (payOption === '카카오페이') {
-
             try {
-                // 나이스페이 요청
+                // 카카오페이 요청
                 IMP.request_pay({
                     pg: "kakaopay",
                     paymethod: "card",
                     amount: totalAmt - discount + dlvrFee,
                     name: "뷰라밸",
-                    merchant_uid: "616" + new Date().getTime(), // 고유 주문 ID
+                    merchant_uid: "616" + new Date().getFullYear() + // 연도
+                    (new Date().getMonth() + 1) + // 월 (+1 보정)
+                    new Date().getDate() +  // 일
+                    new Date().getTime(), // 고유 주문 ID
                 }, async function (rsp) {
                     if (rsp.success) {
                         // 결제가 성공하면 서버로 결제 정보 전송
@@ -373,7 +370,10 @@ $(function() {
                     paymethod: "card",
                     amount: totalAmt - discount + dlvrFee,
                     name: "뷰라밸",
-                    merchant_uid: "616" + new Date().getTime(), // 고유 주문 ID
+                    merchant_uid: "616" + new Date().getFullYear() + // 연도
+                    (new Date().getMonth() + 1) + // 월 (+1 보정)
+                    new Date().getDate() +  // 일
+                    new Date().getTime(), // 고유 주문 ID
                 }, async function (rsp) {
                     if (rsp.success) {
                         // 결제가 성공하면 서버로 결제 정보 전송
