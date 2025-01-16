@@ -95,6 +95,10 @@ public class OrderServiceImpl implements OrderService {
 		return orderDao.updateOrderCancel(sqlSession, orderNo, refundReason);
 	}
 
+	@Override
+	public List<ProductOrder> selectProductOptions(List<Integer> optNos) {
+	    return orderDao.selectProductOptions(sqlSession, optNos);
+	}
 
 	
 }

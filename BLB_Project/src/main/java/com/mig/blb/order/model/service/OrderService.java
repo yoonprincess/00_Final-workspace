@@ -53,4 +53,7 @@ public interface OrderService {
 	// 취소/환불 시 환불일, 환불사유 업데이트
 	int updateOrderCancel(String orderNo, String refundReason);
 
+	// 바로구매 상품 조회
+	List<ProductOrder> selectProductOptions(List<Integer> optNos);
+
 }

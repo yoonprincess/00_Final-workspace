@@ -218,11 +218,49 @@ $(document).ready(function () {
     //     $('#reviewIframeContainer').fadeIn();
     // }
     
-    // 바로 구매
-    $('#buyNow').click(function() {
-        alert('구매 페이지로 이동합니다.');
+
+    // 바로구매 버튼 이벤트
+    $('#buyNow').on('click', function (e) {
+        e.preventDefault(); // 기본 폼 제출 방지
+
+        const memberId = $(this).data('memberid'); // 회원 ID 가져오기
+        if (!memberId) {
+            alertify.error("로그인 후 이용 할 수 있습니다.");
+            // 페이지 이동
+            setTimeout(function() {
+                window.location.href = `${contextPath}/loginForm.me`;
+            }, 1500); // 2초 후 이동
+            return; // 실행 중단
+        }
+
+        const orderData = selectedOptions.map(option => ({
+            memberId: memberId,
+            optNo: parseInt(option.id, 10), // Integer로 변환
+            orderQty: parseInt(option.quantity, 10)
+        }));
+
+        if (orderData.every(data => !data.optNo)) {
+            alertify.error("옵션을 선택해야 합니다.");
+            return; // 실행 중단
+        }
+
+        // 동적 폼 생성 후 POST 요청 전송
+        const form = $('<form>', {
+            method: 'POST',
+            action: 'directOrderForm.or'
+        });
+
+        // Hidden input에 데이터 추가
+        $('<input>', {
+            type: 'hidden',
+            name: 'orderData',
+            value: JSON.stringify(orderData) // 데이터를 JSON 문자열로 변환하여 전송
+        }).appendTo(form);
+
+        form.appendTo('body').submit(); // 폼 제출
     });
 
+    
     // 상품정보 별점 클릭 시 이동
     $('.top-review').on('click', function (e) {
         let tabsOffset = $('.origin-tab-location').offset().top || 0; // 탭 메뉴의 위치

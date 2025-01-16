@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <title>주문서 작성/결제 | 뷰라밸</title>
 
+<!-- css 파일 -->
 <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/order/directOrderEnrollForm.css">
 <!-- 부트스트랩 -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -17,6 +18,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- 아임포트 SDK -->
 <script src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js" defer></script>
+<!-- daum 지도검색 api -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 </head>
 <body class="body-offset">
@@ -25,168 +28,166 @@
         <form id="order-form"
               action="payment.or"
               method="POST">
-            
+
             <!-- 네비게이터 영역 -->
             <div class="navigator">
                 <h1><b>주문서 작성/결제</b></h1>
                 <div class="breadcrumb"> <!-- 지나온 페이지 표시 -->
-                    <span class="inactive">01 장바구니</span> <!-- 비활성화된 상태-->
+                    <span class="inactive">01 상품</span> <!-- 비활성화된 상태-->
                     <span class="separator">&gt;</span>
                     <span class="active">02 주문서작성/결제</span>  <!-- 활성화된 상태 -->
                     <span class="separator">&gt;</span>
                     <span class="inactive">03 주문완료</span> <!-- 비활성화된 상태-->
                 </div>
             </div>
-      
+
             <br><br>
-      
+            
             <!-- 배송 정보 입력 테이블 영역 -->
             <h3>배송 정보 입력</h3>
             <hr class="custom-hr">
 
             <!-- 로그인 된 아이디 숨기기 -->
             <input type="hidden"
-                   id="memberIdr"
-                   name="memberIdr"
+                   id="memberId"
+                   name="memberId"
                    value="${sessionScope.loginUser.memberId}">
-    
             
-                <table id="delivery-form">
-                    <tr>
-                        <th>배송지 선택 </th>
-                        <td>
-                            <select id="deliSelect">
-                                <option value="-1">- [필수] 배송지를 선택해 주세요. -</option>
-                                <c:forEach var="d" items="${deliveryList}">
-                                    <option value="${d.deliCode}" 
-                                        <c:if test="${d.deliDefault == 'Y'}">selected</c:if>>
-                                        ${d.deliNickname}
-                                    </option>
-                                </c:forEach>
+            <table id="delivery-form">
+                <tr>
+                    <th>배송지 선택 </th>
+                    <td>
+                        <select id="deliSelect">
+                            <option value="-1">- [필수] 배송지를 선택해 주세요. -</option>
+                            <c:forEach var="d" items="${deliveryList}">
+                                <option value="${d.deliCode}" 
+                                    <c:if test="${d.deliDefault == 'Y'}">selected</c:if>>
+                                    ${d.deliNickname}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>배송지명 <div class="badge"><c:if test="${d.deliDefault == 'Y'}">기본배송지</c:if></div></th>
+                    <td>
+                        <input type="text"
+                                placeholder="배송지를 선택하세요"
+                                required
+                                id="deliNickname"
+                                value="${selectedDelivery.deliNickname}"
+                                >
+                    </td>
+                </tr>
+                <tr>
+                    <th>받는 사람 <span class="required">*</span></th>
+                    <td>
+                        <input type="text"
+                                placeholder="받는 사람 이름을 입력하세요"
+                                required
+                                id="rcvrName"
+                                name="rcvrName"
+                                value="${selectedDelivery.deliName}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>주소 <span class="required">*</span></th>
+                    <td>
+                        <div class="address-container">
+                            <input type="text"
+                                    placeholder="우편번호"
+                                    style="width: 120px;"
+                                    id="postCode"
+                                    disabled>
+                            <button type="button"
+                                    class="btn-search"
+                                    onclick="sample4_execDaumPostcode()">우편번호</button>
+                        </div>
+                        <input type="text"
+                                placeholder="기본 주소"
+                                style="width: 100%; margin-top: 10px;"
+                                id="deliAddress"
+                                value="${selectedDelivery.deliAddress}"
+                                >
+                        <input type="text"
+                                placeholder="상세 주소"
+                                style="width: 100%; margin-top: 10px;"
+                                id="detailAddress"
+                                value="${selectedDelivery.detailAddress}"
+                                >
+                    </td>
+                </tr>
+                <tr>
+                    <th>휴대전화 <span class="required">*</span></th>
+                    <td>
+                        <!-- 전제 전화번호 숨기기 -->
+                        <input type="hidden"
+                                id="hidden-phone-number"
+                                name="rcvrPhone"
+                                value="${selectedDelivery.deliPhone}">
+
+                        <div class="phone-container">
+                            <select id="phone-prefix" name="phone-prefix">
+                                <option value="010">010</option>
+                                <option value="011">011</option>
+                                <option value="016">016</option>
+                                <option value="017">017</option>
+                                <option value="018">018</option>
+                                <option value="019">019</option>
                             </select>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th>배송지명 <div class="badge"><c:if test="${d.deliDefault == 'Y'}">기본배송지</c:if></div></th>
-                        <td>
+                            <span>-</span>
                             <input type="text"
-                                   placeholder="배송지를 선택하세요"
-                                   required
-                                   id="deliNickname"
-                                   value="${selectedDelivery.deliNickname}"
-                                   >
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>받는 사람 <span class="required">*</span></th>
-                        <td>
+                                    maxlength="4"
+                                    id="phone-middle"
+                                    value="">
+                            <span>-</span>
                             <input type="text"
-                                   placeholder="받는 사람 이름을 입력하세요"
-                                   required
-                                   id="rcvrName"
-                                   name="rcvrName"
-                                   value="${selectedDelivery.deliName}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>주소 <span class="required">*</span></th>
-                        <td>
-                            <div class="address-container">
-                                <input type="text"
-                                       placeholder="우편번호"
-                                       style="width: 120px;"
-                                       id="postCode"
-                                       disabled>
-                                <button type="button"
-                                        class="btn-search"
-                                        onclick="sample4_execDaumPostcode()">우편번호</button>
-                            </div>
-                            <input type="text"
-                                   placeholder="기본 주소"
-                                   style="width: 100%; margin-top: 10px;"
-                                   id="deliAddress"
-                                   value="${selectedDelivery.deliAddress}"
-                                   >
-                            <input type="text"
-                                   placeholder="상세 주소"
-                                   style="width: 100%; margin-top: 10px;"
-                                   id="detailAddress"
-                                   value="${selectedDelivery.detailAddress}"
-                                   >
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>휴대전화 <span class="required">*</span></th>
-                        <td>
-                            <!-- 전제 전화번호 숨기기 -->
-                            <input type="hidden"
-                                   id="hidden-phone-number"
-                                   name="rcvrPhone"
-                                   value="${selectedDelivery.deliPhone}">
-
-                            <div class="phone-container">
-                                <select id="phone-prefix" name="phone-prefix">
-                                    <option value="010">010</option>
-                                    <option value="011">011</option>
-                                    <option value="016">016</option>
-                                    <option value="017">017</option>
-                                    <option value="018">018</option>
-                                    <option value="019">019</option>
-                                </select>
-                                <span>-</span>
-                                <input type="text"
-                                       maxlength="4"
-                                       id="phone-middle"
-                                       value="">
-                                <span>-</span>
-                                <input type="text"
-                                       maxlength="4"
-                                       id="phone-last"
-                                       value="">
-                            </div>
-                            
-                        </td>
-                    </tr>
-                    <tr>
-                        <th rowspan="2">배송 요청 사항</th>
-                        <td>
-                            <label class="form-label required">공동현관 출입방법</label>
-                            <div class="form-input radio-group" name="delivery-message">
+                                    maxlength="4"
+                                    id="phone-last"
+                                    value="">
+                        </div>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <th rowspan="2">배송 요청 사항</th>
+                    <td>
+                        <label class="form-label required">공동현관 출입방법</label>
+                        <div class="form-input radio-group" name="delivery-message">
+                            <label class="radio-label">
+                                <input type="radio" name="entry" value="비밀번호" checked >
+                                    비밀번호
+                                </label>
                                 <label class="radio-label">
-                                    <input type="radio" name="entry" value="비밀번호" checked >
-                                        비밀번호
-                                    </label>
-                                    <label class="radio-label">
-                                        <input type="radio" name="entry" value="경비실호출">
-                                        경비실호출
-                                    </label>
-                                    <label class="radio-label">
-                                        <input type="radio" name="entry" value="자유출입가능">
-                                        자유출입가능
-                                    </label>
-                                    <label class="radio-label">
-                                        <input type="radio" name="entry" value="기타사항">
-                                        기타사항
-                                    </label>
-                                </div>
+                                    <input type="radio" name="entry" value="경비실호출">
+                                    경비실호출
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="entry" value="자유출입가능">
+                                    자유출입가능
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="entry" value="기타사항">
+                                    기타사항
+                                </label>
+                            </div>
 
-                                <div class="form-group">
-                                    <label class="form-label required" id="add-request">추가 요청 사항</label>
-                                    <div class="form-input">
-                                        <input type="text"
-                                               class="address-input"
-                                               id="additionalInfo"
-                                               placeholder="공동현관 비밀번호를 입력하세요"
-                                               value="${selectedDelivery.deliComment}">
-                                    </div>
+                            <div class="form-group">
+                                <label class="form-label required" id="add-request">추가 요청 사항</label>
+                                <div class="form-input">
+                                    <input type="text"
+                                            class="address-input"
+                                            id="additionalInfo"
+                                            placeholder="공동현관 비밀번호를 입력하세요"
+                                            value="${selectedDelivery.deliComment}">
                                 </div>
                             </div>
-                        </td>
-                    </tr>
+                        </div>
+                    </td>
+                </tr>
 
-                </table>
-    
+            </table>
       
             <!-- 주문 상품 목록 영역 -->
             <div class="order-products">
@@ -194,22 +195,22 @@
                 <h3>주문 상품</h3>
                 <hr class="custom-hr">
 
-                <c:forEach var="opt" items="${selectedOptionList}"> <!-- option 리스트 기반 -->
-                    <div class="order-product" data-opt-no="${opt.optNo}">
-                        <img src="${ pageContext.request.contextPath }${opt.thumbImg}" alt="${opt.prodName}" style="width: 100px; height: 100px;">
+                <c:forEach var="pl" items="${productList}"> <!-- option 리스트 기반 -->
+                    <div class="order-product" data-opt-no="${pl.optNo}">
+                        <img src="${ pageContext.request.contextPath }${pl.thumbImg}" alt="${pl.prodName}" style="width: 100px; height: 100px;">
                         <div class="product-detail">
-                            <p class="product-title-${opt.optNo}">${option.prodName}</p>
-                            <p class="product-option-${opt.optNo}" data-opt-no="${opt.optNo}">
-                                옵션: ${opt.optName} (+ 
-                                <fmt:formatNumber value="${opt.optAddPrice}" pattern="###,###,###"/> 원)
+                            <p class="product-title-${pl.optNo}">${pl.prodName}</p>
+                            <p class="product-option-${pl.optNo}" data-opt-no="${pl.optNo}">
+                                옵션: ${pl.optName} (+ 
+                                <fmt:formatNumber value="${pl.optAddPrice}" pattern="###,###,###"/> 원)
                             </p>
-                            <p class="product-price-${opt.optNo}" data-prod-price="${optoption.prodPrice}">
-                                상품 가격: <fmt:formatNumber value="${opt.prodPrice}" />원
+                            <p class="product-price-${pl.optNo}" data-prod-price="${pl.prodPrice}">
+                                상품 가격: <fmt:formatNumber value="${pl.prodPrice}" />원
                             </p>
-                            <p class="product-quantity-${opt.optNo}" data-quantity="${opt.quantity}">
-                                수량: ${option.quantity}개
+                            <p class="product-quantity-${pl.optNo}" data-order-qty="${pl.orderQty}">
+                                수량: ${pl.orderQty}개
                             </p>
-                            <p class="product-order-price-${opt.optNo}"></p>
+                            <p class="product-order-price-${pl.optNo}"></p>
                         </div>
                     </div>
                     <hr class="custom-hr">

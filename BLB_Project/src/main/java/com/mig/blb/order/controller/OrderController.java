@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mig.blb.cart.model.service.CartService;
 import com.mig.blb.cart.model.vo.Cart;
 import com.mig.blb.member.model.service.MemberService;
@@ -26,9 +29,6 @@ import com.mig.blb.member.model.vo.Member;
 import com.mig.blb.order.model.service.OrderService;
 import com.mig.blb.order.model.vo.Order;
 import com.mig.blb.order.model.vo.ProductOrder;
-import com.mig.blb.product.model.service.ProductService;
-import com.mig.blb.product.model.vo.Product;
-
 
 @Controller
 public class OrderController {
@@ -196,7 +196,7 @@ public class OrderController {
 	}
 	
 	/**
-	 * 결제 완료
+	 * 장바구니에서 넘어온 상품 결제 완료
 	 * - 예원_24.12.26
 	 * @param merchantUid
 	 * @param orderCartNos
@@ -215,9 +215,6 @@ public class OrderController {
 		// 1. TB_ORDER 테이블에서 채번한 ORDER_NO 가져오기
 	    int orderNoInt = orderService.selectOrderNo(); // selectOrderNo()는 int 반환
 	    String orderNo = String.valueOf(orderNoInt);  // int를 String으로 변환
-	    List<Integer> checkedCartNos = Arrays.stream(orderCartNos.split(","))
-                							 .map(Integer::parseInt)
-                							 .collect(Collectors.toList()); // 장바구니 번호 리스트
 		
 	    // 2. 결제 코드 업데이트
 	    int result1 = orderService.updateOrderStatus(merchantUid, orderNo);
@@ -230,6 +227,10 @@ public class OrderController {
 	    }
 
 	    // 3. 장바구니에서 결제된 상품 삭제
+	    List<Integer> checkedCartNos = Arrays.stream(orderCartNos.split(","))
+				 .map(Integer::parseInt)
+				 .collect(Collectors.toList()); // 장바구니 번호 리스트
+	    
 	    int result2 = cartService.deleteSelectedCarts(checkedCartNos);
 	    
 	    if(result2 < 1) {
@@ -244,48 +245,6 @@ public class OrderController {
 	    model.addAttribute("order", o);
 	    
 	    return "order/orderCompleteView";
-	}
-	
-	// 바로 주문하기
-	@PostMapping("directForm.or")
-	public String directOrderForm(@RequestParam("optNos") List<Integer> optNos,
-								  HttpSession session,
-								  Model model) {
-		
-	    String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
-	    
-	    if (session.getAttribute("loginUser") == null) {	// 로그인 전
-	    	
-	    	session.setAttribute("alertMsg", "로그인 후 이용 가능한 서비스입니다.");
-	        return "redirect:/loginForm.me";
-	        
-	    }
-	    
-	    // 선택된 옵션들의 상품 정보 조회
-	    List<Product> productList = orderService.getSelectedProducts(memberId, optNos);
-
-	    // 저장된 배송 정보 조회
-	    List<Delivery> deliveryList = memberService.selectDeliveryList(memberId);
-	    
-	    Delivery selectedDelivery = null;
-	    
-	    for (Delivery d : deliveryList) {
-	    	
-	        if (d.getDeliDefault().equals("Y")) {
-	        	
-	            selectedDelivery = d; // 기본배송지를 저장
-	        } else {
-	        	
-	            d.setDeliDefault("");
-	        }
-	    }
-	    
-	    // 상품 정보와 배송 정보를 모델에 추가
-	    model.addAttribute("productList", productList);
-	    model.addAttribute("deliveryList", deliveryList);
-	    model.addAttribute("selectedDelivery", selectedDelivery);
-
-	    return "order/directOrderEnrollForm"; // 주문서 화면 JSP 경로
 	}
 	
 	/**
@@ -311,14 +270,21 @@ public class OrderController {
 	    Order order = orderService.selectOrderComplete(orderNo);
 	    model.addAttribute("order", order);
 	    
-	    //2. 상품 정보 가져오기
+	    // 2. 상품 정보 가져오기
 	    List<ProductOrder> productList = orderService.selectProductOrderList(orderNo);
 	    model.addAttribute("productList", productList);
 
 	    return "order/orderCancelForm";
 	}
 	
-	// 취소/환불 시 환불일, 환불사유 업데이트
+	/**
+	 * 취소 요청 시 환불일, 환불사유 업데이트
+	 * - 예원
+	 * @param requestData
+	 * @param session
+	 * @param model
+	 * @return
+	 */
 	@ResponseBody
 	@PostMapping("cancelForm.or")
 	public Map<String, Object> updateOrderCancel(@RequestBody Map<String, Object> requestData,
@@ -336,9 +302,6 @@ public class OrderController {
 	    String orderNo = (String) requestData.get("orderNo");
 	    String refundReason = (String) requestData.get("refundReason");
 
-	    System.out.println("Order No: " + orderNo);
-	    System.out.println("Refund Reason: " + refundReason);
-
 	    int result = orderService.updateOrderCancel(orderNo, refundReason);
 	    
 	    if(result > 0) {
@@ -352,20 +315,127 @@ public class OrderController {
         return response;
 	}
 	
-	// 취소 완료 화면
+	/**
+	 * 취소 완료 화면
+	 * - 예원
+	 * @param session
+	 * @return
+	 */
 	@GetMapping("cancelComplete.or")
 	public String selectCancelComplete(HttpSession session) {
 		
 		return "order/orderCancelCompleteView";
 	}
 	
+	/**
+	 * 바로 구매 주문서 조회
+	 * - 예원 25.01.17
+	 * @param orderDataJson
+	 * @param model
+	 * @param session
+	 * @return
+	 */
+	@PostMapping("directOrderForm.or")
+	public String directOrderForm(@RequestParam("orderData") String orderDataJson,
+	                              Model model,
+	                              HttpSession session) {
+
+	    // 1. JSON 데이터를 파싱
+	    ObjectMapper mapper = new ObjectMapper();
+	    List<Map<String, Object>> orderData;
+	    try {
+	        orderData = mapper.readValue(orderDataJson, new TypeReference<List<Map<String, Object>>>() {});
+	    } catch (JsonProcessingException e) {
+	        e.printStackTrace();
+	        return "common/errorPage"; // 에러 페이지로 이동
+	    }
+
+	    // 2. 옵션 번호 리스트를 추출 후 상품 정보 조회
+	    List<Integer> optNos = orderData.stream()
+	            .map(data -> (Integer) data.get("optNo"))
+	            .collect(Collectors.toList());
+	    List<ProductOrder> productList = orderService.selectProductOptions(optNos);
+	    
+	    // 1. optNo와 orderQty 매핑
+	    Map<Integer, Integer> optNoToOrderQty = orderData.stream()
+	        .collect(Collectors.toMap(
+	            data -> (Integer) data.get("optNo"), // 키: optNo
+	            data -> (Integer) data.get("orderQty") // 값: orderQty
+	        ));
+	    
+	    // 상품 정보에 수량 추가
+	    if (productList != null) {
+	        for (ProductOrder productOrder : productList) {
+	            Integer orderQty = optNoToOrderQty.get(productOrder.getOptNo());
+	            if (orderQty != null) {
+	                productOrder.setOrderQty(orderQty); // 상품 객체에 수량 설정
+	            }
+	        }
+	    }
+	    
+	    // 4. 회원 아이디로 배송 정보 조회
+	    String memberId = ((Member)session.getAttribute("loginUser")).getMemberId();
+	    List<Delivery> deliveryList = memberService.selectDeliveryList(memberId);
+	    
+	    Delivery selectedDelivery = null;
+	    for (Delivery d : deliveryList) {
+	    	
+	        if (d.getDeliDefault().equals("Y")) {
+	        	
+	            selectedDelivery = d; // 기본배송지를 저장
+	        } else {
+	        	
+	            d.setDeliDefault("");
+	        }
+	    }
+	    
+	    // 5. 모델에 데이터 추가
+	    model.addAttribute("productList", productList); // 상품 정보 리스트
+	    model.addAttribute("deliveryList", deliveryList); // 배송 정보 리스트
+	    model.addAttribute("selectedDelivery", selectedDelivery); // 선택된 배송 정보
+
+	    return "order/directOrderEnrollForm"; // JSP 경로 반환
+	}
 	
-	
-	
-	
-	
-	
-	
-	
+	/**
+	 * 바로 구매 결제 완료
+	 * - 예원_25.01.17
+	 * @param merchantUid
+	 * @param orderCartNos
+	 * @param session
+	 * @param model
+	 * @param order
+	 * @return
+	 */
+	@GetMapping("directOrderComplete.or")
+	public String updateDirectOrderSuccess(@RequestParam("paymentCode") String merchantUid,
+									 HttpSession session,
+									 Model model,
+									 Order order) {
+		
+		// 1. TB_ORDER 테이블에서 채번한 ORDER_NO 가져오기
+	    int orderNoInt = orderService.selectOrderNo(); // selectOrderNo()는 int 반환
+	    String orderNo = String.valueOf(orderNoInt);  // int를 String으로 변환
+		
+	    // 2. 결제 코드 업데이트
+	    int result1 = orderService.updateOrderStatus(merchantUid, orderNo);
+	    
+	    if(result1 < 1) {
+	    	
+	    	model.addAttribute("errorMsg", "주문 상태 업데이트 실패");
+	    	model.addAttribute("merchantUid", merchantUid);
+	        return "common/errorPage";
+	    }
+
+	    // 마지막. order 객체에 담아서 조회
+	    Order o = orderService.selectOrderComplete(orderNo);
+	    
+	    model.addAttribute("order", o);
+	    
+	    return "order/orderCompleteView";
+	}
+
+
+
 	
 }

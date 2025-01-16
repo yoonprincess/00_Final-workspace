@@ -119,5 +119,13 @@ public class OrderDao {
 		
 		return sqlSession.update("orderMapper.updateOrderCancel", params);
 	}
+	
+	public List<ProductOrder> selectProductOptions(SqlSessionTemplate sqlSession, List<Integer> optNos) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("optNos", optNos);
+
+	    return sqlSession.selectList("orderMapper.selectedOption", params);
+	}
+
 
 }

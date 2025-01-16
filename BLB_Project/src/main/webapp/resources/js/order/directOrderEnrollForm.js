@@ -147,22 +147,29 @@ $(function() {
 
         // 판매가 계산을 위한 상품 가격
         $('.order-product').each(function () {
-            // 장바구니 번호
-            const cartNo = $(this).data('cart-no');
+            // 옵션 번호
+            const optNo = $(this).data('opt-no');
 
             // 상품 가격 텍스트에서 숫자만 추출
-            let prodPriceText = $(`.product-price-${cartNo}`).text().replace(/[^0-9]/g, ""); // 숫자가 아닌 모든 문자를 제거
-            let prodPrice = parseInt(prodPriceText, 10); // 숫자로 변환
+            // let prodPriceText = $('.product-price-' + optNo).text().replace(/[^0-9]/g, ""); // 숫자가 아닌 모든 문자를 제거
+            let prodPrice = $('.product-price-' + optNo).data('prod-price'); // 숫자가 아닌 모든 문자를 제거
+            // let prodPrice = parseInt(prodPriceText, 10); // 숫자로 변환
+
+            console.log("상품 가격" + prodPrice);
 
             // 수량 가져오기
-            let cartQtyText = $(`.product-quantity-${cartNo}`).text().replace(/[^0-9]/g, "");
-            let cartQty = parseInt(cartQtyText, 10);
+            let orderQty = $('.product-quantity-' + optNo).data('order-qty');
+            // let orderQty = parseInt(orderQtyText, 10);
+
+            console.log("수량 " + orderQty);
 
             // 구매가 계산
-            let prodOrderPrice = prodPrice * cartQty;
+            let prodOrderPrice = prodPrice * orderQty;
+
+            console.log(prodOrderPrice);
 
             // 구매가 DOM 업데이트
-            $(`.product-order-price-${cartNo}`)
+            $('.product-order-price-' + optNo)
                 .text(`구매가: ${prodOrderPrice.toLocaleString()}원`)
                 .css({
                     "font-size": "16px",  // 텍스트 크기
@@ -212,9 +219,7 @@ $(function() {
     $('input[name="entry"]').on('change', function() {
 
         var selectedValue = $(this).val();
-        
         switch (selectedValue) {
-
             case '비밀번호':
                 placeholderText = "공동현관 비밀번호를 입력하세요";
                 break;
@@ -240,40 +245,27 @@ $(function() {
         console.error("IMP SDK 로드 실패");
     }
 
-
     // 결제하기 버튼 클릭 이벤트
     $('.payment-button').on('click', function(event) {
-
         event.preventDefault(); // 폼 기본 제출 동작 방지
 
-        const orderNo = $("#orderNo").val(); // 주문 No
-        console.log("주문번호 : " + orderNo);
-
-        
         const orderTotalAmt = parseInt($(".final-price").text().replace(/[^0-9]/g, "")); // 결제 금액
-
-        console.log("결제금액: " + orderTotalAmt);
-        
         
         // 각 상품의 데이터를 배열에 저장
         var productData = [];
 
         $('.order-product').each(function() {
-            // 장바구니 번호
-            const cartNo = $(this).data('cart-no');
 
             // 각 상품 데이터 추출
-            const orderQty = $(`.product-option-` + cartNo).data('cart-qty'); // 수량
-            const productPrice = $(`.product-price-` + cartNo).text().replace(/[^0-9]/g, ""); // 가격
-            const totalAmt = productPrice * orderQty;
-            const optNo = $(`.product-option-` + cartNo).data('opt-no'); // cartNo를 optNo로 사용
+            const optNo = $(this).data('opt-no'); // optNo 추출
+            const orderQty = $('.product-quantity-' + optNo).data('order-qty'); // 수량
+            const totalAmt = $('.product-order-price-' + optNo).text().replace(/[^0-9]/g, ""); // 가격
 
             // 상품 데이터를 객체로 저장
             productData.push({
                 orderQty: parseInt(orderQty, 10),
                 totalAmt: parseInt(totalAmt, 10),
                 optNo: parseInt(optNo, 10),
-                cartNo: parseInt(cartNo, 10)
             });
         });
 
@@ -304,11 +296,10 @@ $(function() {
             return;
         }
 
-
         if (payOption === '카카오페이') {
 
             try {
-                // 나이스페이 요청
+                // 카카오페이 요청
                 IMP.request_pay({
                     pg: "kakaopay",
                     paymethod: "card",
@@ -346,12 +337,7 @@ $(function() {
                             alert("결제가 완료되었습니다!");
 
                             // 결제 완료 정보를 URL로 전달
-                            // 배열에서 cartNo만 추출
-                            const cartNos = productData.map(product => product.cartNo);
-
-                            // URL 생성
-                            const url = `orderComplete.or?paymentCode=${encodeURIComponent(rsp.merchant_uid)}&orderCartNos=${cartNos.join(',')}`;
-                            window.location.href = url; // GET 요청으로 이동
+                            window.location.href = `directOrderComplete.or?paymentCode=${encodeURIComponent(rsp.merchant_uid)}`; // GET 요청으로 이동
                         } else {
                             alert("결제 확인에 실패했습니다.");
                         }
@@ -405,12 +391,7 @@ $(function() {
                             alert("결제가 완료되었습니다!");
 
                             // 결제 완료 정보를 URL로 전달
-                            // 배열에서 cartNo만 추출
-                            const cartNos = productData.map(product => product.cartNo);
-
-                            // URL 생성
-                            const url = `orderComplete.or?paymentCode=${encodeURIComponent(rsp.merchant_uid)}&orderCartNos=${cartNos.join(',')}`;
-                            window.location.href = url; // GET 요청으로 이동
+                            window.location.href = `directOrderComplete.or?paymentCode=${encodeURIComponent(rsp.merchant_uid)}`; // GET 요청으로 이동
                         } else {
                             alert("결제 확인에 실패했습니다.");
                         }
@@ -452,9 +433,6 @@ $(function() {
             alert('모든 약관에 동의해야 결제가 가능합니다.');
         }
     });
-
-
-
 });
 
 // 우편번호 검색 버튼 클릭 이벤트
@@ -501,5 +479,4 @@ function sample4_execDaumPostcode() {
         }
         
     }).open();
-
 }

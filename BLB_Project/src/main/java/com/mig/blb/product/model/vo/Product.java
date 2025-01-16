@@ -37,7 +37,5 @@ public class Product {
     private String bannerPath;			//	PB.BANNER_PATH || PB.SAVE_FILE_NAME AS "BANNER_IMG"
     private String mdPath;				//	PM.MD_PATH || PM.SAVE_FILE_NAME AS "MD_IMG"
     private String bannerFileName;		//	PB.SAVE_FILE_NAME
-    
-    
 		
 }

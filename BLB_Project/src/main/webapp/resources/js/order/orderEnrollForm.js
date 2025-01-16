@@ -462,8 +462,6 @@ $(function() {
 // 우편번호 검색 버튼 클릭 이벤트
 function sample4_execDaumPostcode() {
 
-    console.log("클릭?");
-
     new daum.Postcode({
         oncomplete: function(data) {
 

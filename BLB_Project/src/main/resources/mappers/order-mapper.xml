@@ -83,7 +83,6 @@
 	     WHERE ORDER_NO = CAST(#{orderNo} AS VARCHAR2(30))
 	</select>
 	
-	
 	<!-- 주문/결제 정보(TB_ORDER) 조회용 쿼리문 -->
 	<resultMap id="productOrderResultMap" type="productOrder">
 	    <result property="serialNo" column="SERIAL_NO" />
@@ -92,12 +91,12 @@
 	    <result property="orderNo" column="ORDER_NO" />
 	    <result property="optNo" column="OPT_NO" />
 	    
-	    <result column="PROD_NAME" property="prodName" />
-		<result column="OPT_NAME" property="optName" />
-		<result column="OPT_ADD_PRICE" property="optAddPrice" />
-		<result column="REMAIN_QTY" property="remainQty" />
-		<result column="PROD_PRICE" property="prodPrice" />
-		<result column="THUMB_IMG" property="thumbImg" />
+	    <result property="prodName" column="PROD_NAME" />
+		<result property="optName" column="OPT_NAME" />
+		<result property="optAddPrice" column="OPT_ADD_PRICE" />
+		<result property="remainQty" column="REMAIN_QTY" />
+		<result property="prodPrice" column="PROD_PRICE" />
+		<result property="thumbImg" column="THUMB_IMG" />
 	</resultMap>
 	
 	<!-- 결제 완료 - 결제 고유 번호 업데이트 -->
@@ -108,7 +107,7 @@
     	 WHERE ORDER_NO = #{orderNo}
 	</update>
 
-	
+	<!-- 취소 요청 시 주문 상품 정보 조회 -->
     <select id="selectProductOrderList"
     		parameterType="string"
     		resultMap="productOrderResultMap">
@@ -151,9 +150,36 @@
 	           REFUND_REASON = #{refundReason}
 	     WHERE ORDER_NO = CAST(#{orderNo} AS VARCHAR2(30))
 	</update>
-		
 	
+	<!-- 바로 구매 상품 주문서에서 조회용 쿼리문 -->
+	<select id="selectedOption"
+			parameterType="map"
+			resultMap="productOrderResultMap">
+		SELECT P.PROD_NO
+		     , P.PROD_NAME
+		     , O.OPT_NO
+		     , O.OPT_NAME
+		     , O.OPT_ADD_PRICE
+		     , P.PROD_PRICE
+		     , PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
+		  FROM TB_PRODUCT P
+		LEFT JOIN TB_OPTION O ON P.PROD_NO = O.PROD_NO
+		LEFT JOIN (
+		            SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
+		              FROM TB_PRODUCT_ATTACHMENT
+		             WHERE (PROD_NO, PROD_ATT_NO) IN (
+				           SELECT PROD_NO, MIN(PROD_ATT_NO)
+				             FROM TB_PRODUCT_ATTACHMENT
+				            WHERE PROD_ATT_STATUS = 'Y'
+				              AND THUMB_PATH IS NOT NULL
+				            GROUP BY PROD_NO
+				       )
+				  ) PA
+				    ON P.PROD_NO = PA.PROD_NO
+		WHERE O.OPT_NO IN
+		<foreach item="optNo" collection="optNos" open="(" separator="," close=")">
+		    #{optNo}
+		</foreach>
+	</select>
 	
-
-
 </mapper>

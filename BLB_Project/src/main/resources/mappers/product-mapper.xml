@@ -583,40 +583,6 @@
 	    			 		 #{cartQty})
 	</insert>
 	
-	
-	<!-- 바로 구매 상품 주문서에서 조회용 쿼리문 -->
-	<select id="getSelectedProducts"
-			parameterType="map"
-			resultMap="productResultSet">
-		SELECT P.PROD_NO
-		     , P.PROD_NAME
-		     , O.OPT_NO
-		     , O.OPT_NAME
-		     , O.OPT_ADD_PRICE
-		     , O.REMAIN_QTY
-		     , P.PROD_PRICE
-		     , PA.THUMB_PATH || PA.SAVE_FILE_NAME AS "THUMB_IMG"
-		  FROM TB_PRODUCT P
-		LEFT JOIN TB_OPTION O ON P.PROD_NO = O.PROD_NO
-		LEFT JOIN (
-		            SELECT PROD_NO, THUMB_PATH, SAVE_FILE_NAME
-		              FROM TB_PRODUCT_ATTACHMENT
-		             WHERE (PROD_NO, PROD_ATT_NO) IN (
-				           SELECT PROD_NO, MIN(PROD_ATT_NO)
-				             FROM TB_PRODUCT_ATTACHMENT
-				            WHERE PROD_ATT_STATUS = 'Y'
-				              AND THUMB_PATH IS NOT NULL
-				            GROUP BY PROD_NO
-				       )
-				  ) PA
-				    ON P.PROD_NO = PA.PROD_NO
-		WHERE O.OPT_NO IN
-		<foreach item="optNo" collection="optNos" open="(" separator="," close=")">
-		    #{optNo}
-		</foreach>
-	</select>
-	
-	
 	<!-- 배너 이미지 추가 -->
     <insert id="insertBanner" parameterType="map">
         INSERT INTO TB_PRODUCT_BANNER
@@ -651,6 +617,5 @@
     	  FROM TB_PRODUCT_BANNER
     	 WHERE BANNER_STATUS = 'Y'
     </select>
-    
 	
 </mapper>

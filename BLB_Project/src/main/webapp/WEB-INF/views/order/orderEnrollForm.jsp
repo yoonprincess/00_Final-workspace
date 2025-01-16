@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <title>주문서 작성/결제 | 뷰라밸</title>
 
+<!-- css 파일 -->
 <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/order/orderEnrollForm.css">
 <!-- 부트스트랩 -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -48,10 +49,9 @@
 
             <!-- 로그인 된 아이디 숨기기 -->
             <input type="hidden"
-                   id="memberIdr"
-                   name="memberIdr"
+                   id="memberId"
+                   name="memberId"
                    value="${sessionScope.loginUser.memberId}">
-    
             
                 <table id="delivery-form">
                     <tr>

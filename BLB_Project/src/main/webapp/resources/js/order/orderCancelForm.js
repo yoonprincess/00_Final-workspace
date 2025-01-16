@@ -22,13 +22,9 @@ $(document).ready(function () {
     $("#submitCancel").click(function () {
         
         const orderNo = $('#orderNo').val(); // JSP에서 넘겨받은 주문 번호
-
-        console.log(orderNo);
         
         // 선택된 취소 사유 가져오기
         const refundReason = $("#reasonSelect").val();
-
-        console.log(refundReason);
 
         if (refundReason === null) {
             alert("취소 사유를 선택해주세요.");

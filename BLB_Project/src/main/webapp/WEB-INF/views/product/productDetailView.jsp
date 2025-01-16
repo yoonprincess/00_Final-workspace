@@ -115,7 +115,9 @@
                                 <!-- <span class="material-symbols-outlined">add_shopping_cart</span> -->
                                 장바구니
                             </button>
-                            <button type="button" class="btn btn-primary btn-lg mr-2 blb-btn" id="buyNow">
+                            <button type="button" class="btn btn-primary btn-lg mr-2 blb-btn" id="buyNow"
+                                    data-opt-no="${opt.optNo}"
+                                    data-memberid="${sessionScope.loginUser.memberId}">
                                 바로구매
                             </button>
                             <button class="btn btn-outline-danger blb-btn wishlist-btn" title="찜하기" 
