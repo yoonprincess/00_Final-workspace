@@ -151,22 +151,12 @@ $(function() {
             const optNo = $(this).data('opt-no');
 
             // 상품 가격 텍스트에서 숫자만 추출
-            // let prodPriceText = $('.product-price-' + optNo).text().replace(/[^0-9]/g, ""); // 숫자가 아닌 모든 문자를 제거
-            let prodPrice = $('.product-price-' + optNo).data('prod-price'); // 숫자가 아닌 모든 문자를 제거
-            // let prodPrice = parseInt(prodPriceText, 10); // 숫자로 변환
-
-            console.log("상품 가격" + prodPrice);
-
-            // 수량 가져오기
-            let orderQty = $('.product-quantity-' + optNo).data('order-qty');
-            // let orderQty = parseInt(orderQtyText, 10);
-
-            console.log("수량 " + orderQty);
+            let prodPrice = $('.product-price-' + optNo).data('prod-price');    // 상품 가격
+            let optAddPrice = $('.product-option-' + optNo).data('opt-add-price');    // 옵션 추가 가격격
+            let orderQty = $('.product-quantity-' + optNo).data('order-qty');   // 주문 옵셥 수량
 
             // 구매가 계산
-            let prodOrderPrice = prodPrice * orderQty;
-
-            console.log(prodOrderPrice);
+            let prodOrderPrice = (prodPrice + optAddPrice) * orderQty;
 
             // 구매가 DOM 업데이트
             $('.product-order-price-' + optNo)

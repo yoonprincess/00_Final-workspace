@@ -200,7 +200,9 @@
                         <img src="${ pageContext.request.contextPath }${pl.thumbImg}" alt="${pl.prodName}" style="width: 100px; height: 100px;">
                         <div class="product-detail">
                             <p class="product-title-${pl.optNo}">${pl.prodName}</p>
-                            <p class="product-option-${pl.optNo}" data-opt-no="${pl.optNo}">
+                            <p class="product-option-${pl.optNo}"
+                               data-opt-no="${pl.optNo}"
+                               data-opt-add-price="${pl.optAddPrice}" >
                                 옵션: ${pl.optName} (+ 
                                 <fmt:formatNumber value="${pl.optAddPrice}" pattern="###,###,###"/> 원)
                             </p>
