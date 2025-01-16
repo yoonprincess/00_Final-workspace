@@ -140,7 +140,6 @@ $(function() {
         $("#phone-last").val(last); // 마지막자리 설정
     }
 
-
     // 최종 총합 가격 계산
     function calculateTotalPrice() {
         let totalPrice = 0; // 모든 상품 가격의 총합을 저장할 변수
@@ -152,7 +151,7 @@ $(function() {
 
             // 상품 가격 텍스트에서 숫자만 추출
             let prodPrice = $('.product-price-' + optNo).data('prod-price');    // 상품 가격
-            let optAddPrice = $('.product-option-' + optNo).data('opt-add-price');    // 옵션 추가 가격격
+            let optAddPrice = $('.product-option-' + optNo).data('opt-add-price');    // 옵션 추가 가격
             let orderQty = $('.product-quantity-' + optNo).data('order-qty');   // 주문 옵셥 수량
 
             // 구매가 계산

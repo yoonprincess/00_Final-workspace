@@ -140,7 +140,6 @@ $(function() {
         $("#phone-last").val(last); // 마지막자리 설정
     }
 
-
     // 최종 총합 가격 계산
     function calculateTotalPrice() {
         let totalPrice = 0; // 모든 상품 가격의 총합을 저장할 변수
@@ -154,12 +153,15 @@ $(function() {
             let prodPriceText = $(`.product-price-${cartNo}`).text().replace(/[^0-9]/g, ""); // 숫자가 아닌 모든 문자를 제거
             let prodPrice = parseInt(prodPriceText, 10); // 숫자로 변환
 
+            // 옵션 추가 가격
+            let optAddPrice = $(`.product-option-${cartNo}`).data('opt-add-price');    // 옵션 추가 가격
+
             // 수량 가져오기
             let cartQtyText = $(`.product-quantity-${cartNo}`).text().replace(/[^0-9]/g, "");
             let cartQty = parseInt(cartQtyText, 10);
 
             // 구매가 계산
-            let prodOrderPrice = prodPrice * cartQty;
+            let prodOrderPrice = (prodPrice + optAddPrice) * cartQty;
 
             // 구매가 DOM 업데이트
             $(`.product-order-price-${cartNo}`)
@@ -243,10 +245,7 @@ $(function() {
 
     // 결제하기 버튼 클릭 이벤트
     $('.payment-button').on('click', function(event) {
-
         event.preventDefault(); // 폼 기본 제출 동작 방지
-
-        const orderNo = $("#orderNo").val();
         
         const orderTotalAmt = parseInt($(".final-price").text().replace(/[^0-9]/g, "")); // 결제 금액
 

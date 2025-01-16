@@ -206,6 +206,7 @@
                             <p class="product-title-${cl.cartNo}">${cl.prodName}</p>
                             <p class="product-option-${cl.cartNo}"
                                data-opt-no="${cl.optNo}"
+                               data-opt-add-price="${cl.optAddPrice}"
                                data-cart-qty="${cl.cartQty}">[옵션: ${cl.prodName} (+ 
                                 <fmt:formatNumber value="${cl.optAddPrice}" pattern="###,###,###"/> 원)]</p>
                             <p class="product-price-${cl.cartNo}"
