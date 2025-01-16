@@ -113,7 +113,7 @@
 
 	                    <td class="product-price">
 							<span id="updated-price-${ct.cartNo}">
-								<fmt:formatNumber pattern="###,###,###" value="${ ct.prodPrice * ct.cartQty }" />원
+								<fmt:formatNumber pattern="###,###,###" value="${ (ct.prodPrice + ct.optAddPrice) * ct.cartQty }" />원
 							</span>
 						</td>
 	                    <td class="delete-btn-td">
