@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>주문서 작성/결제 | 뷰라밸</title>
+<title>주문서 작성/결제 | 뷰라밸 (Beauty Life Balance)</title>
 
 <!-- css 파일 -->
 <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/order/orderEnrollForm.css">

@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>주문 취소 | 뷰라밸</title>
+    <title>주문 취소 | 뷰라밸 (Beauty Life Balance)</title>
 
     <!-- css 파일 -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/order/orderCancelCompleteView.css">

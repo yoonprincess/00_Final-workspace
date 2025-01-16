@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>주문 완료 | 뷰라밸</title>
+    <title>주문 완료 | 뷰라밸 (Beauty Life Balance)</title>
 
     <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/order/orderCompleteView.css">
     <!-- jQuery 라이브러리 -->

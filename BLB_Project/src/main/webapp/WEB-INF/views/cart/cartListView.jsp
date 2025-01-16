@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>장바구니 | 뷰라밸</title>
+<title>장바구니 | 뷰라밸 (Beauty Life Balance)</title>
 
 <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/resources/css/cart/cartListView.css">
 <!-- 부트스트랩 -->
